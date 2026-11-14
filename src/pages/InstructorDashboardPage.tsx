@@ -698,7 +698,7 @@ export const InstructorDashboardPage: React.FC = () => {
                 TOTAL ASSIGNMENTS
               </span>
             </Tooltip>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <strong className="text-2xl text-primary">
                 {assignments.length}
               </strong>
@@ -710,6 +710,14 @@ export const InstructorDashboardPage: React.FC = () => {
               >
                 🔄 LÀM MỚI
               </Button>
+              <Link
+                to="/projector"
+                className="px-3 py-1 bg-brand text-white font-bold text-xs hover:opacity-90 transition-opacity flex items-center gap-1.5"
+                title="Mở chế độ máy chiếu lớp học thời gian thực"
+              >
+                <span>📺</span>
+                <span>MÁY CHIẾU</span>
+              </Link>
             </div>
           </div>
 

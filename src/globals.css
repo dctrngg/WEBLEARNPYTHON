@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    font-size: 125%; /* Scale entire UI to 125% (20px base) for high legibility & comfort */
-  }
-
   :root {
     --bg-primary: #FAFAFA;
     --bg-canvas: #FAFAFA;

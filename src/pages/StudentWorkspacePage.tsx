@@ -32,6 +32,7 @@ import { TopNavigationBar } from "../components/layout/TopNavigationBar";
 import { MarkdownRenderer } from "../components/ui/MarkdownRenderer";
 import { SectionBadge } from "../components/ui/BentoPrimitives";
 import { PythonCheatSheetModal } from "../components/ui/PythonCheatSheetModal";
+import { AITutorDrawer } from "../components/ui/AITutorDrawer";
 
 const GLYPHS = ["◇", "◆", "●", "◐", "▣", "◊"];
 
@@ -84,15 +85,22 @@ export const StudentWorkspacePage: React.FC = () => {
     "SPLIT"
   );
   const [cheatSheetOpen, setCheatSheetOpen] = useState<boolean>(false);
+  const [aiTutorOpen, setAiTutorOpen] = useState<boolean>(false);
+  const [aiInitialQuestion, setAiInitialQuestion] = useState<string>("");
+
+  const handleOpenAITutorWithError = (question?: string) => {
+    setAiInitialQuestion(question || "");
+    setAiTutorOpen(true);
+  };
   const [editorFontSize, setEditorFontSize] = useState<number>(() => {
     const saved = localStorage.getItem("chroma_py_editor_font_size");
-    const parsed = saved ? parseInt(saved, 10) : 16;
-    return Number.isFinite(parsed) && parsed >= 12 && parsed <= 36 ? parsed : 16;
+    const parsed = saved ? parseInt(saved, 10) : 14;
+    return Number.isFinite(parsed) && parsed >= 10 && parsed <= 32 ? parsed : 14;
   });
 
   const handleZoomIn = () => {
     setEditorFontSize((prev) => {
-      const next = Math.min(prev + 2, 36);
+      const next = Math.min(prev + 2, 32);
       localStorage.setItem("chroma_py_editor_font_size", next.toString());
       return next;
     });
@@ -100,15 +108,15 @@ export const StudentWorkspacePage: React.FC = () => {
 
   const handleZoomOut = () => {
     setEditorFontSize((prev) => {
-      const next = Math.max(prev - 2, 12);
+      const next = Math.max(prev - 2, 10);
       localStorage.setItem("chroma_py_editor_font_size", next.toString());
       return next;
     });
   };
 
   const handleResetZoom = () => {
-    setEditorFontSize(16);
-    localStorage.setItem("chroma_py_editor_font_size", "16");
+    setEditorFontSize(14);
+    localStorage.setItem("chroma_py_editor_font_size", "14");
   };
 
   const editorRef = useRef<any>(null);
@@ -468,6 +476,11 @@ export const StudentWorkspacePage: React.FC = () => {
   const localizedSelected = selectedAssignment
     ? localizeAssignment(selectedAssignment, lang)
     : null;
+
+  const latestStderrLog = consoleLogs
+    .slice()
+    .reverse()
+    .find((c) => c.type === "stderr")?.text;
 
   const publicTestCases =
     localizedSelected?.testCases.filter((tc) => !tc.isHidden) || [];
@@ -872,8 +885,8 @@ export const StudentWorkspacePage: React.FC = () => {
                         type="button"
                         onClick={handleResetZoom}
                         title={t(
-                          "Cỡ chữ hiện tại - Bấm để đặt lại về 16px",
-                          "Current font size - Click to reset to 16px"
+                          "Cỡ chữ hiện tại - Bấm để đặt lại về 14px",
+                          "Current font size - Click to reset to 14px"
                         )}
                         className="px-2 py-1 text-primary hover:text-brand font-semibold text-[11px] min-w-[42px] text-center transition-colors"
                       >
@@ -882,7 +895,7 @@ export const StudentWorkspacePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={handleZoomIn}
-                        disabled={editorFontSize >= 36}
+                        disabled={editorFontSize >= 32}
                         title={t("Phóng to cỡ chữ (A+)", "Zoom in code font size (A+)")}
                         className="px-2 py-1 text-secondary hover:text-primary hover:bg-surface border-l border-grid disabled:opacity-30 font-bold transition-colors"
                       >
@@ -899,6 +912,17 @@ export const StudentWorkspacePage: React.FC = () => {
                     >
                       <span>📖</span>
                       <span>{t("SỔ TAY HÀM", "CHEAT SHEET")}</span>
+                    </button>
+
+                    {/* Nút Trợ giảng AI */}
+                    <button
+                      type="button"
+                      onClick={() => handleOpenAITutorWithError()}
+                      title={t("Mở Trợ giảng AI Tin học 10", "Open AI Tutor")}
+                      className="px-2.5 py-1 bg-brand/10 border border-brand/40 text-brand hover:bg-brand hover:text-white transition-colors font-semibold flex items-center gap-1"
+                    >
+                      <span>🤖</span>
+                      <span className="hidden sm:inline">{t("TRỢ GIẢNG AI", "AI TUTOR")}</span>
                     </button>
                   </div>
 
@@ -1104,6 +1128,37 @@ export const StudentWorkspacePage: React.FC = () => {
                 {/* Tab 1: Interactive Console Output + Stdin Input Prompt */}
                 {activeBottomTab === "CONSOLE" ? (
                   <div className="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-1.5 bg-terminal">
+                    {/* AI Tutor Runtime Error Banner */}
+                    {latestStderrLog && (
+                      <div className="p-2.5 mb-3 bg-rose-500/10 border border-rose-500/30 flex items-center justify-between font-mono text-[11px] text-rose-500">
+                        <span className="flex items-center gap-1.5 font-semibold">
+                          <span>⚠️</span>
+                          <span>
+                            {t(
+                              "Phát hiện lỗi khi chạy chương trình!",
+                              "Runtime error detected!"
+                            )}
+                          </span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleOpenAITutorWithError(
+                              `Hãy phân tích lỗi sau trong bài làm của em và chỉ cách sửa:\n${latestStderrLog}`
+                            )
+                          }
+                          className="px-2.5 py-1 bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors flex items-center gap-1 shadow-sm"
+                        >
+                          <span>🤖</span>
+                          <span>
+                            {t(
+                              "HỎI TRỢ GIẢNG AI CÁCH SỬA",
+                              "ASK AI TUTOR HOW TO FIX"
+                            )}
+                          </span>
+                        </button>
+                      </div>
+                    )}
                     {consoleLogs.map((entry) => (
                       <div
                         key={entry.id}
@@ -1238,13 +1293,44 @@ export const StudentWorkspacePage: React.FC = () => {
                               </strong>
                             </span>
                           </div>
-                          <span className="text-muted">
-                            {t("THỜI GIAN CHẠY:", "TIME:")}{" "}
-                            {testResults
-                              .reduce((acc, r) => acc + r.durationMs, 0)
-                              .toFixed(1)}
-                            ms
-                          </span>
+                          <div className="flex items-center gap-2">
+                            {!testResults.every((r) => r.passed) && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const failed = testResults.filter(
+                                    (r) => !r.passed
+                                  );
+                                  const detail = failed
+                                    .map(
+                                      (f, i) =>
+                                        `Test ${i + 1}: Input: [${
+                                          f.input
+                                        }] -> Mong đợi: [${
+                                          f.expectedOutput
+                                        }] -> Kết quả ra: [${f.actualOutput}]`
+                                    )
+                                    .join("\n");
+                                  handleOpenAITutorWithError(
+                                    `Bài làm của em chưa qua các test cases sau:\n${detail}\nHãy phân tích tại sao kết quả ra khác mong đợi và gợi ý cách khắc phục mà không giải hộ code.`
+                                  );
+                                }}
+                                className="px-2.5 py-1 bg-brand text-white font-bold hover:opacity-90 transition-opacity flex items-center gap-1 text-[11px]"
+                              >
+                                <span>🤖</span>
+                                <span>
+                                  {t("HỎI TRỢ GIẢNG AI", "ASK AI TUTOR")}
+                                </span>
+                              </button>
+                            )}
+                            <span className="text-muted">
+                              {t("THỜI GIAN CHẠY:", "TIME:")}{" "}
+                              {testResults
+                                .reduce((acc, r) => acc + r.durationMs, 0)
+                                .toFixed(1)}
+                              ms
+                            </span>
+                          </div>
                         </div>
 
                         {/* Technical Results Table */}
@@ -1354,6 +1440,37 @@ export const StudentWorkspacePage: React.FC = () => {
         isOpen={cheatSheetOpen}
         onClose={() => setCheatSheetOpen(false)}
         onInsertSnippet={handleInsertSnippetIntoEditor}
+      />
+
+      {/* AI Debugging & Tutoring Assistant Drawer */}
+      <AITutorDrawer
+        isOpen={aiTutorOpen}
+        onClose={() => setAiTutorOpen(false)}
+        code={code}
+        errorLog={
+          latestStderrLog ||
+          (testResults && testResults.some((r) => !r.passed)
+            ? testResults
+                .filter((r) => !r.passed)
+                .map(
+                  (r) =>
+                    `Input: ${r.input} | Mong đợi: ${r.expectedOutput} | Ra: ${r.actualOutput}`
+                )
+                .join("\n")
+            : "")
+        }
+        assignmentTitle={localizedSelected?.title || selectedAssignment?.title}
+        assignmentDescription={
+          localizedSelected?.description || selectedAssignment?.description
+        }
+        testCaseDetails={
+          testResults
+            ? `Đã chạy ${testResults.length} test cases, đạt ${
+                testResults.filter((r) => r.passed).length
+              }/${testResults.length}`
+            : undefined
+        }
+        initialQuestion={aiInitialQuestion}
       />
     </div>
   );

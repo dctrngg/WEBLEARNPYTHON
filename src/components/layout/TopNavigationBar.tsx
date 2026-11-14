@@ -79,14 +79,29 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
 
           {/* Dành cho Giảng viên / Quản trị viên */}
           {isAdmin && (
-            <Link
-              to={isAdminRoute ? "/" : "/admin"}
-              className="ml-1 px-2.5 py-1 border border-brand/40 text-brand bg-brand/10 hover:bg-brand hover:text-white transition-colors font-semibold"
-            >
-              {isAdminRoute
-                ? t("[◀ VỀ GIAO DIỆN HỌC]", "[◀ STUDENT VIEW]")
-                : t("[⚙ QUẢN TRỊ]", "[⚙ ADMIN]")}
-            </Link>
+            <>
+              <Link
+                to={isAdminRoute ? "/" : "/admin"}
+                className="ml-1 px-2.5 py-1 border border-brand/40 text-brand bg-brand/10 hover:bg-brand hover:text-white transition-colors font-semibold"
+              >
+                {isAdminRoute
+                  ? t("[◀ VỀ GIAO DIỆN HỌC]", "[◀ STUDENT VIEW]")
+                  : t("[⚙ QUẢN TRỊ]", "[⚙ ADMIN]")}
+              </Link>
+              <Link
+                to="/projector"
+                className="px-2.5 py-1 border border-grid bg-subtle text-secondary hover:text-brand hover:border-brand transition-colors font-semibold flex items-center gap-1"
+                title={t(
+                  "Mở chế độ trình chiếu máy chiếu lớp học",
+                  "Open Classroom Projector Mode"
+                )}
+              >
+                <span>📺</span>
+                <span className="hidden md:inline">
+                  {t("MÁY CHIẾU", "PROJECTOR")}
+                </span>
+              </Link>
+            </>
           )}
         </div>
       </div>

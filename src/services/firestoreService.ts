@@ -8,6 +8,7 @@ import {
   query,
   orderBy,
   writeBatch,
+  onSnapshot,
 } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../firebase/config";
 import { Assignment, Submission, UserProfile } from "../types/ide";
@@ -360,4 +361,41 @@ export async function getAllSubmissions(): Promise<Submission[]> {
 export async function getUserSubmissions(userId: string): Promise<Submission[]> {
   const all = await getAllSubmissions();
   return all.filter((s) => s.userId === userId);
+}
+
+/**
+ * Real-time listener for Submissions in Projector & Classroom Live Mode
+ */
+export function subscribeToSubmissions(
+  callback: (submissions: Submission[]) => void
+): () => void {
+  if (isFirebaseConfigured && db) {
+    try {
+      const q = query(
+        collection(db, "submissions"),
+        orderBy("updatedAt", "desc")
+      );
+      return onSnapshot(
+        q,
+        (snapshot) => {
+          const list: Submission[] = [];
+          snapshot.forEach((d) => list.push(d.data() as Submission));
+          callback(list);
+        },
+        (err) => {
+          console.warn("[Firestore] Live subscription error:", err);
+          getAllSubmissions().then(callback);
+        }
+      );
+    } catch (err) {
+      console.warn("[Firestore] Failed to attach onSnapshot:", err);
+    }
+  }
+
+  // Fallback to local polling
+  getAllSubmissions().then(callback);
+  const interval = setInterval(() => {
+    getAllSubmissions().then(callback);
+  }, 3000);
+  return () => clearInterval(interval);
 }

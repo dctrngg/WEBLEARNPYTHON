@@ -8,6 +8,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { StudentWorkspacePage } from "./pages/StudentWorkspacePage";
 import { InstructorDashboardPage } from "./pages/InstructorDashboardPage";
 import { BlueprintPage } from "./pages/BlueprintPage";
+import { ProjectorPage } from "./pages/ProjectorPage";
 import { ToastProvider } from "./components/ui/Primitives";
 
 export const App: React.FC = () => {
@@ -62,6 +63,14 @@ export const App: React.FC = () => {
                 element={
                   <ProtectedRoute requiredRole="instructor">
                     <InstructorDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/projector"
+                element={
+                  <ProtectedRoute requiredRole="instructor">
+                    <ProjectorPage />
                   </ProtectedRoute>
                 }
               />
