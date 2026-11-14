@@ -5,6 +5,7 @@ import {
   PyodideEngineState,
   TestCase,
   TestCaseResult,
+  TraceExecutionResult,
 } from "../types/ide";
 
 function nowStamp(): string {
@@ -17,6 +18,9 @@ export function usePyodide() {
   const testResolverRef = useRef<((results: TestCaseResult[]) => void) | null>(
     null
   );
+  const traceResolverRef = useRef<
+    ((result: TraceExecutionResult) => void) | null
+  >(null);
   const [engineState, setEngineState] =
     useState<PyodideEngineState>("initializing");
   const [statusMessage, setStatusMessage] = useState<string>(
@@ -136,6 +140,22 @@ export function usePyodide() {
           }
           break;
         }
+
+        case "TRACE_RESULTS": {
+          const res: TraceExecutionResult = data.result || {
+            steps: [],
+            error: null,
+            totalStdout: "",
+            limitReached: false,
+          };
+          setEngineState("ready");
+          setStatusMessage("RUNTIME READY // CPYTHON 3.12 WASM");
+          if (traceResolverRef.current) {
+            traceResolverRef.current(res);
+            traceResolverRef.current = null;
+          }
+          break;
+        }
       }
     };
 
@@ -203,6 +223,15 @@ export function usePyodide() {
       testResolverRef.current([]);
       testResolverRef.current = null;
     }
+    if (traceResolverRef.current) {
+      traceResolverRef.current({
+        steps: [],
+        error: "Execution terminated",
+        totalStdout: "",
+        limitReached: false,
+      });
+      traceResolverRef.current = null;
+    }
     appendLog(
       "stderr",
       "[■] SIGKILL // Execution terminated by user. Respawning isolated Pyodide Web Worker..."
@@ -257,6 +286,45 @@ export function usePyodide() {
     [spawnWorker, stopExecution]
   );
 
+  const traceCode = useCallback(
+    (code: string, inputs: string[] = []): Promise<TraceExecutionResult> => {
+      if (!workerRef.current) {
+        spawnWorker();
+      }
+      setInputPrompt(null);
+      setEngineState("running");
+      setStatusMessage("TRACING VARIABLE EXECUTION...");
+
+      return new Promise((resolve) => {
+        const timer = setTimeout(() => {
+          if (traceResolverRef.current) {
+            traceResolverRef.current = null;
+            stopExecution();
+            resolve({
+              steps: [],
+              error:
+                "TimeoutError: Tracing exceeded 10,000ms limit (Infinite loop detected).",
+              totalStdout: "",
+              limitReached: false,
+            });
+          }
+        }, 10000);
+
+        traceResolverRef.current = (result) => {
+          clearTimeout(timer);
+          resolve(result);
+        };
+
+        workerRef.current?.postMessage({
+          type: "TRACE_CODE",
+          code,
+          inputs,
+        });
+      });
+    },
+    [spawnWorker, stopExecution]
+  );
+
   const clearConsole = useCallback(() => {
     setConsoleLogs([
       {
@@ -280,6 +348,7 @@ export function usePyodide() {
     submitInput,
     stopExecution,
     runTests,
+    traceCode,
     clearConsole,
   };
 }

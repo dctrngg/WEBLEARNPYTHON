@@ -81,3 +81,24 @@ export type PyodideEngineState =
   | "running"
   | "awaiting_input"
   | "error";
+
+export interface VariableInfo {
+  value: string;
+  type: string;
+}
+
+export interface TraceStep {
+  step: number;
+  line: number;
+  event: "line" | "return";
+  variables: Record<string, VariableInfo>;
+  stdout: string;
+}
+
+export interface TraceExecutionResult {
+  steps: TraceStep[];
+  error: string | null;
+  totalStdout: string;
+  limitReached: boolean;
+}
+

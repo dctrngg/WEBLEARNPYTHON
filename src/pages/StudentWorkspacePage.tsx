@@ -27,11 +27,17 @@ import {
   DifficultyLevel,
   Submission,
   SubmissionStatus,
+  TraceStep,
 } from "../types/ide";
 import { TopNavigationBar } from "../components/layout/TopNavigationBar";
 import { MarkdownRenderer } from "../components/ui/MarkdownRenderer";
 import { SectionBadge } from "../components/ui/BentoPrimitives";
 import { PythonCheatSheetModal } from "../components/ui/PythonCheatSheetModal";
+import { useToast } from "../components/ui/Primitives";
+import {
+  parseAndTranslatePythonError,
+  TranslatedError,
+} from "../services/pythonErrorTranslator";
 
 const GLYPHS = ["◇", "◆", "●", "◐", "▣", "◊"];
 
@@ -41,6 +47,7 @@ export const StudentWorkspacePage: React.FC = () => {
   const { user } = useAuth();
   const { theme } = useTheme();
   const { lang, t } = useLanguage();
+  const { pushToast } = useToast();
 
   const {
     engineState,
@@ -54,6 +61,7 @@ export const StudentWorkspacePage: React.FC = () => {
     submitInput,
     stopExecution,
     runTests,
+    traceCode,
     clearConsole,
   } = usePyodide();
 
@@ -76,7 +84,7 @@ export const StudentWorkspacePage: React.FC = () => {
     useState<SubmissionStatus>("in_progress");
   const [syncBadge, setSyncBadge] = useState<string>("");
   const [activeBottomTab, setActiveBottomTab] = useState<
-    "CONSOLE" | "TEST_CASES"
+    "CONSOLE" | "TEST_CASES" | "TRACER"
   >("CONSOLE");
   const [stdinValue, setStdinValue] = useState<string>("");
   const [isGrading, setIsGrading] = useState<boolean>(false);
@@ -89,6 +97,31 @@ export const StudentWorkspacePage: React.FC = () => {
     const parsed = saved ? parseInt(saved, 10) : 14;
     return Number.isFinite(parsed) && parsed >= 10 && parsed <= 32 ? parsed : 14;
   });
+
+  // Feature 4: Friendly Error Translator state
+  const [translatedError, setTranslatedError] = useState<TranslatedError | null>(
+    null
+  );
+
+  // Feature 3: Step-by-Step Variable Tracer state
+  const [isTracing, setIsTracing] = useState<boolean>(false);
+  const [traceSteps, setTraceSteps] = useState<TraceStep[]>([]);
+  const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(false);
+  const [traceSpeedMs, setTraceSpeedMs] = useState<number>(1000);
+  const [isTraceLoading, setIsTraceLoading] = useState<boolean>(false);
+  const [traceInputModalOpen, setTraceInputModalOpen] = useState<boolean>(false);
+  const [traceInputValue, setTraceInputValue] = useState<string>("");
+  const traceDecorationsRef = useRef<string[]>([]);
+  const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Anti-Cheat: Chống copy đề bài và chống dán code vào Editor
+  const [antiPasteEnabled, setAntiPasteEnabled] = useState<boolean>(true);
+  const antiPasteRef = useRef<boolean>(true);
+
+  useEffect(() => {
+    antiPasteRef.current = antiPasteEnabled;
+  }, [antiPasteEnabled]);
 
   const handleZoomIn = () => {
     setEditorFontSize((prev) => {
@@ -279,17 +312,197 @@ export const StudentWorkspacePage: React.FC = () => {
     }
   }, [inputPrompt]);
 
+  // Jump to specific code line in Monaco Editor
+  const handleJumpToLine = (lineNum: number) => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+      editorRef.current.revealLineInCenter(lineNum);
+      editorRef.current.setPosition({ lineNumber: lineNum, column: 1 });
+    }
+  };
+
+  // Automatically parse and translate errors when new stderr is produced
+  useEffect(() => {
+    const stderrEntries = consoleLogs.filter((l) => l.type === "stderr");
+    if (stderrEntries.length > 0) {
+      const lastStderr = stderrEntries[stderrEntries.length - 1].text;
+      if (!lastStderr.includes("SIGKILL") && !lastStderr.includes("Process exited")) {
+        const translated = parseAndTranslatePythonError(lastStderr, code);
+        setTranslatedError(translated);
+      }
+    } else {
+      setTranslatedError(null);
+    }
+  }, [consoleLogs, code]);
+
+  // Monaco line decoration for active step in Tracer
+  useEffect(() => {
+    if (!editorRef.current || !monacoRef.current) return;
+
+    if (
+      !isTracing ||
+      traceSteps.length === 0 ||
+      currentStepIdx < 0 ||
+      currentStepIdx >= traceSteps.length
+    ) {
+      traceDecorationsRef.current = editorRef.current.deltaDecorations(
+        traceDecorationsRef.current,
+        []
+      );
+      return;
+    }
+
+    const currentStep = traceSteps[currentStepIdx];
+    if (!currentStep || !currentStep.line) return;
+
+    traceDecorationsRef.current = editorRef.current.deltaDecorations(
+      traceDecorationsRef.current,
+      [
+        {
+          range: new monacoRef.current.Range(
+            currentStep.line,
+            1,
+            currentStep.line,
+            1
+          ),
+          options: {
+            isWholeLine: true,
+            className: "bg-amber-500/20 border-l-4 border-amber-500",
+            glyphMarginClassName: "bg-amber-500 text-black font-bold",
+          },
+        },
+      ]
+    );
+
+    editorRef.current.revealLineInCenter(currentStep.line);
+  }, [isTracing, traceSteps, currentStepIdx]);
+
+  // Tracer Auto-play loop
+  useEffect(() => {
+    if (!isAutoPlaying) {
+      if (autoPlayTimerRef.current) {
+        clearTimeout(autoPlayTimerRef.current);
+        autoPlayTimerRef.current = null;
+      }
+      return;
+    }
+
+    autoPlayTimerRef.current = setTimeout(() => {
+      setCurrentStepIdx((prev) => {
+        if (prev + 1 < traceSteps.length) {
+          return prev + 1;
+        } else {
+          setIsAutoPlaying(false);
+          return prev;
+        }
+      });
+    }, traceSpeedMs);
+
+    return () => {
+      if (autoPlayTimerRef.current) {
+        clearTimeout(autoPlayTimerRef.current);
+      }
+    };
+  }, [isAutoPlaying, currentStepIdx, traceSteps.length, traceSpeedMs]);
+
+  const handleInitiateTrace = () => {
+    if (code.includes("input(")) {
+      const defaultInput = selectedAssignment?.testCases[0]?.input || "";
+      setTraceInputValue(defaultInput);
+      setTraceInputModalOpen(true);
+    } else {
+      executeTrace([]);
+    }
+  };
+
+  const executeTrace = async (inputLines: string[]) => {
+    setIsTraceLoading(true);
+    setTraceInputModalOpen(false);
+    setIsAutoPlaying(false);
+
+    const res = await traceCode(code, inputLines);
+    setIsTraceLoading(false);
+
+    if (res.error) {
+      setActiveBottomTab("CONSOLE");
+      const trans = parseAndTranslatePythonError(res.error, code);
+      setTranslatedError(trans);
+      pushToast(trans?.descriptionVi || res.error, "danger");
+      return;
+    }
+
+    if (res.steps.length === 0) {
+      pushToast(
+        t(
+          "Chương trình không có câu lệnh hợp lệ để chạy từng bước.",
+          "No executable statements found."
+        ),
+        "info"
+      );
+      return;
+    }
+
+    setTraceSteps(res.steps);
+    setCurrentStepIdx(0);
+    setIsTracing(true);
+    setActiveBottomTab("TRACER");
+    pushToast(
+      t(
+        `Đã ghi nhận ${res.steps.length} bước thực thi. Hãy quan sát bảng biến đổi giá trị bên dưới!`,
+        `Recorded ${res.steps.length} steps. Inspect variable mutations below!`
+      ),
+      "success"
+    );
+  };
+
+  const handleStopTracing = () => {
+    setIsTracing(false);
+    setIsAutoPlaying(false);
+    setTraceSteps([]);
+    setCurrentStepIdx(0);
+    if (traceDecorationsRef.current.length > 0 && editorRef.current) {
+      traceDecorationsRef.current = editorRef.current.deltaDecorations(
+        traceDecorationsRef.current,
+        []
+      );
+    }
+  };
+
+  const handlePrevStep = () => {
+    setIsAutoPlaying(false);
+    setCurrentStepIdx((prev) => Math.max(0, prev - 1));
+  };
+
+  const handleNextStep = () => {
+    setIsAutoPlaying(false);
+    setCurrentStepIdx((prev) => Math.min(traceSteps.length - 1, prev + 1));
+  };
+
+  const handleFirstStep = () => {
+    setIsAutoPlaying(false);
+    setCurrentStepIdx(0);
+  };
+
+  const handleLastStep = () => {
+    setIsAutoPlaying(false);
+    setCurrentStepIdx(traceSteps.length - 1);
+  };
+
   const handleSelectAssignment = (asgn: Assignment) => {
     setSelectedAssignment(asgn);
     navigate(`/workspace/${asgn.id}`, { replace: true });
   };
 
   const handleRunCode = () => {
+    handleStopTracing();
+    setTranslatedError(null);
     setActiveBottomTab("CONSOLE");
     runCode(code);
   };
 
   const handleResetCode = () => {
+    handleStopTracing();
+    setTranslatedError(null);
     if (!selectedAssignment) return;
     setCode(selectedAssignment.starterCode);
     setTestResults(null);
@@ -304,6 +517,8 @@ export const StudentWorkspacePage: React.FC = () => {
   };
 
   const handleSubmitAndGrade = async () => {
+    handleStopTracing();
+    setTranslatedError(null);
     if (!selectedAssignment) return;
     setIsGrading(true);
     setActiveBottomTab("TEST_CASES");
@@ -441,6 +656,52 @@ export const StudentWorkspacePage: React.FC = () => {
           editor.trigger("auto-var", "editor.action.triggerSuggest", {});
         }, 40);
       }
+    });
+
+    // Anti-Cheat: Chặn phím tắt Dán (Ctrl+V / Cmd+V / Shift+Insert) vào Code Editor
+    editor.onKeyDown((e: any) => {
+      if (!antiPasteRef.current) return;
+      const isPaste =
+        ((e.ctrlKey || e.metaKey) && e.code === "KeyV") ||
+        (e.shiftKey && e.code === "Insert");
+      if (isPaste) {
+        e.preventDefault();
+        e.stopPropagation();
+        pushToast(
+          "⚠️ Chống gian lận: Tính năng Dán (Paste) bị vô hiệu hóa! Học sinh hãy tự gõ code để rèn luyện kỹ năng lập trình.",
+          "warn"
+        );
+      }
+    });
+
+    // Chặn sự kiện dán chuột (Right-click Paste / Middle click / Clipboard Paste) trên DOM của Editor
+    const domNode = editor.getDomNode();
+    if (domNode) {
+      domNode.addEventListener(
+        "paste",
+        (e: any) => {
+          if (!antiPasteRef.current) return;
+          e.preventDefault();
+          e.stopPropagation();
+          pushToast(
+            "⚠️ Chống gian lận: Tính năng Dán (Paste) bị vô hiệu hóa! Học sinh hãy tự gõ code để rèn luyện kỹ năng lập trình.",
+            "warn"
+          );
+        },
+        true
+      );
+    }
+
+    // Ghi đè lệnh paste của Monaco Editor
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => {
+      if (!antiPasteRef.current) {
+        editor.trigger("keyboard", "editor.action.clipboardPasteAction", null);
+        return;
+      }
+      pushToast(
+        "⚠️ Chống gian lận: Tính năng Dán (Paste) bị vô hiệu hóa! Học sinh hãy tự gõ code để rèn luyện kỹ năng lập trình.",
+        "warn"
+      );
     });
 
     // Add Ctrl+Enter / Cmd+Enter shortcut to run code
@@ -696,7 +957,30 @@ export const StudentWorkspacePage: React.FC = () => {
             </div>
 
             {/* Problem Description OR Lesson Theory */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-5">
+            <div
+              className={`flex-1 overflow-y-auto p-5 space-y-5 ${
+                antiPasteEnabled ? "select-none" : ""
+              }`}
+              onCopy={(e) => {
+                if (antiPasteEnabled) {
+                  e.preventDefault();
+                  pushToast(
+                    "⚠️ Chế độ chống gian lận: Đã khóa tính năng sao chép đề bài nhằm khuyến khích học sinh tự đọc hiểu và làm bài!",
+                    "warn"
+                  );
+                }
+              }}
+              onContextMenu={(e) => {
+                if (antiPasteEnabled) {
+                  e.preventDefault();
+                }
+              }}
+              onDragStart={(e) => {
+                if (antiPasteEnabled) {
+                  e.preventDefault();
+                }
+              }}
+            >
               {leftContentTab === "THEORY" && activeLessonForSelected ? (
                 <div className="space-y-4">
                   <div className="border-b border-grid pb-3">
@@ -846,16 +1130,6 @@ export const StudentWorkspacePage: React.FC = () => {
                     <span className="px-2.5 py-1 bg-subtle border border-grid text-primary font-semibold">
                       🐍 bai_lam.py
                     </span>
-                    <button
-                      onClick={handleTriggerAutocomplete}
-                      title={t(
-                        "Bật bảng gợi ý code ngay tại con trỏ (Ctrl+Space)",
-                        "Trigger code completion popup (Ctrl+Space)"
-                      )}
-                      className="px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-secondary hover:text-primary transition-colors"
-                    >
-                      💡 {t("GỢI Ý CODE (Ctrl+Space)", "SUGGEST (Ctrl+Space)")}
-                    </button>
 
                     {/* Bộ công cụ Zoom / Chỉnh cỡ chữ */}
                     <div className="flex items-center border border-grid bg-subtle">
@@ -917,8 +1191,35 @@ export const StudentWorkspacePage: React.FC = () => {
                       <span>{t("CHẠY THỬ", "RUN CODE")}</span>
                     </button>
 
+                    {/* Step-by-Step Tracer Button */}
                     <button
-                      onClick={stopExecution}
+                      onClick={isTracing ? handleStopTracing : handleInitiateTrace}
+                      disabled={engineState === "initializing" || isTraceLoading}
+                      title={t(
+                        "Chạy từng bước thuật toán & trực quan hóa giá trị biến qua từng dòng",
+                        "Step-by-step execution & variable state inspector"
+                      )}
+                      className={`px-3 py-1.5 font-semibold transition-colors flex items-center gap-1.5 disabled:opacity-40 text-xs ${
+                        isTracing
+                          ? "bg-amber-500 text-black hover:bg-amber-400 font-bold shadow-sm"
+                          : "bg-surface border border-amber-500/50 text-amber-500 hover:bg-amber-500/10"
+                      }`}
+                    >
+                      <span>{isTraceLoading ? "◐" : "🔍"}</span>
+                      <span>
+                        {isTraceLoading
+                          ? t("ĐANG NẠP...", "LOADING...")
+                          : isTracing
+                          ? t("DỪNG SOI BIẾN [✕]", "STOP TRACE [✕]")
+                          : t("CHẠY TỪNG BƯỚC", "STEP TRACE")}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        stopExecution();
+                        handleStopTracing();
+                      }}
                       title={t(
                         "Dừng chương trình ngay lập tức (khi bị lặp vô hạn)",
                         "Stop running program immediately"
@@ -988,6 +1289,7 @@ export const StudentWorkspacePage: React.FC = () => {
                       lineHeight: Math.round(editorFontSize * 1.6),
                       mouseWheelZoom: true,
                       minimap: { enabled: false },
+                      glyphMargin: true,
                       scrollBeyondLastLine: false,
                       automaticLayout: true,
                       tabSize: 4,
@@ -1083,6 +1385,25 @@ export const StudentWorkspacePage: React.FC = () => {
                         </span>
                       )}
                     </button>
+
+                    <button
+                      onClick={() => setActiveBottomTab("TRACER")}
+                      className={`px-3 py-1.5 transition-colors flex items-center gap-2 ${
+                        activeBottomTab === "TRACER"
+                          ? "bg-surface text-primary border-t-2 border-t-amber-500 font-semibold"
+                          : "text-secondary hover:text-primary"
+                      }`}
+                    >
+                      <span className="text-amber-500">[🔍]</span>
+                      <span>
+                        {t("TRỰC QUAN HÓA BIẾN (TRACER)", "VARIABLE TRACER")}
+                      </span>
+                      {isTracing && (
+                        <span className="px-1.5 py-0.2 bg-amber-500 text-black text-[10px] font-bold">
+                          {currentStepIdx + 1}/{traceSteps.length}
+                        </span>
+                      )}
+                    </button>
                   </div>
 
                   <div className="flex items-center gap-3 text-[11px] text-muted">
@@ -1102,8 +1423,76 @@ export const StudentWorkspacePage: React.FC = () => {
                 </div>
 
                 {/* Tab 1: Interactive Console Output + Stdin Input Prompt */}
-                {activeBottomTab === "CONSOLE" ? (
+                {activeBottomTab === "CONSOLE" && (
                   <div className="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-1.5 bg-terminal">
+                    {/* Feature 4: Friendly Error Translator Banner */}
+                    {translatedError && (
+                      <div className="mb-4 p-3.5 bg-red-950/20 border-2 border-brand/50 font-sans shadow-lg animate-in fade-in duration-200">
+                        <div className="flex items-start justify-between gap-3 pb-2.5 border-b border-brand/20">
+                          <div className="flex flex-wrap items-center gap-2 font-mono">
+                            <span className="px-1.5 py-0.5 bg-brand text-white font-bold text-[10px]">
+                              🎯 GIẢI MÃ LỖI TIẾNG VIỆT
+                            </span>
+                            <span className="text-brand font-bold text-xs">
+                              {translatedError.titleVi}
+                            </span>
+                            {translatedError.lineNumber && (
+                              <span className="px-2 py-0.5 bg-brand/20 border border-brand/40 text-brand text-[10px] font-semibold">
+                                DÒNG {translatedError.lineNumber}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            {translatedError.lineNumber && (
+                              <button
+                                onClick={() => handleJumpToLine(translatedError.lineNumber!)}
+                                className="px-2.5 py-1 bg-brand text-white text-[11px] font-mono font-semibold hover:opacity-90 transition-opacity flex items-center gap-1 shadow-sm"
+                              >
+                                <span>🔍</span>
+                                <span>Xem dòng {translatedError.lineNumber} trong Code</span>
+                              </button>
+                            )}
+                            <button
+                              onClick={() => setTranslatedError(null)}
+                              title={t("Đóng hộp giải thích lỗi", "Dismiss")}
+                              className="text-muted hover:text-primary px-1.5 py-0.5 text-xs font-mono"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="mt-2.5 space-y-2 text-xs">
+                          <p className="text-primary leading-relaxed">
+                            <span className="font-semibold text-brand">📌 Giải thích chi tiết: </span>
+                            {translatedError.descriptionVi}
+                          </p>
+
+                          <div className="p-2 bg-emerald-500/10 border-l-2 border-emerald-500 text-emerald-400 font-mono text-[11px] leading-relaxed">
+                            <span className="font-bold text-emerald-300">💡 Gợi ý khắc phục: </span>
+                            {translatedError.suggestionVi}
+                          </div>
+
+                          {(translatedError.wrongExample || translatedError.correctExample) && (
+                            <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2 font-mono text-[11px]">
+                              {translatedError.wrongExample && (
+                                <div className="p-2 bg-black/40 border border-brand/30">
+                                  <div className="text-brand font-bold mb-1">✕ Code chưa đúng:</div>
+                                  <pre className="text-muted whitespace-pre-wrap">{translatedError.wrongExample}</pre>
+                                </div>
+                              )}
+                              {translatedError.correctExample && (
+                                <div className="p-2 bg-black/40 border border-emerald-500/40">
+                                  <div className="text-emerald-400 font-bold mb-1">✓ Nên sửa thành:</div>
+                                  <pre className="text-emerald-300 whitespace-pre-wrap">{translatedError.correctExample}</pre>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {consoleLogs.map((entry) => (
                       <div
                         key={entry.id}
@@ -1170,8 +1559,10 @@ export const StudentWorkspacePage: React.FC = () => {
 
                     <div ref={consoleEndRef} />
                   </div>
-                ) : (
-                  /* Tab 2: Automated Test Case Execution Results Table */
+                )}
+
+                {/* Tab 2: Automated Test Case Execution Results Table */}
+                {activeBottomTab === "TEST_CASES" && (
                   <div className="flex-1 overflow-y-auto p-4 font-mono text-xs bg-terminal">
                     {!testResults ? (
                       <div className="h-full flex flex-col items-center justify-center text-center p-6 border border-grid bg-subtle/50">
@@ -1343,6 +1734,267 @@ export const StudentWorkspacePage: React.FC = () => {
                     )}
                   </div>
                 )}
+
+                {/* Tab 3: Step-by-Step Variable Tracer */}
+                {activeBottomTab === "TRACER" && (
+                  <div className="flex-1 overflow-y-auto p-4 font-mono text-xs bg-terminal flex flex-col">
+                    {!isTracing || traceSteps.length === 0 ? (
+                      <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-grid bg-subtle/40">
+                        <div className="text-amber-500 text-3xl mb-3">🔍</div>
+                        <div className="text-primary font-bold text-sm mb-1 uppercase">
+                          {t(
+                            "CHẾ ĐỘ TRỰC QUAN HÓA BIẾN THEO TỪNG DÒNG (VARIABLE TRACER)",
+                            "STEP-BY-STEP VARIABLE TRACER"
+                          )}
+                        </div>
+                        <p className="text-secondary max-w-md text-xs mb-4 leading-relaxed font-sans">
+                          {t(
+                            "Theo dõi trực tiếp sự biến đổi giá trị của từng biến (i, s, list...) qua mỗi vòng lặp và câu lệnh, giúp hiểu sâu bản chất thuật toán.",
+                            "Inspect variable mutations line-by-line through loops and statements to understand the algorithm deeply."
+                          )}
+                        </p>
+                        <button
+                          onClick={handleInitiateTrace}
+                          disabled={engineState === "initializing" || isTraceLoading}
+                          className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase transition-colors flex items-center gap-2"
+                        >
+                          <span>{isTraceLoading ? "◐" : "▶"}</span>
+                          <span>
+                            {isTraceLoading
+                              ? t("ĐANG NẠP BƯỚC...", "TRACING...")
+                              : t("BẮT ĐẦU CHẠY TỪNG BƯỚC", "START TRACING")}
+                          </span>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex-1 flex flex-col gap-3 min-h-0">
+                        {/* Tracer Toolbar / Playback Controls */}
+                        <div className="p-2.5 bg-subtle border border-grid flex flex-wrap items-center justify-between gap-3 shrink-0">
+                          {/* Navigation Buttons */}
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={handleFirstStep}
+                              disabled={currentStepIdx === 0}
+                              title={t("Về bước đầu tiên", "First step")}
+                              className="px-2 py-1 bg-surface border border-grid hover:border-amber-500 disabled:opacity-30 text-xs"
+                            >
+                              ⏮
+                            </button>
+                            <button
+                              onClick={handlePrevStep}
+                              disabled={currentStepIdx === 0}
+                              title={t("Lùi 1 bước", "Previous step")}
+                              className="px-2.5 py-1 bg-surface border border-grid hover:border-amber-500 disabled:opacity-30 text-xs font-bold"
+                            >
+                              ◀ {t("LÙI", "PREV")}
+                            </button>
+                            <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/40 text-amber-500 font-bold text-xs">
+                              {t("BƯỚC", "STEP")} {currentStepIdx + 1} / {traceSteps.length}
+                            </div>
+                            <button
+                              onClick={handleNextStep}
+                              disabled={currentStepIdx === traceSteps.length - 1}
+                              title={t("Tiến 1 bước", "Next step")}
+                              className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-black font-bold disabled:opacity-30 text-xs"
+                            >
+                              {t("TIẾP", "NEXT")} ▶
+                            </button>
+                            <button
+                              onClick={handleLastStep}
+                              disabled={currentStepIdx === traceSteps.length - 1}
+                              title={t("Đến bước cuối cùng", "Last step")}
+                              className="px-2 py-1 bg-surface border border-grid hover:border-amber-500 disabled:opacity-30 text-xs"
+                            >
+                              ⏭
+                            </button>
+                          </div>
+
+                          {/* Auto-Play Toggle & Speed Control */}
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => {
+                                if (currentStepIdx === traceSteps.length - 1) {
+                                  setCurrentStepIdx(0);
+                                }
+                                setIsAutoPlaying((prev) => !prev);
+                              }}
+                              className={`px-3 py-1 font-bold text-xs flex items-center gap-1.5 transition-colors ${
+                                isAutoPlaying
+                                  ? "bg-red-600 text-white animate-pulse"
+                                  : "bg-surface border border-grid hover:border-amber-500 text-primary"
+                              }`}
+                            >
+                              <span>{isAutoPlaying ? "⏸" : "⏯"}</span>
+                              <span>
+                                {isAutoPlaying
+                                  ? t("TẠM DỪNG", "PAUSE")
+                                  : t("TỰ ĐỘNG CHẠY", "AUTO PLAY")}
+                              </span>
+                            </button>
+
+                            <select
+                              value={traceSpeedMs}
+                              onChange={(e) => setTraceSpeedMs(Number(e.target.value))}
+                              className="bg-surface border border-grid px-2 py-1 text-xs text-primary focus:outline-none"
+                            >
+                              <option value={1500}>0.7x (1.5s)</option>
+                              <option value={1000}>1.0x (1.0s)</option>
+                              <option value={500}>2.0x (0.5s)</option>
+                            </select>
+
+                            <button
+                              onClick={handleStopTracing}
+                              className="px-2.5 py-1 bg-surface border border-grid hover:border-brand text-muted hover:text-brand transition-colors text-xs"
+                            >
+                              ✕ {t("THOÁT", "EXIT")}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Active Statement Banner */}
+                        {(() => {
+                          const currentStep = traceSteps[currentStepIdx];
+                          const lines = code.split(/\r?\n/);
+                          const activeLineContent =
+                            currentStep && currentStep.line <= lines.length
+                              ? lines[currentStep.line - 1]
+                              : "";
+                          return (
+                            <div className="px-3 py-2 bg-subtle border-l-4 border-l-amber-500 border border-grid flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2 truncate">
+                                <span className="px-1.5 py-0.5 bg-amber-500 text-black font-bold text-[10px]">
+                                  DÒNG {currentStep?.line}
+                                </span>
+                                <span className="text-secondary font-mono text-xs">
+                                  {activeLineContent.trim() || t("(kết thúc chương trình)", "(program exit)")}
+                                </span>
+                              </div>
+                              <span className="text-muted text-[11px] shrink-0">
+                                {currentStep?.event === "return" ? "✓ RETURN" : "▶ EXECUTING"}
+                              </span>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Split Inspector: Variable Watcher on Left, Stdout on Right */}
+                        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3 min-h-0">
+                          {/* Variables Watcher Table (2 cols) */}
+                          <div className="lg:col-span-2 border border-grid bg-surface flex flex-col overflow-hidden">
+                            <div className="h-8 px-3 bg-subtle border-b border-grid flex items-center justify-between font-bold text-[11px] text-secondary">
+                              <span>📊 BẢNG THEO DÕI GIÁ TRỊ BIẾN (VARIABLES WATCHER)</span>
+                              <span className="text-muted text-[10px]">
+                                {Object.keys(traceSteps[currentStepIdx]?.variables || {}).length} BIẾN
+                              </span>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto">
+                              {(() => {
+                                const currentStep = traceSteps[currentStepIdx];
+                                const prevStep = currentStepIdx > 0 ? traceSteps[currentStepIdx - 1] : null;
+                                const vars = currentStep?.variables || {};
+                                const varEntries = Object.entries(vars);
+
+                                if (varEntries.length === 0) {
+                                  return (
+                                    <div className="p-6 text-center text-muted">
+                                      {t(
+                                        "(Chưa có biến nào được gán ở bước này. Bấm [TIẾP ▶] để chạy qua các dòng tiếp theo)",
+                                        "(No variables declared yet in this scope. Click [NEXT ▶] to advance)"
+                                      )}
+                                    </div>
+                                  );
+                                }
+
+                                return (
+                                  <table className="w-full text-left border-collapse">
+                                    <thead>
+                                      <tr className="border-b border-grid bg-subtle/50 text-[10px] text-muted uppercase">
+                                        <th className="px-3 py-1.5">Tên biến</th>
+                                        <th className="px-3 py-1.5">Kiểu (Type)</th>
+                                        <th className="px-3 py-1.5">Giá trị hiện thời (Value)</th>
+                                        <th className="px-3 py-1.5 text-right">Trạng thái</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-grid">
+                                      {varEntries.map(([vName, vInfo]) => {
+                                        const prevVal = prevStep?.variables?.[vName]?.value;
+                                        const isChanged = !prevStep || prevVal === undefined || prevVal !== vInfo.value;
+
+                                        return (
+                                          <tr
+                                            key={vName}
+                                            className={`transition-colors ${
+                                              isChanged
+                                                ? "bg-amber-500/10 font-semibold"
+                                                : "hover:bg-subtle/40"
+                                            }`}
+                                          >
+                                            <td className="px-3 py-2 text-primary font-bold">
+                                              {vName}
+                                            </td>
+                                            <td className="px-3 py-2">
+                                              <span
+                                                className={`px-1.5 py-0.5 border text-[10px] uppercase font-mono ${
+                                                  vInfo.type === "int"
+                                                    ? "bg-amber-500/20 text-amber-500 border-amber-500/40"
+                                                    : vInfo.type === "str"
+                                                    ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                                                    : vInfo.type === "list"
+                                                    ? "bg-sky-500/20 text-sky-400 border-sky-500/40"
+                                                    : vInfo.type === "float"
+                                                    ? "bg-purple-500/20 text-purple-400 border-purple-500/40"
+                                                    : vInfo.type === "bool"
+                                                    ? "bg-pink-500/20 text-pink-400 border-pink-500/40"
+                                                    : "bg-subtle text-secondary border-grid"
+                                                }`}
+                                              >
+                                                {vInfo.type}
+                                              </span>
+                                            </td>
+                                            <td className="px-3 py-2 font-mono text-primary break-all">
+                                              {vInfo.value}
+                                            </td>
+                                            <td className="px-3 py-2 text-right">
+                                              {isChanged ? (
+                                                <span className="px-1.5 py-0.5 bg-amber-500 text-black font-bold text-[10px] animate-pulse">
+                                                  ● MỚI ĐỔI
+                                                </span>
+                                              ) : (
+                                                <span className="text-muted text-[10px]">
+                                                  giữ nguyên
+                                                </span>
+                                              )}
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </table>
+                                );
+                              })()}
+                            </div>
+                          </div>
+
+                          {/* Stdout Console Output at this step (1 col) */}
+                          <div className="border border-grid bg-surface flex flex-col overflow-hidden">
+                            <div className="h-8 px-3 bg-subtle border-b border-grid flex items-center justify-between font-bold text-[11px] text-secondary">
+                              <span>🖥️ OUTPUT IN RA TÍNH ĐẾN BƯỚC NÀY</span>
+                            </div>
+                            <div className="flex-1 p-3 overflow-y-auto font-mono text-xs whitespace-pre-wrap text-emerald-400 bg-black/30">
+                              {traceSteps[currentStepIdx]?.stdout ? (
+                                traceSteps[currentStepIdx].stdout
+                              ) : (
+                                <span className="text-muted italic">
+                                  {t("(Chưa có lệnh print nào in ra kết quả)", "(No print output produced yet)")}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </Panel>
             </PanelGroup>
           </Panel>
@@ -1355,6 +2007,77 @@ export const StudentWorkspacePage: React.FC = () => {
         onClose={() => setCheatSheetOpen(false)}
         onInsertSnippet={handleInsertSnippetIntoEditor}
       />
+
+      {/* Modal: Input values for Step-by-Step Tracer */}
+      {traceInputModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="w-full max-w-md bg-surface border-2 border-amber-500 shadow-2xl p-5 font-mono text-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-grid">
+              <div className="flex items-center gap-2 font-bold text-amber-500 text-sm">
+                <span>🔍</span>
+                <span>DỮ LIỆU ĐẦU VÀO CHO CHẠY TỪNG BƯỚC</span>
+              </div>
+              <button
+                onClick={() => setTraceInputModalOpen(false)}
+                className="text-muted hover:text-primary text-base px-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-3 space-y-3 font-sans text-secondary text-xs">
+              <p>
+                Chương trình của em có sử dụng lệnh{" "}
+                <code className="text-brand font-mono font-bold">input()</code>. Hãy
+                nhập trước các giá trị đầu vào (mỗi dòng một giá trị):
+              </p>
+
+              <textarea
+                rows={4}
+                value={traceInputValue}
+                onChange={(e) => setTraceInputValue(e.target.value)}
+                placeholder={"Ví dụ:\n5\n10"}
+                className="w-full bg-subtle border border-grid p-2.5 font-mono text-xs text-primary focus:outline-none focus:border-amber-500"
+              />
+
+              {selectedAssignment?.testCases?.[0] && (
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-muted">Gợi ý từ Test Case 1:</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setTraceInputValue(selectedAssignment.testCases[0].input || "")
+                    }
+                    className="text-amber-500 hover:underline font-mono"
+                  >
+                    [+ Dùng dữ liệu Test 1]
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-grid flex items-center justify-end gap-2 font-mono">
+              <button
+                onClick={() => setTraceInputModalOpen(false)}
+                className="px-3 py-1.5 bg-subtle border border-grid hover:text-primary text-secondary text-xs transition-colors"
+              >
+                HỦY
+              </button>
+              <button
+                onClick={() => {
+                  const inputLines = traceInputValue
+                    .split(/\r?\n/)
+                    .map((s) => s.trimEnd());
+                  executeTrace(inputLines);
+                }}
+                className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition-colors"
+              >
+                [▶] BẮT ĐẦU CHẠY BƯỚC
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

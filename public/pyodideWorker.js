@@ -277,6 +277,131 @@ except BaseException as exc:
   });
 }
 
+async function traceCodeExecution(code, inputs = []) {
+  if (!pyodide) {
+    await initRuntime();
+  }
+
+  pyodide.globals.set("__trace_code", code);
+  pyodide.globals.set("__trace_inputs", pyodide.toPy(inputs));
+
+  const traceHarness = `
+import sys
+import io
+import json
+import builtins
+import traceback
+
+def _run_trace():
+    _inputs = list(__trace_inputs)
+    _input_idx = 0
+    def _trace_input(prompt=""):
+        nonlocal _input_idx
+        if _input_idx < len(_inputs):
+            val = str(_inputs[_input_idx])
+            _input_idx += 1
+            return val
+        return ""
+
+    old_stdout = sys.stdout
+    captured_stdout = io.StringIO()
+    sys.stdout = captured_stdout
+
+    steps = []
+    MAX_STEPS = 150
+
+    def _trace_func(frame, event, arg):
+        if len(steps) >= MAX_STEPS:
+            return None
+        if frame.f_code.co_filename != "<solution.py>":
+            return _trace_func
+        
+        if event in ("line", "return"):
+            lineno = frame.f_lineno
+            combined = {}
+            for k, v in frame.f_globals.items():
+                if not k.startswith("__") and not k.startswith("_"):
+                    combined[k] = v
+            for k, v in frame.f_locals.items():
+                if not k.startswith("__") and not k.startswith("_"):
+                    combined[k] = v
+            
+            all_vars = {}
+            for k, v in combined.items():
+                # Filter out the injected input function and module/builtin imports
+                if k == "input" or type(v).__name__ in ("module", "builtin_function_or_method"):
+                    continue
+                try:
+                    val_repr = repr(v)
+                    if len(val_repr) > 100:
+                        val_repr = val_repr[:97] + "..."
+                    type_str = type(v).__name__
+                    all_vars[k] = {
+                        "value": val_repr,
+                        "type": type_str
+                    }
+                except Exception:
+                    all_vars[k] = {
+                        "value": "<unprintable>",
+                        "type": type(v).__name__
+                    }
+
+            steps.append({
+                "step": len(steps) + 1,
+                "line": lineno,
+                "event": event,
+                "variables": all_vars,
+                "stdout": captured_stdout.getvalue()
+            })
+        return _trace_func
+
+    _globals = {
+        "__name__": "__main__",
+        "__builtins__": builtins,
+        "input": _trace_input
+    }
+    
+    _err = None
+    try:
+        compiled = compile(__trace_code, "<solution.py>", "exec")
+        sys.settrace(_trace_func)
+        try:
+            exec(compiled, _globals)
+        finally:
+            sys.settrace(None)
+    except SystemExit:
+        pass
+    except BaseException as exc:
+        tb = traceback.format_exception(type(exc), exc, exc.__traceback__)
+        _err = "".join([l for l in tb if "<string>" not in l])
+    finally:
+        sys.settrace(None)
+        sys.stdout = old_stdout
+
+    return json.dumps({
+        "steps": steps,
+        "error": _err,
+        "totalStdout": captured_stdout.getvalue(),
+        "limitReached": len(steps) >= MAX_STEPS
+    })
+
+__trace_output = _run_trace()
+`;
+
+  try {
+    await pyodide.runPythonAsync(traceHarness);
+    const rawJson = pyodide.globals.get("__trace_output");
+    return JSON.parse(rawJson);
+  } catch (err) {
+    return {
+      steps: [],
+      error: String(err),
+      totalStdout: "",
+      limitReached: false,
+    };
+  }
+}
+
 self.onmessage = async (event) => {
   const msg = event.data;
   if (!msg || !msg.type) return;
@@ -323,6 +448,35 @@ self.onmessage = async (event) => {
 
   if (msg.type === "RUN_TESTS") {
     await runAutomatedTests(msg.code || "", msg.testCases || []);
+    return;
+  }
+
+  if (msg.type === "TRACE_CODE") {
+    if (!pyodide) {
+      await initRuntime();
+    }
+    if (!pyodide) return;
+
+    self.postMessage({
+      type: "STATUS",
+      state: "running",
+      message: "TRACING VARIABLE EXECUTION...",
+    });
+
+    const result = await traceCodeExecution(msg.code || "", msg.inputs || []);
+
+    self.postMessage({
+      type: "TRACE_RESULTS",
+      traceId: msg.traceId,
+      result,
+    });
+
+    self.postMessage({
+      type: "STATUS",
+      state: "ready",
+      message: "RUNTIME READY // CPYTHON 3.12 WASM",
+    });
+    return;
   }
 };
 
