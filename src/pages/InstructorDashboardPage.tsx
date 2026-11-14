@@ -871,8 +871,13 @@ export const InstructorDashboardPage: React.FC = () => {
 
             <BentoGrid cols={12}>
               {/* Left 4/12: Searchable Assignment List with DifficultyBadge & Test Count */}
-              <BentoCell colSpan="md:col-span-4" noPadding>
-                <div className="p-3 bg-subtle border-b border-grid space-y-2">
+              <BentoCell
+                colSpan="md:col-span-4"
+                noPadding
+                justify="start"
+                className="self-start md:sticky md:top-4 max-h-[calc(100vh-2rem)] flex flex-col justify-start"
+              >
+                <div className="p-3 bg-subtle border-b border-grid space-y-2 shrink-0">
                   <Input
                     value={asgnSearch}
                     onChange={(e) => setAsgnSearch(e.target.value)}
@@ -900,7 +905,7 @@ export const InstructorDashboardPage: React.FC = () => {
                     </select>
                   </div>
                 </div>
-                <div className="max-h-[820px] overflow-y-auto divide-y divide-grid">
+                <div className="overflow-y-auto divide-y divide-grid flex-1">
                   {builderFilteredAssignments.map((rawItem) => {
                     const item = localizeAssignment(rawItem, lang);
                     const isEditing = editingId === item.id;
@@ -958,7 +963,7 @@ export const InstructorDashboardPage: React.FC = () => {
               </BentoCell>
 
               {/* Right 8/12: Assignment Editor Form */}
-              <BentoCell colSpan="md:col-span-8" noPadding>
+              <BentoCell colSpan="md:col-span-8" noPadding justify="start">
                 <form
                   onSubmit={handleSaveAssignment}
                   className="divide-y divide-grid"
@@ -1766,7 +1771,7 @@ export const InstructorDashboardPage: React.FC = () => {
             </div>
 
             <BentoGrid cols={12}>
-              <BentoCell colSpan="md:col-span-4">
+              <BentoCell colSpan="md:col-span-4" justify="start">
                 <form onSubmit={handleSaveStudent} className="space-y-4">
                   <div className="flex items-center justify-between border-b border-grid pb-3">
                     <SectionBadge
@@ -1828,7 +1833,7 @@ export const InstructorDashboardPage: React.FC = () => {
                 </form>
               </BentoCell>
 
-              <BentoCell colSpan="md:col-span-8" noPadding>
+              <BentoCell colSpan="md:col-span-8" noPadding justify="start">
                 <Table>
                   <TableHead>
                     <tr>

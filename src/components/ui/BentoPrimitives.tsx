@@ -69,6 +69,7 @@ interface BentoCellProps {
   rowSpan?: string;
   interactive?: boolean;
   noPadding?: boolean;
+  justify?: "between" | "start" | "center" | "end";
   className?: string;
   onClick?: () => void;
 }
@@ -79,14 +80,22 @@ export const BentoCell: React.FC<BentoCellProps> = ({
   rowSpan = "",
   interactive = false,
   noPadding = false,
+  justify,
   className = "",
   onClick,
 }) => {
+  const hasCustomJustify = className.includes("justify-");
+  const justifyClass = hasCustomJustify
+    ? ""
+    : justify
+    ? `justify-${justify}`
+    : "justify-between";
+
   return (
     <div
       onClick={onClick}
       className={`
-        bg-surface relative flex flex-col justify-between rounded-none
+        bg-surface relative flex flex-col ${justifyClass} rounded-none
         ${noPadding ? "p-0" : "p-6 md:p-8"}
         ${
           interactive
