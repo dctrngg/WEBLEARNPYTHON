@@ -13,6 +13,7 @@ import {
   getAssignments,
   saveAssignment,
   seedCloudFirestoreData,
+  syncAssignmentsFromCloud,
   upsertUserProfile,
 } from "../services/firestoreService";
 import { GRADE_10_CLASSES, localizeAssignment } from "../services/seedData";
@@ -89,6 +90,7 @@ export const InstructorDashboardPage: React.FC = () => {
 
   // --- TAB: ASSIGNMENTS (BUILDER) STATE ---
   const [asgnSearch, setAsgnSearch] = useState<string>("");
+  const [asgnLessonFilter, setAsgnLessonFilter] = useState<string>("ALL");
   const [selectedLessonViewId, setSelectedLessonViewId] = useState<string>(
     PYTHON_CURRICULUM_LESSONS[0].id
   );
@@ -423,12 +425,23 @@ export const InstructorDashboardPage: React.FC = () => {
     pushToast(`DELETED STUDENT "${stu.displayName}"`, "danger");
   };
 
+  const handleForcePullFirestore = async () => {
+    pushToast("ĐANG ĐỒNG BỘ DỮ LIỆU TỪ CLOUD FIRESTORE...", "info");
+    const res = await syncAssignmentsFromCloud();
+    if (res.success) {
+      await loadDashboardData();
+      pushToast(`✓ ĐÃ ĐỒNG BỘ THÀNH CÔNG ${res.count} BÀI TẬP TỪ FIREBASE!`, "success");
+    } else {
+      pushToast(`ERR_FIRESTORE_SYNC: ${res.error}`, "danger");
+    }
+  };
+
   const handleForceSyncFirestore = async () => {
-    pushToast("SYNCING SEED DATA TO CLOUD FIRESTORE…", "info");
+    pushToast("ĐẨY TOÀN BỘ SEED DATA LÊN CLOUD FIRESTORE…", "info");
     const res = await seedCloudFirestoreData();
     if (res.success) {
       await loadDashboardData();
-      pushToast(`SYNCED ${res.count} ASSIGNMENTS TO FIRESTORE`, "success");
+      pushToast(`ĐÃ ĐẨY ${res.count} BÀI TẬP LÊN FIRESTORE!`, "success");
     } else {
       pushToast(`ERR_FIRESTORE_SYNC: ${res.error}`, "danger");
     }
@@ -536,8 +549,11 @@ export const InstructorDashboardPage: React.FC = () => {
   // Filtered assignments for Builder left list
   const builderFilteredAssignments = useMemo(() => {
     const q = asgnSearch.trim().toLowerCase();
-    if (!q) return assignments;
     return assignments.filter((a) => {
+      const matchLesson =
+        asgnLessonFilter === "ALL" || a.lessonId === asgnLessonFilter;
+      if (!matchLesson) return false;
+      if (!q) return true;
       const loc = localizeAssignment(a, lang);
       return (
         loc.title.toLowerCase().includes(q) ||
@@ -545,7 +561,7 @@ export const InstructorDashboardPage: React.FC = () => {
         a.id.toLowerCase().includes(q)
       );
     });
-  }, [assignments, asgnSearch, lang]);
+  }, [assignments, asgnSearch, asgnLessonFilter, lang]);
 
   // Filtered students for Matrix & Student Roster
   const matrixStudents = useMemo(() => {
@@ -689,9 +705,10 @@ export const InstructorDashboardPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handleForceSyncFirestore}
+                onClick={handleForcePullFirestore}
+                title="Tải lại toàn bộ dữ liệu mới nhất từ Cloud Firestore"
               >
-                SYNC CLOUD
+                🔄 LÀM MỚI
               </Button>
             </div>
           </div>
@@ -767,11 +784,20 @@ export const InstructorDashboardPage: React.FC = () => {
             <div className="flex gap-1.5 mt-2">
               <button
                 type="button"
-                onClick={handleForceSyncFirestore}
-                title="Đẩy 22 bài tập & học sinh mẫu lên Cloud Firestore"
-                className="flex-1 py-1.5 bg-brand text-white font-semibold text-[11px] hover:opacity-90 transition-opacity text-center truncate"
+                onClick={handleForcePullFirestore}
+                title="Đồng bộ / Tải dữ liệu mới nhất từ Cloud Firestore về trang Admin"
+                className="flex-1 py-1.5 bg-brand text-white font-semibold text-[11px] hover:opacity-90 transition-opacity text-center truncate flex items-center justify-center gap-1"
               >
-                [🚀 ĐỒNG BỘ]
+                <span>🔄</span>
+                <span>ĐỒNG BỘ CLOUD</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleForceSyncFirestore}
+                title="Đẩy bộ dữ liệu mẫu lên Cloud Firestore"
+                className="px-2 py-1.5 bg-subtle border border-grid text-secondary hover:text-primary hover:border-brand text-[11px] font-semibold transition-colors"
+              >
+                🚀 ĐẨY LÊN
               </button>
               <button
                 type="button"
@@ -838,13 +864,33 @@ export const InstructorDashboardPage: React.FC = () => {
             <BentoGrid cols={12}>
               {/* Left 4/12: Searchable Assignment List with DifficultyBadge & Test Count */}
               <BentoCell colSpan="md:col-span-4" noPadding>
-                <div className="p-3 bg-subtle border-b border-grid">
+                <div className="p-3 bg-subtle border-b border-grid space-y-2">
                   <Input
                     value={asgnSearch}
                     onChange={(e) => setAsgnSearch(e.target.value)}
                     placeholder="Search assignments by title..."
                     aria-label="Search assignments"
                   />
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-secondary font-medium">BÀI HỌC:</span>
+                    <select
+                      value={asgnLessonFilter}
+                      onChange={(e) => setAsgnLessonFilter(e.target.value)}
+                      className="bg-surface border border-grid px-2 py-1 text-primary text-xs focus:outline-none focus:border-brand font-semibold"
+                    >
+                      <option value="ALL">TẤT CẢ ({assignments.length} bài)</option>
+                      {PYTHON_CURRICULUM_LESSONS.map((l) => {
+                        const count = assignments.filter(
+                          (a) => a.lessonId === l.id
+                        ).length;
+                        return (
+                          <option key={l.id} value={l.id}>
+                            {l.code} ({count} bài)
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
                 </div>
                 <div className="max-h-[820px] overflow-y-auto divide-y divide-grid">
                   {builderFilteredAssignments.map((rawItem) => {

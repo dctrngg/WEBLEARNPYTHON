@@ -15,6 +15,7 @@ import {
   INITIAL_ASSIGNMENTS,
   INITIAL_SUBMISSIONS,
   INITIAL_USERS,
+  sortAssignmentsByCurriculum,
 } from "./seedData";
 
 const LS_USERS_KEY = "chroma_py_users_v9";
@@ -173,18 +174,20 @@ export async function getAllUsers(): Promise<UserProfile[]> {
 export async function getAssignments(): Promise<Assignment[]> {
   if (isFirebaseConfigured && db) {
     try {
-      const q = query(collection(db, "assignments"), orderBy("createdAt", "asc"));
-      const snap = await getDocs(q);
+      const snap = await getDocs(collection(db, "assignments"));
       if (!snap.empty) {
-        return snap.docs.map((d) => ({
+        const rawList = snap.docs.map((d) => ({
           ...(d.data() as Assignment),
           id: d.id,
         }));
+        const sorted = sortAssignmentsByCurriculum(rawList);
+        localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
+        return sorted;
       } else {
-        // Auto-seed the 22 Tin học 10 assignments into empty Cloud Firestore on first connect
+        // Auto-seed the Tin học 10 assignments into empty Cloud Firestore on first connect
         const seeded = await seedCloudFirestoreData();
         if (seeded.success) {
-          return INITIAL_ASSIGNMENTS;
+          return sortAssignmentsByCurriculum(INITIAL_ASSIGNMENTS);
         }
       }
     } catch (err) {
@@ -196,7 +199,41 @@ export async function getAssignments(): Promise<Assignment[]> {
   const list: Assignment[] = JSON.parse(
     localStorage.getItem(LS_ASSIGNMENTS_KEY) || "[]"
   );
-  return list;
+  return sortAssignmentsByCurriculum(list);
+}
+
+export async function syncAssignmentsFromCloud(): Promise<{
+  success: boolean;
+  count: number;
+  error?: string;
+}> {
+  if (!isFirebaseConfigured || !db) {
+    return {
+      success: false,
+      count: 0,
+      error: "Chưa cấu hình khóa kết nối Firebase.",
+    };
+  }
+
+  try {
+    const snap = await getDocs(collection(db, "assignments"));
+    const list = snap.docs.map((d) => ({
+      ...(d.data() as Assignment),
+      id: d.id,
+    }));
+    const sorted = sortAssignmentsByCurriculum(list);
+    localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
+    return {
+      success: true,
+      count: sorted.length,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      count: 0,
+      error: err?.message || String(err),
+    };
+  }
 }
 
 export async function saveAssignment(assignment: Assignment): Promise<Assignment> {

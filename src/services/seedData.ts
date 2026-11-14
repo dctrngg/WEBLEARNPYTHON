@@ -1942,6 +1942,40 @@ export function localizeDifficulty(
   return "Nâng cao";
 }
 
+export function sortAssignmentsByCurriculum(list: Assignment[]): Assignment[] {
+  const lessonOrder = [
+    "bai_16",
+    "bai_17",
+    "bai_18",
+    "bai_19",
+    "bai_20",
+    "bai_21",
+    "bai_22_23",
+    "bai_24_25",
+    "bai_26_28",
+    "bai_29_31",
+  ];
+
+  return [...list].sort((a, b) => {
+    const aLesson = a.lessonId || "";
+    const bLesson = b.lessonId || "";
+    const aOrder =
+      lessonOrder.indexOf(aLesson) >= 0
+        ? lessonOrder.indexOf(aLesson)
+        : 999;
+    const bOrder =
+      lessonOrder.indexOf(bLesson) >= 0
+        ? lessonOrder.indexOf(bLesson)
+        : 999;
+
+    if (aOrder !== bOrder) {
+      return aOrder - bOrder;
+    }
+
+    return a.title.localeCompare(b.title, undefined, { numeric: true });
+  });
+}
+
 export const INITIAL_SUBMISSIONS: Submission[] = [
   {
     id: "usr_student_01_asgn_16_1",
