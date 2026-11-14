@@ -25,7 +25,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         return (
           <code
             key={idx}
-            className="font-mono text-xs bg-subtle text-brand px-1.5 py-0.5 border border-grid"
+            className="font-mono text-sm md:text-[15px] bg-subtle text-brand px-1.5 py-0.5 border border-grid font-semibold"
           >
             {part.slice(1, -1)}
           </code>
@@ -33,7 +33,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       }
       if (part.startsWith("**") && part.endsWith("**")) {
         return (
-          <strong key={idx} className="font-semibold text-primary">
+          <strong key={idx} className="font-bold text-primary">
             {part.slice(2, -2)}
           </strong>
         );
@@ -48,7 +48,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         elements.push(
           <pre
             key={`code-${idx}`}
-            className="font-mono text-xs bg-subtle text-primary p-3.5 border border-grid overflow-x-auto my-3"
+            className="font-mono text-sm md:text-base bg-subtle text-primary p-4 border border-grid overflow-x-auto my-3.5 leading-relaxed"
           >
             {codeBuffer.join("\n")}
           </pre>
@@ -68,7 +68,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
     const trimmed = line.trim();
     if (!trimmed) {
-      elements.push(<div key={`sp-${idx}`} className="h-2" />);
+      elements.push(<div key={`sp-${idx}`} className="h-2.5" />);
       return;
     }
 
@@ -76,7 +76,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       elements.push(
         <h4
           key={`h3-${idx}`}
-          className="font-mono text-xs uppercase tracking-wider text-primary font-semibold mt-4 mb-2 flex items-center gap-2"
+          className="font-mono text-sm md:text-base uppercase tracking-wider text-primary font-bold mt-5 mb-2.5 flex items-center gap-2"
         >
           <span className="text-brand">◆</span>
           <span>{trimmed.slice(4)}</span>
@@ -89,9 +89,10 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       elements.push(
         <h3
           key={`h2-${idx}`}
-          className="text-base font-semibold text-primary mt-4 mb-2"
+          className="text-lg md:text-xl font-bold text-primary mt-6 mb-3 flex items-center gap-2"
         >
-          {trimmed.slice(3)}
+          <span className="text-brand">▣</span>
+          <span>{trimmed.slice(3)}</span>
         </h3>
       );
       return;
@@ -101,10 +102,10 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       elements.push(
         <div
           key={`li-${idx}`}
-          className="flex items-start gap-2.5 text-sm text-secondary leading-relaxed pl-1 my-1"
+          className="flex items-start gap-2.5 text-base md:text-[17px] text-primary leading-relaxed pl-1 my-2"
         >
-          <span className="font-mono text-xs text-brand mt-1">•</span>
-          <div>{renderInline(trimmed.slice(2))}</div>
+          <span className="font-mono text-base text-brand mt-0.5 shrink-0">•</span>
+          <div className="flex-1">{renderInline(trimmed.slice(2))}</div>
         </div>
       );
       return;
@@ -116,12 +117,12 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         elements.push(
           <div
             key={`oli-${idx}`}
-            className="flex items-start gap-2.5 text-sm text-secondary leading-relaxed pl-1 my-1"
+            className="flex items-start gap-2.5 text-base md:text-[17px] text-primary leading-relaxed pl-1 my-2"
           >
-            <span className="font-mono text-xs text-brand mt-0.5">
+            <span className="font-mono text-sm md:text-base text-brand mt-0.5 shrink-0 font-bold">
               {match[1]}
             </span>
-            <div>{renderInline(match[2])}</div>
+            <div className="flex-1">{renderInline(match[2])}</div>
           </div>
         );
         return;
@@ -129,7 +130,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
 
     elements.push(
-      <p key={`p-${idx}`} className="text-sm text-secondary leading-relaxed my-1.5">
+      <p key={`p-${idx}`} className="text-base md:text-[17px] text-primary leading-relaxed my-2.5">
         {renderInline(trimmed)}
       </p>
     );

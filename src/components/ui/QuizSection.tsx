@@ -60,19 +60,19 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
   return (
     <div className="border border-grid bg-surface">
       {/* Header bar */}
-      <div className="p-4 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 bg-brand text-white font-mono text-xs font-bold">
+      <div className="p-4 sm:p-5 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span className="px-2.5 py-1 bg-brand text-white font-mono text-xs sm:text-sm font-bold">
             TRẮC NGHIỆM
           </span>
           <div>
-            <h3 className="text-sm font-bold text-primary font-mono">
+            <h3 className="text-base sm:text-lg font-bold text-primary font-mono">
               {t(
                 `ÔN TẬP LÝ THUYẾT TRẮC NGHIỆM — ${lessonCode.toUpperCase()}`,
                 `MULTIPLE CHOICE QUIZ — ${lessonCode.toUpperCase()}`
               )}
             </h3>
-            <p className="text-[11px] text-secondary font-mono">
+            <p className="text-xs text-secondary font-mono mt-0.5">
               {t(
                 `Ngân hàng gồm ${questions.length} câu hỏi trích xuất từ tài liệu SGK Tin học 10.`,
                 `Bank of ${questions.length} multiple choice questions from Grade 10 CS textbook.`
@@ -82,7 +82,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 font-mono text-xs">
+        <div className="flex items-center gap-2 font-mono text-xs sm:text-sm">
           <select
             value={displayCount}
             onChange={(e) => {
@@ -162,17 +162,17 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
               className="p-4 bg-canvas border border-grid space-y-3 font-mono text-xs"
             >
               {/* Question title */}
-              <div className="flex items-start gap-2">
-                <span className="px-2 py-0.5 bg-subtle border border-grid text-brand font-bold shrink-0">
+              <div className="flex items-start gap-2.5">
+                <span className="px-2.5 py-1 bg-subtle border border-grid text-brand font-bold text-xs sm:text-sm shrink-0">
                   Câu {qIndex + 1}
                 </span>
-                <span className="text-primary font-medium text-sm leading-relaxed">
+                <span className="text-primary font-bold text-base sm:text-[17px] leading-relaxed">
                   {q.question}
                 </span>
               </div>
 
               {/* 4 Options Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                 {q.options.map((optText, optIdx) => {
                   const letter = String.fromCharCode(65 + optIdx);
                   const isThisSelected = selected === optIdx;
@@ -201,7 +201,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
                       type="button"
                       disabled={isSubmitted}
                       onClick={() => handleSelectOption(q.id, optIdx)}
-                      className={`p-3 border text-left flex items-start gap-2 transition-colors ${optClass}`}
+                      className={`p-3.5 border text-left flex items-start gap-2.5 text-sm sm:text-base transition-colors ${optClass}`}
                     >
                       <span className="font-bold shrink-0">[{letter}]</span>
                       <span className="leading-relaxed">{optText}</span>
@@ -213,13 +213,13 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
               {/* Explanation & Solution Feedback */}
               {isSubmitted && (
                 <div
-                  className={`mt-2 p-3 border text-[11px] leading-relaxed ${
+                  className={`mt-2.5 p-3.5 border text-xs sm:text-sm leading-relaxed ${
                     isCorrect
                       ? "border-emerald-500/40 bg-emerald-500/5 text-emerald-400"
                       : "border-brand/40 bg-brand/5 text-secondary"
                   }`}
                 >
-                  <div className="font-bold flex items-center gap-1.5 mb-1">
+                  <div className="font-bold flex items-center gap-1.5 mb-1.5 text-sm">
                     <span>{isCorrect ? "✓ ĐÚNG:" : "✕ CHƯA ĐÚNG:"}</span>
                     <span>
                       Đáp án chính xác là{" "}

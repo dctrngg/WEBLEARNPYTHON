@@ -92,28 +92,28 @@ export const BlueprintPage: React.FC = () => {
         onOpenCheatSheet={() => setCheatSheetOpen(true)}
       />
 
-      <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 space-y-6">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-5 space-y-6">
         {/* TOP BENTO BANNER: Curriculum Overview + Progress Metrics */}
         <section className="grid grid-cols-1 lg:grid-cols-12 bg-grid gap-[1px] border border-grid">
-          <div className="lg:col-span-8 bg-surface p-6 flex flex-col justify-between">
+          <div className="lg:col-span-8 bg-surface p-6 sm:p-7 flex flex-col justify-between">
             <div>
-              <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-brand uppercase tracking-widest mb-2">
+              <div className="flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm text-brand uppercase tracking-widest mb-2.5">
                 <span>▣ CHƯƠNG TRÌNH TIN HỌC 10 — LẬP TRÌNH PYTHON</span>
                 <span className="text-grid-strong">|</span>
-                <span className="text-secondary">
+                <span className="text-secondary font-semibold">
                   {t(
                     "BÀI 16 ĐẾN BÀI 31 (ĐẦY ĐỦ LÝ THUYẾT & BÀI TẬP)",
                     "LESSONS 16 TO 31 (FULL THEORY & EXERCISES)"
                   )}
                 </span>
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-primary mb-2">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-primary mb-2.5">
                 {t(
                   "Lộ Trình Học Python & Bài Tập Thực Hành Theo Từng Bài Học",
                   "Python Learning Blueprint & Lesson-by-Lesson Exercises"
                 )}
               </h1>
-              <p className="text-sm text-secondary max-w-[72ch] leading-relaxed">
+              <p className="text-sm sm:text-base text-secondary max-w-[85ch] leading-relaxed">
                 {t(
                   "Chọn từng bài học từ Bài 16 đến Bài 31 bên dưới để đọc lý thuyết chi tiết, xem ví dụ code mẫu và làm ngay các bài tập lập trình được phân chia theo đúng bài học đó.",
                   "Select any lesson from Lesson 16 to Lesson 31 below to study detailed theory, inspect sample code, and practice exercises grouped specifically for that lesson."
@@ -122,10 +122,10 @@ export const BlueprintPage: React.FC = () => {
             </div>
 
             <div className="mt-5 pt-4 border-t border-grid flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
+              <div className="flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm">
                 <button
                   onClick={() => setActiveSectionTab("curriculum")}
-                  className={`px-3.5 py-2 border font-semibold transition-colors ${
+                  className={`px-4 py-2 border font-semibold transition-colors ${
                     activeSectionTab === "curriculum"
                       ? "bg-brand text-white border-brand"
                       : "bg-subtle text-secondary border-grid hover:text-primary"
@@ -135,7 +135,7 @@ export const BlueprintPage: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setActiveSectionTab("all_exercises")}
-                  className={`px-3.5 py-2 border font-semibold transition-colors ${
+                  className={`px-4 py-2 border font-semibold transition-colors ${
                     activeSectionTab === "all_exercises"
                       ? "bg-brand text-white border-brand"
                       : "bg-subtle text-secondary border-grid hover:text-primary"
@@ -151,7 +151,7 @@ export const BlueprintPage: React.FC = () => {
                     ? `/workspace/${activeLessonExercises[0].id}`
                     : "/workspace"
                 }
-                className="px-4 py-2 bg-subtle border border-brand text-brand hover:bg-brand hover:text-white font-mono text-xs font-semibold transition-colors"
+                className="px-4 py-2 bg-subtle border border-brand text-brand hover:bg-brand hover:text-white font-mono text-xs sm:text-sm font-semibold transition-colors"
               >
                 [▶ {t("MỞ PHÒNG THỰC HÀNH IDE NGAY", "OPEN PYTHON IDE WORKSPACE")}]
               </Link>
@@ -247,16 +247,16 @@ export const BlueprintPage: React.FC = () => {
         {/* VIEW MODE 1: INTERACTIVE LESSON EXPLORER + EXERCISES OF SELECTED LESSON */}
         {activeSectionTab === "curriculum" && (
           <section className="grid grid-cols-1 lg:grid-cols-12 bg-grid gap-[1px] border border-grid">
-            {/* LEFT 4 COLS: LESSON ROADMAP (BÀI 16 -> BÀI 31) */}
-            <aside className="lg:col-span-4 bg-surface flex flex-col">
-              <div className="h-10 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs">
-                <span className="uppercase tracking-wider text-secondary font-semibold">
+            {/* LEFT 3-4 COLS: LESSON ROADMAP (BÀI 16 -> BÀI 31) */}
+            <aside className="lg:col-span-4 xl:col-span-3 bg-surface flex flex-col">
+              <div className="h-11 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs sm:text-sm">
+                <span className="uppercase tracking-wider text-secondary font-bold">
                   {t(
                     "MỤC LỤC BÀI HỌC (TIN HỌC 10)",
                     "CURRICULUM LESSONS (16 - 31)"
                   )}
                 </span>
-                <span className="text-muted">
+                <span className="text-muted font-semibold">
                   {PYTHON_CURRICULUM_LESSONS.length} {t("chuyên đề", "modules")}
                 </span>
               </div>
@@ -308,12 +308,12 @@ export const BlueprintPage: React.FC = () => {
                         </span>
                       </div>
 
-                      <div className="text-sm font-semibold text-primary leading-snug mt-0.5">
+                      <div className="text-base font-bold text-primary leading-snug mt-1">
                         {idx + 1}.{" "}
                         {lang === "vi" ? lesson.titleVi : lesson.titleEn}
                       </div>
 
-                      <p className="text-xs text-secondary line-clamp-2 leading-relaxed">
+                      <p className="text-sm text-secondary line-clamp-2 leading-relaxed mt-0.5">
                         {lang === "vi" ? lesson.summaryVi : lesson.summaryEn}
                       </p>
                     </button>
@@ -322,21 +322,21 @@ export const BlueprintPage: React.FC = () => {
               </div>
             </aside>
 
-            {/* RIGHT 8 COLS: ACTIVE LESSON THEORY + CODE SAMPLE + EXERCISES FOR THIS LESSON */}
-            <div className="lg:col-span-8 bg-surface flex flex-col">
+            {/* RIGHT 8-9 COLS: ACTIVE LESSON THEORY + CODE SAMPLE + EXERCISES FOR THIS LESSON */}
+            <div className="lg:col-span-8 xl:col-span-9 bg-surface flex flex-col">
               {/* Lesson Header Bar */}
-              <div className="p-5 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">
+              <div className="p-5 sm:p-6 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <div className="flex items-center gap-2 font-mono text-xs mb-1">
-                    <span className="px-2 py-0.5 bg-brand text-white font-semibold">
+                  <div className="flex items-center gap-2 font-mono text-xs sm:text-sm mb-1.5">
+                    <span className="px-2.5 py-1 bg-brand text-white font-bold">
                       {activeLesson.code}
                     </span>
-                    <span className="text-secondary">
+                    <span className="text-secondary font-semibold">
                       {t("Chuyên đề", "Module")} {activeLessonIndex + 1}/
                       {PYTHON_CURRICULUM_LESSONS.length}
                     </span>
                   </div>
-                  <h2 className="text-xl md:text-2xl font-bold text-primary">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
                     {lang === "vi"
                       ? activeLesson.titleVi
                       : activeLesson.titleEn}
@@ -344,7 +344,7 @@ export const BlueprintPage: React.FC = () => {
                 </div>
 
                 {/* Prev / Next Lesson Buttons */}
-                <div className="flex items-center gap-1.5 font-mono text-xs">
+                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm">
                   <button
                     disabled={activeLessonIndex <= 0}
                     onClick={() =>
@@ -353,7 +353,7 @@ export const BlueprintPage: React.FC = () => {
                         PYTHON_CURRICULUM_LESSONS[activeLessonIndex - 1].id
                       )
                     }
-                    className="px-3 py-1.5 bg-surface border border-grid text-secondary hover:text-primary disabled:opacity-40"
+                    className="px-4 py-2 bg-surface border border-grid text-secondary hover:text-primary font-semibold disabled:opacity-40 transition-colors"
                   >
                     [◀ {t("BÀI TRƯỚC", "PREV")}]
                   </button>
@@ -368,7 +368,7 @@ export const BlueprintPage: React.FC = () => {
                         PYTHON_CURRICULUM_LESSONS[activeLessonIndex + 1].id
                       )
                     }
-                    className="px-3 py-1.5 bg-surface border border-grid text-secondary hover:text-primary disabled:opacity-40"
+                    className="px-4 py-2 bg-surface border border-grid text-secondary hover:text-primary font-semibold disabled:opacity-40 transition-colors"
                   >
                     [{t("BÀI TIẾP", "NEXT")} ▶]
                   </button>
@@ -376,17 +376,17 @@ export const BlueprintPage: React.FC = () => {
               </div>
 
               {/* Key Takeaways Box */}
-              <div className="p-5 border-b border-grid bg-canvas/50">
-                <div className="font-mono text-xs uppercase tracking-wider text-brand font-semibold mb-2.5">
+              <div className="p-5 sm:p-6 border-b border-grid bg-canvas/50">
+                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-brand font-bold mb-3">
                   ★ {t("TÓM TẮT TRỌNG TÂM CẦN NHỚ", "KEY TAKEAWAYS")}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {activeLesson.keyPointsVi.map((pt: string, i: number) => (
                     <div
                       key={i}
-                      className="p-2.5 bg-surface border border-grid text-xs text-primary flex items-start gap-2"
+                      className="p-3.5 bg-surface border border-grid text-sm sm:text-base text-primary leading-relaxed flex items-start gap-2.5 shadow-sm"
                     >
-                      <span className="font-mono text-brand font-bold shrink-0">
+                      <span className="font-mono text-brand font-bold shrink-0 text-sm sm:text-base">
                         0{i + 1}.
                       </span>
                       <span>{pt}</span>
@@ -396,15 +396,15 @@ export const BlueprintPage: React.FC = () => {
               </div>
 
               {/* Detailed Markdown Theory Content from know.md */}
-              <div className="p-6 border-b border-grid">
-                <div className="font-mono text-xs uppercase tracking-wider text-secondary mb-3">
+              <div className="p-6 sm:p-8 border-b border-grid">
+                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold mb-3.5">
                   📖{" "}
                   {t(
                     "NỘI DUNG LÝ THUYẾT CHI TIẾT (THEO SÁCH GIÁO KHOA TIN HỌC 10)",
                     "DETAILED LESSON THEORY"
                   )}
                 </div>
-                <div className="bg-canvas border border-grid p-5">
+                <div className="bg-canvas border border-grid p-6 sm:p-8 md:p-10 shadow-sm">
                   <MarkdownRenderer
                     content={
                       lang === "vi"
@@ -417,8 +417,8 @@ export const BlueprintPage: React.FC = () => {
 
               {/* Code Example & Output Preview */}
               <div className="p-6 border-b border-grid bg-subtle/40">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-xs uppercase tracking-wider text-secondary font-semibold">
+                <div className="flex items-center justify-between mb-3.5">
+                  <span className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold">
                     💻{" "}
                     {t(
                       "VÍ DỤ CODE PYTHON MINH HỌA TRONG BÀI",
@@ -427,7 +427,7 @@ export const BlueprintPage: React.FC = () => {
                   </span>
                   <button
                     onClick={handleCopySample}
-                    className="px-2.5 py-1 bg-surface border border-grid font-mono text-xs text-secondary hover:text-brand hover:border-brand transition-colors"
+                    className="px-3.5 py-1.5 bg-surface border border-grid font-mono text-xs sm:text-sm text-secondary hover:text-brand hover:border-brand transition-colors font-semibold"
                   >
                     {copiedSample
                       ? t("[✓ ĐÃ SAO CHÉP CODE]", "[✓ COPIED]")
@@ -435,20 +435,20 @@ export const BlueprintPage: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-12 bg-grid gap-[1px] border border-grid font-mono text-xs">
-                  <div className="md:col-span-7 bg-canvas p-4 overflow-x-auto">
-                    <div className="text-[11px] text-muted mb-2 border-b border-grid pb-1">
+                <div className="grid grid-cols-1 md:grid-cols-12 bg-grid gap-[1px] border border-grid font-mono text-sm">
+                  <div className="md:col-span-7 bg-canvas p-4 sm:p-5 overflow-x-auto">
+                    <div className="text-xs text-muted mb-2 border-b border-grid pb-1.5 font-semibold">
                       vi_du_{activeLesson.id}.py
                     </div>
-                    <pre className="text-primary leading-relaxed whitespace-pre">
+                    <pre className="text-primary text-sm sm:text-base leading-relaxed whitespace-pre">
                       {activeLesson.sampleCode}
                     </pre>
                   </div>
-                  <div className="md:col-span-5 bg-surface p-4 overflow-x-auto">
-                    <div className="text-[11px] text-success mb-2 border-b border-grid pb-1">
+                  <div className="md:col-span-5 bg-surface p-4 sm:p-5 overflow-x-auto">
+                    <div className="text-xs text-success mb-2 border-b border-grid pb-1.5 font-semibold">
                       ► {t("KẾT QUẢ CHẠY (OUTPUT)", "CONSOLE OUTPUT")}
                     </div>
-                    <pre className="text-success leading-relaxed whitespace-pre-wrap">
+                    <pre className="text-success text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
                       {activeLesson.sampleOutput.join("\n")}
                     </pre>
                   </div>
@@ -462,17 +462,17 @@ export const BlueprintPage: React.FC = () => {
               />
 
               {/* Exercises Assigned to This Lesson */}
-              <div className="p-6 bg-surface">
+              <div className="p-6 sm:p-8 bg-surface">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                   <div>
-                    <div className="font-mono text-xs uppercase tracking-wider text-brand font-semibold">
+                    <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-brand font-bold">
                       🎯{" "}
                       {t(
                         `BÀI TẬP THỰC HÀNH CỦA ${activeLesson.code.toUpperCase()} (${activeLessonExercises.length} BÀI)`,
                         `EXERCISES FOR ${activeLesson.code.toUpperCase()} (${activeLessonExercises.length})`
                       )}
                     </div>
-                    <p className="text-xs text-secondary mt-0.5">
+                    <p className="text-sm text-secondary mt-1">
                       {t(
                         "Bấm vào bài tập bất kỳ để mở Phòng thực hành IDE, chạy thử code và chấm điểm tự động.",
                         "Click any exercise below to launch the Python IDE workspace and run automated grading."
@@ -490,12 +490,12 @@ export const BlueprintPage: React.FC = () => {
                     return (
                       <div
                         key={asgn.id}
-                        className="bg-canvas p-4 flex flex-col justify-between hover:bg-subtle/60 transition-colors"
+                        className="bg-canvas p-5 flex flex-col justify-between hover:bg-subtle/60 transition-colors"
                       >
                         <div>
-                          <div className="flex items-center justify-between gap-2 font-mono text-xs mb-2">
+                          <div className="flex items-center justify-between gap-2 font-mono text-xs mb-2.5">
                             <span
-                              className={`px-2 py-0.5 border text-[11px] ${
+                              className={`px-2 py-0.5 border text-xs font-semibold ${
                                 asgn.difficulty === "Beginner"
                                   ? "border-success/40 text-success bg-success/10"
                                   : asgn.difficulty === "Intermediate"
@@ -507,7 +507,7 @@ export const BlueprintPage: React.FC = () => {
                             </span>
 
                             <span
-                              className={`px-2 py-0.5 border text-[11px] font-semibold ${
+                              className={`px-2.5 py-0.5 border text-xs font-bold ${
                                 isPassed
                                   ? "border-success bg-success/10 text-success"
                                   : isAttempted
@@ -523,25 +523,25 @@ export const BlueprintPage: React.FC = () => {
                             </span>
                           </div>
 
-                          <h3 className="text-sm font-bold text-primary mb-1.5">
+                          <h3 className="text-base sm:text-[17px] font-bold text-primary mb-2 leading-snug">
                             {asgn.title}
                           </h3>
 
-                          <p className="text-xs text-secondary line-clamp-2 mb-3">
+                          <p className="text-sm text-secondary line-clamp-3 leading-relaxed mb-4">
                             {asgn.description
                               .replace(/###|\*\*|`/g, "")
-                              .slice(0, 130)}
+                              .slice(0, 150)}
                             ...
                           </p>
                         </div>
 
-                        <div className="pt-3 border-t border-grid flex items-center justify-between font-mono text-xs">
-                          <span className="text-muted text-[11px]">
+                        <div className="pt-3.5 border-t border-grid flex items-center justify-between font-mono text-xs">
+                          <span className="text-muted text-xs font-medium">
                             {asgn.testCases.length} test cases
                           </span>
                           <button
                             onClick={() => navigate(`/workspace/${asgn.id}`)}
-                            className={`px-3 py-1.5 border font-semibold transition-colors ${
+                            className={`px-3.5 py-2 border font-bold text-xs sm:text-sm transition-colors ${
                               isPassed
                                 ? "bg-surface border-success text-success hover:bg-success hover:text-black"
                                 : "bg-brand border-brand text-white hover:opacity-90"
