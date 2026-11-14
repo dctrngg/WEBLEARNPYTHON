@@ -35,57 +35,6 @@ import { PythonCheatSheetModal } from "../components/ui/PythonCheatSheetModal";
 
 const GLYPHS = ["◇", "◆", "●", "◐", "▣", "◊"];
 
-const QUICK_STUDENT_SNIPPETS = [
-  {
-    label: "input()",
-    code: 'input()',
-    tipVi: "Đọc 1 dòng chuỗi từ bàn phím",
-    tipEn: "Read a string line from stdin",
-  },
-  {
-    label: "int(input())",
-    code: "n = int(input())",
-    tipVi: "Đọc 1 số nguyên từ bàn phím",
-    tipEn: "Read an integer from stdin",
-  },
-  {
-    label: "float(input())",
-    code: "x = float(input())",
-    tipVi: "Đọc 1 số thực (thập phân) từ bàn phím",
-    tipEn: "Read a float from stdin",
-  },
-  {
-    label: "Danh sách số",
-    code: "nums = [int(x) for x in input().split()]",
-    tipVi: "Đọc nhiều số nguyên trên 1 dòng thành danh sách (list)",
-    tipEn: "Read space-separated integers into a list",
-  },
-  {
-    label: 'print(f"...")',
-    code: 'print(f"{ket_qua}")',
-    tipVi: "In biến ra màn hình với f-string",
-    tipEn: "Print formatted f-string",
-  },
-  {
-    label: "for i in range(n):",
-    code: "for i in range(n):\n    print(i)",
-    tipVi: "Vòng lặp chạy từ 0 đến n - 1",
-    tipEn: "Loop from 0 to n - 1",
-  },
-  {
-    label: "if / else:",
-    code: "if dieu_kien:\n    pass\nelse:\n    pass",
-    tipVi: "Câu lệnh điều kiện Nếu ... thì ... ngược lại ...",
-    tipEn: "If / Else conditional block",
-  },
-  {
-    label: "def ham():",
-    code: "def ten_ham(tham_so):\n    return tham_so",
-    tipVi: "Tạo hàm mới trong Python",
-    tipEn: "Define a new Python function",
-  },
-];
-
 export const StudentWorkspacePage: React.FC = () => {
   const { assignmentId } = useParams<{ assignmentId?: string }>();
   const navigate = useNavigate();
@@ -135,6 +84,32 @@ export const StudentWorkspacePage: React.FC = () => {
     "SPLIT"
   );
   const [cheatSheetOpen, setCheatSheetOpen] = useState<boolean>(false);
+  const [editorFontSize, setEditorFontSize] = useState<number>(() => {
+    const saved = localStorage.getItem("chroma_py_editor_font_size");
+    const parsed = saved ? parseInt(saved, 10) : 14;
+    return Number.isFinite(parsed) && parsed >= 10 && parsed <= 32 ? parsed : 14;
+  });
+
+  const handleZoomIn = () => {
+    setEditorFontSize((prev) => {
+      const next = Math.min(prev + 2, 32);
+      localStorage.setItem("chroma_py_editor_font_size", next.toString());
+      return next;
+    });
+  };
+
+  const handleZoomOut = () => {
+    setEditorFontSize((prev) => {
+      const next = Math.max(prev - 2, 10);
+      localStorage.setItem("chroma_py_editor_font_size", next.toString());
+      return next;
+    });
+  };
+
+  const handleResetZoom = () => {
+    setEditorFontSize(14);
+    localStorage.setItem("chroma_py_editor_font_size", "14");
+  };
 
   const editorRef = useRef<any>(null);
   const monacoRef = useRef<any>(null);
@@ -881,6 +856,50 @@ export const StudentWorkspacePage: React.FC = () => {
                     >
                       💡 {t("GỢI Ý CODE (Ctrl+Space)", "SUGGEST (Ctrl+Space)")}
                     </button>
+
+                    {/* Bộ công cụ Zoom / Chỉnh cỡ chữ */}
+                    <div className="flex items-center border border-grid bg-subtle">
+                      <button
+                        type="button"
+                        onClick={handleZoomOut}
+                        disabled={editorFontSize <= 10}
+                        title={t("Thu nhỏ cỡ chữ (A-)", "Zoom out code font size (A-)")}
+                        className="px-2 py-1 text-secondary hover:text-primary hover:bg-surface border-r border-grid disabled:opacity-30 font-bold transition-colors"
+                      >
+                        A-
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleResetZoom}
+                        title={t(
+                          "Cỡ chữ hiện tại - Bấm để đặt lại về 14px",
+                          "Current font size - Click to reset to 14px"
+                        )}
+                        className="px-2 py-1 text-primary hover:text-brand font-semibold text-[11px] min-w-[42px] text-center transition-colors"
+                      >
+                        {editorFontSize}px
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleZoomIn}
+                        disabled={editorFontSize >= 32}
+                        title={t("Phóng to cỡ chữ (A+)", "Zoom in code font size (A+)")}
+                        className="px-2 py-1 text-secondary hover:text-primary hover:bg-surface border-l border-grid disabled:opacity-30 font-bold transition-colors"
+                      >
+                        A+
+                      </button>
+                    </div>
+
+                    {/* Nút Sổ tay hàm Python */}
+                    <button
+                      type="button"
+                      onClick={() => setCheatSheetOpen(true)}
+                      title={t("Mở sổ tay tra cứu hàm Python cơ bản", "Open Python Cheat Sheet")}
+                      className="px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-secondary hover:text-primary transition-colors hidden sm:flex items-center gap-1"
+                    >
+                      <span>📖</span>
+                      <span>{t("SỔ TAY HÀM", "CHEAT SHEET")}</span>
+                    </button>
                   </div>
 
                   {/* Primary Execution & Cloud Actions */}
@@ -944,29 +963,6 @@ export const StudentWorkspacePage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Row 2: Quick Student Function & Snippet Bar */}
-                <div className="px-4 py-1.5 bg-subtle border-b border-grid flex items-center gap-1.5 overflow-x-auto font-mono text-[11px] shrink-0">
-                  <span className="text-secondary font-medium shrink-0 mr-1">
-                    {t("Chèn nhanh lệnh:", "Quick Insert:")}
-                  </span>
-                  {QUICK_STUDENT_SNIPPETS.map((snip) => (
-                    <button
-                      key={snip.label}
-                      onClick={() => handleInsertSnippetIntoEditor(snip.code)}
-                      title={lang === "vi" ? snip.tipVi : snip.tipEn}
-                      className="px-2 py-0.5 bg-surface border border-grid hover:border-brand text-primary hover:text-brand transition-colors shrink-0"
-                    >
-                      + {snip.label}
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => setCheatSheetOpen(true)}
-                    className="ml-auto px-2.5 py-0.5 bg-surface border border-brand/50 text-brand hover:bg-brand hover:text-white transition-colors shrink-0 font-semibold"
-                  >
-                    {t("Xem tất cả hàm Python →", "All Python Functions →")}
-                  </button>
-                </div>
-
                 {/* Monaco Editor Surface with Active IntelliSense & Parameter Hints */}
                 <div
                   onKeyDown={(e) => e.stopPropagation()}
@@ -986,10 +982,11 @@ export const StudentWorkspacePage: React.FC = () => {
                     options={{
                       // Disable Chrome EditContext bug so Spacebar & Vietnamese Unikey/Telex work 100% smoothly
                       editContext: false,
-                      fontSize: 14,
+                      fontSize: editorFontSize,
                       fontFamily:
                         "'JetBrains Mono', 'Geist Mono', 'Fira Code', monospace",
-                      lineHeight: 23,
+                      lineHeight: Math.round(editorFontSize * 1.6),
+                      mouseWheelZoom: true,
                       minimap: { enabled: false },
                       scrollBeyondLastLine: false,
                       automaticLayout: true,
