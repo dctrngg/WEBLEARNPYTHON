@@ -8,7 +8,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import {
   PYTHON_CURRICULUM_LESSONS,
-  LESSON_QUIZZES,
   LessonTopic,
 } from "../services/curriculumData";
 import {
@@ -456,10 +455,10 @@ export const BlueprintPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Interactive Quizzes from PDF (Trắc nghiệm ôn tập từ tài liệu) */}
+              {/* Multiple-Choice Theory Review (254 Authentic Questions from Textbook PDF) */}
               <QuizSection
+                lessonId={activeLesson.id}
                 lessonCode={activeLesson.code}
-                quizzes={LESSON_QUIZZES[activeLesson.id] || []}
               />
 
               {/* Exercises Assigned to This Lesson */}

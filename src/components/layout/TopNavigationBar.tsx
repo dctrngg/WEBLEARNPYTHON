@@ -31,6 +31,8 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
   const navigate = useNavigate();
   const [configOpen, setConfigOpen] = useState(false);
 
+  const isAdmin = user?.role === "instructor" || user?.role === ("admin" as any);
+
   const isAdminRoute =
     location.pathname.startsWith("/admin") ||
     location.pathname.startsWith("/instructor");
@@ -140,6 +142,15 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
             </button>
           )}
 
+          {isAdmin && !isAdminRoute && (
+            <Link
+              to="/admin"
+              className="px-2.5 py-1 bg-brand/15 border border-brand/50 text-brand hover:bg-brand hover:text-white transition-colors font-medium shrink-0"
+            >
+              [⚙ {t("QUẢN TRỊ VIÊN", "ADMIN")}]
+            </Link>
+          )}
+
           {isAdminRoute && (
             <>
               <span className="text-grid-strong hidden sm:inline">|</span>
@@ -155,12 +166,12 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
 
         {/* Right: Admin Firebase Cloud Status, Sync Status, Engine Indicator, Language VI/EN, Theme, Student Profile */}
         <div className="flex items-center gap-2 shrink-0">
-          {/* Firebase Cloud Connection Button (ONLY visible for Admin at /admin) */}
-          {isAdminRoute && (
+          {/* Firebase Cloud Connection Button (ONLY visible for Admin users) */}
+          {isAdmin && (
             <button
               onClick={() => setConfigOpen(true)}
               title={t(
-                "Nhấn để cấu hình kết nối Firebase thực tế hoặc đồng bộ 22 bài tập lên Cloud Firestore",
+                "Nhấn để cấu hình kết nối Firebase thực tế hoặc đồng bộ bài tập lên Cloud Firestore",
                 "Click to configure live Firebase connection or sync exercises to Cloud Firestore"
               )}
               className={`px-2.5 py-1 border font-semibold transition-colors flex items-center gap-1.5 ${

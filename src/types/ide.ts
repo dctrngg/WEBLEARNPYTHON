@@ -13,13 +13,6 @@ export interface UserProfile {
 
 export type DifficultyLevel = "Beginner" | "Intermediate" | "Advanced";
 
-export interface QuizQuestion {
-  id: string;
-  question: string;
-  options: string[];
-  correctAnswer?: number;
-}
-
 export interface TestCase {
   input: string;
   expectedOutput: string;

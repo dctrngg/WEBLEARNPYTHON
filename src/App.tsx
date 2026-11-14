@@ -46,9 +46,23 @@ export const App: React.FC = () => {
                 }
               />
 
-              {/* Admin / Teacher Route (/admin): Direct access by URL */}
-              <Route path="/admin" element={<InstructorDashboardPage />} />
-              <Route path="/instructor" element={<InstructorDashboardPage />} />
+              {/* Admin / Teacher Route (/admin): Protected, requires Instructor/Admin role */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute requiredRole="instructor">
+                    <InstructorDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/instructor"
+                element={
+                  <ProtectedRoute requiredRole="instructor">
+                    <InstructorDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
 
               {/* Public Authentication / Switch Account Screen */}
               <Route path="/login" element={<LoginPage />} />

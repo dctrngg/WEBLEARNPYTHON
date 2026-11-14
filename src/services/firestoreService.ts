@@ -17,9 +17,9 @@ import {
   INITIAL_USERS,
 } from "./seedData";
 
-const LS_USERS_KEY = "chroma_py_users_v7";
-const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v7";
-const LS_SUBMISSIONS_KEY = "chroma_py_submissions_v7";
+const LS_USERS_KEY = "chroma_py_users_v8";
+const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v8";
+const LS_SUBMISSIONS_KEY = "chroma_py_submissions_v8";
 
 function ensureLocalSeed() {
   if (!localStorage.getItem(LS_USERS_KEY)) {

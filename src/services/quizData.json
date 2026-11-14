@@ -1,0 +1,3558 @@
+[
+  {
+    "id": "quiz_16_1",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Ngôn ngữ lập trình là gì:",
+    "options": [
+      "Là ngôn ngữ máy tính",
+      "Là ngôn ngữ biểu diễn thuật toán dưới dạng dễ hiểu.",
+      "Là ngôn ngữ dùng để viết các chương trình máy tính.",
+      "Là ngôn ngữ dùng để thực hiện các giao tiếp giữa người và máy tính."
+    ],
+    "correctIndex": 2,
+    "explanation": "Ngôn ngữ lập trình là ngôn ngữ dùng để viết các chương trình máy tính."
+  },
+  {
+    "id": "quiz_16_2",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Chọn phát biểu SAI:",
+    "options": [
+      "Lệnh print() có chức năng in dữ liệu ra màn hình.",
+      "Lệnh print() có thể tính toán và đưa ra kết quả của biểu thức.",
+      "Lệnh print() có thể đưa ra màn hình nhiều giá trị trên một dòng.",
+      "Lệnh print() có thể nhập dữ liệu vào máy tính."
+    ],
+    "correctIndex": 3,
+    "explanation": "Lệnh print() chỉ xuất dữ liệu ra màn hình, không thể dùng để nhập dữ liệu."
+  },
+  {
+    "id": "quiz_16_3",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Ngôn ngữ lập trình có các câu lệnh được viết gần với ngôn ngữ tự nhiên giúp cho việc đọc, hiểu chương trình dễ dàng hơn đó là loại ngôn ngữ lập trình nào?",
+    "options": [
+      "Ngôn ngữ máy",
+      "Hợp ngữ",
+      "Ngôn ngữ lập trình bậc cao",
+      "Ngôn ngữ Python."
+    ],
+    "correctIndex": 2,
+    "explanation": "Ngôn ngữ lập trình bậc cao có các câu lệnh được viết gần với ngôn ngữ tự nhiên."
+  },
+  {
+    "id": "quiz_16_4",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Chọn phát biểu SAI trong các phát biểu sau:",
+    "options": [
+      "Chương trình là một bản chỉ dẫn cho máy tính làm việc, được viết bằng một ngôn ngữ lập trình.",
+      "Chỉ có một ngôn ngữ lập trình bậc cao là Python.",
+      "Lập trình bằng Python có thể đưa ra các thông báo bằng tiếng Việt.",
+      "Môi trường lập trình hỗ trợ người lập trình phát hiện ra câu lệnh viết sai ngữ pháp"
+    ],
+    "correctIndex": 1,
+    "explanation": "Phát biểu SAI vì có rất nhiều ngôn ngữ lập trình bậc cao như C, C++, Java, Pascal, Python..."
+  },
+  {
+    "id": "quiz_16_5",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Trong lập trình có mấy kỹ thuật dịch?",
+    "options": [
+      "1 loại (thông dịch)",
+      "2 loại (thông dịch và biên dịch)",
+      "2 loại (thông dịch và hợp dịch)",
+      "2 loại (hợp dịch và biên dịch)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Có 2 loại kĩ thuật dịch: Thông dịch (Interpreter) và Biên dịch (Compiler)."
+  },
+  {
+    "id": "quiz_16_6",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Chương trình dịch không có khả năng nào trong các khả năng sau?",
+    "options": [
+      "Phát hiện lỗi cú pháp",
+      "Phát hiện lỗi ngữ nghĩa",
+      "Thông báo lỗi cú pháp",
+      "Tạo được chương trình đích"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_7",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Trong quá trình dịch, lỗi nào sau đây sẽ được phát hiện?",
+    "options": [
+      "Chính tả",
+      "Cú pháp",
+      "Giải thuật",
+      "Ngữ nghĩa"
+    ],
+    "correctIndex": 1,
+    "explanation": "Chương trình dịch phát hiện và báo lỗi cú pháp."
+  },
+  {
+    "id": "quiz_16_8",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Đa số lập trình viên lựa chọn ngôn ngữ nào để viết chương trình:",
+    "options": [
+      "Ngôn ngữ máy tính",
+      "Hợp ngữ",
+      "Ngôn ngữ lập trình bậc cao",
+      "Ngôn ngữ tự nhiên"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_9",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Máy tính có thể trực tiếp hiểu được các câu lệnh viết bởi:",
+    "options": [
+      "Ngôn ngữ máy tính",
+      "Hợp ngữ",
+      "Ngôn ngữ lập trình bậc cao",
+      "Ngôn ngữ tự nhiên"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_10",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Chọn phát biểu SAI trong các phát biểu sau:",
+    "options": [
+      "Chế độ gõ trực tiếp và chế độ soạn thảo đều gõ mỗi lệnh trên một dòng.",
+      "Ở chế độ gõ trực tiếp, gõ một lệnh, nhấn Enter sẽ chạy ngay.",
+      "Ở chế độ soạn thảo chương trình thì gõ nhiều lệnh trong 1 tệp và thực hiện chạy một lần.",
+      "Ở chế độ soạn thảo chương trình để thấy kết quả của biểu thức ta chỉ cần gõ biểu thức."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_11",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Phát biểu nào sau đây chắc chắn sai?",
+    "options": [
+      "Máy tính điện tử có thể chạy các chương trình.",
+      "Mọi người sử dụng máy tính đều phải biết lập trình.",
+      "Để giải bài toán bằng máy tính, cần viết chương trình mô tả thuật toán giải bài toán.",
+      "Một bài toán có thể có nhiều thuật toán để giải."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_12",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Chương trình được viết bằng NNLT bậc cao không có đặc điểm nào trong các đặc điểm sau?",
+    "options": [
+      "Chương trình có thể được thực hiện trên nhiều máy tính khác nhau.",
+      "Ngắn gọn, dễ hiểu, dễ hiệu chỉnh, dễ nâng cấp.",
+      "Kiểu dữ liệu đa dạng, thuận tiện cho mô tả thuật toán.",
+      "Máy tính có thể hiểu và thực hiện trực tiếp được."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_13",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Chức năng của chương trình dịch:",
+    "options": [
+      "Nối kết chương trình nguồn với chương trình đích cho máy tính thực hiện.",
+      "Chuyển đổi chương trình đích sang chương trình nguồn.",
+      "Chuyển đổi chương trình được viết bằng NNLT bậc cao sang ngôn ngữ máy.",
+      "Dịch chương trình đích sang ngôn ngữ máy cho máy tính hiểu và thực hiện được."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_14",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Biên dịch là gì?",
+    "options": [
+      "Các đại lượng trong Python",
+      "Dịch từng lệnh",
+      "Dịch toàn bộ chương trình",
+      "Chạy chương trình"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_15",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Môi trường lập trình có 2 chế độ: Chế độ gõ trực tiếp và chế độ soạn thảo là của ngôn ngữ lập trình :",
+    "options": [
+      "Ngôn ngữ lập trình bậc cao.",
+      "Ngôn ngữ Python hoặc C/C++.",
+      "Ngôn ngữ Python.",
+      "Ngôn ngữ Pascal."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_16",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Ngôn ngữ nào sau đây không phải ngôn ngữ bậc cao?",
+    "options": [
+      "C/C++",
+      "Assembly",
+      "Python",
+      "Java"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_17",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Điều nào sau đây được sử dụng để xác định một khối mã trong ngôn ngữ Python?",
+    "options": [
+      "Thụt lề",
+      "Nháy “ ”",
+      "Dấu ngoặc ( )",
+      "Dấu ngoặc [ ]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_18",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Thứ tự thực hiện các phép tính trong Python ở đáp án nào đúng?",
+    "options": [
+      "/, -, +, *",
+      "(*, /), (+, -)",
+      "Từ trái sang phải",
+      "(+, -), (*, /)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_19",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Câu lệnh sau bị lỗi ở đâu? >>> 3 + * 5",
+    "options": [
+      "3",
+      "+ hoặc *",
+      "*",
+      "Không có lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_20",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Output của lệnh sau là: >>> print(1+ 2 + 3+ 4)",
+    "options": [
+      "10",
+      "15",
+      "1 + 2 + 3 + 4",
+      "1 + 2 + 3"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_21",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Phát biểu nào sau đây sai khi nói về python?",
+    "options": [
+      "Python là ngôn ngữ lập trình bậc cao.",
+      "Python có mã nguồn mở thu hút được nhiều nhà khoa học cùng phát triển.",
+      "Python có các lệnh phức tạp nên không phổ biến trong giáo dục.",
+      "Python có các câu lệnh khá gần ngôn ngữ tự nhiên."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_22",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Chọn phát biểu đúng khi nói về môi trường lập trình Python?",
+    "options": [
+      "Chế độ soạn thảo có dấu nhắc",
+      "Ngoài chế độ gõ lệnh trực tiếp và soạn thảo còn có các chế độ khác",
+      "Chế độ gõ lệnh trực tiếp thích hợp cho việc tính toán và kiểm tra nhanh các lệnh",
+      "Chế độ gõ lệnh trực tiếp có con trỏ soạn thảo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_23",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Dùng câu lệnh print và kí tự nào để viết được đoạn văn xuống dòng giữa xâu?",
+    "options": [
+      "Cặp dấu nháy đơn",
+      "Cặp ba dấu nháy kép",
+      "Cặp dấu nháy kép.",
+      "Không thể thực hiện được Câu25: Cho biết các khẳng định nào sau đây là ĐÚNG ?"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_24",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Cho biết các khẳng định nào sau đây là ĐÚNG ?",
+    "options": [
+      "Chú thích làm thay đổi kết quả chạy dịch chương trình",
+      "Chú thích dành cho các lập trình viên để hiểu rõ hơn về chương trình",
+      "Chú thích bắt buộc phải có trong chương trình",
+      "Chú thích trên một dòng bắt đầu bằng cặp 3 dấu ngoặc đơn"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_16_25",
+    "lessonId": "bai_16",
+    "lessonNum": 16,
+    "question": "Cho a = 3, b = 7, c = 9. Lệnh print (a, b, c, sep= ‘,’) sẽ in ra màn hình kết quả nào?",
+    "options": [
+      "379",
+      "3 7 9",
+      "3, 7, 9",
+      "3 – 7 – 9"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_26",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Trong ngôn ngữ Python, tên nào sau đây đặt sai theo quy tắc?",
+    "options": [
+      "11tinhoc",
+      "tinhoc11",
+      "tin_hoc",
+      "_11"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_27",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Đâu là qui tắc ĐÚNG khi đặt tên cho biến trong Python?",
+    "options": [
+      "Tên biến có thể bắt đầu bằng Chữ cái hoặc dấu gạch dưới _.",
+      "Có thể sử dụng từ khóa làm tên biến.",
+      "Tên biến có thể bắt đầu bằng 1 chữ số.",
+      "Tên biến có thể có các kí hiệu @, !, %, $, #,..."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_28",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Lệnh gán giá trị cho biến b nguyên nào sau đây là đúng?",
+    "options": [
+      "b = 10",
+      "B = 10",
+      "b == 10",
+      "b = ‘10’"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_29",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "(a + b > c) and (b + c > a) and (c + a > b) là:",
+    "options": [
+      "Biểu thức quan hệ",
+      "Hàm số học chuẩn",
+      "Biểu thức logic",
+      "Biểu thức số học"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_30",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Chọn các phép toán quan hệ:",
+    "options": [
+      "+, -, *, /",
+      "+, -, *, %, //",
+      "<, >, <=, >=, !=, ==",
+      "and, or, not"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_31",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Xét biểu thức logic (n % 100 < 10) and (n // 100 > 0) Với giá trị nào của n dưới đây để biểu thức trên cho giá trị True?",
+    "options": [
+      "100",
+      "250",
+      "526",
+      "56"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_32",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Biểu thức logic nào sau đây kiểm tra n là một số dương chẵn?",
+    "options": [
+      "(n % 2 == 0) and (n // 2 == 0)",
+      "(n > 0) and (n // 2 == 0)",
+      "(n % 2 == 0) and (n > 0)",
+      "(n % 2 == 0) and (n // 2 != 0)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_33",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Chọn câu lệnh gán SAI:",
+    "options": [
+      "x+=5",
+      "x=x+5",
+      "x=5>=6",
+      "8+5=x"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_34",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Trong NNLT Python, để chú thích nội dung trên một dòng ta sử dụng:",
+    "options": [
+      "Dấu !",
+      "Dấu *",
+      "Dấu #",
+      "Dấu &"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_35",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Để chia lấy phần dư ta sử dụng toán tử nào?",
+    "options": [
+      "div",
+      "mod",
+      "/",
+      "%"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_36",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Phép toán // dùng để:",
+    "options": [
+      "Chia",
+      "Chia lấy phần nguyên",
+      "Chia lấy phần dư",
+      "Làm tròn số"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_37",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Xác định câu lệnh gán sai, với x, y là kiểu số nguyên:",
+    "options": [
+      "x:= 5",
+      "x+= 5",
+      "x*= 5",
+      "x = 5"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_38",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Trong các tên sau, tên nào đặt sai qui tắc?",
+    "options": [
+      "abc",
+      "_abc_",
+      "5ABC",
+      "AbC"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_39",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Tên nào sau đây là đúng khi đặt tên cho đối tượng của Python:",
+    "options": [
+      "R21",
+      "10A3",
+      "Baitap@1",
+      "__Tong%2"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_40",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Các từ. continue, elif, else, not, try, while,... trong Python được gọi là:",
+    "options": [
+      "Tên chuẩn",
+      "Tên do người lập trình đặt",
+      "Tên đặc biệt",
+      "Từ khóa"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_41",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Trường hợp n ào sau đây không phải lệnh gán trong python?",
+    "options": [
+      "cd = 50",
+      "a = a * 2",
+      "a = 10",
+      "a + b = 100"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_42",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Để tính diện tích đường tròn bán kính R, với pi = 3.14, biểu thức nào sau đây trong Python là đúng?",
+    "options": [
+      "S:=R*R*pi",
+      "S=R*R*pi",
+      "S:=2(R)*pi",
+      "S:=R2*pi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_43",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Để viết 3 mũ 4 trong Python chọn",
+    "options": [
+      "3**4",
+      "3//4",
+      "3*3+3*3",
+      "3%4"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_44",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Kết quả khi thực hiện câu lệnh sau: >>>10 - 5 ** 2 + 8//3 +2",
+    "options": [
+      "-11",
+      "11",
+      "7",
+      "Câu lệnh bị lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_45",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Biểu thức nào sau đây không ra kết quả là 1?",
+    "options": [
+      "math.sqrt(25)//4",
+      "math.sqrt(25)/4",
+      "math.sqrt(25)%4",
+      "math.sqrt(25)//5"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_46",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Để khai báo thư viện, ta sử dụng từ khóa:",
+    "options": [
+      "uses",
+      "import",
+      "include",
+      "attach"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_47",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Trong Python, kết quả của biến x sau khi thực hiện câu lệnh x = math.sqrt(20//5) là:",
+    "options": [
+      "4",
+      "0",
+      "16",
+      "2"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_48",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Tên biến nào sau đây là hợp lệ?",
+    "options": [
+      "_if",
+      "global",
+      "break",
+      "try"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_49",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Tên biến nào sau đây là hợp lệ?",
+    "options": [
+      "Bai 1",
+      "23bai_1",
+      "tam&12",
+      "Bai_1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_50",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Tên nào đúng khi đặt tên cho đối tượng của Python:",
+    "options": [
+      "2A",
+      "Tong*Tong",
+      "Tam – giac",
+      "Baitap01"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_51",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Với a, b là hai biết kiểu số nguyên thì câu lệnh nào sau đây SAI?",
+    "options": [
+      "x =a+b",
+      "x =a==b",
+      "x =a!=b",
+      "x = a=>b"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_52",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Trong NNLT Python, cho đoạn chương trình sau: Sau khi thực hiện đoạn chương trình trên, giá trị của a và b là:",
+    "options": [
+      "a = 1, b = 2",
+      "a = 2, b = 1",
+      "a = 1, b = 1",
+      "a = 2, b = 2"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_17_53",
+    "lessonId": "bai_17",
+    "lessonNum": 17,
+    "question": "Câu lệnh gán nào sau đây không hợp lệ ?",
+    "options": [
+      "x = \"\"",
+      "y = [\"so\" , 15, 7.8]",
+      "a,b = 25,6,7",
+      "x,y,z = 3.9, \"tong\", 42 Bài 29. Giá trị của biến x, y sau khi thực hiện đoạn chương trình sau là gì?"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_54",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "int là kiểu dữ liệu nào sau đây ?",
+    "options": [
+      "Kiểu số nguyên",
+      "Kiểu số thực",
+      "Kiểu xâu ký tự",
+      "Kiểu logic"
+    ],
+    "correctIndex": 0,
+    "explanation": "Kiểu int đại diện cho số nguyên trong Python."
+  },
+  {
+    "id": "quiz_18_55",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "float là kiểu dữ liệu nào sau đây?",
+    "options": [
+      "Kiểu số nguyên",
+      "Kiểu số thực",
+      "Kiểu xâu ký tự",
+      "Kiểu logic"
+    ],
+    "correctIndex": 1,
+    "explanation": "Kiểu float đại diện cho số thực trong Python."
+  },
+  {
+    "id": "quiz_18_56",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Kiểu dữ liệu của biểu thức nào sau đây không thuộc kiểu bool?",
+    "options": [
+      "67>78",
+      "17 !=12+3",
+      "14 == 10+2",
+      "'12=10+2 '"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_57",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "str là kiểu dữ liệu nào sau đây?",
+    "options": [
+      "Kiểu số nguyên",
+      "Kiểu số thực",
+      "Kiểu xâu ký tự",
+      "Kiểu logic"
+    ],
+    "correctIndex": 2,
+    "explanation": "Kiểu str đại diện cho xâu kí tự trong Python."
+  },
+  {
+    "id": "quiz_18_58",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Hàm nào sau đây là hàm kiểm tra kiểu dữ liệu ?",
+    "options": [
+      "Style",
+      "Tyle",
+      "Type",
+      "type"
+    ],
+    "correctIndex": 2,
+    "explanation": "Hàm type() dùng để kiểm tra kiểu dữ liệu của một giá trị hoặc biến."
+  },
+  {
+    "id": "quiz_18_59",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cho biến s = ‘Xin chào’, Python sẽ cung cấp cho biến s kiểu dữ liệu nào?",
+    "options": [
+      "string",
+      "bool",
+      "float",
+      "str Nhập từ bàn phím số giây ss Xuất ngay, gio, phut, giay ra màn hình Tính ngay, gio, phut, giay Sơ đồ khối Nhập từ bàn phím 3 cạnh tam giác a, b, c Xuất P và S ra màn hình P = a + b + c S = √ 풑 ( 풑−풂 )( 풑−풃 ) (풑−풄) Sơ đồ khối"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_60",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Biết x có giá trị là 5.6, vậy x thuộc kiểu giá trị nào trong các kiểu sau?",
+    "options": [
+      "bool",
+      "int",
+      "float",
+      "str"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_61",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cho x = -49 và y = 4.9 Python cung cấp kiểu dữ liệu nào cho biến x và y?",
+    "options": [
+      "x là int, y là float",
+      "x là float, y là int",
+      "x, y là int",
+      "x, y là float"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_62",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Hãy cho biết kiểu dữ liệu trả về của biến a sau câu lệnh? a = float(5)",
+    "options": [
+      "Kiểu nguyên",
+      "Kiểu thực",
+      "Kiểu kí tự",
+      "Kiểu logic"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_63",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cho x = 3.4 và y = int(x). Biến y nhận giá trị là:",
+    "options": [
+      "3",
+      "4",
+      "3.4",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_64",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Chọn đáp án đúng khi khởi tạo a là kiểu số nguyên:",
+    "options": [
+      "a = 1",
+      "a = 1.0",
+      "a = “ ”",
+      "a = True"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_65",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cho a, b, c là 3 cạnh của tam giác, kiểu dữ liệu là nào phù hợp với 3 biến trên?",
+    "options": [
+      "str",
+      "bool",
+      "float",
+      "int"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_66",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cho N là tổng học sinh của 1 lớp. Dữ liệu nào sẽ phù hợp với giá trị trên?",
+    "options": [
+      "float",
+      "bool",
+      "int",
+      "str"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_67",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Khi thực hiện câu lệnh x = input(\" nhập giá trị x:\") bạn Lan gõ vào số 5. Câu lệnh tiếp theo là print(2*x) sẽ cho kết quả như thế nào?",
+    "options": [
+      "10",
+      "2*x",
+      "`55`",
+      "Thông báo câu lệnh sai."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_68",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cách khởi tạo các biến nào sau đây không trả về kiểu dữ liệu là số thực?",
+    "options": [
+      "a = float(4)",
+      "b = 5.12",
+      "c = int(3.5)",
+      "d = -5.0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_69",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Trong NNLT Python, để nhập 1 số nguyên từ bàn phím cho biến n, ta chọn câu lệnh nào?",
+    "options": [
+      "input(‘Nhập số nguyên n: ’,n)",
+      "n=int(input(‘Nhập số nguyên n: ’))",
+      "n=int(‘Nhập số nguyên n: ’)",
+      "n:=int(input(‘Nhập số nguyên n: ’))"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_70",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cho đoạn lệnh sau: N = 3 N = (5+N)**2+10 print (N) Kết quả in ra màn hình:",
+    "options": [
+      "26",
+      "64",
+      "74",
+      "25"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_71",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Lệnh xuất kết quả ra màn hình trong Python là:",
+    "options": [
+      "print",
+      "input",
+      "prints",
+      "pritn"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_72",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Để đưa ra màn hình dòng chữ “Xin chao” trong Python ta dùng lệnh:",
+    "options": [
+      "print (Xin chao)",
+      "print (\"Xin chao\")",
+      "input (Xin chao)",
+      "input ('Xin chao')"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_73",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Cho đoạn chương trình sau: a = b = 1 c, d = 1,2 print(a+b+c+d) Kết quả in ra màn hình là:",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_74",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Trong NNLT Python, để nhập số thực cho biến n. Câu lệnh nào đúng?",
+    "options": [
+      "n=input(‘Nhập 1 số thực:’)",
+      "n=int(input(‘Nhập 1 số thực:’))",
+      "n=float(input(‘Nhập 1 số thực:’))",
+      "float(input(‘Nhập số thực n:’))"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_75",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Output của lệnh print (3 >=3) ra kết quả:",
+    "options": [
+      "3 >=3",
+      "True",
+      "False",
+      "None"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_76",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Để khai báo thư viện toán học trong Python ta viết:",
+    "options": [
+      "import",
+      "math",
+      "import_math",
+      "import math"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_77",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Kết quả của câu lệnh sau: import math abs (math.sqrt(25))",
+    "options": [
+      "Error",
+      "-5",
+      "5",
+      "5.0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_78",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Để nhập 2 số nguyên a, b (mỗi số trên 1 dòng) trong Python ta dùng lệnh:",
+    "options": [
+      "a=int(input()) b=int(input())",
+      "a=float(input()) b=float(input())",
+      "a,b=map(int,input().split())",
+      "a,b=map(float,input().split())"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_79",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Để nhập 2 số thực a, b (trên cùng 1 dòng) trong Python ta dùng lệnh:",
+    "options": [
+      "a=int(input()) b=int(input())",
+      "a=float(input()) b=float(input())",
+      "a,b=map(int,input().split())",
+      "a,b=map(float,input().split())"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_18_80",
+    "lessonId": "bai_18",
+    "lessonNum": 18,
+    "question": "Hàm nhập dữ liệu vào từ bàn phím input( ) trả về kiểu dữ liệu nào sau đây?",
+    "options": [
+      "kiểu logic",
+      "kiểu số",
+      "kiểu xâu",
+      "bất kì kiểu nào CÂU HỎI TỰ LUẬN Bài tập 1. Tiền điện được tính như sau: Mỗi 1 kW sau 100 kW đầu tiên phải trả thêm 10% đơn giá điện quy định. Em hãy viết chương trình tính tiền điện, trong đó đơn giá và lượng điện tiêu thụ ( lớn hơn 100 kW) là các số nguyên được nhập vào từ bàn phím. Đáp án:"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_81",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "x, y = 5, 10 if x > y: x+=1 y+=1 print('x =', x, '; y =', y)",
+    "options": [
+      "x = 6 ; y = 10",
+      "x = 5 ; y = 10",
+      "x = 5 ; y = 11",
+      "x = 6 ; y = 11"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_82",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "x, y = 5, 10 if x <= y: x+=1 y+=1 print('x =', x, '; y =', y)",
+    "options": [
+      "x = 6 ; y = 10",
+      "x = 5 ; y = 10",
+      "x = 5 ; y = 11",
+      "x = 6 ; y = 11 − V"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_83",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "x, y = 5, 10 if x <= y: x+=1 else: y+=1 x+=2 print('x =', x, '; y =', y)",
+    "options": [
+      "x = 6 ; y = 10",
+      "x = 7 ; y = 11",
+      "x = 8 ; y = 10",
+      "x = 5 ; y = 11"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_84",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "x, y = 5, 10 if x > y: x+=1 else: y+=1 x+=2 print('x =', x, '; y =', y)",
+    "options": [
+      "x = 6 ; y = 10",
+      "x = 7 ; y = 11",
+      "x = 8 ; y = 10",
+      "x = 5 ; y = 11 − V"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_85",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho a=15, b=8. Hãy tính giá trị của a, b trong trường hợp sau? if a > b: a=b-a b=a+2 else: a=b-a",
+    "options": [
+      "a = 15, b = 8.",
+      "a = -7, b = -5",
+      "a = 5, b = -7.",
+      "a = 5, b = -7."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_86",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Phát biểu nào sau đây có thể lấy làm biếu thức điều kiện trong cấu trúc rẽ nhánh?",
+    "options": [
+      "A+B",
+      "A>B",
+      "A MOD 100",
+      "\"A nho hon B\""
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_87",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho đoạn chương trình sau: if (a!=0): x=9 // a else: x=-1 print (‘ x= ’, x + 1) Khi cho a=0, đoạn chương trình trên sẽ in ra màn hình giá trị x=?",
+    "options": [
+      "0",
+      "-1",
+      "1",
+      "Không xác định"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_88",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Khối lệnh trong đoạn chương trình: if <điều kiện>: < khối lệnh>",
+    "options": [
+      "Luôn thực hiện",
+      "Thực hiện khi điều kiện đúng",
+      "Thực hiện khi điều kiện sai",
+      "Điều kiện không tính được."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_89",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Đoạn chương trình: if <điều kiện>: <khối lệnh 1> else: <khối lệnh 2>",
+    "options": [
+      "Thực hiện khối lệnh 1 khi điều kiện đúng",
+      "Thực hiện khối lệnh 1 khi điều kiện sai",
+      "Thực hiện khối lệnh 2 khi điều kiện đúng",
+      "Thực hiện khối lệnh 1 trước rồi đến khối lệnh 2"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_90",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Trong ngôn ngữ lập trình Python, để điễn đạt rẽ nhánh ta dùng câu lệnh if - else, sau if là <điều kiện> vậy điều kiện là?",
+    "options": [
+      "phép toán logic",
+      "Biểu thức số học",
+      "Câu lệnh đơn",
+      "Biến kiều bool, biều thức so sánh, biểu thức logic"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_91",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Đoạn chương trình: Max=a if b>Max: Max=b Hãy cho biết đoạn chương trình bên dùng để?",
+    "options": [
+      "Tính giá trị a",
+      "Tính giá trị b",
+      "Tìm GTLN trong 2 số a và b",
+      "Tìm GTNN trong 2 số a và b"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_92",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Câu lệnh ghép được sử dụng khi?",
+    "options": [
+      "Cần nhiều lệnh đơn thực hiện một công việc",
+      "Ghép nhiều câu lệnh thành một câu lệnh",
+      "Tác động của câu lệnh trước đó đến nhiều câu lệnh",
+      "Cả ba trường hợp trên"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_93",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho biết giá trị của T sau khi thực hiện đoạn chương trình sau: T=0 A=5 B=7 if A<",
+    "options": [
+      "T=T+A else: T=T-A print(T)",
+      "2",
+      "7",
+      "5"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_94",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Đoạn chương trình: if b>a: Max=b else: Max=a Hãy cho biết đoạn chương trình bên dùng để?",
+    "options": [
+      "Tính giá trị a",
+      "Tính giá trị b",
+      "Tìm giá trị lớn nhất trong 2 số a và b",
+      "Cả ba lựa chọn trên"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_95",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho đoạn chương trình sau: a=3 b=2 if a>b: a=4 else: b=1 Sau khi thực hiện đoạn chương trình bên đáp án nào đúng?",
+    "options": [
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_96",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Dạng nào không phải là câu lệnh if – else trong Python:",
+    "options": [
+      "if <điều kiện> <câu lệnh>",
+      "if <điều kiện> <câu lệnh1> else <câu lệnh2>",
+      "if <điều kiện> else <câu lệnh>",
+      "Cả 3 dạng trên đều sai"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_97",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho a, b là các biến thực. Câu lệnh nào dưới đây tìm min là giá trị nhỏ nhất của a và b?",
+    "options": [
+      "if a<b: min=a;",
+      "if a<b: min=a; else: min=b;",
+      "if a<b: min=a else: min=b",
+      "if a<b: min=a else min=b"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_98",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho đoạn chương trình sau: a=20 b=15 x=a if a<b: x=b Kết quả x bằng bao nhiêu?",
+    "options": [
+      "10",
+      "15",
+      "20",
+      "25"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_99",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho đoạn chương trình: if A>",
+    "options": [
+      "TG=A A=B B=TG Với A=10 và B=5 thì kết quả của A, B sau khi thực hiện đoạn chương trình bên là?",
+      "A=10; B=5",
+      "A=15; B=10",
+      "A= 5; B=10"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_100",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Trong cấu trúc rẽ nhánh. Sau else phải:",
+    "options": [
+      "Phải có dấu chấm phẩy (;)",
+      "Không có dấu gì hết",
+      "Phải có dấu chấm(.)",
+      "Phải có dấu hai chấm(:)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_101",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Cho s và i là biến nguyên. Khi chạy đoạn chương trình sau: s = 100 if s < = 100: s=s+1 print (s) Kết quả xuất ra màn hình là:",
+    "options": [
+      "55",
+      "101",
+      "11",
+      "100 Cho 4 đoạn chương trình sau:"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_102",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Đoạn chương trình 1 bên trên cho kết quả C là bao nhiêu?",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_103",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Lựa chọn kết quả màn hình của đoạn chương trình 2 bên trên:",
+    "options": [
+      "5 + 3 = 8",
+      "m x m = 15",
+      "m + n = 8",
+      "5 x 3 = 15"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_104",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Đoạn chương trình 3 bên trên khi chạy cho kết quả màn hình là?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "Chương trình báo lỗi."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_105",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Chọn kết quả tren màn hình của đoạn chương trình 4 bên trên:",
+    "options": [
+      "8",
+      "9",
+      "10",
+      "Chương trình báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_106",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Đọan chương trình sau cho ra kết quả trên màn hình là gì? a=0 if a>0: a=1 print (a)",
+    "options": [
+      "0",
+      "1",
+      "không ra gì cả",
+      "Báo lỗi vì không có else"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_107",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Trong ngôn ngữ lập trình Python, muốn kiểm tra đồng thời cả 3 giá trị của A, B, C có lớn hơn 0 hay không ta viết điều kiện sau if nào là đúng?",
+    "options": [
+      "if A, B, C >0: ......",
+      "if A and B and C >0: .......",
+      "if (A>0) or (B>0) or (C>0): .......",
+      "if (A>0 and B>0 and C>0): ........"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_108",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Biểu thức nào sau đây cho kết quả True khi n là số lẻ?",
+    "options": [
+      "n // 2 == 0",
+      "n % 2 ==1",
+      "n % 2 == 0",
+      "n // 2 == 1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_19_109",
+    "lessonId": "bai_19",
+    "lessonNum": 19,
+    "question": "Câu lệnh nào sau đây đúng:",
+    "options": [
+      "if (n % 2 < 0): print(''Day la so chan!'') else: print(''Day la so le!'')",
+      "if (n % 2 > 0): print(''Day la so chan!'') else: print(''Day la so le!'')",
+      "if (n % 2 == 0): print(''Day la so chan!'') else: print(''Day la so le!'')",
+      "if (n % 2 != 0): print(''Day la so chan!'') else: print(''Day la so le!'')"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_110",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Vòng lặp nào trả về kết quả như cột bên trái dưới đây? 11111 22222 33333 44444 55555",
+    "options": [
+      "for i in range(1, 6): print(i, i, i, i, i)",
+      "for i in range(1, 5): print(str(i) * 5)",
+      "for i in range(1, 6): print(str(i) * 5)",
+      "for i in range(0, 5): print(str(i) * 5)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_111",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Điền phần còn thiếu trong đoạn code để được out như cột bên trái dưới đây: 55555 44444 33333 22222 11111 for i in range(5, 0, ____ ): print(str(i) * 5)",
+    "options": [
+      "0",
+      "None",
+      "1",
+      "-1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_112",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Trong NNLT Python, câu lệnh nào sau đây đúng khi in ra màn hình các số tự nhiên từ 0 đến 10 trên 1 dòng?",
+    "options": [
+      "for i in range(9): print(i,end='')",
+      "for i in range(10): print(i,end='')",
+      "for i in range(11): print(i,end='')",
+      "for i in range(12): print(i,end='')"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_113",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Trong NNLT Python, câu lệnh nào sau đây sai khi in ra màn hình các số tự nhiên từ 0 đến 10 trên 1 dòng?",
+    "options": [
+      "for i in range(0,11,1): print(i,end='')",
+      "for i in range(11): print(i,end='')",
+      "for i in range(0,11): print(i,end='')",
+      "for i in range(11,1): print(i,end='')"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_114",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Trong NNLT Python, câu lệnh nào sau đây đúng khi in ra màn hình các số tự nhiên từ 10 đến 0 trên 1 dòng?",
+    "options": [
+      "for i in range(10,0,-1): print(i,end='')",
+      "for i in range(10,-1): print(i,end='')",
+      "for i in range(10,-1,-1): print(i,end='')",
+      "for i in range(10,1,-1): print(i,end='')"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_115",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Cho đoạn chương trình sau: s=0 for i in range(5): s=s+i Sau khi thực hiện, giá trị của s bằng bao nhiêu?",
+    "options": [
+      "5",
+      "10",
+      "0",
+      "15"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_116",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Đoạn chương trình for i in range(5): print(i,end='') cho kết quả là:",
+    "options": [
+      "1234",
+      "12345",
+      "01234",
+      "012345"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_117",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Đoạn chương trình sau cho kết quả là gì? for i in range(10): if i%2==0: print(i,end='')",
+    "options": [
+      "02468",
+      "13579",
+      "2468",
+      "246810"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_118",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Đoạn chương trình for i in range(0,10,2): print(i, end='') cho kết quả gì?",
+    "options": [
+      "2468",
+      "13579",
+      "02468",
+      "246810"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_119",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Đoạn chương trình for i in range(9, 0, -1): print(i,end='') cho kết quả gì?",
+    "options": [
+      "123456789",
+      "987654321",
+      "02468",
+      "86420"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_120",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Hãy cho biết dãy các số được tạo ra của hàm range(2,6,2)?",
+    "options": [
+      "2, 3, 4, 5",
+      "2, 4",
+      "1, 2, 3",
+      "2, 4, 6"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_121",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Cho đoạn chương trình: S= 0 for i in range(3,7): S = S + 10 // i print(S) Kết quả của S sau khi thực hiện đoạn chương trình trên?",
+    "options": [
+      "18",
+      "8",
+      "9",
+      "14"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_122",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Cho đoạn chương trình: S=0 for i in range(1,11,2): if (i % 3) == 0: S= S + i print(S) Kết quả của S sau khi thực hiện đoạn chương trình trên là:",
+    "options": [
+      "31",
+      "30",
+      "34",
+      "12"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_123",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Trong NNLT Python, câu lệnh lặp với số lần biết trước là:",
+    "options": [
+      "if",
+      "while",
+      "for",
+      "include"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_124",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Khi thực hiện câu lệnh: for i in range(7,12): print(‘Hello World’) thì trên màn hình sẽ xuất hiện bao nhiêu dòng chữ “Hello World” trên màn hình?",
+    "options": [
+      "12",
+      "6",
+      "5",
+      "7"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_125",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Cho đoạn lệnh sau: for i in range(5): print(i,end= ' ') Trên màn hình kết quả xuất hiện:",
+    "options": [
+      "0 1 2 3 4 5",
+      "1 2 3 4 5",
+      "0 1 2 3 4",
+      "1 2 3 4"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_126",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Hày chọn dãy số do hàm range(1,10,2)tạo ra:",
+    "options": [
+      "1,3,5,7,9",
+      "1,2,3,4,5,6,7,8,9,10",
+      "1,3,5,7,9,10",
+      "1,3,5,7,10"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_127",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Cho đoạn chương trình sau: s=0 for i in range(6): s=s+i Sau khi thực hiện đoạn chương trình bên giá trị của s là:",
+    "options": [
+      "1",
+      "15",
+      "6",
+      "21"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_20_128",
+    "lessonId": "bai_20",
+    "lessonNum": 20,
+    "question": "Cho đoạn chương trình sau: s=0 for i in range(1,7,2): s=s+i Sau khi thực hiện đoạn chương trình bên giá trị của s là:",
+    "options": [
+      "9",
+      "15",
+      "6",
+      "21 CÂU HỎI TỰ LUẬN Bài tập 1. Kết quả thực hiện câu lệnh for dưới đây là gì for i in range (10): ........................................................................ print (i*i) ........................................................................ Bài tập 2. cho đoạn chương trình sau : sum = 0 for i in range (1,11): sum = sum + i*i print (sum) a) Kết quả thực hiện các câu lệnh trên là gì ? .................................................................................................................... b) Nếu thay câu lệnh for i in range (1,11) bằng câu lệnh for i in range (11) thì kết quả thu được có thay đổi không? vì sao ? .................................................................................................................... .................................................................................................................... .................................................................................................................... - Viết chương trình giải bài toán dân gian : \" Vừa gà vừa chó bó lại cho tròn Ba mươi sáu ( 36) con Một trăn (100) chân chẵn Hỏi có mấy gà mấy chó ? \" - Viết chương trình giải bài toán dân gian TRĂM TRÂU TRĂM CỎ \" Trâu đứng ăn năm Trâu nằm ăn ba Lụ khụ trâu già Ba con một bó Trăm con ăn cỏ Trăm bó no nê Hỏi có bao nhiêu trâu đứng, trâu nằm, trâu già ?"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_21_129",
+    "lessonId": "bai_21",
+    "lessonNum": 21,
+    "question": "Trong câu lệnh While thì dãy câu lệnh nào chỉ được thực hiện khi điều kiện còn?",
+    "options": [
+      "True",
+      "True hoặc False",
+      "False",
+      "Khác 0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_21_130",
+    "lessonId": "bai_21",
+    "lessonNum": 21,
+    "question": "Trong câu lệnh While, ngay sau điều kiện sẽ là dấu nào?",
+    "options": [
+      ";",
+      "?",
+      "=",
+      ":"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_21_131",
+    "lessonId": "bai_21",
+    "lessonNum": 21,
+    "question": "Cú pháp của câu lệnh lặp với số lần chưa biết trước là?",
+    "options": [
+      "while <điều kiện>: <Khối lệnh>",
+      "while <điều kiện> do < Khối lệnh>",
+      "while < Khối lệnh>: <điều kiện>",
+      "while < Khối lệnh> do <điều kiện>"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_21_132",
+    "lessonId": "bai_21",
+    "lessonNum": 21,
+    "question": "Cho đoạn chương trình: s=0 i=10 while i >= 1: s = s + 2*i i = i - 2 print(s) Kết quả của s sau khi thực hiện đoạn chương trình trên là:",
+    "options": [
+      "60",
+      "15",
+      "14",
+      "28"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_21_133",
+    "lessonId": "bai_21",
+    "lessonNum": 21,
+    "question": "Cho đoạn chương trình sau: a = 12 b = 16 while a!=b: if a>b: a = a - b else: b = b - a Sau khi thực hiện đoạn chương trình trên, giá trị của a và b lần lượt là:",
+    "options": [
+      "4 và 48",
+      "4 và 4",
+      "16 và 12",
+      "12 và 16"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_21_134",
+    "lessonId": "bai_21",
+    "lessonNum": 21,
+    "question": "Tính tống S = 1 + 2 + 3 + ... + n + ... cho đến khi S>109. Điều kiện nào sau đây cho vòng lặp while là đúng:",
+    "options": [
+      "While S>=109:",
+      "While S =109:",
+      "While S <=109:",
+      "While S !=109:"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_21_135",
+    "lessonId": "bai_21",
+    "lessonNum": 21,
+    "question": "Cho đoạn chương trình sau: s=0 i=1 while i<=5: s=s+i i=i+1 Sau khi thực hiện đoạn chương trình trên giá trị của s là:",
+    "options": [
+      "9",
+      "15",
+      "5",
+      "10 Bài tập 1. Số hoàn hảo là số tự nhiên có giá trị bằng tổng các ước thực sự của nó ( các ước số nhỏ hơn chính nó). Ví dụ một vài số hoàn hảo : 6: 1+2+3 = 6 28: 1+2+4+7+14 = 28 496: 1+2+4+8+16+31+62+124+248 = 496 8128 : 1+2+4+8+16+32+64+127+254+508+1016+2032+4064=8128 Em hãy viết chương trình số hoàn hảo đầu tiên lớn hơn số tự nhiên n được nhập vào từ bàn phím. ...................................................................................................................................................... ...................................................................................................................................................... ...................................................................................................................................................... ...................................................................................................................................................... ......................................................................................................................................................"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_136",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Trong NNLT Python, đối tượng L = [1, 23, “Hello”, 9] thuộc kiểu dữ liệu nào?",
+    "options": [
+      "List",
+      "Dictionary",
+      "Tuple",
+      "Array"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_137",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Đâu là giá trị của color[2]? color = [‘red’, ‘orange’, ‘yellow’, ‘green’, ‘blue’, ‘indigo’, ‘violet’]",
+    "options": [
+      "orange",
+      "indigo",
+      "blue",
+      "yellow"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_138",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cho đoạn chương trình dưới đây: mylist = [1, 5, 9, int(‘0’)] print (sum (mylist)) Kết quả sau khi chạy chương trình bên là:",
+    "options": [
+      "16",
+      "15",
+      "63",
+      "False"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_139",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cho đoạn chương trình sau đây: list1=[1, 3] list2 = list1 list1[0] = 4 print (list2) Kết quả sau khi chạy chương trình bên là:",
+    "options": [
+      "[4, 3]",
+      "[1, 3]",
+      "[1, 4]",
+      "[1, 3, 4]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_140",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Kết quả của câu lệnh num = ‘5’ * ‘5’ là gì?",
+    "options": [
+      "333",
+      "27",
+      "25",
+      "TypeError: can't multiply sequence by non-int of type 'str'"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_141",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Đoạn chương trình sau cho kết quả gì?",
+    "options": [
+      "x,s,i,e,m,a,n,y,m",
+      "m,y,n,a,m,e,i,s,x",
+      "m,y,n,a,m,e,i,s",
+      "m,,y,,n,,a,,m,,e,,i,,s,,x"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_142",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Kết quả của đoạn chương trình sau là gì?",
+    "options": [
+      "2,4,0,6",
+      "True",
+      "[2,4,0,6]",
+      "(2,4,0,6)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_143",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Kết quả của đoạn chương trình sau là gì?",
+    "options": [
+      "[False, True, False]",
+      "False",
+      "(False, True, False)",
+      "Error"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_144",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Muốn tham chiếu đến 1 phần tử nào đó trong danh sách, ta cần phải có thông tin nào?",
+    "options": [
+      "Tên danh sách, chỉ số",
+      "Độ dài danh sách",
+      "Chỉ số của kí tự trong danh sách",
+      "Phải biết đó là kí tự gì trong danh sách"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_145",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Chọn câu phát biểu đúng về dữ liệu kiểu danh sách:",
+    "options": [
+      "Các phần tử trong danh sách được phân cách nhau bởi dấu phẩy (,).",
+      "Các phần tử trong danh sách được phân cách nhau bởi dấu chấm phẩy (;).",
+      "Các phần tử trong danh sách được phân cách nhau bởi dấu hai chấm (:).",
+      "Các phần tử trong danh sách được phân cách nhau bởi dấu cách."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_146",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Chọn câu phát biểu sai về dữ liệu kiểu danh sách:",
+    "options": [
+      "Các phần tử trong danh sách có thể khác kiểu.",
+      "Các phần tử trong danh sách phân biệt bằng chỉ số.",
+      "Các phần tử trong danh sách được giới hạn bởi cặp ngoặc tròn ( ).",
+      "Cấu trúc của 1 danh sách rỗng empty = [ ]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_147",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cách tham chiếu đến 1 phần tử trong danh sách:",
+    "options": [
+      "Tên danh sách, tiếp theo là chỉ số được viết trong cặp dấu {và}.",
+      "Tên danh sách, tiếp theo là chỉ số được viết trong cặp dấu [và].",
+      "Chỉ số được đặt ngay sau tên danh sách.",
+      "Tên danh sách, tiếp theo là chỉ số được viết trong cặp dấu (và)."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_148",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Muốn truy cập đến phần tử thứ 5 của danh sách A ta phải theo cú pháp:",
+    "options": [
+      "A[4]",
+      "A5",
+      "A[5]",
+      "A{5}"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_149",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Trong NNLT Python, hàm insert(vt,n) thực hiện công việc gì?",
+    "options": [
+      "Thêm n phần tử mới vào danh sách ở vị trí thứ vt.",
+      "Thêm phần tử n mới vào danh sách ở vị trí thứ vt.",
+      "Thêm vt phần tử mới vào danh sách ở vị trí thứ n.",
+      "Thêm phần tử vt mới vào danh sách ở vị trí thứ n."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_150",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cho biết kết quả in ra màn hình của đoạn chương trình sau:",
+    "options": [
+      "[False, Error, True]",
+      "[True, Python, True]",
+      "[False, 'Python', True]",
+      "[False, Python, True]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_151",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Đoạn chương trình sau dùng để làm gì?",
+    "options": [
+      "Xuất ra giá trị trung bình của list.",
+      "Xuất ra giá trị nhỏ nhất của list.",
+      "Xuất ra giá trị lớn nhất của list.",
+      "Xuất ra tổng các giá trị số trong list."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_152",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Đoạn chương trình sau dùng để làm gì?",
+    "options": [
+      "Xuất ra giá trị trung bình của list.",
+      "Xuất ra giá trị nhỏ nhất của list.",
+      "Xuất ra giá trị lớn nhất của list.",
+      "Xuất ra tổng các giá trị số trong list. CÂU HỎI TỰ LUẬN Bài tập 1. Giả sử danh sách được xác định như sau : A = [ 1,2,3,10,\"Việt\", true] Em hãy cho biết câu lệnh sau in gì ra màn hình: print(A[2], A[4], A[5], len(A)] Bài tập 2. Cho A = [7, -3, 5], cho biết kết quả các câu lệnh khi thực hiện theo thứ tự gì? a) del A[0] ..................... b) A = [0, 2] + A ..................... c) A = A + [15] ..................... d) A[1] = A[1] * 2 ..................... Bài tập 3. Cho chương trình nhập vào một danh sách các số nguyên từ bàn phím. Xuất ra màn hình số lượng các phần tử chẵn trong danh sách. Hãy ghi ý nghĩa từng dòng lệnh Bài tập 4. Cho chương trình nhập vào một danh sách các số nguyên từ bàn phím. Xuất ra màn hình phần tử lớn nhất trong danh sách. Hãy ghi ý nghĩa từng dòng lệnh Chương trình Ý nghĩa - n = int(input(\"Nhập n: \")) - a = [] - for i in range(n): - print('Nhập số thứ:',i+1) .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... Chương trình Ý nghĩa - n = int(input(\"Nhập n: \")) - a =[] - for i in range(n): - print('Nhập số thứ:',i+1) - num = int(input()) - a.append(num) - dem = 0 - for i in range(n): - if(a[i]%2==0): - dem = dem+1 - print (\"Số lượng phần tử chẵn trong list là:\", dem ) .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... - num = int(input()) - a.append(num) 7. Maxx=a[0] - for i in range(n): - if(a[i]>Max): 10. Maxx=a[i] - print (\"Số lớn nhất trong list là:\",Maxx) .................................................................... .................................................................... .................................................................... .................................................................... .................................................................... Bài tập 5. Cho A là danh sách được xác định như sau : A = [1, -2, -3.5, 4, 6, -2.5]. Em hãy cho biết kết quả thực hiện các câu lệnh sau : a s = 0 for i in range (len(A)): if A[i] > 0 s = s + A[i] print(s) .................................................................................... .................................................................................... .................................................................................... .................................................................................... b for i in range(len(A)): A[i] = A[i] + 3 .................................................................................... .................................................................................... c k = 0 for i in range(1,4): if A[i] < 0 k = k + 1 print (k) .................................................................................... .................................................................................... .................................................................................... - Kết quả khảo sát về tình hình thu nhập của n ( n>0) gia đình được chọn ngẫu nhiên ở một địa phương được nhập vào từ bàn phím vào hai danh sách : danh sách thứ nhất là họ tên các chủ hộ , danh sách thứ hai là thu nhập tương ứng của từng hộ gia đinh theo đơn vị triệu đồng. Viết các câu lệnh thực hiện việc tạo hai danh sách đó."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_153",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cho danh sách: I = [2, 78, 5, 21] Nếu muốn danh sách này đảo ngược thứ tự ta sử dụng phương pháp nào?",
+    "options": [
+      "I.reverse( )",
+      "reverse(I)",
+      "reversed(I)",
+      "I(reverse[ ])"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_154",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cho biết hàm remove trong đoạn chương trình sau dùng để làm gì?",
+    "options": [
+      "Hoán đổi vị trí phần tử trong list",
+      "Xóa 1 phần tử khỏi list",
+      "Sao chép phần tử trong list",
+      "Di chuyển phần tử trong list đến 1 vị trí khác"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_155",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Để kiểm tra một giá trị có nằm trong danh sách hay không, ta dùng cú pháp nào sau đây?",
+    "options": [
+      "<giá trị> in <danh sách>",
+      "<danh sách> in <giá trị>",
+      "<giá trị> on <danh sách>",
+      "<giá trị> insert <danh sách>"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_156",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cho đoạn chương trình sau: Kết quả in ra màn hình là:",
+    "options": [
+      "[a, aa, aaa, b, bb]",
+      "['a', 'aa', 'aaa', 'b', 'bb']",
+      "['a', 'aa', 'aaa', 'b', 'bb', 'bbb']",
+      "None of the above"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_157",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Lệnh A . append(x) dùng để làm gì?",
+    "options": [
+      "Bổ sung phần tử x vào cuối danh sách.",
+      "Bổ sung phần tử x vào đầu danh sách.",
+      "Bổ sung phần tử x vào giữa danh sách.",
+      "Xoá phần tử x từ danh sách"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_158",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Để xoá toàn bộ dữ liệu của danh sách A, dùng lệnh nào sau đây?",
+    "options": [
+      "A . clear()",
+      "A . remove()",
+      "A . del()",
+      "A . append()"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_159",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Lệnh A . insert(k,x) dùng để làm gì?",
+    "options": [
+      "Chèn phần tử x vào vị trí k của danh sách A",
+      "Chèn phần tử k vào vị trí x của danh sách A",
+      "Chèn phần tử k và x vào danh sách A",
+      "Xoá phần tử k và x của danh sách A"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_160",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Để xoá phần tử x từ danh sách A, câu lệnh nào sau đây đúng?",
+    "options": [
+      "A . remove(x)",
+      "A . clear(x)",
+      "A . insert(x)",
+      "remove.A(x)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_161",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Các dòng lệnh sau đây cho kết quả là gì?",
+    "options": [
+      "[1]",
+      "[0]",
+      "[0,1]",
+      "[1,0]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_162",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Các dòng lệnh sau cho kết quả là dãy số nào?",
+    "options": [
+      "[1, 4, 10, 5, 0]",
+      "[1, 4, 10, 3, 0]",
+      "[1, 4, 10, 0, 5]",
+      "[1, 4, 10, 0, 3]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_163",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Danh sách A trước và sau lệnh insert() là [1,4,10,0] và [1,4,10,5,0]. Lệnh đã dùng là gì?",
+    "options": [
+      "Lệnh đã dùng là",
+      "insert(3,5)",
+      "Lệnh đã dùng là",
+      "insert(2,5)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_164",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Xét đoạn chương trình sau: Khi chạy chương trình, nếu nhập n=5 thì kết quả là:",
+    "options": [
+      "[0, 2, 4, 6, 8]",
+      "[2, 4, 6, 8]",
+      "[1, 2, 3, 4, 5]",
+      "[0, 2, 4, 6, 8, 10]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_165",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Đoạn chương trình sau cho kết quả là gì?",
+    "options": [
+      "A= [ ]",
+      "A= [1, 2, 3, 4, 5 ]",
+      "A= [2, 3, 4, 5 ]",
+      "A= [1, 2, 3, 4 ]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_23_166",
+    "lessonId": "bai_22_23",
+    "lessonNum": 23,
+    "question": "Cho đoạn chương trình sau: Kết quả in ra màn hình là:",
+    "options": [
+      "['Tech', 404, 3.03, 'Beamers', 33.3]",
+      "[404, 3.03]",
+      "['Tech', 3.03]",
+      "None of the above"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_167",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Biểu thức \"\" in \"0123\" _ trả lại giá trị gì?",
+    "options": [
+      "True",
+      "False",
+      "Báo lỗi",
+      "Số 1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_168",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Biểu thức logic sau trả kết quả nào? \"010\" in \"001100\"",
+    "options": [
+      "True",
+      "False",
+      "4",
+      "-1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_169",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Xâu rỗng là xâu có độ dài bằng:",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_170",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Để biết độ dài của xâu s, ta dùng hàm:",
+    "options": [
+      "str(s)",
+      "len(s)",
+      "length(s)",
+      "s.len( )"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_171",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Cho xâu s1 = 'ab', xâu s2 = 'a'. Câu lệnh s1 in s2 cho kết quả là:",
+    "options": [
+      "true",
+      "True",
+      "false",
+      "False"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_172",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Cho xâu st = 'abc'. Xâu st có độ dài là:",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_173",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Để khởi tạo xâu rỗng s, ta dùng lệnh:",
+    "options": [
+      "s = '0'",
+      "s = ' '",
+      "s = [ ]",
+      "s = 0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_174",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Trong NNLT Python, xâu kí tự là:",
+    "options": [
+      "Dãy các kí tự trong bảng mã ASCII.",
+      "Dãy các kí tự Unicode",
+      "Mảng các kí tự.",
+      "Tập hợp các chữ cái và các chữ số trong bảng chữ cái tiếng Anh."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_175",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Trong NNLT Python, phần tử đầu tiên của xâu kí tự mang chỉ số là?",
+    "options": [
+      "0",
+      "1",
+      "Không có chỉ số",
+      "Do người lập trình khai báo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_176",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Trong NNLT Python, xâu không có kí tự nào được gọi là?",
+    "options": [
+      "Xâu rỗng",
+      "Xâu trắng",
+      "Xâu không",
+      "Không phải xâu"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_177",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Cách tham chiếu đến một phần tử trong xâu:",
+    "options": [
+      "Tên xâu, tiếp theo là chỉ số được đặt trong cặp dấu {và}.",
+      "Tên xâu, tiếp theo là chỉ số được đặt trong cặp dấu [và].",
+      "Chỉ số được đặt ngay sau tên biến xâu.",
+      "Tên xâu, tiếp theo là chỉ số được đặt trong cặp dấu (và)."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_178",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Muốn truy cập đến phần tử thứ 5 của xâu A ta phải theo cú pháp:",
+    "options": [
+      "A[4]",
+      "A4",
+      "A(4)",
+      "A{4}"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_179",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Cho biết giá trị của xâu s sau khi thực hiện các lệnh sau đây: S = ‘Hoang Anh Tuan’ x = S[3:7] L = len(x)",
+    "options": [
+      "ang",
+      "ng An",
+      "ang An",
+      "ng A"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_180",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Có bao nhiêu cách duyệt từng kí tự của xâu?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_181",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Phát biểu nào sau đây là sai?",
+    "options": [
+      "Truy cập từng kí tự của xâu qua chỉ số, chỉ số từ 0 đến độ dài len()",
+      "Truy cập từng kí tự của xâu qua chỉ số, chỉ số từ 0 đến độ dài len() -1",
+      "Xâu kí tự trong Python là dãy các kí tự Unicode",
+      "Xâu có thể được coi là danh sách các kí tự nhưng không thay đổi từng kí tự của xâu"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_182",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Đoạn chương trình sau cho kết quả là gì?",
+    "options": [
+      "1 7 2",
+      "8 1 7",
+      "8 1 7 2",
+      "7 2 3"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_183",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Đoạn chương trình sau cho kết quả là:",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "6"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_184",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Đoạn chương trình sau cho kết quả là:",
+    "options": [
+      "19",
+      "18",
+      "20",
+      "21"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_24_185",
+    "lessonId": "bai_24_25",
+    "lessonNum": 24,
+    "question": "Xét đoạn chương trình: Kết quả hiển thị nào sau đây là đúng?",
+    "options": [
+      "s có chứa chữ số",
+      "s không có chứa chữ số",
+      "2",
+      "19"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_186",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Lệnh \"abcde\".find(\"\") trả lại giá trị gì?",
+    "options": [
+      "-1",
+      "0",
+      "1",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_187",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Lệnh sau trả lại giá trị gì? \"0123456789\".find(\"012abc\")",
+    "options": [
+      "-1",
+      "0",
+      "1",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_188",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Lệnh sau trả lại giá trị gì? len(\" Hà Nội Việt Nam \".split())",
+    "options": [
+      "0",
+      "4",
+      "5",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_189",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Lệnh sau trả lại giá trị gì? \"Trường Sơn\".find(\"Sơn\",4)",
+    "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_190",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Lệnh sau trả lại giá trị gì? \"Trường Sơn\".find(\"Sơn\",8)",
+    "options": [
+      "5",
+      "6",
+      "7",
+      "-1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_191",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Để thay thế kí tự 'a' trong xâu s bằng một xâu mới rỗng ta dùng lệnh:",
+    "options": [
+      "s = s.replace('a',' ')",
+      "s = s.replace('a')",
+      "s = replace(a,'')",
+      "s = s.replace( )"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_192",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Trong NNLT Python, để tìm vị trí xuất hiện đầu tiên của xâu A trong xâu B ta viết:",
+    "options": [
+      "<xâu A>.find<xâu B>",
+      "<xâu B>.find(<xâu A>)",
+      "find (<xâu A>,<xâu B>)",
+      "find (<xâu B>,<xâu A>)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_193",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Trong NNLT Python, hàm y[m:n] thực hiện việc gì trong các việc sau đây?",
+    "options": [
+      "Xác định xâu con của xâu n từ vị trí y đến trước vị trí m.",
+      "Xác định xâu con của xâu y từ vị trí m đến trước vị trí n+1.",
+      "Xác định xâu con của xâu y từ vị trí n đến trước vị trí m-1.",
+      "Xác định xâu con của xâu y từ vị trí m đến vị trí n-1."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_194",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Cú pháp của lệnh split() là:",
+    "options": [
+      "<xâu mẹ> . split(<kí tự tách>)",
+      "<xâu mẹ> . split(<xâu con>)",
+      "<xâu mẹ> : split(<kí tự tách>)",
+      "<xâu mẹ> : split(<xâu con>)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_195",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Cú pháp của lệnh join() là:",
+    "options": [
+      "‘kí tự nối’ . join(<danh sách>)",
+      "‘kí tự nối’ : join(<danh sách>)",
+      "‘kí tự nối’ . join(<xâu mẹ>)",
+      "‘kí tự nối’ . join(<xâu con>)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_196",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Phát biểu nào sau đây là sai?",
+    "options": [
+      "Lệnh join() và lệnh split() có chưc năng giống nhau là dùng để nối xâu",
+      "Để tìm một xâu trong một xâu khác có thể dùng toán tử in hoặc lệnh find(). Lệnh find() trả về vị trí của xâu con trong xâu mẹ",
+      "Lệnh split() tách một xâu thành các từ và đưa vào một danh sách",
+      "Lệnh join() có tác dụng ngược với lệnh plit(), có chức năng nối các phần tử (là xâu) của một danh sách thành một xâu"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_197",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Các dòng lệnh sau đây cho kết quả là gì?",
+    "options": [
+      "19",
+      "True",
+      "False",
+      "20"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_198",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Các dòng lệnh sau đây cho kết quả là gì?",
+    "options": [
+      "True",
+      "19",
+      "False",
+      "20"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_199",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Các dòng lệnh sau đây cho kết quả là gì?",
+    "options": [
+      "['Tin', 'học', '10', 'kết', 'nối', 'tri', 'thức']",
+      "['Tin, học, 10, kết, nối, tri, thức]",
+      "['Tin học 10 kết nối tri thức']",
+      "[Tin học 10 kết nối tri thức]"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_25_200",
+    "lessonId": "bai_24_25",
+    "lessonNum": 25,
+    "question": "Các dòng lệnh sau đây cho kết quả là gì?",
+    "options": [
+      "'Tin-học-10-kết-nối-tri-thức'",
+      "'Tin học 10 kết nối tri thức'",
+      "'Tin, học, 10, kết, nối, tri, thức'",
+      "'Tin’-‘học’-‘10’-‘kết’-‘nối’-‘tri’-‘thức'"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_201",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Trong định nghĩa của hàm có thể có bao nhiêu từ khóa return?",
+    "options": [
+      "1",
+      "2",
+      "Báo lỗi",
+      "Không hạn chế"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_202",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Mệnh đề nào dưới đây mô tả đúng về hàm tự định nghĩa không trả lại giá trị?",
+    "options": [
+      "Trong mô tả hàm không có từ khóa return",
+      "Trong mô tả hàm chỉ có một từ khóa return",
+      "Trong mô tả hàm phải có tối thiểu hai từ khóa return",
+      "Trong mô tả hàm hoặc không có return hoặc có return nhưng không có giá trị sau từ khóa return"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_203",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Từ khóa nào dùng để định nghĩa hàm trong Python?",
+    "options": [
+      "function",
+      "def",
+      "return",
+      "void"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_204",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Hãy cho biết thứ tự khi thực hiện định nghĩa một hàm trả về giá trị trong Python: (1) <Khối lệnh> (2) return <giá trị> (3) def <tên_hàm> (<tham số>):",
+    "options": [
+      "(1), (2), (3)",
+      "(2), (3), (1)",
+      "(1), (3), (2)",
+      "(3), (1), (2)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_205",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Phát biểu nào sau đây sai?",
+    "options": [
+      "Lệnh x = int( ’52 + 25’) chuyển xâu ’52 + 25’ thành số nguyên 77",
+      "Lệnh print(“Thời khoá biểu”) thực hiện việc in xâu kí tự “Thời khoá biểu” trong dấu ngoặc ra màn hình",
+      "Lệnh x = int( ‘52’) chuyển xâu ‘52’ thành số nguyên 52",
+      "Lệnh type(y) trả lại kiểu dữ liệu của biến y"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_206",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Phát biểu nào sau đây sai?",
+    "options": [
+      "len(): tham số là danh sách hoặc xâu kí tự và trả về giá trị kiểu số thực.",
+      "float(): tham số là một xâu kí tự hoặc số nguyên và trả về giá trị số thực.",
+      "str(): tham số là các kiểu dữ liệu khác nhau và trả về xâu kí tự.",
+      "len(): tham số là danh sách hoặc xâu kí tự và trả về giá trị kiểu số nguyên."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_207",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Các dòng lệnh sau đây cho kết quả là:",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_208",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Các dòng lệnh sau cho kết quả là:",
+    "options": [
+      "Trần Quang Minh",
+      "Xin chào bạn",
+      "Xin chào bạn Trần Quang Minh",
+      "Xin chao ban Trần Quang Minh"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_26_209",
+    "lessonId": "bai_26_28",
+    "lessonNum": 26,
+    "question": "Xét đoạn chương trình sau: Khi chạy chương trình, nếu nhập Hồ Hiếu Học thì kết quả là:",
+    "options": [
+      "Xin chào Hồ Hiếu Học",
+      "Hồ Hiếu Học",
+      "Xin chào ten",
+      "Xin chào em Hồ Hiếu Học"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_210",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Hàm tự định nghĩa trong Python có thể có bao nhiêu tham số",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "Không hạn chế"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_211",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Khi gọi hàm, dữ liệu được truyền vào hàm được gọi là gì?",
+    "options": [
+      "Tham số",
+      "Hiệu số",
+      "Đối số",
+      "Hàm số"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_212",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Đoạn chương trình sau sẽ in ra số nào? >>> def f (x, y) : z = x + y return x*y*z >>> f (1, 4)",
+    "options": [
+      "10",
+      "18",
+      "20",
+      "30"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_213",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Hàm func(m,n) được định nghĩa như sau: def func(m, n): return 3*m + n m = 10 Kết quả sẽ in ra số nào?",
+    "options": [
+      "30",
+      "31",
+      "32",
+      "Báo lỗi n = 1 print (func(m, n))"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_214",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Cho biết tham số trong đoạn chương trình sau? def f (A, x):",
+    "options": [
+      "append (x*x) return A C=[1, 2, 3] print(f(C, 4))",
+      "A, x",
+      "C",
+      "f(A,x)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_215",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Cho biết tham số trong đoạn chương trình sau? def somu (x, y=2): return x * x + y print ( somu(2))",
+    "options": [
+      "x",
+      "x, y",
+      "2",
+      "y"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_216",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Phát biểu nào sau đây sai?",
+    "options": [
+      "Khi gọi hàm, các tham số sẽ được truyền bằng giá trị thông qua đối số của hàm, số lượng giá trị được truyền vào hàm khác với số tham số trong khai báo của hàm.",
+      "Tham số của hàm được định nghĩa khi khai báo hàm và được dùng như biến trong định nghĩa hàm.",
+      "Đối số là giá trị được truyền vào khi gọi hàm.",
+      "Khi gọi hàm, các tham số sẽ được truyền bằng giá trị thông qua đối số của hàm, số lượng giá trị được truyền vào hàm bằng với số tham số trong khai báo của hàm."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_217",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Xét hai đoạn chương trình như bên dưới, phát biểu nào sau đây là đúng?",
+    "options": [
+      "(a,b,c) là tham số, (x,y) là đối số",
+      "(a,b,c) là đối số, (x,y) là tham số",
+      "(a,b,c) và (x,y) đều là đối số",
+      "(a,b,c) và (x,y) đều là tham số"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_218",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Các dòng lệnh sau đây cho kết quả là:",
+    "options": [
+      "3",
+      "1",
+      "2",
+      "6"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_219",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Các dòng lệnh sau đây cho kết quả là:",
+    "options": [
+      "10",
+      "60",
+      "20",
+      "30"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_220",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Chương trình sau cho kết quả là:",
+    "options": [
+      "10",
+      "16",
+      "15",
+      "11"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_221",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Chương trình sau cho kết quả là:",
+    "options": [
+      "-10",
+      "6",
+      "-6",
+      "-16"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_27_222",
+    "lessonId": "bai_26_28",
+    "lessonNum": 27,
+    "question": "Thiết lập hàm power(a, b, c) với a, b, c là các số nguyên. Hàm trả lại giá trị (a+b) c .Chương trình có thể như sau: Khi chạy chương trình, nếu nhập a=1, b=2, c=3 thì kết quả là:",
+    "options": [
+      "27",
+      "9",
+      "6",
+      "16"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_223",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Trong Python biến được khai báo và sử dụng bên trong 1 hàm được gọi gì?",
+    "options": [
+      "Biến địa phương",
+      "Biến tổng thể",
+      "Biến riêng",
+      "Biến thông thường"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_224",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Trong Python biến được khai báo và sử dụng bên ngoài một hàm được gọi là gì?",
+    "options": [
+      "Biến địa phương",
+      "Biến tổng thể",
+      "Biến riêng",
+      "Biến thông thường"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_225",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Mệnh đề nào dưới đây phát biểu sai về phạm vi tác dụng của biến trong Python?",
+    "options": [
+      "Biến được khai báo bên trong hàm chỉ có tác dụng trong hàm đó, không có tác dụng bên ngoài",
+      "Biến được khai báo bên ngoài hàm sẽ không có tác dụng bên trong hàm như một biến",
+      "Biến khai báo bên ngoài nếu muốn có tác dụng bên trong hàm thì cần khai báo lại trong hàm với từ khóa global",
+      "Biến trong Python khi đã được khai báo sẽ có tác dụng trong tất cả các hàm và bên ngoài"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_226",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Cho biết kết quả in ra màn hình của đoạn chương trình sau: m, n = 10, 4 def f(a): k = n + m + a",
+    "options": [
+      "10",
+      "14",
+      "19",
+      "Báo lỗi return k print ( f (5) )"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_227",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Cho biết kết quả của đoạn chương trình sau: m, n = 10, 4 def f(a): n = n + m + a return n print ( f (5) )",
+    "options": [
+      "19",
+      "14",
+      "0",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_228",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Đoạn chương trình sau sẽ in ra giá trị gì? def f(s) : m = \"train\" return m + s m = \"bayby\" s = f (\" go\") print ( s )",
+    "options": [
+      "Báo lỗi",
+      "\"train go\"",
+      "\"baby go\"",
+      "\"train baby go\""
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_229",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Đoạn chương trình sau sẽ in ra giá trị gì? def f(x, y): n = x + y m = x - y return 2*n*(m + 1) n = 5 m = 3 f (2, 1) print (n, m)",
+    "options": [
+      "2 1",
+      "5 3",
+      "3 1",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_230",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Đoạn chương trình sau sẽ in ra giá trị gì? def f(a): n = a + 1 n = (3*n+1)**2 return n f (1) print (n)",
+    "options": [
+      "49",
+      "2",
+      "0",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_231",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Đoạn chương trình sau sẽ in ra giá trị gì? def f( ): n = n + 1 return n n = 15 a = f ( ) print ( a )",
+    "options": [
+      "15",
+      "16",
+      "0",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_232",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Sau khi thực hiện đoạn chương trình sau, giá trị của a và b bằng bao nhiêu? a=10 b=14 def f(a, b ): a = a + 2 b = b + 10 return a + b print ( f(a, b) )",
+    "options": [
+      "a=12, b=14",
+      "a= 10, b=14",
+      "a=12, b=24",
+      "Báo lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_233",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Đoạn chương trình sau cho kết quả là:",
+    "options": [
+      "15",
+      "75",
+      "80",
+      "90"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_234",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Chương trình sau có lỗi ở dòng nào?",
+    "options": [
+      "dòng 2",
+      "dòng 3",
+      "dòng 4",
+      "dòng 5"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_235",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Nếu biến bên ngoài hàm muốn có tác dụng bên trong hàm ta dùng từ khoá nào để khai báo?",
+    "options": [
+      "len",
+      "def",
+      "global",
+      "input"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_28_236",
+    "lessonId": "bai_26_28",
+    "lessonNum": 28,
+    "question": "Chương trình sau cho kết quả là:",
+    "options": [
+      "13",
+      "10",
+      "3",
+      "14"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_237",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Xác định loại lỗi của câu lệnh sau: >>> A = list ( 12 )",
+    "options": [
+      "Lỗi cú pháp",
+      "Lỗi ngoại lệ",
+      "Lỗi khác",
+      "Không có lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_238",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Nhận biết lỗi của đoạn chương trình sau: 123ab = { 1, 2, 3 } print (123ab)",
+    "options": [
+      "Lỗi cú pháp",
+      "Lỗi ngoại lệ",
+      "Lỗi khác",
+      "Không có lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_239",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Lỗi ngoại lệ trong Python là lỗi gì?",
+    "options": [
+      "Lỗi khi viết một câu lệnh sai cú pháp của ngôn ngữ lập trình",
+      "Lỗi khi truy cập một biến chưa được khai báo",
+      "Lỗi khi không thể thực hiện một lệnh nào đó của chương trình",
+      "Lỗi khi chương trình biên dịch sang tệp exe."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_240",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Nhận biết loại lỗi của chương trình sau: n = 10 for i in range ( n ) : Print (i, end = \" \" )",
+    "options": [
+      "SyntaxError",
+      "TypeError",
+      "ValueError",
+      "NameError"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_241",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Nhận biết loại lỗi của chương trình sau: A = [ 1, 2, 3 ] for i in range ( 4 ) : print ( A [ i ] )",
+    "options": [
+      "SyntaxError",
+      "TypeError",
+      "ValueError",
+      "IndexError"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_242",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Nhận biết loại lỗi của chương trình sau: n = input (\"nhập số tự nhiên n: \") k = int (input (\"nhập số lần cần nhân lên: \") print ( \"kết quả là:\", n*k )",
+    "options": [
+      "SyntaxError",
+      "TypeError",
+      "ValueError",
+      "NameError"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_243",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Trong lời gọi hàm, nếu các đối số được truyền vào hàm bị thiếu thì lỗi ngoại lệ phát sinh thuộc loại nào dưới đây?",
+    "options": [
+      "SyntaxError",
+      "TypeError",
+      "NameError",
+      "Không phát sinh lỗi ngoại lệ"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_244",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Đoạn lệnh sau sẽ phát sinh lỗi ngoại lệ nào? >>> s = \"abc\" >>> s [ 10 ]",
+    "options": [
+      "SyntaxError",
+      "TypeError",
+      "IndexError",
+      "NameError"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_245",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Giả sử chương trình có lệnh nhập dữ liệu như sau: N = int ( input(\"Nhập số nguyên n: \")) Khi chúng ta nhập 1. 5 thì chương trình có lỗi ngoại lệ nào?",
+    "options": [
+      "SyntaxError",
+      "TypeError",
+      "ValueError",
+      "IndexError"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_246",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Bài toán yêu cầu sắp xếp dãy số ban đầu thành dãy tăng dần. Giả sử dãy số ban đầu là [ 3, 1, 8, 10, 5 ]. Kết quả thu được dãy [1, 3, 8, 5, 10]. Chương trình có lỗi không? Nếu có lỗi thì đó thuộc loại gì?",
+    "options": [
+      "Lỗi cú pháp",
+      "Lỗi logic bên trong chương trình",
+      "Lỗi ngoại lệ",
+      "Không có lỗi"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_29_247",
+    "lessonId": "bai_29_31",
+    "lessonNum": 29,
+    "question": "Lệnh nào sau đây không xảy ra lỗi?",
+    "options": [
+      "A [ 1.5 ]",
+      "int (\"abc\")",
+      "\"10\"*3.5",
+      "float(\"123\")"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_30_248",
+    "lessonId": "bai_29_31",
+    "lessonNum": 30,
+    "question": "Mục đích của kiểm thử chương trình là gì?",
+    "options": [
+      "Để tự động sửa lỗi chương trình",
+      "Để tìm ra lỗi của chương trình",
+      "Để tìm ra lỗi và phòng ngừa, ngăn chặn các lỗi phát sinh trong tương lai",
+      "Để tìm ra lỗi và tự động sửa lỗi chương trình"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_30_249",
+    "lessonId": "bai_29_31",
+    "lessonNum": 30,
+    "question": "Nếu chương trình chạy bị lỗi với thông báo là ZeroDivisionError thì đó là lỗi gì và em cần sửa lỗi như thế nào? Chọn phương án đúng nhất.",
+    "options": [
+      "Đây là lỗi không thể sửa được",
+      "Đây là lỗi chia cho 0, em cần xóa lệnh này khỏi chương trình",
+      "Đây là lỗi chia cho 0, em cần thay thế phép toán khác để không xảy ra lỗi này nữa",
+      "Đây là lỗi chia cho 0, em cần tìm hiểu nguyên nhân vì sao lại xuất hiện 0 khi chia, có thể bổ sung lệnh kiểm tra trước khi thực hiện phép chia."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_30_250",
+    "lessonId": "bai_29_31",
+    "lessonNum": 30,
+    "question": "Điểm dừng (break point) trong các phần mềm soạn thảo lập trình có ý nghĩa gì?",
+    "options": [
+      "Đó là vị trí chương trình chạy tới đó thì kết thúc.",
+      "Đó là vị trí chương trình dừng lại để người lập trình quan sát phát hiện lỗi.",
+      "Đó là vị trí chương trình mỗi khi chạy đến dòng lệnh đó sẽ kêu pip pip.",
+      "Đó là vị trí chương trình tạm dừng, người lập trình sẽ quan sát các biến của chương trình và có thể điều khiển để chương trình tiếp tục chạy."
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_30_251",
+    "lessonId": "bai_29_31",
+    "lessonNum": 30,
+    "question": "Bộ dữ liệu kiểm thử (test) có những tính chất gì?",
+    "options": [
+      "Tính chất phát hiện lỗi của chương trình",
+      "Cần có càng nhiều càng tốt",
+      "Cần được sinh ngẫu nhiên và phủ kín các trường hợp biên của dữ liệu đầu vào bài toán",
+      "Không cần có giá trị gì?"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_30_252",
+    "lessonId": "bai_29_31",
+    "lessonNum": 30,
+    "question": "Giả sử đầu vào của dữ liệu bài toán là vùng {x≥ퟎ}. Khi đó dữ liệu ở vùng biên là những dữ liệu nào?",
+    "options": [
+      "x = 0.",
+      "x = 1000000",
+      "x ở gần 0",
+      "x ở gần 0 hoặc x rất lớn"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_30_253",
+    "lessonId": "bai_29_31",
+    "lessonNum": 30,
+    "question": "Phần mềm soạn thảo lập trình có thể tạo bao nhiêu điểm dừng?",
+    "options": [
+      "0",
+      "1",
+      "Không hạn chế",
+      "10"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  },
+  {
+    "id": "quiz_30_254",
+    "lessonId": "bai_29_31",
+    "lessonNum": 30,
+    "question": "Các phương pháp nào dưới đây KHÔNG được coi là phương pháp kiểm thử chương trình?",
+    "options": [
+      "In các dữ liệu trung gian",
+      "Sinh các bộ dữ liệu test để kiểm tra chương trình",
+      "Đặt tên biến và hàm có ý nghĩa",
+      "Tạo điểm dừng để quan sát và phát hiện lỗi chương trình"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tham khảo lại kiến thức trong Bài học để ghi nhớ quy tắc và cú pháp chính xác."
+  }
+]

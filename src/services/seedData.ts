@@ -1158,6 +1158,240 @@ print(dem)
     createdBy: "usr_instructor_01",
     createdAt: "2026-11-14T08:30:00.000Z",
   },
+
+  // ==================== BÀI TẬP BỔ SUNG TỪ PDF HHT_PHT TIN 10 ====================
+  {
+    id: "asgn_16_3",
+    lessonId: "bai_16",
+    glyph: "◇",
+    title: "Bài 16.3: Tính tiền lãi suất gửi ngân hàng (Bài tập 3 - Bài 16)",
+    difficulty: "Beginner",
+    description: `### Đề bài (Bài tập 3 - Bài 16 Tài liệu PDF Tin học 10)
+Bạn An có \`5000000\` đồng gửi vào ngân hàng với lãi suất \`0.8%/tháng\` (\`0.008\`).
+Hãy viết chương trình tính số tiền lãi của bạn An sau 1 tháng và in ra màn hình đúng theo định dạng sau:
+\`\`\`
+Tên người gửi: An
+Số tiền gửi: 5000000 vnđ
+Lãi suất/tháng: 0.8%
+Tiền lãi: 40000.0 vnđ
+\`\`\`
+*(Biết rằng tiền lãi = số tiền gửi * 0.008).*
+
+### Dữ liệu vào (Input)
+- Không có dữ liệu nhập từ bàn phím.
+
+### Kết quả ra (Output)
+- In ra 4 dòng thông tin đúng theo mẫu trên.
+`,
+    starterCode: `# Bài 16.3: Tính tiền lãi ngân hàng
+tien_gui = 5000000
+lai_suat = 0.008
+tien_lai = tien_gui * lai_suat
+
+print("Tên người gửi: An")
+print("Số tiền gửi:", tien_gui, "vnđ")
+print("Lãi suất/tháng: 0.8%")
+print("Tiền lãi:", tien_lai, "vnđ")
+`,
+    testCases: [
+      {
+        input: "",
+        expectedOutput:
+          "Tên người gửi: An\nSố tiền gửi: 5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 40000.0 vnđ",
+        isHidden: false,
+      },
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T14:00:00.000Z",
+  },
+  {
+    id: "asgn_20_4",
+    lessonId: "bai_20",
+    glyph: "◆",
+    title: "Bài 20.4: In bảng nhân 7 với số tự nhiên nhỏ hơn 10 (Bài tập 6 - Bài 20)",
+    difficulty: "Beginner",
+    description: `### Đề bài (Bài tập 6 - Bài 20 Tài liệu PDF Tin học 10)
+Sử dụng vòng lặp \`for\`, hãy viết chương trình in ra bảng nhân 7 với các số tự nhiên nhỏ hơn 10 (từ 0 đến 9), mỗi phép tính trên 1 dòng theo định dạng \`7 x i = <kết quả>\`.
+
+### Dữ liệu vào (Input)
+- Không có dữ liệu nhập.
+
+### Kết quả ra (Output)
+- 10 dòng kết quả từ \`7 x 0 = 0\` đến \`7 x 9 = 63\`.
+`,
+    starterCode: `# Bài 20.4: In bảng nhân 7 với các số nhỏ hơn 10
+for i in range(10):
+    print(f"7 x {i} = {7 * i}")
+`,
+    testCases: [
+      {
+        input: "",
+        expectedOutput:
+          "7 x 0 = 0\n7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35\n7 x 6 = 42\n7 x 7 = 49\n7 x 8 = 56\n7 x 9 = 63",
+        isHidden: false,
+      },
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T14:00:00.000Z",
+  },
+  {
+    id: "asgn_27_2",
+    lessonId: "bai_26_28",
+    glyph: "●",
+    title: "Bài 27.2: Hàm tìm ƯCLN và BCNN của hai số m, n (Bài tập vận dụng - Bài 27)",
+    difficulty: "Intermediate",
+    description: `### Đề bài (Bài tập vận dụng - Bài 27 Tài liệu PDF Tin học 10)
+Viết hàm \`ucln_bcnn(m, n)\` nhận vào hai số nguyên dương \`m\` và \`n\`.
+Hàm trả về 2 giá trị là:
+1. **Ước chung lớn nhất (UCLN)** của \`m\` và \`n\`
+2. **Bội chung nhỏ nhất (BCNN)** của \`m\` và \`n\`
+
+*(Biết rằng BCNN(m, n) = (m * n) // UCLN(m, n)).*
+
+### Dữ liệu vào (Input)
+- Một dòng chứa 2 số nguyên dương \`m\` và \`n\` cách nhau bởi dấu cách.
+
+### Kết quả ra (Output)
+- In ra theo định dạng: \`UCLN = <giá trị> | BCNN = <giá trị>\`
+`,
+    starterCode: `# Bài 27.2: Hàm tìm UCLN và BCNN của m và n
+import math
+
+def ucln_bcnn(m: int, n: int):
+    u = math.gcd(m, n)
+    b = (m * n) // u
+    return u, b
+
+m, n = map(int, input().split())
+u, b = ucln_bcnn(m, n)
+print(f"UCLN = {u} | BCNN = {b}")
+`,
+    testCases: [
+      {
+        input: "12 18",
+        expectedOutput: "UCLN = 6 | BCNN = 36",
+        isHidden: false,
+      },
+      {
+        input: "15 25",
+        expectedOutput: "UCLN = 5 | BCNN = 75",
+        isHidden: false,
+      },
+      {
+        input: "24 36",
+        expectedOutput: "UCLN = 12 | BCNN = 72",
+        isHidden: true,
+      },
+      {
+        input: "7 13",
+        expectedOutput: "UCLN = 1 | BCNN = 91",
+        isHidden: true,
+      },
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T14:00:00.000Z",
+  },
+  {
+    id: "asgn_31_2",
+    lessonId: "bai_29_31",
+    glyph: "▣",
+    title: "Bài 31.2: Thuật toán Euclid tìm UCLN(a, b) bằng đệ quy / vòng lặp (Bài tập 4 - Bài 31)",
+    difficulty: "Intermediate",
+    description: `### Đề bài (Bài tập 4 - Bài 31 Tài liệu PDF Tin học 10)
+Gọi \`UCLN(a, b)\` là hàm tìm ước chung lớn nhất của hai số tự nhiên \`a, b\`.
+Theo thuật toán Euclid:
+$$\\text{UCLN}(a, b) = \\begin{cases} a & \\text{nếu } b = 0 \\\\ \\text{UCLN}(b, a \\% b) & \\text{nếu } b > 0 \\end{cases}$$
+Hãy viết chương trình nhập hai số tự nhiên \`a, b\` và in ra ước chung lớn nhất của \`a\` và \`b\`.
+
+### Dữ liệu vào (Input)
+- Một dòng chứa 2 số tự nhiên \`a\` và \`b\` cách nhau bởi dấu cách.
+
+### Kết quả ra (Output)
+- In ra một số nguyên duy nhất là ƯCLN của \`a\` và \`b\`.
+`,
+    starterCode: `# Bài 31.2: Tìm UCLN của a và b bằng thuật toán Euclid
+def tim_ucln(a: int, b: int) -> int:
+    while b > 0:
+        a, b = b, a % b
+    return a
+
+a, b = map(int, input().split())
+print(tim_ucln(a, b))
+`,
+    testCases: [
+      {
+        input: "48 18",
+        expectedOutput: "6",
+        isHidden: false,
+      },
+      {
+        input: "100 25",
+        expectedOutput: "25",
+        isHidden: false,
+      },
+      {
+        input: "17 19",
+        expectedOutput: "1",
+        isHidden: true,
+      },
+      {
+        input: "123456 654321",
+        expectedOutput: "3",
+        isHidden: true,
+      },
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T14:00:00.000Z",
+  },
+  {
+    id: "asgn_31_3",
+    lessonId: "bai_29_31",
+    glyph: "▣",
+    title: "Bài 31.3: In bảng cửu chương dạng lưới 2 tầng (Bài tập 2 - Bài 31)",
+    difficulty: "Intermediate",
+    description: `### Đề bài (Bài tập 2 - Bài 31 Tài liệu PDF Tin học 10)
+Viết chương trình in bảng cửu chương ra màn hình:
+- Tầng 1: In lần lượt các bảng nhân từ 1 đến 5 (mỗi phép tính \`k x i = ...\`).
+- Tầng 2: In lần lượt các bảng nhân từ 6 đến 10.
+Chương trình in mỗi dòng của bảng theo cú pháp \`<bảng> x <i> = <tích>\`.
+
+Để đơn giản hóa và đồng bộ việc chấm tự động, chương trình nhận vào số nguyên \`k\` ($1 \\le k \\le 10$) đại diện cho bảng nhân cần in (hoặc in toàn bộ bảng nhân của \`k\` từ 1 đến 10).
+
+### Dữ liệu vào (Input)
+- Một số nguyên \`k\` ($1 \\le k \\le 10$).
+
+### Kết quả ra (Output)
+- 10 dòng thể hiện bảng cửu chương của \`k\`, mỗi dòng có dạng: \`k x i = <k*i>\` với \`i\` từ 1 đến 10.
+`,
+    starterCode: `# Bài 31.3: In bảng nhân k từ 1 đến 10
+k = int(input())
+
+for i in range(1, 11):
+    print(f"{k} x {i} = {k * i}")
+`,
+    testCases: [
+      {
+        input: "5",
+        expectedOutput:
+          "5 x 1 = 5\n5 x 2 = 10\n5 x 3 = 15\n5 x 4 = 20\n5 x 5 = 25\n5 x 6 = 30\n5 x 7 = 35\n5 x 8 = 40\n5 x 9 = 45\n5 x 10 = 50",
+        isHidden: false,
+      },
+      {
+        input: "9",
+        expectedOutput:
+          "9 x 1 = 9\n9 x 2 = 18\n9 x 3 = 27\n9 x 4 = 36\n9 x 5 = 45\n9 x 6 = 54\n9 x 7 = 63\n9 x 8 = 72\n9 x 9 = 81\n9 x 10 = 90",
+        isHidden: false,
+      },
+      {
+        input: "2",
+        expectedOutput:
+          "2 x 1 = 2\n2 x 2 = 4\n2 x 3 = 6\n2 x 4 = 8\n2 x 5 = 10\n2 x 6 = 12\n2 x 7 = 14\n2 x 8 = 16\n2 x 9 = 18\n2 x 10 = 20",
+        isHidden: true,
+      },
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T14:00:00.000Z",
+  },
 ];
 
 export function localizeAssignment(
