@@ -124,10 +124,18 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
         {/* Thông tin Tài khoản & Nút Đăng xuất */}
         {user ? (
           <div className="flex items-center border border-grid bg-subtle">
-            <span className="px-2.5 py-1 text-primary flex items-center gap-1.5 max-w-[170px] sm:max-w-[260px] truncate">
-              <span className="text-brand">●</span>
+            <span className="px-2.5 py-1 text-primary flex items-center gap-1.5 max-w-[200px] sm:max-w-[320px] truncate">
+              {isAdmin ? (
+                <span className="px-1.5 py-0.5 bg-brand text-white font-bold text-[10px] shrink-0">
+                  👑 GIÁO VIÊN
+                </span>
+              ) : (
+                <span className="px-1.5 py-0.5 bg-surface border border-grid text-secondary font-bold text-[10px] shrink-0">
+                  👤 HỌC SINH
+                </span>
+              )}
               <span className="truncate font-semibold">{user.displayName}</span>
-              {user.className && (
+              {user.className && !isAdmin && (
                 <span className="px-1.5 py-0.2 bg-brand/15 border border-brand/40 text-brand text-[10px] font-bold shrink-0">
                   {user.className}
                 </span>

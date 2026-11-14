@@ -31,6 +31,8 @@ import {
 } from "../types/ide";
 import { TopNavigationBar } from "../components/layout/TopNavigationBar";
 import { MarkdownRenderer } from "../components/ui/MarkdownRenderer";
+import { FirebaseConfigModal } from "../components/ui/FirebaseConfigModal";
+import { activeConfig, isFirebaseConfigured } from "../firebase/config";
 import {
   BentoCell,
   BentoGrid,
@@ -52,6 +54,7 @@ export const InstructorDashboardPage: React.FC = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [statusNotice, setStatusNotice] = useState<string | null>(null);
+  const [firebaseModalOpen, setFirebaseModalOpen] = useState(false);
 
   // --- TAB 2: STUDENT MANAGEMENT STATE ---
   const [studentClassFilter, setStudentClassFilter] = useState<string>("ALL");
@@ -518,16 +521,35 @@ Mô tả chi tiết đề bài tại đây.
           </div>
 
           <div className="bg-surface p-4 flex flex-col justify-between">
-            <div className="text-[11px] text-secondary uppercase">
-              {t("ĐỒNG BỘ CLOUD", "CLOUD SYNC")}
+            <div className="flex items-center justify-between text-[11px] text-secondary uppercase">
+              <span>{t("KẾT NỐI FIREBASE", "FIREBASE CLOUD")}</span>
+              <span className={isFirebaseConfigured ? "text-success font-bold" : "text-brand font-bold"}>
+                {isFirebaseConfigured ? "● ONLINE" : "◆ LOCAL"}
+              </span>
             </div>
-            <button
-              type="button"
-              onClick={handleForceSyncFirestore}
-              className="mt-1 px-2.5 py-1.5 bg-brand text-white font-semibold text-[11px] hover:opacity-90 transition-opacity text-center"
-            >
-              [🚀 ĐỒNG BỘ FIRESTORE]
-            </button>
+            <div className="text-[10px] text-muted truncate mt-0.5">
+              {isFirebaseConfigured
+                ? `Project: ${activeConfig?.projectId}`
+                : "Chế độ Mock cục bộ"}
+            </div>
+            <div className="flex gap-1.5 mt-2">
+              <button
+                type="button"
+                onClick={handleForceSyncFirestore}
+                title="Đẩy 22 bài tập & học sinh mẫu lên Cloud Firestore"
+                className="flex-1 py-1.5 bg-brand text-white font-semibold text-[11px] hover:opacity-90 transition-opacity text-center truncate"
+              >
+                [🚀 ĐỒNG BỘ]
+              </button>
+              <button
+                type="button"
+                onClick={() => setFirebaseModalOpen(true)}
+                title="Xem hoặc thiết lập kết nối Firebase"
+                className="px-2.5 py-1.5 bg-subtle border border-grid text-primary hover:border-brand text-[11px] font-semibold transition-colors"
+              >
+                ⚙
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1786,6 +1808,11 @@ Mô tả chi tiết đề bài tại đây.
           </div>
         </div>
       )}
+
+      <FirebaseConfigModal
+        isOpen={firebaseModalOpen}
+        onClose={() => setFirebaseModalOpen(false)}
+      />
     </div>
   );
 };

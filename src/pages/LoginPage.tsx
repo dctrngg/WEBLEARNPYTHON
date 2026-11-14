@@ -5,6 +5,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { getAllUsers } from "../services/firestoreService";
 import { GRADE_10_CLASSES } from "../services/seedData";
+import { isFirebaseConfigured, activeConfig } from "../firebase/config";
 import { UserProfile } from "../types/ide";
 import {
   BentoCell,
@@ -46,7 +47,12 @@ export const LoginPage: React.FC = () => {
     try {
       if (mode === "login") {
         await loginStudent(username, password);
-        navigate("/");
+        const cleanUser = username.trim().toLowerCase();
+        if (cleanUser === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       } else {
         await registerStudent(username, fullName, selectedClass, password);
         navigate("/");
@@ -62,10 +68,17 @@ export const LoginPage: React.FC = () => {
     }
   };
 
+  const handleSelectAdminCard = () => {
+    setMode("login");
+    setUsername("admin");
+    setPassword("admin123");
+    setError(null);
+  };
+
   const handleSelectStudentCard = (stu: UserProfile) => {
     setMode("login");
     setUsername(stu.username || stu.uid.replace(/^usr_/, ""));
-    setPassword("");
+    setPassword(stu.password || "123456");
     setError(null);
   };
 
@@ -121,8 +134,12 @@ export const LoginPage: React.FC = () => {
             </strong>
           </div>
           <div className="bg-subtle px-6 py-2.5 flex items-center justify-between">
-            <span>{t("NHÂN CHẠY PYTHON", "PYTHON KERNEL")}</span>
-            <strong className="text-success">CPYTHON 3.12 WEB_ASSEMBLY</strong>
+            <span>{t("CƠ SỞ DỮ LIỆU CLOUD", "CLOUD DATABASE")}</span>
+            <strong className={isFirebaseConfigured ? "text-success font-bold" : "text-brand font-bold"}>
+              {isFirebaseConfigured
+                ? `● FIREBASE (${activeConfig?.projectId || "ONLINE"})`
+                : "◆ LOCAL MOCK DATA"}
+            </strong>
           </div>
           <div className="bg-subtle px-6 py-2.5 flex items-center justify-between">
             <span>{t("DANH SÁCH LỚP HỌC", "CLASSES")}</span>
@@ -133,7 +150,7 @@ export const LoginPage: React.FC = () => {
         </div>
 
         <BentoGrid cols={12}>
-          {/* Left Column (6/12): Welcome Guide & Quick Select Registered Student */}
+          {/* Left Column (6/12): Clear distinction of Teacher vs Student accounts */}
           <BentoCell
             colSpan="md:col-span-6"
             className="bg-dot-matrix flex flex-col justify-between"
@@ -142,103 +159,146 @@ export const LoginPage: React.FC = () => {
               <SectionBadge
                 glyph="[◆]"
                 label={t(
-                  "CỔNG ĐĂNG NHẬP & ĐĂNG KÝ HỌC SINH",
-                  "STUDENT REGISTRATION & LOGIN PORTAL"
+                  "CỔNG PHÂN QUYỀN: GIÁO VIÊN & HỌC SINH",
+                  "ROLE ACCESS: TEACHER & STUDENTS"
                 )}
               />
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-primary leading-tight mb-3">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-primary leading-tight mb-2">
                 {t(
-                  "Chào mừng các em đến với Hệ thống Học & Thực hành Python Tin học 10!",
-                  "Welcome to the Grade 10 Python Learning & Practice Portal!"
+                  "Hệ thống Học & Thực hành Python Tin học 10",
+                  "Grade 10 Python Learning & Practice Platform"
                 )}
               </h1>
-              <p className="text-sm text-secondary leading-relaxed mb-5">
+              <p className="text-xs text-secondary leading-relaxed mb-4">
                 {t(
-                  "Hệ thống lưu lại toàn bộ tiến độ bài học và kết quả chấm điểm từ Bài 16 đến Bài 31 theo tài khoản cá nhân của từng học sinh.",
-                  "Your Python code and test scores across Lessons 16–31 are saved automatically under your personal student account."
+                  "Chọn tài khoản bên dưới để đăng nhập nhanh theo đúng vai trò Giáo viên hoặc Học sinh.",
+                  "Select an account below to quickly login with Teacher or Student clearance."
                 )}
               </p>
 
-              {/* Step-by-step instructions for students */}
-              <div className="bg-surface border border-grid p-4 font-mono text-xs space-y-2 mb-6">
-                <div className="text-brand font-bold uppercase">
-                  📌{" "}
-                  {t(
-                    "HƯỚNG DẪN ĐĂNG KÝ & ĐĂNG NHẬP:",
-                    "INSTRUCTIONS FOR STUDENTS:"
-                  )}
+              {/* 1. KHU VỰC TÀI KHOẢN GIÁO VIÊN / ADMIN */}
+              <div className="bg-surface border-2 border-brand/60 p-4 font-mono text-xs mb-4">
+                <div className="flex items-center justify-between border-b border-grid pb-2 mb-2.5">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 bg-brand text-white font-bold text-[11px]">
+                      👑 GIÁO VIÊN
+                    </span>
+                    <span className="font-bold text-primary">
+                      Giáo viên Tin học 10
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-success font-semibold">
+                    ROLE: INSTRUCTOR / ADMIN
+                  </span>
                 </div>
-                <div className="space-y-1.5 text-secondary">
+
+                <div className="grid grid-cols-2 gap-2 text-[11px] mb-3 text-secondary">
                   <div>
-                    <strong className="text-primary">
-                      1. {t("Tạo tài khoản mới:", "Create new account:")}
-                    </strong>{" "}
-                    {t(
-                      "Chọn tab [02] TẠO TÀI KHOẢN MỚI → Điền Username (tên đăng nhập viết liền), Họ và tên, Chọn Lớp (10A7, 10A12..10A16) và Mật khẩu.",
-                      "Select [02] CREATE ACCOUNT → Enter Username, Full Name, Class, and Password."
-                    )}
+                    {t("Tên đăng nhập:", "Username:")}{" "}
+                    <strong className="text-brand font-bold">admin</strong>
                   </div>
                   <div>
-                    <strong className="text-primary">
-                      2. {t("Đăng nhập lần sau:", "Sign in next time:")}
-                    </strong>{" "}
+                    {t("Mật khẩu:", "Password:")}{" "}
+                    <strong className="text-primary font-bold">admin123</strong>
+                  </div>
+                  <div className="col-span-2 text-[10px] text-muted">
                     {t(
-                      "Chỉ cần nhập đúng Username và Mật khẩu ở tab [01] ĐĂNG NHẬP là vào học ngay!",
-                      "Simply enter your Username and Password in [01] LOGIN!"
+                      "Quyền hạn: Quản trị 6 lớp, theo dõi tiến độ, chấm bài & đồng bộ Firebase.",
+                      "Access: Manage 6 classes, grading, dashboard & Firebase sync."
                     )}
                   </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleSelectAdminCard}
+                  className="w-full py-2 bg-brand/10 border border-brand text-brand hover:bg-brand hover:text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <span>👑</span>
+                  <span>
+                    {t(
+                      "ĐIỀN NHANH TÀI KHOẢN GIÁO VIÊN (ADMIN)",
+                      "FILL TEACHER / ADMIN CREDENTIALS"
+                    )}
+                  </span>
+                </button>
+              </div>
+
+              {/* 2. KHU VỰC TÀI KHOẢN HỌC SINH (STUDENT) */}
+              <div className="bg-surface border border-grid p-4 font-mono text-xs">
+                <div className="font-mono text-xs uppercase tracking-wider text-secondary mb-2 flex items-center justify-between border-b border-grid pb-2">
+                  <span className="flex items-center gap-1.5 font-bold text-primary">
+                    <span className="text-brand">👤</span>
+                    {t(
+                      `HỌC SINH ĐÃ ĐĂNG KÝ (${existingStudents.length})`,
+                      `REGISTERED STUDENTS (${existingStudents.length})`
+                    )}
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    {t("Mật khẩu mẫu: 123456", "Default pass: 123456")}
+                  </span>
+                </div>
+
+                <p className="text-[11px] text-secondary mb-2.5">
+                  {t(
+                    "Bấm vào học sinh bất kỳ để điền nhanh Username vào form đăng nhập:",
+                    "Click any student below to autofill their login credentials:"
+                  )}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-44 overflow-y-auto">
+                  {existingStudents.map((stu) => {
+                    const stuUser = stu.username || stu.uid.replace(/^usr_/, "");
+                    return (
+                      <button
+                        key={stu.uid}
+                        type="button"
+                        onClick={() => handleSelectStudentCard(stu)}
+                        className="p-2.5 bg-subtle border border-grid hover:border-brand text-left transition-colors flex items-center justify-between gap-2 group"
+                      >
+                        <div className="min-w-0">
+                          <div className="text-primary font-semibold truncate group-hover:text-brand">
+                            {stu.displayName}
+                          </div>
+                          <div className="text-[11px] text-secondary flex items-center gap-1.5 mt-0.5">
+                            <span className="text-brand font-bold">
+                              @{stuUser}
+                            </span>
+                            <span>•</span>
+                            <span className="text-primary font-medium">
+                              {stu.className || "10A7"}
+                            </span>
+                          </div>
+                        </div>
+                        <span className="text-muted group-hover:text-brand text-[11px] shrink-0 font-bold">
+                          {t("Chọn →", "Select →")}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            {/* List of Registered Students for Quick Selection */}
-            <div className="bg-surface border border-grid p-4">
-              <div className="font-mono text-xs uppercase tracking-wider text-secondary mb-3 flex items-center justify-between">
-                <span>
-                  <span className="text-brand mr-1.5">👥</span>
-                  {t(
-                    `HỌC SINH ĐÃ TẠO TÀI KHOẢN (${existingStudents.length})`,
-                    `REGISTERED STUDENTS (${existingStudents.length})`
-                  )}
-                </span>
-                <span className="text-[11px] text-muted">
-                  {t("Bấm để điền nhanh Username", "Click to autofill username")}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto font-mono text-xs">
-                {existingStudents.map((stu) => {
-                  const stuUser = stu.username || stu.uid.replace(/^usr_/, "");
-                  return (
-                    <button
-                      key={stu.uid}
-                      type="button"
-                      onClick={() => handleSelectStudentCard(stu)}
-                      className="p-2.5 bg-subtle border border-grid hover:border-brand text-left transition-colors flex items-center justify-between gap-2 group"
-                    >
-                      <div className="min-w-0">
-                        <div className="text-primary font-semibold truncate group-hover:text-brand">
-                          {stu.displayName}
-                        </div>
-                        <div className="text-[11px] text-secondary flex items-center gap-1.5 mt-0.5">
-                          <span className="text-brand font-bold">
-                            @{stuUser}
-                          </span>
-                          <span>•</span>
-                          <span>{stu.className || "10A7"}</span>
-                        </div>
-                      </div>
-                      <span className="text-muted group-hover:text-brand text-[11px] shrink-0">
-                        {t("Chọn →", "Select →")}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="mt-4 pt-3 border-t border-grid text-[11px] text-secondary flex items-center justify-between font-mono">
+              <span>{t("Học sinh mới?", "New student?")}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("register");
+                  setError(null);
+                }}
+                className="text-brand font-bold hover:underline"
+              >
+                {t(
+                  "→ Bấm tab [02] để Đăng ký tài khoản học sinh mới",
+                  "→ Click [02] to Register new student"
+                )}
+              </button>
             </div>
           </BentoCell>
 
-          {/* Right Column (6/12): Simplified Login (Username + Password) & Register (Username + FullName + Class + Password) */}
+          {/* Right Column (6/12): Simplified Login & Register Form */}
           <BentoCell colSpan="md:col-span-6" noPadding>
             <div className="flex flex-col h-full justify-between">
               {/* Mode Selector Tabs */}
