@@ -86,13 +86,13 @@ export const StudentWorkspacePage: React.FC = () => {
   const [cheatSheetOpen, setCheatSheetOpen] = useState<boolean>(false);
   const [editorFontSize, setEditorFontSize] = useState<number>(() => {
     const saved = localStorage.getItem("chroma_py_editor_font_size");
-    const parsed = saved ? parseInt(saved, 10) : 14;
-    return Number.isFinite(parsed) && parsed >= 10 && parsed <= 32 ? parsed : 14;
+    const parsed = saved ? parseInt(saved, 10) : 16;
+    return Number.isFinite(parsed) && parsed >= 12 && parsed <= 36 ? parsed : 16;
   });
 
   const handleZoomIn = () => {
     setEditorFontSize((prev) => {
-      const next = Math.min(prev + 2, 32);
+      const next = Math.min(prev + 2, 36);
       localStorage.setItem("chroma_py_editor_font_size", next.toString());
       return next;
     });
@@ -100,15 +100,15 @@ export const StudentWorkspacePage: React.FC = () => {
 
   const handleZoomOut = () => {
     setEditorFontSize((prev) => {
-      const next = Math.max(prev - 2, 10);
+      const next = Math.max(prev - 2, 12);
       localStorage.setItem("chroma_py_editor_font_size", next.toString());
       return next;
     });
   };
 
   const handleResetZoom = () => {
-    setEditorFontSize(14);
-    localStorage.setItem("chroma_py_editor_font_size", "14");
+    setEditorFontSize(16);
+    localStorage.setItem("chroma_py_editor_font_size", "16");
   };
 
   const editorRef = useRef<any>(null);
@@ -872,8 +872,8 @@ export const StudentWorkspacePage: React.FC = () => {
                         type="button"
                         onClick={handleResetZoom}
                         title={t(
-                          "Cỡ chữ hiện tại - Bấm để đặt lại về 14px",
-                          "Current font size - Click to reset to 14px"
+                          "Cỡ chữ hiện tại - Bấm để đặt lại về 16px",
+                          "Current font size - Click to reset to 16px"
                         )}
                         className="px-2 py-1 text-primary hover:text-brand font-semibold text-[11px] min-w-[42px] text-center transition-colors"
                       >
@@ -882,7 +882,7 @@ export const StudentWorkspacePage: React.FC = () => {
                       <button
                         type="button"
                         onClick={handleZoomIn}
-                        disabled={editorFontSize >= 32}
+                        disabled={editorFontSize >= 36}
                         title={t("Phóng to cỡ chữ (A+)", "Zoom in code font size (A+)")}
                         className="px-2 py-1 text-secondary hover:text-primary hover:bg-surface border-l border-grid disabled:opacity-30 font-bold transition-colors"
                       >
