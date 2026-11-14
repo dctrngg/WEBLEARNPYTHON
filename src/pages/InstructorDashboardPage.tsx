@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import { useAuth, normalizeUsername } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
+import { usePyodide } from "../hooks/usePyodide";
 import {
   deleteAssignmentById,
   deleteUserById,
@@ -13,11 +15,7 @@ import {
   seedCloudFirestoreData,
   upsertUserProfile,
 } from "../services/firestoreService";
-import {
-  GRADE_10_CLASSES,
-  localizeAssignment,
-  localizeDifficulty,
-} from "../services/seedData";
+import { GRADE_10_CLASSES, localizeAssignment } from "../services/seedData";
 import {
   PYTHON_CURRICULUM_LESSONS,
   LessonTopic,
@@ -40,23 +38,100 @@ import {
   SectionBadge,
   SectionHeader,
 } from "../components/ui/BentoPrimitives";
+import { AssignmentStatus, StatusGlyph } from "../components/ui/StatusGlyph";
+import {
+  Badge,
+  buildAsciiBar,
+  Button,
+  Checkbox,
+  ConfirmDialog,
+  DifficultyBadge,
+  EmptyState,
+  Input,
+  Modal,
+  Select,
+  Table,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  Tabs,
+  Textarea,
+  Toggle,
+  Tooltip,
+  useToast,
+} from "../components/ui/Primitives";
 
-const GLYPH_OPTIONS = ["◇", "◆", "●", "◐", "▣", "◊"];
+// Strictly exclude U+25CA lozenge per D2
+const GLYPH_OPTIONS = ["◇", "◆", "●", "◐", "▣"];
 
-type AdminTab = "OVERVIEW" | "STUDENTS" | "CURRICULUM" | "SUBMISSIONS";
+type AdminTab = "ASSIGNMENTS" | "SUBMISSIONS" | "OVERVIEW" | "STUDENTS";
+
+function formatWhitespacePreview(str: string): string {
+  return (str || "")
+    .split("\n")
+    .map((line) => line.replace(/ /g, "·").replace(/\t/g, "→"))
+    .join("↵\n");
+}
 
 export const InstructorDashboardPage: React.FC = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const { lang, t } = useLanguage();
+  const { pushToast } = useToast();
+  const { engineState, runTests } = usePyodide();
 
-  const [activeTab, setActiveTab] = useState<AdminTab>("OVERVIEW");
+  const [activeTab, setActiveTab] = useState<AdminTab>("ASSIGNMENTS");
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [users, setUsers] = useState<UserProfile[]>([]);
-  const [statusNotice, setStatusNotice] = useState<string | null>(null);
   const [firebaseModalOpen, setFirebaseModalOpen] = useState(false);
 
-  // --- TAB 2: STUDENT MANAGEMENT STATE ---
+  // --- TAB: ASSIGNMENTS (BUILDER) STATE ---
+  const [asgnSearch, setAsgnSearch] = useState<string>("");
+  const [selectedLessonViewId, setSelectedLessonViewId] = useState<string>(
+    PYTHON_CURRICULUM_LESSONS[0].id
+  );
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [lessonId, setLessonId] = useState<string>("bai_16");
+  const [glyph, setGlyph] = useState<string>("◆");
+  const [title, setTitle] = useState<string>("");
+  const [difficulty, setDifficulty] = useState<DifficultyLevel>("Beginner");
+  const [description, setDescription] = useState<string>("");
+  const [descTab, setDescTab] = useState<"EDIT" | "PREVIEW">("EDIT");
+  const [starterCode, setStarterCode] = useState<string>("");
+  const [testCases, setTestCases] = useState<TestCase[]>([
+    { input: "10", expectedOutput: "20", isHidden: false },
+  ]);
+  const [showTestWhitespace, setShowTestWhitespace] = useState<boolean>(false);
+  const [isFormDirty, setIsFormDirty] = useState<boolean>(false);
+
+  // P1: Reference Solution (session-only, never persisted to Firestore)
+  const [referenceSolution, setReferenceSolution] = useState<string>(
+    "# Session-only Reference Solution (not saved to Firestore)\nn = int(input())\nprint(n * 2)\n"
+  );
+  const [isGeneratingExpected, setIsGeneratingExpected] =
+    useState<boolean>(false);
+  const [verifySummary, setVerifySummary] = useState<string | null>(null);
+
+  // Delete Assignment ConfirmDialog (requireText = assignment title)
+  const [deleteTargetAsgn, setDeleteTargetAsgn] = useState<Assignment | null>(
+    null
+  );
+
+  // --- TAB: SUBMISSIONS & MATRIX STATE ---
+  const [subViewMode, setSubViewMode] = useState<"MATRIX" | "LIST">("MATRIX");
+  const [subClassFilter, setSubClassFilter] = useState<string>("ALL");
+  const [subLessonFilter, setSubLessonFilter] = useState<string>("ALL");
+  const [subStatusFilter, setSubStatusFilter] = useState<string>("ALL");
+  const [subSearch, setSubSearch] = useState<string>("");
+  const [subSortDir, setSubSortDir] = useState<"asc" | "desc">("asc");
+  const [subPage, setSubPage] = useState<number>(1);
+  const PAGE_SIZE = 50;
+  const [inspectedSubmission, setInspectedSubmission] =
+    useState<Submission | null>(null);
+
+  // --- TAB: STUDENTS MANAGEMENT STATE ---
   const [studentClassFilter, setStudentClassFilter] = useState<string>("ALL");
   const [studentSearch, setStudentSearch] = useState<string>("");
   const [showPasswordsInTable, setShowPasswordsInTable] =
@@ -71,33 +146,17 @@ export const InstructorDashboardPage: React.FC = () => {
   const [inspectedStudentProfile, setInspectedStudentProfile] =
     useState<UserProfile | null>(null);
 
-  // --- TAB 3: CURRICULUM & ASSIGNMENT STUDIO STATE ---
-  const [selectedLessonViewId, setSelectedLessonViewId] = useState<string>(
-    PYTHON_CURRICULUM_LESSONS[0].id
-  );
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [lessonId, setLessonId] = useState<string>("bai_16");
-  const [glyph, setGlyph] = useState<string>("◆");
-  const [title, setTitle] = useState<string>("");
-  const [difficulty, setDifficulty] = useState<DifficultyLevel>("Beginner");
-  const [description, setDescription] = useState<string>("");
-  const [starterCode, setStarterCode] = useState<string>("");
-  const [testCases, setTestCases] = useState<TestCase[]>([
-    { input: "10", expectedOutput: "20", isHidden: false },
-  ]);
-
-  // --- TAB 4: SUBMISSIONS FILTER & MODAL STATE ---
-  const [subClassFilter, setSubClassFilter] = useState<string>("ALL");
-  const [subLessonFilter, setSubLessonFilter] = useState<string>("ALL");
-  const [subStatusFilter, setSubStatusFilter] = useState<string>("ALL");
-  const [subSearch, setSubSearch] = useState<string>("");
-  const [inspectedSubmission, setInspectedSubmission] =
-    useState<Submission | null>(null);
-
-  const showToast = (msg: string) => {
-    setStatusNotice(msg);
-    setTimeout(() => setStatusNotice(null), 4000);
-  };
+  // Warn before unload if assignment form has unsaved edits (Section 7.2)
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isFormDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isFormDirty]);
 
   const loadDashboardData = async () => {
     const [asgnData, subData, usrData] = await Promise.all([
@@ -110,7 +169,7 @@ export const InstructorDashboardPage: React.FC = () => {
     setUsers(usrData);
 
     if (!editingId && asgnData.length > 0) {
-      populateFormWithAssignment(localizeAssignment(asgnData[0], lang));
+      populateFormWithAssignment(localizeAssignment(asgnData[0], lang), false);
     }
   };
 
@@ -118,6 +177,185 @@ export const InstructorDashboardPage: React.FC = () => {
     loadDashboardData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // --- ASSIGNMENT CRUD HANDLERS ---
+  const populateFormWithAssignment = (asgn: Assignment, checkDirty = true) => {
+    if (
+      checkDirty &&
+      isFormDirty &&
+      !window.confirm("Discard unsaved changes to current assignment?")
+    ) {
+      return;
+    }
+    setEditingId(asgn.id);
+    setLessonId(asgn.lessonId || "bai_16");
+    setGlyph(asgn.glyph && asgn.glyph !== "\u25CA" ? asgn.glyph : "◆");
+    setTitle(asgn.title);
+    setDifficulty(asgn.difficulty);
+    setDescription(asgn.description);
+    setStarterCode(asgn.starterCode);
+    setTestCases(
+      asgn.testCases.length > 0
+        ? asgn.testCases
+        : [{ input: "", expectedOutput: "", isHidden: false }]
+    );
+    setVerifySummary(null);
+    setIsFormDirty(false);
+  };
+
+  const handleInitNewAssignment = () => {
+    if (
+      isFormDirty &&
+      !window.confirm("Discard unsaved changes to current assignment?")
+    ) {
+      return;
+    }
+    setEditingId(null);
+    setLessonId(selectedLessonViewId || "bai_16");
+    setGlyph("◇");
+    setTitle(`New Assignment (${selectedLessonViewId.toUpperCase()})`);
+    setDifficulty("Beginner");
+    setDescription(
+      `### Problem Statement\nWrite a Python program to solve the following task.\n\n### Input\n- Line 1: ...\n\n### Output\n- Print the result using \`print()\`.`
+    );
+    setStarterCode(`# Write your Python solution here\nn = int(input())\nprint(n)\n`);
+    setTestCases([
+      { input: "10", expectedOutput: "10", isHidden: false },
+      { input: "25", expectedOutput: "25", isHidden: true },
+    ]);
+    setVerifySummary(null);
+    setIsFormDirty(true);
+    pushToast("INITIALIZED NEW ASSIGNMENT DRAFT", "info");
+  };
+
+  const handleSaveAssignment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim()) return;
+
+    const saved = await saveAssignment({
+      id: editingId || "",
+      lessonId,
+      glyph,
+      title: title.trim(),
+      difficulty,
+      description,
+      starterCode,
+      testCases: testCases.filter(
+        (tc) => tc.input.trim() !== "" || tc.expectedOutput.trim() !== ""
+      ),
+      createdBy: user?.uid || "usr_admin",
+      createdAt: new Date().toISOString(),
+    });
+
+    await loadDashboardData();
+    setEditingId(saved.id);
+    setIsFormDirty(false);
+    pushToast(`SAVED ASSIGNMENT "${saved.title}"`, "success");
+  };
+
+  const handleConfirmDeleteAssignment = async () => {
+    if (!deleteTargetAsgn) return;
+    await deleteAssignmentById(deleteTargetAsgn.id);
+    const removedTitle = deleteTargetAsgn.title;
+    setDeleteTargetAsgn(null);
+    setIsFormDirty(false);
+
+    const updated = await getAssignments();
+    setAssignments(updated);
+    if (updated.length > 0) {
+      populateFormWithAssignment(localizeAssignment(updated[0], lang), false);
+    } else {
+      handleInitNewAssignment();
+    }
+    pushToast(`DELETED "${removedTitle}"`, "danger");
+  };
+
+  const handleAddTestCase = () => {
+    setTestCases((prev) => [
+      ...prev,
+      { input: "", expectedOutput: "", isHidden: false },
+    ]);
+    setIsFormDirty(true);
+  };
+
+  const handleUpdateTestCase = (
+    idx: number,
+    field: keyof TestCase,
+    value: string | boolean
+  ) => {
+    setTestCases((prev) =>
+      prev.map((tc, i) => (i === idx ? { ...tc, [field]: value } : tc))
+    );
+    setIsFormDirty(true);
+  };
+
+  const handleMoveTestCase = (idx: number, direction: -1 | 1) => {
+    const targetIdx = idx + direction;
+    if (targetIdx < 0 || targetIdx >= testCases.length) return;
+    setTestCases((prev) => {
+      const copy = [...prev];
+      const temp = copy[idx];
+      copy[idx] = copy[targetIdx];
+      copy[targetIdx] = temp;
+      return copy;
+    });
+    setIsFormDirty(true);
+  };
+
+  const handleRemoveTestCase = (idx: number) => {
+    if (testCases.length <= 1) return;
+    setTestCases((prev) => prev.filter((_, i) => i !== idx));
+    setIsFormDirty(true);
+  };
+
+  // P1: Generate expected outputs from Reference Solution via Pyodide
+  const handleGenerateExpectedFromRef = async () => {
+    if (engineState !== "ready" || !referenceSolution.trim()) return;
+    setIsGeneratingExpected(true);
+    setVerifySummary(null);
+    const results = await runTests(referenceSolution, testCases);
+    setIsGeneratingExpected(false);
+
+    const hasError = results.some((r) => Boolean(r.stderr));
+    if (hasError) {
+      pushToast("ERR_REF_SOLUTION: Reference code raised an error", "danger");
+      setVerifySummary(
+        `✕ Reference solution failed on test #${results.find((r) => r.stderr)?.index
+        }`
+      );
+      return;
+    }
+
+    setTestCases((prev) =>
+      prev.map((tc, idx) => ({
+        ...tc,
+        expectedOutput: results[idx]?.actualOutput ?? tc.expectedOutput,
+      }))
+    );
+    setIsFormDirty(true);
+    setVerifySummary(`✓ Generated expected outputs for ${results.length} tests`);
+    pushToast(
+      `GENERATED EXPECTED OUTPUTS (${results.length} TESTS)`,
+      "success"
+    );
+  };
+
+  const handleVerifyRefSolution = async () => {
+    if (engineState !== "ready" || !referenceSolution.trim()) return;
+    setIsGeneratingExpected(true);
+    const results = await runTests(referenceSolution, testCases);
+    setIsGeneratingExpected(false);
+
+    const passed = results.filter((r) => r.passed).length;
+    setVerifySummary(
+      `${passed === results.length ? "✓" : "✕"} VERIFIED: ${passed}/${results.length
+      } TESTS PASSED`
+    );
+    pushToast(
+      `VERIFIED ${passed}/${results.length} PASSED`,
+      passed === results.length ? "success" : "warn"
+    );
+  };
 
   // --- STUDENT CRUD HANDLERS ---
   const handleEditStudentClick = (stu: UserProfile) => {
@@ -149,8 +387,9 @@ export const InstructorDashboardPage: React.FC = () => {
     const cleanPass = stuPassword.trim();
 
     if (cleanUser.length < 3 || cleanName.length < 2 || cleanPass.length < 4) {
-      showToast(
-        "⚠ Vui lòng nhập Username (>=3 ký tự), Họ tên và Mật khẩu (>=4 ký tự)!"
+      pushToast(
+        "ERR_VALIDATION: Username (>=3), Name and Password (>=4) required",
+        "warn"
       );
       return;
     }
@@ -172,9 +411,7 @@ export const InstructorDashboardPage: React.FC = () => {
     await upsertUserProfile(profile);
     await loadDashboardData();
     handleResetStudentForm();
-    showToast(
-      `✓ Đã lưu hồ sơ học sinh "${cleanName}" (Lớp ${stuClassName}) lên hệ thống!`
-    );
+    pushToast(`SAVED STUDENT "${cleanName}" (${stuClassName})`, "success");
   };
 
   const handleDeleteStudent = async (stu: UserProfile) => {
@@ -183,164 +420,83 @@ export const InstructorDashboardPage: React.FC = () => {
     if (editingStudentUid === stu.uid) {
       handleResetStudentForm();
     }
-    showToast(`✕ Đã xóa tài khoản học sinh "${stu.displayName}".`);
-  };
-
-  // --- ASSIGNMENT CRUD HANDLERS ---
-  const populateFormWithAssignment = (asgn: Assignment) => {
-    setEditingId(asgn.id);
-    setLessonId(asgn.lessonId || "bai_16");
-    setGlyph(asgn.glyph || "◆");
-    setTitle(asgn.title);
-    setDifficulty(asgn.difficulty);
-    setDescription(asgn.description);
-    setStarterCode(asgn.starterCode);
-    setTestCases(
-      asgn.testCases.length > 0
-        ? asgn.testCases
-        : [{ input: "", expectedOutput: "", isHidden: false }]
-    );
-  };
-
-  const handleInitNewAssignment = () => {
-    setEditingId(null);
-    setLessonId(selectedLessonViewId || "bai_16");
-    setGlyph("◇");
-    setTitle(`Bài tập mới (${selectedLessonViewId.toUpperCase()})`);
-    setDifficulty("Beginner");
-    setDescription(
-      `### Yêu cầu bài toán
-Mô tả chi tiết đề bài tại đây.
-
-### Dữ liệu vào (Input)
-- Dòng 1: ...
-
-### Kết quả ra (Output)
-- In ra kết quả bằng lệnh \`print()\`.`
-    );
-    setStarterCode(`# Nhập dữ liệu và xử lý tại đây\nn = int(input())\nprint(n)\n`);
-    setTestCases([
-      { input: "10", expectedOutput: "10", isHidden: false },
-      { input: "25", expectedOutput: "25", isHidden: true },
-    ]);
-    showToast("Đã khởi tạo mẫu bài tập mới.");
-  };
-
-  const handleSaveAssignment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) return;
-
-    const saved = await saveAssignment({
-      id: editingId || "",
-      lessonId,
-      glyph,
-      title: title.trim(),
-      difficulty,
-      description,
-      starterCode,
-      testCases: testCases.filter(
-        (tc) => tc.input.trim() !== "" || tc.expectedOutput.trim() !== ""
-      ),
-      createdBy: user?.uid || "usr_admin",
-      createdAt: new Date().toISOString(),
-    });
-
-    await loadDashboardData();
-    setEditingId(saved.id);
-    showToast(`✓ Đã lưu & xuất bản bài tập "${saved.title}" lên Firestore!`);
-  };
-
-  const handleDeleteAssignment = async (id: string) => {
-    await deleteAssignmentById(id);
-    const updated = await getAssignments();
-    setAssignments(updated);
-    if (updated.length > 0) {
-      populateFormWithAssignment(localizeAssignment(updated[0], lang));
-    } else {
-      handleInitNewAssignment();
-    }
-    showToast("✕ Đã xóa bài tập khỏi hệ thống.");
-  };
-
-  const handleAddTestCase = () => {
-    setTestCases((prev) => [
-      ...prev,
-      { input: "", expectedOutput: "", isHidden: false },
-    ]);
-  };
-
-  const handleUpdateTestCase = (
-    idx: number,
-    field: keyof TestCase,
-    value: string | boolean
-  ) => {
-    setTestCases((prev) =>
-      prev.map((tc, i) => (i === idx ? { ...tc, [field]: value } : tc))
-    );
-  };
-
-  const handleRemoveTestCase = (idx: number) => {
-    if (testCases.length <= 1) return;
-    setTestCases((prev) => prev.filter((_, i) => i !== idx));
+    pushToast(`DELETED STUDENT "${stu.displayName}"`, "danger");
   };
 
   const handleForceSyncFirestore = async () => {
-    showToast("◐ Đang đồng bộ dữ liệu gốc lên Cloud Firestore...");
+    pushToast("SYNCING SEED DATA TO CLOUD FIRESTORE…", "info");
     const res = await seedCloudFirestoreData();
     if (res.success) {
       await loadDashboardData();
-      showToast(
-        `✓ Đã đồng bộ thành công ${res.count} bài tập lên Cloud Firestore!`
-      );
+      pushToast(`SYNCED ${res.count} ASSIGNMENTS TO FIRESTORE`, "success");
     } else {
-      showToast(`✕ Lỗi đồng bộ Firestore: ${res.error}`);
+      pushToast(`ERR_FIRESTORE_SYNC: ${res.error}`, "danger");
     }
   };
 
   // --- ANALYTICS & METRICS COMPUTATION ---
-  const studentList = users.filter((u) => u.role === "student");
+  const studentList = useMemo(
+    () => users.filter((u) => u.role === "student"),
+    [users]
+  );
   const totalAssignments = assignments.length;
   const passedSubmissions = submissions.filter((s) => s.status === "passed");
   const passRate =
     submissions.length > 0
       ? Math.round((passedSubmissions.length / submissions.length) * 100)
       : 0;
+  const activeStudentCount = useMemo(
+    () => new Set(submissions.map((s) => s.userId)).size,
+    [submissions]
+  );
 
-  // Per-student progress helper
+  // Submission lookup map: `${userId}_${assignmentId}` -> Submission
+  const submissionMap = useMemo(() => {
+    const map: Record<string, Submission> = {};
+    submissions.forEach((s) => {
+      map[`${s.userId}_${s.assignmentId}`] = s;
+    });
+    return map;
+  }, [submissions]);
+
+  // PerformanceBento pass rate by difficulty (Section 7.3)
+  const difficultyBreakdown = useMemo(() => {
+    const levels: DifficultyLevel[] = ["Beginner", "Intermediate", "Advanced"];
+    return levels.map((lvl) => {
+      const lvlAsgnIds = new Set(
+        assignments.filter((a) => a.difficulty === lvl).map((a) => a.id)
+      );
+      const lvlSubs = submissions.filter((s) => lvlAsgnIds.has(s.assignmentId));
+      const lvlPassed = lvlSubs.filter((s) => s.status === "passed").length;
+      const rate =
+        lvlSubs.length > 0 ? Math.round((lvlPassed / lvlSubs.length) * 100) : 0;
+      return {
+        level: lvl,
+        assignmentCount: lvlAsgnIds.size,
+        submissionCount: lvlSubs.length,
+        passedCount: lvlPassed,
+        rate,
+      };
+    });
+  }, [assignments, submissions]);
+
   const getStudentStats = (stuUid: string) => {
     const stuSubs = submissions.filter((s) => s.userId === stuUid);
     const passedSet = new Set(
       stuSubs.filter((s) => s.status === "passed").map((s) => s.assignmentId)
     );
-    const failedSet = new Set(
-      stuSubs
-        .filter((s) => s.status === "failed" && !passedSet.has(s.assignmentId))
-        .map((s) => s.assignmentId)
-    );
-    const latestUpdate =
-      stuSubs.length > 0
-        ? stuSubs
-            .map((s) => s.updatedAt)
-            .sort()
-            .reverse()[0]
-        : null;
-
     const pct =
       totalAssignments > 0
         ? Math.round((passedSet.size / totalAssignments) * 100)
         : 0;
-
     return {
       passedCount: passedSet.size,
-      failedCount: failedSet.size,
       totalSubmissions: stuSubs.length,
       progressPct: pct,
-      latestUpdate,
-      subs: stuSubs,
     };
   };
 
-  // Per-class analytics (10A7, 10A12, 10A13, 10A14, 10A15, 10A16)
+  // Class analytics for Overview tab
   const classAnalytics = GRADE_10_CLASSES.map((cls) => {
     const studentsInClass = studentList.filter(
       (s) => (s.className || "10A7") === cls
@@ -359,9 +515,9 @@ Mô tả chi tiết đề bài tại đây.
     const avgProgressPct =
       studentsInClass.length > 0
         ? Math.round(
-            statsList.reduce((acc, x) => acc + x.stats.progressPct, 0) /
-              studentsInClass.length
-          )
+          statsList.reduce((acc, x) => acc + x.stats.progressPct, 0) /
+          studentsInClass.length
+        )
         : 0;
     const topStudent =
       statsList.sort((a, b) => b.stats.passedCount - a.stats.passedCount)[0]
@@ -377,32 +533,120 @@ Mô tả chi tiết đề bài tại đây.
     };
   });
 
-  // Per-lesson analytics (Bài 16 -> Bài 31)
-  const lessonAnalytics = PYTHON_CURRICULUM_LESSONS.map((lesson) => {
-    const lessonAsgns = assignments.filter((a) => a.lessonId === lesson.id);
-    const lessonAsgnIds = new Set(lessonAsgns.map((a) => a.id));
-    const lessonSubs = submissions.filter((s) =>
-      lessonAsgnIds.has(s.assignmentId)
+  // Filtered assignments for Builder left list
+  const builderFilteredAssignments = useMemo(() => {
+    const q = asgnSearch.trim().toLowerCase();
+    if (!q) return assignments;
+    return assignments.filter((a) => {
+      const loc = localizeAssignment(a, lang);
+      return (
+        loc.title.toLowerCase().includes(q) ||
+        a.title.toLowerCase().includes(q) ||
+        a.id.toLowerCase().includes(q)
+      );
+    });
+  }, [assignments, asgnSearch, lang]);
+
+  // Filtered students for Matrix & Student Roster
+  const matrixStudents = useMemo(() => {
+    const q = subSearch.trim().toLowerCase();
+    const list = studentList.filter((stu) => {
+      const matchClass =
+        subClassFilter === "ALL" || (stu.className || "10A7") === subClassFilter;
+      if (!matchClass) return false;
+      if (!q) return true;
+      return (
+        stu.displayName.toLowerCase().includes(q) ||
+        stu.email.toLowerCase().includes(q) ||
+        (stu.username || "").toLowerCase().includes(q)
+      );
+    });
+    return list.sort((a, b) =>
+      subSortDir === "asc"
+        ? a.displayName.localeCompare(b.displayName)
+        : b.displayName.localeCompare(a.displayName)
     );
-    const passedLessonSubs = lessonSubs.filter((s) => s.status === "passed");
-    const uniqueStudentsPassed = new Set(passedLessonSubs.map((s) => s.userId))
-      .size;
-    const passRateLesson =
-      lessonSubs.length > 0
-        ? Math.round((passedLessonSubs.length / lessonSubs.length) * 100)
-        : 0;
+  }, [studentList, subClassFilter, subSearch, subSortDir]);
 
-    return {
-      lesson,
-      exerciseCount: lessonAsgns.length,
-      attemptsCount: lessonSubs.length,
-      passedCount: passedLessonSubs.length,
-      uniqueStudentsPassed,
-      passRateLesson,
-    };
-  });
+  const matrixAssignments = useMemo(() => {
+    if (subLessonFilter === "ALL") return assignments;
+    return assignments.filter((a) => a.lessonId === subLessonFilter);
+  }, [assignments, subLessonFilter]);
 
-  // Filtered students for Tab 2
+  const paginatedMatrixStudents = useMemo(() => {
+    const start = (subPage - 1) * PAGE_SIZE;
+    return matrixStudents.slice(start, start + PAGE_SIZE);
+  }, [matrixStudents, subPage]);
+
+  // Filtered submissions for List view
+  const filteredSubmissions = useMemo(() => {
+    return submissions.filter((sub) => {
+      const stu = users.find((u) => u.uid === sub.userId);
+      const stuClass = sub.userClassName || stu?.className || "10A7";
+      const asgn = assignments.find((a) => a.id === sub.assignmentId);
+
+      const matchClass =
+        subClassFilter === "ALL" || stuClass === subClassFilter;
+      const matchLesson =
+        subLessonFilter === "ALL" || asgn?.lessonId === subLessonFilter;
+      const matchStatus =
+        subStatusFilter === "ALL" || sub.status === subStatusFilter;
+      const q = subSearch.trim().toLowerCase();
+      const stuName = (
+        sub.userDisplayName ||
+        stu?.displayName ||
+        sub.userId
+      ).toLowerCase();
+      const matchSearch = !q || stuName.includes(q);
+
+      return matchClass && matchLesson && matchStatus && matchSearch;
+    });
+  }, [
+    submissions,
+    users,
+    assignments,
+    subClassFilter,
+    subLessonFilter,
+    subStatusFilter,
+    subSearch,
+  ]);
+
+  // EXPORT CSV Client-Side Generator (Section 7.3)
+  const handleExportCsv = () => {
+    const headers = [
+      "Student UID",
+      "Display Name",
+      "Class",
+      "Email",
+      ...matrixAssignments.map((a) => a.id),
+    ];
+    const rows = matrixStudents.map((stu) => {
+      const cols = matrixAssignments.map((a) => {
+        const sub = submissionMap[`${stu.uid}_${a.id}`];
+        return sub ? sub.status : "not_started";
+      });
+      return [
+        stu.uid,
+        `"${stu.displayName.replace(/"/g, '""')}"`,
+        stu.className || "10A7",
+        stu.email,
+        ...cols,
+      ].join(",");
+    });
+    const csvContent = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `chroma_submissions_${new Date()
+      .toISOString()
+      .slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    pushToast("EXPORTED CSV REPORT", "success");
+  };
+
+  // Filtered students for Tab STUDENTS
   const filteredStudents = studentList.filter((stu) => {
     const matchClass =
       studentClassFilter === "ALL" ||
@@ -416,29 +660,6 @@ Mô tả chi tiết đề bài tại đây.
     );
   });
 
-  // Filtered submissions for Tab 4
-  const filteredSubmissions = submissions.filter((sub) => {
-    const stu = users.find((u) => u.uid === sub.userId);
-    const stuClass = sub.userClassName || stu?.className || "10A7";
-    const asgn = assignments.find((a) => a.id === sub.assignmentId);
-
-    const matchClass =
-      subClassFilter === "ALL" || stuClass === subClassFilter;
-    const matchLesson =
-      subLessonFilter === "ALL" || asgn?.lessonId === subLessonFilter;
-    const matchStatus =
-      subStatusFilter === "ALL" || sub.status === subStatusFilter;
-    const q = subSearch.trim().toLowerCase();
-    const stuName = (
-      sub.userDisplayName ||
-      stu?.displayName ||
-      sub.userId
-    ).toLowerCase();
-    const matchSearch = !q || stuName.includes(q);
-
-    return matchClass && matchLesson && matchStatus && matchSearch;
-  });
-
   const activeLessonTopic: LessonTopic =
     PYTHON_CURRICULUM_LESSONS.find((l) => l.id === selectedLessonViewId) ||
     PYTHON_CURRICULUM_LESSONS[0];
@@ -446,53 +667,64 @@ Mô tả chi tiết đề bài tại đây.
   return (
     <div className="min-h-screen bg-background text-primary flex flex-col">
       <TopNavigationBar
-        breadcrumb={t(
-          "TRUNG TÂM QUẢN TRỊ GIÁO VIÊN // ADMIN DASHBOARD",
-          "ADMIN COMMAND CENTER // TEACHER DASHBOARD"
-        )}
-        engineStatusText="ADMIN CONTROL"
-        syncStatus={
-          statusNotice ||
-          t("✓ ĐỒNG BỘ DỮ LIỆU THỜI GIAN THỰC", "✓ REAL-TIME SYNC ACTIVE")
-        }
+        breadcrumb="CHROMA_IDE // INSTRUCTOR"
+        engineState={engineState}
+        engineStatusText="INSTRUCTOR STUDIO"
       />
 
-      <BentoSection className="flex-1 w-full">
-        {/* 1. TOP GLOBAL KPI METRICS STRIP (6 CELLS) */}
-        <div className="grid grid-cols-2 md:grid-cols-6 bg-grid gap-[1px] border-b border-grid font-mono text-xs">
-          <div className="bg-surface p-4">
-            <div className="text-[11px] text-secondary uppercase">
-              {t("TỔNG SỐ HỌC SINH", "TOTAL STUDENTS")}
-            </div>
-            <div className="text-2xl font-bold text-primary mt-1">
-              {studentList.length}
-            </div>
-            <div className="text-[10px] text-brand mt-0.5">
-              6 lớp (10A7 → 10A16)
-            </div>
-          </div>
-
-          <div className="bg-surface p-4">
-            <div className="text-[11px] text-secondary uppercase">
-              {t("CHUYÊN ĐỀ BÀI GIẢNG", "CURRICULUM LESSONS")}
-            </div>
-            <div className="text-2xl font-bold text-primary mt-1">
-              {PYTHON_CURRICULUM_LESSONS.length}
-            </div>
-            <div className="text-[10px] text-muted mt-0.5">
-              Bài 16 → Bài 31 (SGK)
+      {/* D4: /instructor uses max-w-screen-2xl with border-x border-grid */}
+      <BentoSection className="max-w-screen-2xl flex-1 w-full">
+        {/* 1. TOP METRICS STRIP (3 Primary Columns with Definition Tooltips per Section 7.1) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 bg-grid gap-[1px] border-b border-grid font-mono text-mono-sm">
+          <div className="bg-surface px-6 py-4 flex items-center justify-between">
+            <Tooltip content="Total coding assignments published in the curriculum bank">
+              <span className="text-secondary uppercase cursor-help border-b border-dotted border-grid-strong">
+                TOTAL ASSIGNMENTS
+              </span>
+            </Tooltip>
+            <div className="flex items-center gap-3">
+              <strong className="text-2xl text-primary">
+                {assignments.length}
+              </strong>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleForceSyncFirestore}
+              >
+                SYNC CLOUD
+              </Button>
             </div>
           </div>
 
-          <div className="bg-surface p-4">
-            <div className="text-[11px] text-secondary uppercase">
-              {t("NGÂN HÀNG BÀI TẬP", "TOTAL EXERCISES")}
+          <div className="bg-surface px-6 py-4 flex items-center justify-between">
+            <Tooltip content="Active students: distinct students with at least one saved or graded submission">
+              <span className="text-secondary uppercase cursor-help border-b border-dotted border-grid-strong">
+                ACTIVE STUDENTS
+              </span>
+            </Tooltip>
+            <div className="text-right">
+              <strong className="text-2xl text-brand-text">
+                {activeStudentCount}
+              </strong>
+              <span className="text-muted text-mono-xs ml-2">
+                / {studentList.length} REGISTERED
+              </span>
             </div>
-            <div className="text-2xl font-bold text-brand mt-1">
-              {assignments.length}
-            </div>
-            <div className="text-[10px] text-muted mt-0.5">
-              Có chấm test tự động
+          </div>
+
+          <div className="bg-surface px-6 py-4 flex items-center justify-between">
+            <Tooltip content="Overall pass rate: percentage of total submissions with status === 'passed'">
+              <span className="text-secondary uppercase cursor-help border-b border-dotted border-grid-strong">
+                OVERALL PASS RATE
+              </span>
+            </Tooltip>
+            <div className="flex items-center gap-2">
+              <span className="text-success-text" aria-hidden="true">
+                {buildAsciiBar(passRate, 8)}
+              </span>
+              <strong className="text-2xl text-success-text">
+                {passRate}%
+              </strong>
             </div>
           </div>
 
@@ -553,657 +785,69 @@ Mô tả chi tiết đề bài tại đây.
           </div>
         </div>
 
-        {/* 2. PRIMARY ADMIN NAVIGATION TABS (4 MODULES) */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 bg-grid gap-[1px] border-b border-grid font-mono text-xs">
-          <button
-            type="button"
-            onClick={() => setActiveTab("OVERVIEW")}
-            className={`py-3.5 px-4 text-left font-bold transition-colors flex items-center justify-between ${
-              activeTab === "OVERVIEW"
-                ? "bg-brand text-white"
-                : "bg-subtle text-secondary hover:text-primary hover:bg-surface"
-            }`}
-          >
-            <span>📊 01. TỔNG QUAN LỚP & BÀI GIẢNG</span>
-            <span>→</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("STUDENTS")}
-            className={`py-3.5 px-4 text-left font-bold transition-colors flex items-center justify-between ${
-              activeTab === "STUDENTS"
-                ? "bg-brand text-white"
-                : "bg-subtle text-secondary hover:text-primary hover:bg-surface"
-            }`}
-          >
-            <span>👥 02. QUẢN LÝ HỌC SINH ({studentList.length})</span>
-            <span>→</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("CURRICULUM")}
-            className={`py-3.5 px-4 text-left font-bold transition-colors flex items-center justify-between ${
-              activeTab === "CURRICULUM"
-                ? "bg-brand text-white"
-                : "bg-subtle text-secondary hover:text-primary hover:bg-surface"
-            }`}
-          >
-            <span>📚 03. BÀI GIẢNG & ĐỀ BÀI ({assignments.length})</span>
-            <span>→</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("SUBMISSIONS")}
-            className={`py-3.5 px-4 text-left font-bold transition-colors flex items-center justify-between ${
-              activeTab === "SUBMISSIONS"
-                ? "bg-brand text-white"
-                : "bg-subtle text-secondary hover:text-primary hover:bg-surface"
-            }`}
-          >
-            <span>💻 04. KIỂM TRA BÀI NỘP ({submissions.length})</span>
-            <span>→</span>
-          </button>
+        {/* 2. PRIMARY INSTRUCTOR TABS */}
+        <div className="border-b border-grid bg-subtle px-4">
+          <Tabs
+            ariaLabel="Instructor Dashboard Sections"
+            items={[
+              {
+                id: "ASSIGNMENTS",
+                label: `ASSIGNMENTS (${assignments.length})`,
+              },
+              {
+                id: "SUBMISSIONS",
+                label: `SUBMISSIONS (${submissions.length})`,
+              },
+              {
+                id: "OVERVIEW",
+                label: `CLASS OVERVIEW (6 CLASSES)`,
+              },
+              {
+                id: "STUDENTS",
+                label: `STUDENTS (${studentList.length})`,
+              },
+            ]}
+            activeId={activeTab}
+            onChange={(id) => setActiveTab(id as AdminTab)}
+          />
         </div>
 
-        {statusNotice && (
-          <div className="px-6 py-2.5 bg-brand/10 border-b border-brand text-brand font-mono text-xs font-semibold flex items-center justify-between">
-            <span>{statusNotice}</span>
-            <button onClick={() => setStatusNotice(null)}>[✕]</button>
-          </div>
-        )}
-
         {/* ===================================================================
-            TAB 1: OVERVIEW DASHBOARD (CLASS PROGRESS & CURRICULUM ANALYTICS)
+            TAB 1: ASSIGNMENTS (SPLIT-PANE BUILDER - SECTION 7.2)
            =================================================================== */}
-        {activeTab === "OVERVIEW" && (
+        {activeTab === "ASSIGNMENTS" && (
           <div>
-            <SectionHeader
-              glyph="[📊]"
-              badge="BẢNG ĐIỀU KHIỂN LỚP HỌC (6 LỚP)"
-              title="Tình hình Học tập & Làm bài của 6 Lớp (10A7, 10A12 → 10A16)"
-              subtitle="Theo dõi sĩ số tài khoản, số học sinh tích cực làm bài, tổng số bài tập hoàn thành và tiến độ trung bình của từng lớp."
-            />
-
-            {/* 6 Classes Bento Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-grid gap-[1px] border-b border-grid">
-              {classAnalytics.map((cls) => (
-                <div
-                  key={cls.className}
-                  className="bg-surface p-6 flex flex-col justify-between hover:bg-subtle/40 transition-colors"
-                >
-                  <div>
-                    <div className="flex items-center justify-between font-mono text-xs mb-3">
-                      <span className="px-3 py-1 bg-brand text-white font-bold text-sm">
-                        LỚP {cls.className}
-                      </span>
-                      <span className="text-secondary">
-                        Sĩ số:{" "}
-                        <strong className="text-primary">
-                          {cls.studentCount} học sinh
-                        </strong>
-                      </span>
-                    </div>
-
-                    {/* Class Progress Bar */}
-                    <div className="mb-4">
-                      <div className="flex justify-between font-mono text-xs mb-1">
-                        <span className="text-secondary">
-                          Tiến độ hoàn thành TB của lớp:
-                        </span>
-                        <span className="text-success font-bold">
-                          {cls.avgProgressPct}%
-                        </span>
-                      </div>
-                      <div className="w-full h-2.5 bg-canvas border border-grid overflow-hidden">
-                        <div
-                          className="h-full bg-success transition-all duration-300"
-                          style={{ width: `${cls.avgProgressPct}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 bg-grid gap-[1px] border border-grid font-mono text-center text-xs mb-4">
-                      <div className="bg-subtle p-2.5">
-                        <div className="text-[10px] text-secondary">
-                          ĐÃ ĐĂNG KÝ
-                        </div>
-                        <div className="text-base font-bold text-primary mt-0.5">
-                          {cls.studentCount}
-                        </div>
-                      </div>
-                      <div className="bg-subtle p-2.5">
-                        <div className="text-[10px] text-secondary">
-                          ĐÃ LÀM BÀI
-                        </div>
-                        <div className="text-base font-bold text-brand mt-0.5">
-                          {cls.activeStudentsCount}
-                        </div>
-                      </div>
-                      <div className="bg-subtle p-2.5">
-                        <div className="text-[10px] text-secondary">
-                          BÀI ĐÃ ĐẠT
-                        </div>
-                        <div className="text-base font-bold text-success mt-0.5">
-                          {cls.totalPassedInClass}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="font-mono text-xs text-secondary mb-4">
-                      ★ Học sinh dẫn đầu lớp:{" "}
-                      {cls.topStudent ? (
-                        <strong className="text-primary">
-                          {cls.topStudent.displayName} (@
-                          {cls.topStudent.username ||
-                            cls.topStudent.uid.replace(/^usr_/, "")}
-                          )
-                        </strong>
-                      ) : (
-                        <span className="text-muted">Chưa có học sinh</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-grid flex items-center justify-between gap-2 font-mono text-xs">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setStudentClassFilter(cls.className);
-                        setActiveTab("STUDENTS");
-                      }}
-                      className="px-3 py-1.5 bg-subtle border border-grid text-primary hover:border-brand hover:text-brand font-semibold transition-colors"
-                    >
-                      [👥 Danh sách HS lớp {cls.className}]
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSubClassFilter(cls.className);
-                        setActiveTab("SUBMISSIONS");
-                      }}
-                      className="px-3 py-1.5 bg-surface border border-grid text-secondary hover:text-primary transition-colors"
-                    >
-                      [💻 Bài nộp ({cls.totalPassedInClass})]
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Curriculum Lessons Progress Breakdown (Bài 16 -> Bài 31) */}
-            <SectionHeader
-              glyph="[📚]"
-              badge="THỐNG KÊ THEO BÀI GIẢNG (BÀI 16 → BÀI 31)"
-              title="Tình hình Nắm bắt Kiến thức & Hoàn thành Bài tập theo từng Bài học"
-              subtitle="Giúp giáo viên nắm bắt bài học nào học sinh đã hoàn thành tốt và bài học nào cần hướng dẫn thêm."
-            />
-
-            <div className="bg-surface border-b border-grid overflow-x-auto">
-              <table className="w-full text-left font-mono text-xs border-collapse">
-                <thead>
-                  <tr className="bg-subtle border-b border-grid text-secondary uppercase">
-                    <th className="py-3 px-4">MÃ BÀI</th>
-                    <th className="py-3 px-4">TÊN CHUYÊN ĐỀ BÀI GIẢNG</th>
-                    <th className="py-3 px-4 text-center">SỐ BÀI TẬP</th>
-                    <th className="py-3 px-4 text-center">TỔNG LƯỢT NỘP</th>
-                    <th className="py-3 px-4 text-center">SỐ LƯỢT ĐẠT 100%</th>
-                    <th className="py-3 px-4">TỶ LỆ VƯỢT QUA TEST</th>
-                    <th className="py-3 px-4 text-right">THAO TÁC</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-grid">
-                  {lessonAnalytics.map((item) => (
-                    <tr
-                      key={item.lesson.id}
-                      className="hover:bg-subtle/60 transition-colors"
-                    >
-                      <td className="py-3 px-4">
-                        <span className="px-2 py-0.5 bg-brand text-white font-bold">
-                          {item.lesson.code}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-primary font-semibold">
-                        <div>{item.lesson.titleVi}</div>
-                        <div className="text-[11px] text-secondary font-normal truncate max-w-md">
-                          {item.lesson.summaryVi}
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 text-center font-bold text-primary">
-                        {item.exerciseCount} bài
-                      </td>
-                      <td className="py-3 px-4 text-center text-secondary">
-                        {item.attemptsCount} lượt
-                      </td>
-                      <td className="py-3 px-4 text-center text-success font-bold">
-                        {item.passedCount} lượt ({item.uniqueStudentsPassed} HS)
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-24 h-2 bg-canvas border border-grid overflow-hidden">
-                            <div
-                              className="h-full bg-success"
-                              style={{ width: `${item.passRateLesson}%` }}
-                            />
-                          </div>
-                          <span className="text-success font-bold">
-                            {item.passRateLesson}%
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedLessonViewId(item.lesson.id);
-                            setActiveTab("CURRICULUM");
-                          }}
-                          className="px-2.5 py-1 border border-grid bg-surface text-primary hover:border-brand hover:text-brand"
-                        >
-                          [📖 Xem bài giảng & đề bài]
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* ===================================================================
-            TAB 2: STUDENT MANAGEMENT BY CLASS (10A7, 10A12..10A16)
-           =================================================================== */}
-        {activeTab === "STUDENTS" && (
-          <div>
-            <SectionHeader
-              glyph="[👥]"
-              badge="QUẢN LÝ HỌC SINH THEO LỚP"
-              title="Danh sách Học sinh, Quản lý Tài khoản & Bảng điểm Chi tiết"
-              subtitle="Thêm/sửa tài khoản học sinh, cấp lại mật khẩu, chuyển lớp và kiểm tra toàn bộ bài làm của từng học sinh."
-              rightElement={
-                <div className="flex items-center gap-2 font-mono text-xs">
-                  <button
-                    type="button"
-                    onClick={() => setShowPasswordsInTable((p) => !p)}
-                    className="px-3 py-1.5 border border-grid bg-surface text-secondary hover:text-primary"
-                  >
-                    {showPasswordsInTable
-                      ? "[🙈 Ẩn mật khẩu HS]"
-                      : "[👁 Hiện mật khẩu HS]"}
-                  </button>
-                </div>
-              }
-            />
-
-            {/* Class Filter Bar (Tất cả + 6 Lớp) */}
-            <div className="p-4 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setStudentClassFilter("ALL")}
-                  className={`px-3 py-1.5 border font-semibold transition-colors ${
-                    studentClassFilter === "ALL"
-                      ? "bg-brand text-white border-brand"
-                      : "bg-surface text-secondary border-grid hover:text-primary"
-                  }`}
-                >
-                  TẤT CẢ LỚP ({studentList.length})
-                </button>
-                {GRADE_10_CLASSES.map((cls) => {
-                  const count = studentList.filter(
-                    (s) => (s.className || "10A7") === cls
-                  ).length;
-                  const active = studentClassFilter === cls;
-                  return (
-                    <button
-                      key={cls}
-                      type="button"
-                      onClick={() => setStudentClassFilter(cls)}
-                      className={`px-3 py-1.5 border font-semibold transition-colors ${
-                        active
-                          ? "bg-brand text-white border-brand"
-                          : "bg-surface text-secondary border-grid hover:text-primary"
-                      }`}
-                    >
-                      LỚP {cls} ({count})
-                    </button>
-                  );
-                })}
-              </div>
-
-              <input
-                type="text"
-                value={studentSearch}
-                onChange={(e) => setStudentSearch(e.target.value)}
-                placeholder="🔍 Tìm học sinh theo Họ tên hoặc @username..."
-                className="bg-surface border border-grid px-3 py-1.5 text-primary focus:outline-none focus:border-brand w-full sm:w-72"
-              />
-            </div>
-
-            <BentoGrid cols={12}>
-              {/* Left 4 Cols: Add / Edit Student Account Form */}
-              <BentoCell colSpan="md:col-span-4">
-                <form
-                  onSubmit={handleSaveStudent}
-                  className="space-y-4 font-mono text-xs"
-                >
-                  <div className="flex items-center justify-between border-b border-grid pb-3">
-                    <SectionBadge
-                      glyph="◆"
-                      label={
-                        editingStudentUid
-                          ? "CHỈNH SỬA HỒ SƠ HỌC SINH"
-                          : "THÊM HỌC SINH MỚI"
-                      }
-                      className="mb-0"
-                    />
-                    {editingStudentUid && (
-                      <button
-                        type="button"
-                        onClick={handleResetStudentForm}
-                        className="text-brand hover:underline"
-                      >
-                        [+ Tạo mới]
-                      </button>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-secondary uppercase mb-1 font-semibold">
-                      1. Tên đăng nhập (Username) *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={stuUsername}
-                      onChange={(e) => setStuUsername(e.target.value)}
-                      placeholder="VD: an10a7"
-                      className="w-full bg-background border border-grid px-3 py-2 text-primary focus:outline-none focus:border-brand"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-secondary uppercase mb-1 font-semibold">
-                      2. Họ và tên học sinh *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={stuFullName}
-                      onChange={(e) => setStuFullName(e.target.value)}
-                      placeholder="VD: Nguyễn Minh An"
-                      className="w-full bg-background border border-grid px-3 py-2 text-primary focus:outline-none focus:border-brand"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-secondary uppercase mb-1 font-semibold">
-                      3. Lớp học *
-                    </label>
-                    <div className="grid grid-cols-3 bg-grid gap-[1px] border border-grid">
-                      {GRADE_10_CLASSES.map((cls) => (
-                        <button
-                          key={cls}
-                          type="button"
-                          onClick={() => setStuClassName(cls)}
-                          className={`py-2 text-center font-bold ${
-                            stuClassName === cls
-                              ? "bg-brand text-white"
-                              : "bg-surface text-secondary hover:text-primary"
-                          }`}
-                        >
-                          {cls}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-secondary uppercase mb-1 font-semibold">
-                      4. Mật khẩu (Password) *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={stuPassword}
-                      onChange={(e) => setStuPassword(e.target.value)}
-                      placeholder="VD: 123456"
-                      className="w-full bg-background border border-grid px-3 py-2 text-primary focus:outline-none focus:border-brand"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-2.5 bg-brand text-white font-bold uppercase hover:opacity-90 transition-opacity"
-                  >
-                    {editingStudentUid
-                      ? "[✓] CẬP NHẬT HỒ SƠ HỌC SINH"
-                      : "[+ THÊM HỌC SINH VÀO LỚP]"}
-                  </button>
-                </form>
-              </BentoCell>
-
-              {/* Right 8 Cols: Student Roster Table */}
-              <BentoCell colSpan="md:col-span-8" noPadding>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left font-mono text-xs border-collapse">
-                    <thead>
-                      <tr className="bg-subtle border-b border-grid text-secondary uppercase">
-                        <th className="py-3 px-4">STT</th>
-                        <th className="py-3 px-4">HỌ VÀ TÊN</th>
-                        <th className="py-3 px-4">USERNAME / MK</th>
-                        <th className="py-3 px-4">LỚP</th>
-                        <th className="py-3 px-4">
-                          TIẾN ĐỘ ({totalAssignments} BÀI)
-                        </th>
-                        <th className="py-3 px-4 text-right">THAO TÁC</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-grid">
-                      {filteredStudents.length === 0 ? (
-                        <tr>
-                          <td
-                            colSpan={6}
-                            className="py-8 text-center text-muted"
-                          >
-                            Chưa có học sinh nào trong bộ lọc này.
-                          </td>
-                        </tr>
-                      ) : (
-                        filteredStudents.map((stu, idx) => {
-                          const st = getStudentStats(stu.uid);
-                          const uname =
-                            stu.username || stu.uid.replace(/^usr_/, "");
-                          return (
-                            <tr
-                              key={stu.uid}
-                              className="hover:bg-subtle/60 transition-colors"
-                            >
-                              <td className="py-3 px-4 text-muted">
-                                #{idx + 1}
-                              </td>
-                              <td className="py-3 px-4 font-bold text-primary">
-                                {stu.displayName}
-                              </td>
-                              <td className="py-3 px-4">
-                                <div className="text-brand font-semibold">
-                                  @{uname}
-                                </div>
-                                <div className="text-[11px] text-secondary">
-                                  MK:{" "}
-                                  {showPasswordsInTable
-                                    ? stu.password || "123456"
-                                    : "••••••"}
-                                </div>
-                              </td>
-                              <td className="py-3 px-4">
-                                <span className="px-2 py-0.5 bg-brand/15 border border-brand/40 text-brand font-bold">
-                                  {stu.className || "10A7"}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="text-success font-bold">
-                                    {st.passedCount}/{totalAssignments} bài đạt
-                                  </span>
-                                  <span className="text-muted">
-                                    ({st.progressPct}%)
-                                  </span>
-                                </div>
-                                <div className="w-32 h-2 bg-canvas border border-grid overflow-hidden">
-                                  <div
-                                    className="h-full bg-success"
-                                    style={{ width: `${st.progressPct}%` }}
-                                  />
-                                </div>
-                              </td>
-                              <td className="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setInspectedStudentProfile(stu)
-                                  }
-                                  className="px-2.5 py-1 bg-brand text-white font-semibold hover:opacity-90"
-                                >
-                                  [📋 Bảng điểm & Code]
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleEditStudentClick(stu)}
-                                  className="px-2 py-1 border border-grid bg-surface text-secondary hover:text-primary"
-                                >
-                                  [✎ Sửa]
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteStudent(stu)}
-                                  className="px-2 py-1 border border-grid bg-surface text-secondary hover:text-brand"
-                                >
-                                  [✕]
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </BentoCell>
-            </BentoGrid>
-          </div>
-        )}
-
-        {/* ===================================================================
-            TAB 3: CURRICULUM & ASSIGNMENT AUTHORING STUDIO
-           =================================================================== */}
-        {activeTab === "CURRICULUM" && (
-          <div>
-            {/* Section A: Inspect Lesson Theory & Exercises per Lesson */}
-            <SectionHeader
-              glyph="[📚]"
-              badge="QUẢN LÝ NỘI DUNG BÀI GIẢNG (BÀI 16 → BÀI 31)"
-              title="Kiểm tra Nội dung Lý thuyết & Phân bổ Bài tập theo từng Bài học"
-              subtitle="Chọn chuyên đề bài học để xem nội dung lý thuyết hiển thị cho học sinh và các bài tập thuộc chuyên đề đó."
-            />
-
-            <div className="p-4 bg-subtle border-b border-grid flex flex-wrap gap-1.5 font-mono text-xs">
-              {PYTHON_CURRICULUM_LESSONS.map((l) => {
-                const count = assignments.filter(
-                  (a) => a.lessonId === l.id
-                ).length;
-                const active = selectedLessonViewId === l.id;
-                return (
-                  <button
-                    key={l.id}
-                    type="button"
-                    onClick={() => setSelectedLessonViewId(l.id)}
-                    className={`px-3 py-1.5 border font-semibold transition-colors ${
-                      active
-                        ? "bg-brand text-white border-brand"
-                        : "bg-surface text-secondary border-grid hover:text-primary"
-                    }`}
-                  >
-                    {l.code} ({count} bài tập)
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 bg-grid gap-[1px] border-b border-grid">
-              <div className="lg:col-span-7 bg-surface p-6 max-h-96 overflow-y-auto">
-                <div className="font-mono text-xs text-brand font-bold uppercase mb-2">
-                  📖 NỘI DUNG BÀI GIẢNG: {activeLessonTopic.titleVi}
-                </div>
-                <MarkdownRenderer
-                  content={activeLessonTopic.theoryMarkdownVi}
-                />
-              </div>
-
-              <div className="lg:col-span-5 bg-subtle p-6 flex flex-col justify-between">
-                <div>
-                  <div className="font-mono text-xs text-primary font-bold uppercase mb-3">
-                    🎯 CÁC BÀI TẬP THUỘC {activeLessonTopic.code}:
-                  </div>
-                  <div className="space-y-2">
-                    {assignments
-                      .filter((a) => a.lessonId === activeLessonTopic.id)
-                      .map((asgn) => (
-                        <div
-                          key={asgn.id}
-                          onClick={() => populateFormWithAssignment(asgn)}
-                          className="p-3 bg-surface border border-grid hover:border-brand cursor-pointer flex items-center justify-between font-mono text-xs"
-                        >
-                          <div>
-                            <div className="font-bold text-primary">
-                              {asgn.title}
-                            </div>
-                            <div className="text-[11px] text-secondary">
-                              {asgn.testCases.length} bộ test chấm tự động
-                            </div>
-                          </div>
-                          <span className="text-brand font-semibold">
-                            [✎ Chỉnh sửa ↓]
-                          </span>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleInitNewAssignment}
-                  className="mt-4 w-full py-2.5 bg-brand text-white font-mono text-xs font-bold uppercase"
-                >
-                  [+ THÊM BÀI TẬP MỚI VÀO {activeLessonTopic.code}]
-                </button>
-              </div>
-            </div>
-
-            {/* Section B: Full Assignment & Test Suite Editor */}
             <SectionHeader
               glyph="[◆]"
-              badge="STUDIO SOẠN THẢO ĐỀ BÀI & TEST CASES"
-              title="Chỉnh sửa Đề bài tập, Code Mẫu & Bộ Test Chấm điểm Tự động"
+              badge="ASSIGNMENT BUILDER STUDIO"
+              title={t(
+                "Soạn thảo Bài tập Python, Preview Markdown & Bộ Test Cases",
+                "Author Python Assignments, Markdown Preview & Test Suite"
+              )}
               rightElement={
-                <button
-                  type="button"
+                <Button
+                  variant="primary"
+                  size="sm"
                   onClick={handleInitNewAssignment}
-                  className="px-3.5 py-2 bg-brand text-white font-mono text-xs font-semibold hover:opacity-90"
                 >
-                  [+ TẠO BÀI TẬP MỚI]
-                </button>
+                  [+ NEW ASSIGNMENT]
+                </Button>
               }
             />
 
             <BentoGrid cols={12}>
-              {/* Left 4 Cols: All 22 Exercises List */}
+              {/* Left 4/12: Searchable Assignment List with DifficultyBadge & Test Count */}
               <BentoCell colSpan="md:col-span-4" noPadding>
-                <div className="max-h-[680px] overflow-y-auto divide-y divide-grid">
-                  {assignments.map((rawItem) => {
+                <div className="p-3 bg-subtle border-b border-grid">
+                  <Input
+                    value={asgnSearch}
+                    onChange={(e) => setAsgnSearch(e.target.value)}
+                    placeholder="Search assignments by title..."
+                    aria-label="Search assignments"
+                  />
+                </div>
+                <div className="max-h-[820px] overflow-y-auto divide-y divide-grid">
+                  {builderFilteredAssignments.map((rawItem) => {
                     const item = localizeAssignment(rawItem, lang);
                     const isEditing = editingId === item.id;
                     const lessonMeta = PYTHON_CURRICULUM_LESSONS.find(
@@ -1213,49 +857,45 @@ Mô tả chi tiết đề bài tại đây.
                       <div
                         key={item.id}
                         onClick={() => populateFormWithAssignment(item)}
-                        className={`p-4 cursor-pointer transition-colors flex items-start justify-between gap-3 ${
-                          isEditing
-                            ? "bg-subtle border-l-4 border-l-brand"
-                            : "bg-surface hover:bg-subtle/60"
-                        }`}
+                        className={`p-4 cursor-pointer transition-colors flex items-start justify-between gap-3 ${isEditing
+                          ? "bg-active border-l-2 border-l-brand"
+                          : "bg-surface hover:bg-subtle"
+                          }`}
                       >
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 font-mono text-[10px] mb-1">
-                            {lessonMeta && (
-                              <span className="px-1.5 py-0.2 bg-brand/15 border border-brand/40 text-brand font-bold">
-                                {lessonMeta.code}
-                              </span>
-                            )}
-                            <span className="text-secondary">
-                              {localizeDifficulty(item.difficulty, lang)}
-                            </span>
-                            <span className="text-muted">
-                              • {item.testCases.length} test
-                            </span>
-                          </div>
-                          <div className="text-xs font-bold text-primary truncate">
+                        <div className="min-w-0 space-y-1.5">
+                          <div className="text-xs font-semibold text-primary truncate">
                             {item.title}
+                          </div>
+                          <div className="flex flex-wrap items-center gap-1.5 font-mono text-mono-xs">
+                            {lessonMeta && (
+                              <Badge variant="brand">{lessonMeta.code}</Badge>
+                            )}
+                            <DifficultyBadge difficulty={item.difficulty} />
+                            <span className="text-muted">
+                              {item.testCases.length} TESTS
+                            </span>
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-1 font-mono text-[11px] shrink-0">
+                        <div className="flex items-center gap-1 shrink-0">
                           <Link
                             to={`/workspace/${item.id}`}
                             onClick={(e) => e.stopPropagation()}
-                            className="px-2 py-1 border border-grid bg-surface text-secondary hover:text-primary"
+                            className="px-2 py-1 border border-grid bg-surface font-mono text-mono-xs text-secondary hover:text-primary"
                           >
                             IDE ↗
                           </Link>
-                          <button
-                            type="button"
+                          <Button
+                            variant="danger"
+                            size="sm"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleDeleteAssignment(item.id);
+                              setDeleteTargetAsgn(item);
                             }}
-                            className="px-2 py-1 border border-grid bg-surface text-secondary hover:text-brand"
+                            aria-label={`Delete ${item.title}`}
                           >
                             ✕
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     );
@@ -1263,34 +903,37 @@ Mô tả chi tiết đề bài tại đây.
                 </div>
               </BentoCell>
 
-              {/* Right 8 Cols: Assignment Form */}
+              {/* Right 8/12: Assignment Editor Form */}
               <BentoCell colSpan="md:col-span-8" noPadding>
                 <form
                   onSubmit={handleSaveAssignment}
                   className="divide-y divide-grid"
                 >
+                  {/* Metadata & Markdown Description with EDIT | PREVIEW Tabs */}
                   <div className="p-6 space-y-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <SectionBadge
                         glyph={glyph}
                         label={
                           editingId
-                            ? `ĐANG CHỈNH SỬA BÀI TẬP // ${editingId}`
-                            : "TẠO BÀI TẬP MỚI"
+                            ? `EDITING ASSIGNMENT // ${editingId}`
+                            : "NEW ASSIGNMENT DRAFT"
                         }
                         className="mb-0"
                       />
-                      <div className="flex items-center gap-1 font-mono text-xs">
+                      <div className="flex items-center gap-1 font-mono text-mono-xs">
                         {GLYPH_OPTIONS.map((g) => (
                           <button
                             key={g}
                             type="button"
-                            onClick={() => setGlyph(g)}
-                            className={`w-7 h-7 border flex items-center justify-center ${
-                              glyph === g
-                                ? "border-brand bg-subtle text-brand"
-                                : "border-grid bg-surface text-secondary"
-                            }`}
+                            onClick={() => {
+                              setGlyph(g);
+                              setIsFormDirty(true);
+                            }}
+                            className={`w-7 h-7 border flex items-center justify-center ${glyph === g
+                              ? "border-brand bg-subtle text-brand-text font-bold"
+                              : "border-grid bg-surface text-secondary"
+                              }`}
                           >
                             {g}
                           </button>
@@ -1298,149 +941,247 @@ Mô tả chi tiết đề bài tại đây.
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 font-mono text-xs">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                       <div className="md:col-span-5">
-                        <label className="block text-secondary uppercase mb-1.5">
-                          TIÊU ĐỀ BÀI TẬP
-                        </label>
-                        <input
-                          type="text"
+                        <Input
+                          label="ASSIGNMENT TITLE"
                           required
                           value={title}
-                          onChange={(e) => setTitle(e.target.value)}
-                          className="w-full bg-background border border-grid px-3.5 py-2.5 text-primary focus:outline-none focus:border-brand"
+                          onChange={(e) => {
+                            setTitle(e.target.value);
+                            setIsFormDirty(true);
+                          }}
                         />
                       </div>
 
                       <div className="md:col-span-4">
-                        <label className="block text-secondary uppercase mb-1.5">
-                          THUỘC BÀI HỌC (TIN HỌC 10)
-                        </label>
-                        <select
+                        <Select
+                          label="LESSON MODULE"
                           value={lessonId}
-                          onChange={(e) => setLessonId(e.target.value)}
-                          className="w-full bg-background border border-grid px-3 py-2.5 text-primary focus:outline-none focus:border-brand"
+                          onChange={(e) => {
+                            setLessonId(e.target.value);
+                            setIsFormDirty(true);
+                          }}
                         >
                           {PYTHON_CURRICULUM_LESSONS.map((l) => (
                             <option key={l.id} value={l.id}>
                               {l.code}: {l.titleVi}
                             </option>
                           ))}
-                        </select>
+                        </Select>
                       </div>
 
                       <div className="md:col-span-3">
-                        <label className="block text-secondary uppercase mb-1.5">
-                          MỨC ĐỘ
-                        </label>
-                        <select
+                        <Select
+                          label="DIFFICULTY"
                           value={difficulty}
-                          onChange={(e) =>
-                            setDifficulty(e.target.value as DifficultyLevel)
-                          }
-                          className="w-full bg-background border border-grid px-3 py-2.5 text-primary focus:outline-none focus:border-brand"
+                          onChange={(e) => {
+                            setDifficulty(e.target.value as DifficultyLevel);
+                            setIsFormDirty(true);
+                          }}
                         >
-                          <option value="Beginner">Cơ bản</option>
-                          <option value="Intermediate">Trung bình</option>
-                          <option value="Advanced">Nâng cao</option>
-                        </select>
+                          <option value="Beginner">BEGINNER</option>
+                          <option value="Intermediate">INTERMEDIATE</option>
+                          <option value="Advanced">ADVANCED</option>
+                        </Select>
                       </div>
                     </div>
 
-                    <div className="font-mono text-xs">
-                      <label className="block text-secondary uppercase mb-1.5">
-                        NỘI DUNG ĐỀ BÀI (MARKDOWN)
-                      </label>
-                      <textarea
-                        rows={5}
-                        required
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="w-full bg-background border border-grid p-3.5 text-primary focus:outline-none focus:border-brand leading-relaxed"
-                      />
+                    {/* Markdown Problem Description: EDIT | PREVIEW Tabs */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between border-b border-grid">
+                        <span className="font-mono text-mono-xs uppercase text-secondary font-semibold">
+                          PROBLEM DESCRIPTION (MARKDOWN)
+                        </span>
+                        <Tabs
+                          ariaLabel="Markdown Editor Mode"
+                          items={[
+                            { id: "EDIT", label: "EDIT" },
+                            { id: "PREVIEW", label: "PREVIEW" },
+                          ]}
+                          activeId={descTab}
+                          onChange={(id) =>
+                            setDescTab(id as "EDIT" | "PREVIEW")
+                          }
+                        />
+                      </div>
+
+                      {descTab === "EDIT" ? (
+                        <Textarea
+                          rows={6}
+                          required
+                          monospace
+                          value={description}
+                          onChange={(e) => {
+                            setDescription(e.target.value);
+                            setIsFormDirty(true);
+                          }}
+                        />
+                      ) : (
+                        <div className="p-4 border border-grid bg-background min-h-[150px]">
+                          <MarkdownRenderer content={description} />
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="p-6 space-y-2">
-                    <div className="font-mono text-xs uppercase text-secondary">
-                      CODE PYTHON GỢI Ý BAN ĐẦU CHO HỌC SINH
+                  {/* Starter Code + P1 Reference Solution Mini Monaco Editors */}
+                  <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="font-mono text-mono-xs uppercase text-secondary font-semibold">
+                        STARTER CODE (STUDENT TEMPLATE)
+                      </div>
+                      <div className="h-44 border border-grid bg-terminal">
+                        <Editor
+                          height="100%"
+                          language="python"
+                          theme={theme === "dark" ? "vs-dark" : "vs"}
+                          value={starterCode}
+                          onChange={(val) => {
+                            setStarterCode(val ?? "");
+                            setIsFormDirty(true);
+                          }}
+                          options={{
+                            fontSize: 12,
+                            minimap: { enabled: false },
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className="h-40 border border-grid bg-terminal">
-                      <Editor
-                        height="100%"
-                        language="python"
-                        theme="vs-dark"
-                        value={starterCode}
-                        onChange={(val) => setStarterCode(val ?? "")}
-                        options={{
-                          fontSize: 12,
-                          minimap: { enabled: false },
-                          scrollBeyondLastLine: false,
-                          automaticLayout: true,
-                        }}
-                      />
+
+                    {/* P1: Reference Solution (session-only) to generate expected outputs */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-mono-xs uppercase text-secondary font-semibold">
+                          REFERENCE SOLUTION (SESSION ONLY)
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            loading={isGeneratingExpected}
+                            loadingText="RUNNING…"
+                            disabled={engineState !== "ready"}
+                            onClick={handleGenerateExpectedFromRef}
+                          >
+                            GENERATE EXPECTED
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            disabled={
+                              engineState !== "ready" || isGeneratingExpected
+                            }
+                            onClick={handleVerifyRefSolution}
+                          >
+                            VERIFY
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="h-44 border border-grid bg-terminal">
+                        <Editor
+                          height="100%"
+                          language="python"
+                          theme={theme === "dark" ? "vs-dark" : "vs"}
+                          value={referenceSolution}
+                          onChange={(val) => setReferenceSolution(val ?? "")}
+                          options={{
+                            fontSize: 12,
+                            minimap: { enabled: false },
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
+                          }}
+                        />
+                      </div>
+                      {verifySummary && (
+                        <div className="font-mono text-mono-xs text-brand-text">
+                          {verifySummary}
+                        </div>
+                      )}
                     </div>
                   </div>
 
+                  {/* Test Case Builder (Add/Delete/Reorder, Hidden Toggle, Whitespace Toggle) */}
                   <div className="p-6 space-y-4">
-                    <div className="flex items-center justify-between font-mono text-xs">
-                      <span className="uppercase text-secondary font-semibold">
-                        BỘ TEST CASES CHẤM ĐIỂM TỰ ĐỘNG ({testCases.length})
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <span className="font-mono text-mono-sm uppercase text-secondary font-semibold">
+                        TEST CASES ({testCases.length})
                       </span>
-                      <button
-                        type="button"
-                        onClick={handleAddTestCase}
-                        className="px-3 py-1.5 bg-subtle border border-grid text-primary hover:border-brand"
-                      >
-                        [+ THÊM BỘ TEST]
-                      </button>
+                      <div className="flex items-center gap-4">
+                        <Toggle
+                          checked={showTestWhitespace}
+                          onChange={setShowTestWhitespace}
+                          label="SHOW WHITESPACE (· → ↵)"
+                        />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleAddTestCase}
+                        >
+                          [+ ADD TEST CASE]
+                        </Button>
+                      </div>
                     </div>
 
                     <div className="space-y-3">
                       {testCases.map((tc, index) => (
                         <div
                           key={index}
-                          className="border border-grid bg-subtle p-4 space-y-3 font-mono text-xs"
+                          className="border border-grid bg-subtle p-4 space-y-3 font-mono text-mono-xs"
                         >
-                          <div className="flex items-center justify-between">
-                            <span className="font-semibold text-primary">
-                              TEST #{index + 1}
-                            </span>
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-primary">
+                                TEST #{String(index + 1).padStart(2, "0")}
+                              </span>
+                              <button
+                                type="button"
+                                disabled={index === 0}
+                                onClick={() => handleMoveTestCase(index, -1)}
+                                className="px-1.5 py-0.5 border border-grid bg-surface text-secondary hover:text-primary disabled:opacity-40"
+                                title="Move test up"
+                              >
+                                ▲
+                              </button>
+                              <button
+                                type="button"
+                                disabled={index === testCases.length - 1}
+                                onClick={() => handleMoveTestCase(index, 1)}
+                                className="px-1.5 py-0.5 border border-grid bg-surface text-secondary hover:text-primary disabled:opacity-40"
+                                title="Move test down"
+                              >
+                                ▼
+                              </button>
+                            </div>
+
                             <div className="flex items-center gap-4">
-                              <label className="flex items-center gap-2 cursor-pointer text-secondary">
-                                <input
-                                  type="checkbox"
-                                  checked={tc.isHidden}
-                                  onChange={(e) =>
-                                    handleUpdateTestCase(
-                                      index,
-                                      "isHidden",
-                                      e.target.checked
-                                    )
-                                  }
-                                  className="accent-brand"
-                                />
-                                <span>Test ẩn</span>
-                              </label>
+                              <Checkbox
+                                checked={tc.isHidden}
+                                onChange={(val) =>
+                                  handleUpdateTestCase(index, "isHidden", val)
+                                }
+                                label="HIDDEN"
+                              />
                               {testCases.length > 1 && (
-                                <button
-                                  type="button"
+                                <Button
+                                  variant="danger"
+                                  size="sm"
                                   onClick={() => handleRemoveTestCase(index)}
-                                  className="text-muted hover:text-brand"
                                 >
-                                  [✕ Xóa]
-                                </button>
+                                  DELETE
+                                </Button>
                               )}
                             </div>
                           </div>
 
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                              <label className="block text-[10px] text-secondary uppercase mb-1">
-                                DỮ LIỆU VÀO (INPUT)
-                              </label>
-                              <textarea
+                            <div className="space-y-1">
+                              <Textarea
+                                label="INPUT (STDIN)"
                                 rows={2}
+                                monospace
                                 value={tc.input}
                                 onChange={(e) =>
                                   handleUpdateTestCase(
@@ -1449,15 +1190,18 @@ Mô tả chi tiết đề bài tại đây.
                                     e.target.value
                                   )
                                 }
-                                className="w-full bg-background border border-grid p-2 text-primary focus:outline-none focus:border-brand"
                               />
+                              {showTestWhitespace && (
+                                <pre className="p-2 bg-terminal text-term-muted text-mono-xs border border-grid whitespace-pre-wrap">
+                                  {formatWhitespacePreview(tc.input)}
+                                </pre>
+                              )}
                             </div>
-                            <div>
-                              <label className="block text-[10px] text-secondary uppercase mb-1">
-                                ĐÁP ÁN ĐÚNG (EXPECTED OUTPUT)
-                              </label>
-                              <textarea
+                            <div className="space-y-1">
+                              <Textarea
+                                label="EXPECTED OUTPUT (STDOUT)"
                                 rows={2}
+                                monospace
                                 value={tc.expectedOutput}
                                 onChange={(e) =>
                                   handleUpdateTestCase(
@@ -1466,21 +1210,27 @@ Mô tả chi tiết đề bài tại đây.
                                     e.target.value
                                   )
                                 }
-                                className="w-full bg-background border border-grid p-2 text-success focus:outline-none focus:border-brand"
                               />
+                              {showTestWhitespace && (
+                                <pre className="p-2 bg-terminal text-term-success text-mono-xs border border-grid whitespace-pre-wrap">
+                                  {formatWhitespacePreview(tc.expectedOutput)}
+                                </pre>
+                              )}
                             </div>
                           </div>
                         </div>
                       ))}
                     </div>
 
-                    <div className="pt-2 flex justify-end">
-                      <button
-                        type="submit"
-                        className="px-6 py-3 bg-brand text-white font-mono text-xs font-bold uppercase hover:opacity-90"
-                      >
-                        [✓] LƯU & XUẤT BẢN BÀI TẬP LÊN FIRESTORE
-                      </button>
+                    <div className="pt-2 flex items-center justify-between">
+                      <span className="font-mono text-mono-xs text-muted">
+                        {isFormDirty
+                          ? "● UNSAVED CHANGES"
+                          : "✓ ALL CHANGES SAVED"}
+                      </span>
+                      <Button variant="primary" type="submit">
+                        [✓] SAVE & PUBLISH ASSIGNMENT
+                      </Button>
                     </div>
                   </div>
                 </form>
@@ -1490,105 +1240,252 @@ Mô tả chi tiết đề bài tại đây.
         )}
 
         {/* ===================================================================
-            TAB 4: ALL STUDENT SUBMISSIONS & CODE INSPECTOR
+            TAB 2: SUBMISSIONS & ANALYTICS (MATRIX + PERFORMANCE BENTO - 7.3)
            =================================================================== */}
         {activeTab === "SUBMISSIONS" && (
           <div>
+            {/* PerformanceBento: Pass Rate by Difficulty (Section 7.3) */}
             <SectionHeader
-              glyph="[💻]"
-              badge="NHẬT KÝ BÀI NỘP & KIỂM TRA CODE"
-              title="Toàn bộ Bài nộp của Học sinh trên Hệ thống"
-              subtitle="Lọc theo Lớp (10A7..10A16), theo Bài học (Bài 16..31) hoặc theo Trạng thái chấm điểm để xem trực tiếp code Python của học sinh."
+              glyph="[▲]"
+              badge="PERFORMANCE ANALYTICS"
+              title="Pass Rate by Difficulty & Student × Assignment Matrix"
+              rightElement={
+                <div className="flex items-center gap-2">
+                  <Tabs
+                    ariaLabel="Submission View Mode"
+                    items={[
+                      { id: "MATRIX", label: "MATRIX VIEW" },
+                      { id: "LIST", label: "LOG VIEW" },
+                    ]}
+                    activeId={subViewMode}
+                    onChange={(id) => setSubViewMode(id as "MATRIX" | "LIST")}
+                  />
+                  <Button variant="outline" size="sm" onClick={handleExportCsv}>
+                    [↓] EXPORT CSV
+                  </Button>
+                </div>
+              }
             />
 
-            {/* Multi-dimensional filter bar */}
-            <div className="p-4 bg-subtle border-b border-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 font-mono text-xs">
-              <div>
-                <label className="block text-[10px] text-secondary uppercase mb-1">
-                  1. LỌC THEO LỚP HỌC:
-                </label>
-                <select
-                  value={subClassFilter}
-                  onChange={(e) => setSubClassFilter(e.target.value)}
-                  className="w-full bg-surface border border-grid px-3 py-2 text-primary focus:outline-none focus:border-brand"
-                >
-                  <option value="ALL">Tất cả 6 lớp (10A7 → 10A16)</option>
-                  {GRADE_10_CLASSES.map((cls) => (
-                    <option key={cls} value={cls}>
-                      Lớp {cls}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <BentoGrid cols={3}>
+              {difficultyBreakdown.map((item) => (
+                <BentoCell key={item.level} colSpan="md:col-span-1">
+                  <div className="flex items-center justify-between mb-3">
+                    <DifficultyBadge difficulty={item.level} />
+                    <span className="font-mono text-mono-xs text-muted">
+                      {item.assignmentCount} ASSIGNMENTS
+                    </span>
+                  </div>
+                  <div className="flex items-baseline justify-between font-mono">
+                    <span className="text-2xl font-bold text-primary">
+                      {item.rate}%
+                    </span>
+                    <span className="text-mono-xs text-success-text">
+                      {buildAsciiBar(item.rate, 8)} {item.rate}%
+                    </span>
+                  </div>
+                  <div className="font-mono text-mono-xs text-secondary mt-2">
+                    {item.passedCount} passed / {item.submissionCount} total
+                    submissions
+                  </div>
+                </BentoCell>
+              ))}
+            </BentoGrid>
 
-              <div>
-                <label className="block text-[10px] text-secondary uppercase mb-1">
-                  2. LỌC THEO BÀI HỌC:
-                </label>
-                <select
-                  value={subLessonFilter}
-                  onChange={(e) => setSubLessonFilter(e.target.value)}
-                  className="w-full bg-surface border border-grid px-3 py-2 text-primary focus:outline-none focus:border-brand"
-                >
-                  <option value="ALL">Tất cả bài giảng (Bài 16 → 31)</option>
-                  {PYTHON_CURRICULUM_LESSONS.map((l) => (
-                    <option key={l.id} value={l.id}>
-                      {l.code}: {l.titleVi}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            {/* Filter Bar */}
+            <div className="p-4 bg-subtle border-b border-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <Select
+                label="FILTER BY CLASS"
+                value={subClassFilter}
+                onChange={(e) => {
+                  setSubClassFilter(e.target.value);
+                  setSubPage(1);
+                }}
+              >
+                <option value="ALL">ALL 6 CLASSES (10A7 → 10A16)</option>
+                {GRADE_10_CLASSES.map((cls) => (
+                  <option key={cls} value={cls}>
+                    CLASS {cls}
+                  </option>
+                ))}
+              </Select>
 
-              <div>
-                <label className="block text-[10px] text-secondary uppercase mb-1">
-                  3. LỌC THEO KẾT QUẢ CHẤM:
-                </label>
-                <select
-                  value={subStatusFilter}
-                  onChange={(e) => setSubStatusFilter(e.target.value)}
-                  className="w-full bg-surface border border-grid px-3 py-2 text-primary focus:outline-none focus:border-brand"
-                >
-                  <option value="ALL">Tất cả trạng thái</option>
-                  <option value="passed">✓ Đã đạt 100% (Passed)</option>
-                  <option value="failed">✕ Chưa đạt (Failed)</option>
-                  <option value="in_progress">◐ Đang làm (In Progress)</option>
-                </select>
-              </div>
+              <Select
+                label="FILTER BY LESSON"
+                value={subLessonFilter}
+                onChange={(e) => setSubLessonFilter(e.target.value)}
+              >
+                <option value="ALL">ALL LESSONS (16 → 31)</option>
+                {PYTHON_CURRICULUM_LESSONS.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.code}: {l.titleVi}
+                  </option>
+                ))}
+              </Select>
 
-              <div>
-                <label className="block text-[10px] text-secondary uppercase mb-1">
-                  4. TÌM THEO TÊN HỌC SINH:
-                </label>
-                <input
-                  type="text"
-                  value={subSearch}
-                  onChange={(e) => setSubSearch(e.target.value)}
-                  placeholder="Nhập tên học sinh..."
-                  className="w-full bg-surface border border-grid px-3 py-2 text-primary focus:outline-none focus:border-brand"
-                />
-              </div>
+              <Select
+                label="FILTER BY STATUS"
+                value={subStatusFilter}
+                onChange={(e) => setSubStatusFilter(e.target.value)}
+              >
+                <option value="ALL">ALL STATUSES</option>
+                <option value="passed">● PASSED</option>
+                <option value="failed">◆ FAILED</option>
+                <option value="in_progress">◐ IN PROGRESS</option>
+              </Select>
+
+              <Input
+                label="SEARCH STUDENT"
+                value={subSearch}
+                onChange={(e) => {
+                  setSubSearch(e.target.value);
+                  setSubPage(1);
+                }}
+                placeholder="Search by student name or email..."
+              />
             </div>
 
-            <div className="bg-surface border-b border-grid overflow-x-auto">
-              <table className="w-full text-left font-mono text-xs border-collapse">
-                <thead>
-                  <tr className="bg-subtle border-b border-grid text-secondary uppercase">
-                    <th className="py-3 px-4">HỌ VÀ TÊN HỌC SINH</th>
-                    <th className="py-3 px-4">LỚP</th>
-                    <th className="py-3 px-4">BÀI HỌC & BÀI TẬP</th>
-                    <th className="py-3 px-4">KẾT QUẢ CHẤM</th>
-                    <th className="py-3 px-4">KẾT QUẢ IN RA (STDOUT)</th>
-                    <th className="py-3 px-4">THỜI GIAN NỘP</th>
-                    <th className="py-3 px-4 text-right">KIỂM TRA CODE</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-grid">
-                  {filteredSubmissions.length === 0 ? (
+            {subViewMode === "MATRIX" ? (
+              /* Student × Assignment Matrix with Sticky Row & Column (Section 7.3) */
+              <div className="bg-surface">
+                <Table className="max-h-[600px]">
+                  <TableHead>
                     <tr>
-                      <td colSpan={7} className="py-8 text-center text-muted">
-                        Không có bài nộp nào khớp với bộ lọc hiện tại.
-                      </td>
+                      <TableHeaderCell
+                        sortable
+                        sortDirection={subSortDir}
+                        onSort={() =>
+                          setSubSortDir((d) => (d === "asc" ? "desc" : "asc"))
+                        }
+                        className="sticky left-0 z-20 bg-subtle min-w-[200px]"
+                      >
+                        STUDENT ({matrixStudents.length})
+                      </TableHeaderCell>
+                      <TableHeaderCell className="text-center">
+                        CLASS
+                      </TableHeaderCell>
+                      {matrixAssignments.map((asgn, i) => (
+                        <TableHeaderCell
+                          key={asgn.id}
+                          className="text-center min-w-[64px]"
+                          title={asgn.title}
+                        >
+                          #{String(i + 1).padStart(2, "0")}
+                        </TableHeaderCell>
+                      ))}
                     </tr>
+                  </TableHead>
+                  <tbody>
+                    {paginatedMatrixStudents.map((stu) => {
+                      const isRowSelected =
+                        inspectedSubmission?.userId === stu.uid;
+                      return (
+                        <TableRow key={stu.uid} selected={isRowSelected}>
+                          <TableCell
+                            className={`sticky left-0 z-10 font-semibold ${isRowSelected ? "bg-active" : "bg-surface"
+                              }`}
+                          >
+                            <div className="truncate max-w-[190px]">
+                              {stu.displayName}
+                            </div>
+                            <div className="text-muted text-mono-xs truncate">
+                              {stu.email}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge variant="brand">
+                              {stu.className || "10A7"}
+                            </Badge>
+                          </TableCell>
+                          {matrixAssignments.map((asgn) => {
+                            const sub = submissionMap[`${stu.uid}_${asgn.id}`];
+                            const status: AssignmentStatus = sub
+                              ? sub.status
+                              : "not_started";
+                            return (
+                              <TableCell
+                                key={asgn.id}
+                                className="text-center p-0"
+                              >
+                                <button
+                                  type="button"
+                                  disabled={!sub}
+                                  onClick={() => sub && setInspectedSubmission(sub)}
+                                  title={
+                                    sub
+                                      ? `${stu.displayName} — ${asgn.title}: ${sub.status.toUpperCase()} (Click to inspect code)`
+                                      : `${stu.displayName} — ${asgn.title}: NOT STARTED`
+                                  }
+                                  className={`w-full py-2.5 flex items-center justify-center ${sub
+                                    ? "hover:bg-subtle cursor-pointer"
+                                    : "cursor-default opacity-60"
+                                    }`}
+                                >
+                                  <StatusGlyph status={status} />
+                                </button>
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+
+                {matrixStudents.length > PAGE_SIZE && (
+                  <div className="p-3 bg-subtle border-t border-grid flex items-center justify-between font-mono text-mono-xs">
+                    <span>
+                      SHOWING {(subPage - 1) * PAGE_SIZE + 1}–
+                      {Math.min(subPage * PAGE_SIZE, matrixStudents.length)} OF{" "}
+                      {matrixStudents.length}
+                    </span>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={subPage <= 1}
+                        onClick={() => setSubPage((p) => p - 1)}
+                      >
+                        PREV
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={subPage * PAGE_SIZE >= matrixStudents.length}
+                        onClick={() => setSubPage((p) => p + 1)}
+                      >
+                        NEXT
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Detailed Submissions Log Table */
+              <Table>
+                <TableHead>
+                  <tr>
+                    <TableHeaderCell>STUDENT</TableHeaderCell>
+                    <TableHeaderCell>CLASS</TableHeaderCell>
+                    <TableHeaderCell>ASSIGNMENT</TableHeaderCell>
+                    <TableHeaderCell>STATUS</TableHeaderCell>
+                    <TableHeaderCell>LAST OUTPUT</TableHeaderCell>
+                    <TableHeaderCell>UPDATED AT</TableHeaderCell>
+                    <TableHeaderCell className="text-right">
+                      ACTION
+                    </TableHeaderCell>
+                  </tr>
+                </TableHead>
+                <tbody>
+                  {filteredSubmissions.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={7}
+                        className="py-8 text-center text-muted"
+                      >
+                        No submissions match the selected filters.
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     filteredSubmissions.map((sub) => {
                       const rawAsgn = assignments.find(
@@ -1597,217 +1494,514 @@ Mô tả chi tiết đề bài tại đây.
                       const student = users.find((u) => u.uid === sub.userId);
                       const stuClass =
                         sub.userClassName || student?.className || "10A7";
-                      const lessonMeta = PYTHON_CURRICULUM_LESSONS.find(
-                        (l) => l.id === rawAsgn?.lessonId
-                      );
-
                       return (
-                        <tr
+                        <TableRow
                           key={sub.id}
-                          className="hover:bg-subtle/60 transition-colors"
+                          interactive
+                          selected={inspectedSubmission?.id === sub.id}
+                          onClick={() => setInspectedSubmission(sub)}
                         >
-                          <td className="py-3 px-4 font-bold text-primary">
+                          <TableCell className="font-semibold">
                             {sub.userDisplayName ||
                               student?.displayName ||
                               sub.userId}
-                          </td>
-                          <td className="py-3 px-4">
-                            <span className="px-2 py-0.5 bg-brand/15 border border-brand/40 text-brand font-bold">
-                              {stuClass}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            {lessonMeta && (
-                              <span className="mr-1.5 px-1.5 py-0.2 bg-subtle border border-grid text-brand font-semibold text-[10px]">
-                                {lessonMeta.code}
-                              </span>
-                            )}
-                            <span className="text-primary">
-                              {rawAsgn ? rawAsgn.title : sub.assignmentId}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            {sub.status === "passed" ? (
-                              <span className="px-2 py-0.5 bg-success/10 text-success border border-success/30 font-semibold">
-                                ✓ ĐẠT{" "}
-                                {sub.passedCount !== undefined
-                                  ? `(${sub.passedCount}/${sub.totalCount})`
-                                  : ""}
-                              </span>
-                            ) : sub.status === "failed" ? (
-                              <span className="px-2 py-0.5 bg-brand/10 text-brand border border-brand/30 font-semibold">
-                                ✕ CHƯA ĐẠT{" "}
-                                {sub.passedCount !== undefined
-                                  ? `(${sub.passedCount}/${sub.totalCount})`
-                                  : ""}
-                              </span>
-                            ) : (
-                              <span className="px-2 py-0.5 bg-subtle text-warn border border-grid">
-                                ◐ ĐANG LÀM
-                              </span>
-                            )}
-                          </td>
-                          <td className="py-3 px-4 text-muted max-w-[200px] truncate">
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="brand">{stuClass}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            {rawAsgn ? rawAsgn.title : sub.assignmentId}
+                          </TableCell>
+                          <TableCell>
+                            <StatusGlyph status={sub.status} showLabel />
+                          </TableCell>
+                          <TableCell className="max-w-[200px] truncate text-muted">
                             {sub.lastExecutedOutput || "—"}
-                          </td>
-                          <td className="py-3 px-4 text-muted">
+                          </TableCell>
+                          <TableCell className="text-muted">
                             {new Date(sub.updatedAt).toLocaleString()}
-                          </td>
-                          <td className="py-3 px-4 text-right">
-                            <button
-                              type="button"
-                              onClick={() => setInspectedSubmission(sub)}
-                              className="px-3 py-1 bg-brand text-white font-semibold hover:opacity-90"
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setInspectedSubmission(sub);
+                              }}
                             >
-                              [🔍 XEM CODE]
-                            </button>
-                          </td>
-                        </tr>
+                              VIEW CODE
+                            </Button>
+                          </TableCell>
+                        </TableRow>
                       );
                     })
                   )}
                 </tbody>
-              </table>
-            </div>
+              </Table>
+            )}
           </div>
         )}
-      </BentoSection>
 
-      {/* =====================================================================
-          MODAL 1: FULL STUDENT REPORT CARD (ALL 22 EXERCISES & CODE VIEWER)
-         ===================================================================== */}
-      {inspectedStudentProfile && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-surface border border-grid max-w-4xl w-full p-6 space-y-4 my-8 max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between border-b border-grid pb-3 font-mono text-xs shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-brand text-white font-bold">
-                  LỚP {inspectedStudentProfile.className || "10A7"}
-                </span>
-                <span className="text-base font-bold text-primary">
-                  HỒ SƠ BÀI LÀM: {inspectedStudentProfile.displayName} (@
-                  {inspectedStudentProfile.username ||
-                    inspectedStudentProfile.uid.replace(/^usr_/, "")}
-                  )
-                </span>
-              </div>
-              <button
-                onClick={() => setInspectedStudentProfile(null)}
-                className="px-3 py-1 border border-grid text-secondary hover:text-primary"
-              >
-                [✕] ĐÓNG
-              </button>
-            </div>
+        {/* ===================================================================
+            TAB 3: OVERVIEW DASHBOARD (6 GRADE 10 CLASSES & CURRICULUM)
+           =================================================================== */}
+        {activeTab === "OVERVIEW" && (
+          <div>
+            <SectionHeader
+              glyph="[📊]"
+              badge="CLASS ANALYTICS // 6 GRADE 10 CLASSES"
+              title="Tình hình Học tập của 6 Lớp (10A7, 10A12 → 10A16)"
+            />
 
-            <div className="flex-1 overflow-y-auto divide-y divide-grid border border-grid font-mono text-xs">
-              {assignments.map((asgn) => {
-                const sub = submissions.find(
-                  (s) =>
-                    s.userId === inspectedStudentProfile.uid &&
-                    s.assignmentId === asgn.id
-                );
-                const lessonMeta = PYTHON_CURRICULUM_LESSONS.find(
-                  (l) => l.id === asgn.lessonId
-                );
+            <BentoGrid cols={3}>
+              {classAnalytics.map((cls) => (
+                <BentoCell key={cls.className} colSpan="md:col-span-1">
+                  <div>
+                    <div className="flex items-center justify-between font-mono text-mono-xs mb-3">
+                      <Badge variant="brand">LỚP {cls.className}</Badge>
+                      <span className="text-secondary">
+                        Sĩ số:{" "}
+                        <strong className="text-primary">
+                          {cls.studentCount} HS
+                        </strong>
+                      </span>
+                    </div>
 
-                return (
-                  <div
-                    key={asgn.id}
-                    className="p-3.5 bg-canvas flex flex-wrap items-center justify-between gap-2"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        {lessonMeta && (
-                          <span className="px-1.5 py-0.2 bg-subtle border border-grid text-brand font-bold text-[10px]">
-                            {lessonMeta.code}
-                          </span>
-                        )}
-                        <span className="font-semibold text-primary">
-                          {asgn.title}
+                    <div className="mb-4 font-mono text-mono-xs">
+                      <div className="flex justify-between mb-1">
+                        <span className="text-secondary">PROGRESS:</span>
+                        <span className="text-success-text font-bold">
+                          {buildAsciiBar(cls.avgProgressPct, 8)}{" "}
+                          {cls.avgProgressPct}%
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      {sub ? (
-                        <>
-                          <span
-                            className={`px-2 py-0.5 border font-semibold text-[11px] ${
-                              sub.status === "passed"
-                                ? "border-success bg-success/10 text-success"
-                                : sub.status === "failed"
-                                ? "border-brand bg-brand/10 text-brand"
-                                : "border-warn bg-warn/10 text-warn"
-                            }`}
-                          >
-                            {sub.status === "passed"
-                              ? "✓ ĐÃ ĐẠT 100%"
-                              : sub.status === "failed"
-                              ? "✕ CHƯA ĐẠT"
-                              : "◐ ĐANG LÀM"}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => setInspectedSubmission(sub)}
-                            className="px-2.5 py-1 bg-brand text-white font-semibold"
-                          >
-                            [🔍 Xem Code bài này]
-                          </button>
-                        </>
-                      ) : (
-                        <span className="px-2 py-0.5 border border-grid bg-subtle text-muted text-[11px]">
-                          ○ Chưa làm
-                        </span>
-                      )}
+                    <div className="grid grid-cols-3 bg-grid gap-[1px] border border-grid font-mono text-center text-mono-xs mb-4">
+                      <div className="bg-subtle p-2.5">
+                        <div className="text-secondary">REGISTERED</div>
+                        <div className="text-base font-bold text-primary mt-0.5">
+                          {cls.studentCount}
+                        </div>
+                      </div>
+                      <div className="bg-subtle p-2.5">
+                        <div className="text-secondary">ACTIVE</div>
+                        <div className="text-base font-bold text-brand-text mt-0.5">
+                          {cls.activeStudentsCount}
+                        </div>
+                      </div>
+                      <div className="bg-subtle p-2.5">
+                        <div className="text-secondary">PASSED</div>
+                        <div className="text-base font-bold text-success-text mt-0.5">
+                          {cls.totalPassedInClass}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                );
-              })}
+
+                  <div className="pt-3 border-t border-grid flex items-center justify-between gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setStudentClassFilter(cls.className);
+                        setActiveTab("STUDENTS");
+                      }}
+                    >
+                      STUDENTS ({cls.studentCount})
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSubClassFilter(cls.className);
+                        setActiveTab("SUBMISSIONS");
+                      }}
+                    >
+                      SUBMISSIONS
+                    </Button>
+                  </div>
+                </BentoCell>
+              ))}
+            </BentoGrid>
+
+            {/* Curriculum Lessons Inspection */}
+            <SectionHeader
+              glyph="[📚]"
+              badge="CURRICULUM MODULES (BÀI 16 → BÀI 31)"
+              title="Nội dung Lý thuyết theo Chuyên đề"
+            />
+            <div className="p-4 bg-subtle border-b border-grid flex flex-wrap gap-1.5">
+              {PYTHON_CURRICULUM_LESSONS.map((l) => (
+                <Button
+                  key={l.id}
+                  variant={selectedLessonViewId === l.id ? "primary" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedLessonViewId(l.id)}
+                >
+                  {l.code}
+                </Button>
+              ))}
+            </div>
+            <div className="p-6 bg-surface">
+              <h3 className="text-h3 text-primary mb-3">
+                {activeLessonTopic.titleVi}
+              </h3>
+              <MarkdownRenderer content={activeLessonTopic.theoryMarkdownVi} />
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* =====================================================================
-          MODAL 2: INSPECT STUDENT PYTHON CODE SNAPSHOT
-         ===================================================================== */}
-      {inspectedSubmission && (
-        <div className="fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-surface border border-grid max-w-2xl w-full p-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-grid pb-3 font-mono text-xs">
-              <div>
-                <span className="text-brand mr-2">◆</span>
-                <span className="text-primary font-bold uppercase">
-                  CHI TIẾT CODE BÀI NỘP //{" "}
-                  {inspectedSubmission.userDisplayName ||
-                    inspectedSubmission.userId}{" "}
-                  (Lớp {inspectedSubmission.userClassName || "10A7"})
+        {/* ===================================================================
+            TAB 4: STUDENT MANAGEMENT BY CLASS (10A7, 10A12..10A16)
+           =================================================================== */}
+        {activeTab === "STUDENTS" && (
+          <div>
+            <SectionHeader
+              glyph="[👥]"
+              badge="STUDENT ROSTER MANAGEMENT"
+              title="Quản lý Tài khoản Học sinh theo Lớp"
+              rightElement={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowPasswordsInTable((p) => !p)}
+                >
+                  {showPasswordsInTable ? "HIDE PASSWORDS" : "SHOW PASSWORDS"}
+                </Button>
+              }
+            />
+
+            <div className="p-4 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <Button
+                  variant={studentClassFilter === "ALL" ? "primary" : "outline"}
+                  size="sm"
+                  onClick={() => setStudentClassFilter("ALL")}
+                >
+                  ALL ({studentList.length})
+                </Button>
+                {GRADE_10_CLASSES.map((cls) => {
+                  const count = studentList.filter(
+                    (s) => (s.className || "10A7") === cls
+                  ).length;
+                  return (
+                    <Button
+                      key={cls}
+                      variant={
+                        studentClassFilter === cls ? "primary" : "outline"
+                      }
+                      size="sm"
+                      onClick={() => setStudentClassFilter(cls)}
+                    >
+                      {cls} ({count})
+                    </Button>
+                  );
+                })}
+              </div>
+
+              <div className="w-full sm:w-72">
+                <Input
+                  value={studentSearch}
+                  onChange={(e) => setStudentSearch(e.target.value)}
+                  placeholder="Search student by name or @username..."
+                  aria-label="Search students"
+                />
+              </div>
+            </div>
+
+            <BentoGrid cols={12}>
+              <BentoCell colSpan="md:col-span-4">
+                <form onSubmit={handleSaveStudent} className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-grid pb-3">
+                    <SectionBadge
+                      glyph="◆"
+                      label={
+                        editingStudentUid ? "EDIT STUDENT" : "ADD NEW STUDENT"
+                      }
+                      className="mb-0"
+                    />
+                    {editingStudentUid && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleResetStudentForm}
+                      >
+                        [+ NEW]
+                      </Button>
+                    )}
+                  </div>
+
+                  <Input
+                    label="1. USERNAME"
+                    required
+                    value={stuUsername}
+                    onChange={(e) => setStuUsername(e.target.value)}
+                    placeholder="e.g. an10a7"
+                  />
+
+                  <Input
+                    label="2. FULL NAME"
+                    required
+                    value={stuFullName}
+                    onChange={(e) => setStuFullName(e.target.value)}
+                    placeholder="e.g. Nguyễn Minh An"
+                  />
+
+                  <Select
+                    label="3. CLASS"
+                    value={stuClassName}
+                    onChange={(e) => setStuClassName(e.target.value)}
+                  >
+                    {GRADE_10_CLASSES.map((cls) => (
+                      <option key={cls} value={cls}>
+                        {cls}
+                      </option>
+                    ))}
+                  </Select>
+
+                  <Input
+                    label="4. PASSWORD"
+                    required
+                    value={stuPassword}
+                    onChange={(e) => setStuPassword(e.target.value)}
+                  />
+
+                  <Button variant="primary" type="submit" className="w-full">
+                    {editingStudentUid ? "UPDATE STUDENT" : "ADD STUDENT"}
+                  </Button>
+                </form>
+              </BentoCell>
+
+              <BentoCell colSpan="md:col-span-8" noPadding>
+                <Table>
+                  <TableHead>
+                    <tr>
+                      <TableHeaderCell>#</TableHeaderCell>
+                      <TableHeaderCell>FULL NAME</TableHeaderCell>
+                      <TableHeaderCell>USERNAME / PASSWORD</TableHeaderCell>
+                      <TableHeaderCell>CLASS</TableHeaderCell>
+                      <TableHeaderCell>PROGRESS</TableHeaderCell>
+                      <TableHeaderCell className="text-right">
+                        ACTIONS
+                      </TableHeaderCell>
+                    </tr>
+                  </TableHead>
+                  <tbody>
+                    {filteredStudents.length === 0 ? (
+                      <TableRow>
+                        <TableCell
+                          colSpan={6}
+                          className="py-8 text-center text-muted"
+                        >
+                          No students found in this filter.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      filteredStudents.map((stu, idx) => {
+                        const st = getStudentStats(stu.uid);
+                        const uname =
+                          stu.username || stu.uid.replace(/^usr_/, "");
+                        return (
+                          <TableRow
+                            key={stu.uid}
+                            selected={editingStudentUid === stu.uid}
+                          >
+                            <TableCell className="text-muted">
+                              #{idx + 1}
+                            </TableCell>
+                            <TableCell className="font-bold">
+                              {stu.displayName}
+                            </TableCell>
+                            <TableCell>
+                              <div className="text-brand-text font-semibold">
+                                @{uname}
+                              </div>
+                              <div className="text-secondary">
+                                PW:{" "}
+                                {showPasswordsInTable
+                                  ? stu.password || "123456"
+                                  : "••••••"}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="brand">
+                                {stu.className || "10A7"}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <span className="text-success-text font-semibold">
+                                {st.passedCount}/{totalAssignments}{" "}
+                                {buildAsciiBar(st.progressPct, 6)}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-right space-x-1 whitespace-nowrap">
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={() => setInspectedStudentProfile(stu)}
+                              >
+                                REPORT CARD
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditStudentClick(stu)}
+                              >
+                                EDIT
+                              </Button>
+                              <Button
+                                variant="danger"
+                                size="sm"
+                                onClick={() => handleDeleteStudent(stu)}
+                              >
+                                ✕
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </Table>
+              </BentoCell>
+            </BentoGrid>
+          </div>
+        )}
+      </BentoSection>
+
+      {/* Confirm Delete Assignment Dialog (Section 7.2: requireText = assignment title) */}
+      <ConfirmDialog
+        isOpen={Boolean(deleteTargetAsgn)}
+        onClose={() => setDeleteTargetAsgn(null)}
+        onConfirm={handleConfirmDeleteAssignment}
+        title="Delete Assignment"
+        description={
+          deleteTargetAsgn
+            ? `Permanently delete "${deleteTargetAsgn.title}"? Type the exact assignment title below to confirm.`
+            : ""
+        }
+        requireText={deleteTargetAsgn?.title}
+        confirmLabel="DELETE ASSIGNMENT"
+        variant="danger"
+      />
+
+      {/* MODAL: STUDENT REPORT CARD */}
+      <Modal
+        isOpen={Boolean(inspectedStudentProfile)}
+        onClose={() => setInspectedStudentProfile(null)}
+        title={
+          inspectedStudentProfile
+            ? `${inspectedStudentProfile.displayName} (${inspectedStudentProfile.className || "10A7"
+            })`
+            : "Student Report Card"
+        }
+        badgeLabel="STUDENT REPORT CARD"
+        maxWidthClass="max-w-3xl"
+      >
+        {inspectedStudentProfile && (
+          <div className="divide-y divide-grid border border-grid font-mono text-mono-xs">
+            {assignments.map((asgn) => {
+              const sub =
+                submissionMap[`${inspectedStudentProfile.uid}_${asgn.id}`];
+              const status: AssignmentStatus = sub ? sub.status : "not_started";
+              return (
+                <div
+                  key={asgn.id}
+                  className="p-3 bg-surface flex items-center justify-between gap-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <StatusGlyph status={status} />
+                    <span className="font-semibold text-primary">
+                      {asgn.title}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <StatusGlyph status={status} showLabel />
+                    {sub && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setInspectedSubmission(sub)}
+                      >
+                        VIEW CODE
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Modal>
+
+      {/* MODAL: SUBMISSION VIEWER (P0 Section 7.3 — Read-Only Monaco Editor + Output + Status + UpdatedAt) */}
+      <Modal
+        isOpen={Boolean(inspectedSubmission)}
+        onClose={() => setInspectedSubmission(null)}
+        title={
+          inspectedSubmission
+            ? `Submission // ${inspectedSubmission.userDisplayName ||
+            inspectedSubmission.userId
+            }`
+            : "Submission Viewer"
+        }
+        badgeLabel="READ-ONLY SUBMISSION SNAPSHOT"
+        maxWidthClass="max-w-3xl"
+      >
+        {inspectedSubmission && (
+          <div className="space-y-4 font-mono text-mono-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-subtle border border-grid">
+              <div className="flex items-center gap-3">
+                <StatusGlyph status={inspectedSubmission.status} showLabel />
+                <span className="text-secondary">
+                  ASSIGNMENT:{" "}
+                  <strong className="text-primary">
+                    {assignments.find(
+                      (a) => a.id === inspectedSubmission.assignmentId
+                    )?.title || inspectedSubmission.assignmentId}
+                  </strong>
                 </span>
               </div>
-              <button
-                onClick={() => setInspectedSubmission(null)}
-                className="px-2.5 py-1 border border-grid text-secondary hover:text-primary"
-              >
-                [✕] ĐÓNG
-              </button>
+              <span className="text-muted">
+                UPDATED:{" "}
+                {new Date(inspectedSubmission.updatedAt).toLocaleString()}
+              </span>
             </div>
-            <pre className="p-4 bg-terminal text-zinc-100 border border-grid font-mono text-xs overflow-x-auto max-h-96 leading-relaxed">
-              {inspectedSubmission.code}
-            </pre>
-            <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-secondary border-t border-grid pt-3">
-              <span>
-                KẾT QUẢ IN RA (STDOUT):{" "}
-                <strong className="text-emerald-400">
-                  {inspectedSubmission.lastExecutedOutput || "Không có"}
-                </strong>
-              </span>
-              <span className="uppercase font-bold text-primary">
-                TRẠNG THÁI: {inspectedSubmission.status}
-              </span>
+
+            <div>
+              <div className="text-secondary uppercase font-semibold mb-1.5">
+                SUBMITTED PYTHON CODE (READ-ONLY MONACO)
+              </div>
+              <div className="h-72 border border-grid bg-terminal">
+                <Editor
+                  height="100%"
+                  language="python"
+                  theme={theme === "dark" ? "vs-dark" : "vs"}
+                  value={inspectedSubmission.code}
+                  options={{
+                    readOnly: true,
+                    fontSize: 13,
+                    minimap: { enabled: false },
+                    scrollBeyondLastLine: false,
+                    automaticLayout: true,
+                  }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="text-secondary uppercase font-semibold mb-1.5">
+                LAST EXECUTED OUTPUT (STDOUT)
+              </div>
+              <pre className="p-3 bg-terminal text-term-success border border-grid overflow-x-auto whitespace-pre-wrap">
+                {inspectedSubmission.lastExecutedOutput || "(empty output)"}
+              </pre>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </Modal>
 
       <FirebaseConfigModal
         isOpen={firebaseModalOpen}
