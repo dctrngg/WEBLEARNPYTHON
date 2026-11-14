@@ -237,6 +237,54 @@ export async function syncAssignmentsFromCloud(): Promise<{
   }
 }
 
+export async function pushAssignmentsToCloud(
+  currentAssignments: Assignment[]
+): Promise<{
+  success: boolean;
+  count: number;
+  error?: string;
+}> {
+  if (!isFirebaseConfigured || !db) {
+    return {
+      success: false,
+      count: 0,
+      error: "Chưa cấu hình khóa kết nối Firebase.",
+    };
+  }
+
+  try {
+    // 1. Fetch remote docs and delete any that are not in currentAssignments
+    const snap = await getDocs(collection(db, "assignments"));
+    const currentIdSet = new Set(currentAssignments.map((a) => a.id));
+
+    for (const remoteDoc of snap.docs) {
+      if (!currentIdSet.has(remoteDoc.id)) {
+        await deleteDoc(doc(db, "assignments", remoteDoc.id));
+      }
+    }
+
+    // 2. Set/merge all current assignments to Firestore
+    for (const asgn of currentAssignments) {
+      await setDoc(doc(db, "assignments", asgn.id), asgn, { merge: true });
+    }
+
+    // 3. Update local storage with sorted list
+    const sorted = sortAssignmentsByCurriculum(currentAssignments);
+    localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
+
+    return {
+      success: true,
+      count: sorted.length,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      count: 0,
+      error: err?.message || String(err),
+    };
+  }
+}
+
 export async function saveAssignment(assignment: Assignment): Promise<Assignment> {
   const id =
     assignment.id ||

@@ -11,6 +11,7 @@ import {
   getAllSubmissions,
   getAllUsers,
   getAssignments,
+  pushAssignmentsToCloud,
   saveAssignment,
   seedCloudFirestoreData,
   syncAssignmentsFromCloud,
@@ -426,24 +427,40 @@ export const InstructorDashboardPage: React.FC = () => {
   };
 
   const handleForcePullFirestore = async () => {
-    pushToast("ĐANG ĐỒNG BỘ DỮ LIỆU TỪ CLOUD FIRESTORE...", "info");
+    pushToast("ĐANG TẢI DỮ LIỆU TỪ CLOUD FIRESTORE...", "info");
     const res = await syncAssignmentsFromCloud();
     if (res.success) {
       await loadDashboardData();
-      pushToast(`✓ ĐÃ ĐỒNG BỘ THÀNH CÔNG ${res.count} BÀI TẬP TỪ FIREBASE!`, "success");
+      pushToast(`✓ ĐÃ TẢI THÀNH CÔNG ${res.count} BÀI TẬP TỪ CLOUD!`, "success");
     } else {
       pushToast(`ERR_FIRESTORE_SYNC: ${res.error}`, "danger");
     }
   };
 
-  const handleForceSyncFirestore = async () => {
-    pushToast("ĐẨY TOÀN BỘ SEED DATA LÊN CLOUD FIRESTORE…", "info");
+  const handlePushCurrentToCloud = async () => {
+    pushToast("ĐANG ĐẨY TOÀN BỘ BÀI TẬP HIỆN TẠI LÊN CLOUD FIRESTORE...", "info");
+    const res = await pushAssignmentsToCloud(assignments);
+    if (res.success) {
+      await loadDashboardData();
+      pushToast(`✓ ĐÃ LƯU & ĐỒNG BỘ ${res.count} BÀI TẬP LÊN CLOUD!`, "success");
+    } else {
+      pushToast(`ERR_FIRESTORE_PUSH: ${res.error}`, "danger");
+    }
+  };
+
+  const handleResetSeedData = async () => {
+    const ok = window.confirm(
+      "⚠️ CẢNH BÁO: Thao tác này sẽ nạp lại toàn bộ bài tập mẫu từ mã nguồn (seedData.ts) lên Cloud Firestore.\n\nMọi bài tập bạn đã xóa hoặc chỉnh sửa sẽ bị khôi phục lại.\n\nBạn có chắc chắn muốn khôi phục dữ liệu mẫu không?"
+    );
+    if (!ok) return;
+
+    pushToast("ĐANG KHÔI PHỤC DỮ LIỆU MẪU LÊN CLOUD FIRESTORE...", "info");
     const res = await seedCloudFirestoreData();
     if (res.success) {
       await loadDashboardData();
-      pushToast(`ĐÃ ĐẨY ${res.count} BÀI TẬP LÊN FIRESTORE!`, "success");
+      pushToast(`✓ ĐÃ KHÔI PHỤC ${res.count} BÀI TẬP MẪU LÊN FIRESTORE!`, "success");
     } else {
-      pushToast(`ERR_FIRESTORE_SYNC: ${res.error}`, "danger");
+      pushToast(`ERR_FIRESTORE_SEED: ${res.error}`, "danger");
     }
   };
 
@@ -793,19 +810,28 @@ export const InstructorDashboardPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleForcePullFirestore}
-                title="Đồng bộ / Tải dữ liệu mới nhất từ Cloud Firestore về trang Admin"
+                title="Tải / Đồng bộ dữ liệu mới nhất từ Cloud Firestore về máy"
                 className="flex-1 py-1.5 bg-brand text-white font-semibold text-[11px] hover:opacity-90 transition-opacity text-center truncate flex items-center justify-center gap-1"
               >
                 <span>🔄</span>
-                <span>ĐỒNG BỘ CLOUD</span>
+                <span>TẢI TỪ CLOUD</span>
               </button>
               <button
                 type="button"
-                onClick={handleForceSyncFirestore}
-                title="Đẩy bộ dữ liệu mẫu lên Cloud Firestore"
-                className="px-2 py-1.5 bg-subtle border border-grid text-secondary hover:text-primary hover:border-brand text-[11px] font-semibold transition-colors"
+                onClick={handlePushCurrentToCloud}
+                title="Lưu & đồng bộ toàn bộ danh sách bài tập hiện tại lên Cloud Firestore (xóa các bài đã bị xóa)"
+                className="px-2 py-1.5 bg-subtle border border-grid text-primary hover:border-brand text-[11px] font-semibold transition-colors flex items-center gap-1"
               >
-                🚀 ĐẨY LÊN
+                <span>🚀</span>
+                <span>LƯU LÊN CLOUD</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleResetSeedData}
+                title="Khôi phục bộ bài tập mẫu mặc định từ mã nguồn (Reset Seed)"
+                className="px-2 py-1.5 bg-subtle border border-grid text-secondary hover:text-danger hover:border-danger text-[11px] font-semibold transition-colors"
+              >
+                ♻️
               </button>
               <button
                 type="button"

@@ -103,49 +103,6 @@ export const INITIAL_ASSIGNMENTS: Assignment[] = [
     createdAt: "2026-11-10T08:00:00.000Z",
   },
   {
-    id: "asgn_16_2",
-    lessonId: "bai_16",
-    glyph: "◇",
-    title: "Bài 16.2: Tính tiền lãi ngân hàng (Vận dụng 3 - Bài 16)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng 3 - Bài 16 SGK Tin học 10)\nBạn An gửi ngân hàng số tiền gốc `P` (vnđ) với lãi suất `0.8%` mỗi tháng (tức là `0.008`). Hãy viết chương trình đọc vào số tiền gửi `P`, tính và in ra **Tiền lãi sau 1 tháng** và **Tổng tiền cả gốc lẫn lãi** (ép kiểu thành số nguyên `int`).\n\n### Dữ liệu vào (Input)\n- Một số nguyên `P` là số tiền gửi (ví dụ: `5000000`).\n\n### Kết quả ra (Output)\n- In trên 1 dòng theo mẫu: `LAI=<tiền_lãi> | TONG=<tổng_tiền>`\n\n### 💡 Gợi ý cách làm\n- `tien_lai = int(P * 0.008)`\n- `tong_tien = P + tien_lai`\n",
-    starterCode: "# Bài 16.2: Tính tiền lãi gửi ngân hàng (lãi suất 0.8%/tháng)\n",
-    testCases: [
-          {
-                "input": "5000000",
-                "expectedOutput": "LAI=40000 | TONG=5040000",
-                "isHidden": false
-          },
-          {
-                "input": "10000000",
-                "expectedOutput": "LAI=80000 | TONG=10080000",
-                "isHidden": false
-          },
-          {
-                "input": "2500000",
-                "expectedOutput": "LAI=20000 | TONG=2520000",
-                "isHidden": true
-          },
-          {
-                "input": "1000000",
-                "expectedOutput": "LAI=8000 | TONG=1008000",
-                "isHidden": true
-          },
-          {
-                "input": "15000000",
-                "expectedOutput": "LAI=120000 | TONG=15120000",
-                "isHidden": true
-          },
-          {
-                "input": "50000000",
-                "expectedOutput": "LAI=400000 | TONG=50400000",
-                "isHidden": true
-          }
-    ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-10T08:10:00.000Z",
-  },
-  {
     id: "asgn_16_3",
     lessonId: "bai_16",
     glyph: "●",
