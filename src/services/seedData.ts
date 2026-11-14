@@ -81,15 +81,6 @@ Viết chương trình nhập vào chiều rộng \`w\` (số dấu \`*\` trên 
 - Dòng rỗng ở giữa: \`"*" + " " * (w - 2) + "*"\`
 `,
     starterCode: `# Bài 16.1: In hình chữ nhật rỗng kích thước w x 4 bằng dấu *
-w = int(input())
-
-dong_dac = "*" * w
-dong_rong = "*" + " " * (w - 2) + "*"
-
-print(dong_dac)
-print(dong_rong)
-print(dong_rong)
-print(dong_dac)
 `,
     testCases: [
       {
@@ -131,12 +122,6 @@ Bạn An gửi ngân hàng số tiền gốc \`P\` (vnđ) với lãi suất \`0.
 - \`tong_tien = P + tien_lai\`
 `,
     starterCode: `# Bài 16.2: Tính tiền lãi gửi ngân hàng (lãi suất 0.8%/tháng)
-P = int(input())
-
-tien_lai = int(P * 0.008)
-tong_tien = P + tien_lai
-
-print(f"LAI={tien_lai} | TONG={tong_tien}")
 `,
     testCases: [
       {
@@ -182,10 +167,6 @@ Tiền lãi:  40000.0
 ### Kết quả ra (Output)
 - In ra màn hình đúng 4 dòng thông tin theo mẫu.`,
     starterCode: `# Bài 16.3: Tính tiền lãi ngân hàng của bạn An
-print('Tên người gửi: An')
-print('Số tiền gửi: ', 5000000, 'vnđ')
-print('Lãi suất/tháng: 0.8%')
-print('Tiền lãi: ', 5000000 * 0.008)
 `,
     testCases: [
       {
@@ -212,10 +193,6 @@ print('Tiền lãi: ', 5000000 * 0.008)
 ### Kết quả ra (Output)
 - In ra thời gian ô tô đi hết tuyến đường (tính bằng giờ).`,
     starterCode: `# Bài 16.4: Tính thời gian đi trên đường cao tốc
-chieu_dai = 264
-van_toc = 70
-thoi_gian = chieu_dai / van_toc
-print(thoi_gian)
 `,
     testCases: [
       {
@@ -244,10 +221,6 @@ Năm 2020 nước ta sản xuất được 247 tỉ kWh điện. Sản lượng 
 ### Kết quả ra (Output)
 - In ra sản lượng điện dự báo trong năm 2021.`,
     starterCode: `# Bài 16.5: Dự báo sản lượng điện quốc gia
-san_luong_2020 = 247
-toc_do_tang = 0.086
-san_luong_2021 = san_luong_2020 * (1 + toc_do_tang)
-print(san_luong_2021)
 `,
     testCases: [
       {
@@ -274,8 +247,6 @@ Viết chương trình in ra bảng nhân 7 với các số tự nhiên nhỏ h�
 ### Kết quả ra (Output)
 - In ra bảng nhân 7 gồm 10 dòng theo định dạng chuẩn: \`7 x 0 = 0\`, \`7 x 1 = 7\`, ..., \`7 x 9 = 63\`.`,
     starterCode: `# Bài 16.6: Bảng nhân 7
-for i in range(10):
-    print(f"7 x {i} = {7 * i}")
 `,
     testCases: [
       {
@@ -311,11 +282,6 @@ $$A = (x + y)(x^2 + y^2 - 1)$$
 - Công thức: \`A = (x + y) * (x**2 + y**2 - 1)\`
 `,
     starterCode: `# Bài 17.1: Tính biểu thức (x + y)(x^2 + y^2 - 1)
-x = int(input())
-y = int(input())
-
-ket_qua = (x + y) * (x**2 + y**2 - 1)
-print(ket_qua)
 `,
     testCases: [
       {
@@ -357,18 +323,6 @@ Biết rằng:
 - In theo đúng định dạng: \`<ngay> ngay <gio> gio <phut> phut <giay> giay\`
 `,
     starterCode: `# Bài 17.2: Đổi số giây sang Ngày, Giờ, Phút, Giây
-ss = int(input())
-
-ngay = ss // 86400
-con_lai = ss % 86400
-
-gio = con_lai // 3600
-con_lai = con_lai % 3600
-
-phut = con_lai // 60
-giay = con_lai % 60
-
-print(f"{ngay} ngay {gio} gio {phut} phut {giay} giay")
 `,
     testCases: [
       {
@@ -409,22 +363,6 @@ Thực hiện các phép tính sau trong môi trường lập trình Python:
 ### Kết quả ra (Output)
 - In ra giá trị kết quả của từng câu a, b, c, d trên 4 dòng riêng biệt theo đúng thứ tự.`,
     starterCode: `# Bài 17.3: Thực hiện các phép tính cơ bản
-# Câu a
-print((1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10) ** 3)
-
-# Câu b
-print(1/2 + 1/3 + 1/4 + 1/5)
-
-# Câu c
-x = 2
-y = 5
-print((x + y) * (x**2 + y**2 - 1))
-
-# Câu d
-a = 2
-b = 3
-c = 4
-print((a + b + c) * (a + b - c))
 `,
     testCases: [
       {
@@ -457,14 +395,6 @@ Diện tích hình tròn là: <giá trị diện tích>
 ### Kết quả ra (Output)
 - In ra đúng 2 dòng như định dạng mẫu.`,
     starterCode: `# Bài 17.4: Tính chu vi và diện tích hình tròn
-R = 5
-Pi = 3.14
-
-chu_vi = 2 * Pi * R
-dien_tich = Pi * R * R
-
-print("Chu vi hình tròn là:", chu_vi)
-print("Diện tích hình tròn là:", dien_tich)
 `,
     testCases: [
       {
@@ -502,18 +432,6 @@ Viết các lệnh để thực hiện việc đổi số giây \`ss = 684500\` 
 ### Kết quả ra (Output)
 - In ra 1 dòng theo đúng cú pháp mẫu.`,
     starterCode: `# Bài 17.5: Đổi số giây sang ngày, giờ, phút, giây
-ss = 684500
-
-ngay = ss // 86400
-du_ngay = ss % 86400
-
-gio = du_ngay // 3600
-du_gio = du_ngay % 3600
-
-phut = du_gio // 60
-giay = du_gio % 60
-
-print(f"{ss} giây = {ngay} ngày {gio} giờ {phut} phút {giay} giây")
 `,
     testCases: [
       {
@@ -548,15 +466,6 @@ $$p = \\frac{a + b + c}{2}, \\quad S = \\sqrt{p(p - a)(p - b)(p - c)}$$
 - Dùng \`import math\` và \`math.sqrt(...)\` để tính căn bậc hai.
 `,
     starterCode: `# Bài 18.1: Tính Chu vi và Diện tích tam giác theo công thức Heron
-import math
-
-a, b, c = map(float, input().split())
-
-chu_vi = a + b + c
-p = chu_vi / 2
-dien_tich = math.sqrt(p * (p - a) * (p - b) * (p - c))
-
-print(f"CHU_VI={chu_vi:.2f} | DIEN_TICH={dien_tich:.2f}")
 `,
     testCases: [
       {
@@ -595,13 +504,6 @@ Cho đơn giá \`don_gia\` và lượng điện tiêu thụ \`so_kw\` (biết \`
 - Một số nguyên duy nhất là tổng tiền điện phải trả.
 `,
     starterCode: `# Bài 18.2: Tính tiền điện vượt định mức 100kW
-don_gia, so_kw = map(int, input().split())
-
-tien_100kw_dau = 100 * don_gia
-tien_vuot_muc = (so_kw - 100) * don_gia * 1.1
-tong_tien = round(tien_100kw_dau + tien_vuot_muc)
-
-print(tong_tien)
 `,
     testCases: [
       {
@@ -653,12 +555,6 @@ Viết chương trình cho người dùng nhập vào một số nguyên và m�
 <class 'float'>
 \`\`\``,
     starterCode: `# Bài 18.3: Nhập số nguyên và số thực, tính tổng và in kiểu dữ liệu
-so_nguyen = int(input())
-so_thuc = float(input())
-
-tong = so_nguyen + so_thuc
-print(tong)
-print(type(tong))
 `,
     testCases: [
       {
@@ -715,10 +611,6 @@ Viết chương trình nhập bán kính $R$ từ bàn phím (số thực) và t
 78.5
 \`\`\``,
     starterCode: `# Bài 18.4: Tính diện tích hình tròn
-R = float(input())
-Pi = 3.14
-S = Pi * (R ** 2)
-print(S)
 `,
     testCases: [
       {
@@ -777,18 +669,6 @@ Viết chương trình nhập giá trị \`ss\` là số giây nguyên không â
 684500 giây = 7 ngày 22 giờ 8 phút 20 giây
 \`\`\``,
     starterCode: `# Bài 18.5: Đổi số giây nhập từ bàn phím
-ss = int(input())
-
-ngay = ss // 86400
-du_ngay = ss % 86400
-
-gio = du_ngay // 3600
-du_gio = du_ngay % 3600
-
-phut = du_gio // 60
-giay = du_gio % 60
-
-print(f\"{ss} giây = {ngay} ngày {gio} giờ {phut} phút {giay} giây\")
 `,
     testCases: [
       {
@@ -849,16 +729,6 @@ $$p = \\frac{a + b + c}{2}, \\quad S = \\sqrt{p(p - a)(p - b)(p - c)}$$
 6.0
 \`\`\``,
     starterCode: `# Bài 18.6: Tính chu vi và diện tích tam giác theo công thức Heron
-import math
-
-a, b, c = map(float, input().split())
-
-P = a + b + c
-p = P / 2
-S = math.sqrt(p * (p - a) * (p - b) * (p - c))
-
-print(P)
-print(S)
 `,
     testCases: [
       {
@@ -912,14 +782,6 @@ Viết chương trình nhập số kg cam cần mua (số nguyên) và in ra s�
 - Số tiền phải trả.
 `,
     starterCode: `# Bài 19.1: Tính tiền mua cam bằng câu lệnh if - else
-kg = int(input())
-
-if kg < 5:
-    thanh_tien = kg * 12000
-else:
-    thanh_tien = kg * 10000
-
-print(thanh_tien)
 `,
     testCases: [
       {
@@ -959,12 +821,6 @@ Nhập vào số năm dương lịch \`n\`. Năm \`n\` là **năm nhuận** nế
 - In ra \`NAM NHUAN\` nếu là năm nhuận, ngược lại in ra \`KHONG NHUAN\`.
 `,
     starterCode: `# Bài 19.2: Kiểm tra năm nhuận
-n = int(input())
-
-if (n % 400 == 0) or (n % 4 == 0 and n % 100 != 0):
-    print("NAM NHUAN")
-else:
-    print("KHONG NHUAN")
 `,
     testCases: [
       {
@@ -1010,16 +866,6 @@ Nhập số kWh điện tiêu thụ \`k\` và tính tiền điện lũy kế (đ
 - Tổng số tiền điện (số nguyên).
 `,
     starterCode: `# Bài 19.3: Tính tiền điện lũy kế 3 bậc thang bằng if - elif - else
-k = int(input())
-
-if k <= 50:
-    tien = k * 1678
-elif k <= 100:
-    tien = 50 * 1678 + (k - 50) * 1734
-else:
-    tien = 50 * 1678 + 50 * 1734 + (k - 100) * 2014
-
-print(tien)
 `,
     testCases: [
       {
@@ -1062,19 +908,6 @@ Nhập số tự nhiên \`n\` ($n \\ge 2$). Hãy dùng vòng lặp \`for\` để
 - Dòng 2: \`SO_UOC_THUC_SU=<số_lượng>\`
 `,
     starterCode: `# Bài 20.1: Tìm các ước số và đếm số ước thực sự của n
-n = int(input())
-
-cac_uoc = []
-dem_uoc_thuc_su = 0
-
-for i in range(1, n + 1):
-    if n % i == 0:
-        cac_uoc.append(str(i))
-        if i < n:
-            dem_uoc_thuc_su += 1
-
-print(" ".join(cac_uoc))
-print(f"SO_UOC_THUC_SU={dem_uoc_thuc_su}")
 `,
     testCases: [
       {
@@ -1113,13 +946,6 @@ $$S = 1^3 + 2^3 + 3^3 + \\dots + n^3$$
 - Giá trị tổng \`S\`.
 `,
     starterCode: `# Bài 20.2: Tính tổng S = 1^3 + 2^3 + ... + n^3
-n = int(input())
-
-S = 0
-for i in range(1, n + 1):
-    S += i ** 3
-
-print(S)
 `,
     testCases: [
       {
@@ -1158,13 +984,6 @@ Cho tổng số con và tổng số chân (biết gà có 2 chân, chó có 4 ch
 - In theo mẫu: \`GA=<số_gà> | CHO=<số_chó>\`
 `,
     starterCode: `# Bài 20.3: Bài toán dân gian Vừa gà vừa chó
-tong_con, tong_chan = map(int, input().split())
-
-for ga in range(0, tong_con + 1):
-    cho = tong_con - ga
-    if 2 * ga + 4 * cho == tong_chan:
-        print(f"GA={ga} | CHO={cho}")
-        break
 `,
     testCases: [
       {
@@ -1204,16 +1023,6 @@ Sử dụng vòng lặp \`while\`, hãy đếm xem trong \`n\` số tự nhiên 
 - Số lượng các số thỏa mãn điều kiện.
 `,
     starterCode: `# Bài 21.1: Đếm số chia hết cho 5 hoặc chia 3 dư 1 trong n số tự nhiên đầu tiên
-n = int(input())
-
-k = 0
-dem = 0
-while k < n:
-    if (k % 5 == 0) or (k % 3 == 1):
-        dem += 1
-    k += 1
-
-print(dem)
 `,
     testCases: [
       {
@@ -1252,18 +1061,6 @@ Hãy viết chương trình nhập số tự nhiên \`n\` và dùng vòng lặp 
 - Số hoàn hảo đầu tiên lớn hơn \`n\`.
 `,
     starterCode: `# Bài 21.2: Tìm số hoàn hảo đầu tiên lớn hơn n
-n = int(input())
-
- ứng_vien = n + 1
-while True:
-    tong_uoc = 0
-    for i in range(1, ứng_vien):
-        if ứng_vien % i == 0:
-            tong_uoc += i
-    if tong_uoc == ứng_vien:
-        print(ứng_vien)
-        break
-    ứng_vien += 1
 `,
     testCases: [
       {
@@ -1306,14 +1103,6 @@ Nhập vào một dãy số nguyên \`A\` trên một dòng. Hãy tính và in r
 - \`TONG=<tổng> | CHAN=<số_chẵn> | MAX=<giá_trị_max> | VI_TRI=<chỉ_số>\`
 `,
     starterCode: `# Bài 22.1: Thao tác với Danh sách (List)
-A = [int(x) for x in input().split()]
-
-tong = sum(A)
-so_chan = len([x for x in A if x % 2 == 0])
-gt_max = max(A)
-vi_tri_max = A.index(gt_max)
-
-print(f"TONG={tong} | CHAN={so_chan} | MAX={gt_max} | VI_TRI={vi_tri_max}")
 `,
     testCases: [
       {
@@ -1352,13 +1141,6 @@ $$F_0 = 0, \\quad F_1 = 1, \\quad F_k = F_{k-1} + F_{k-2}$$
 - In danh sách \`A\` ra màn hình.
 `,
     starterCode: `# Bài 23.1: Tạo danh sách n số hạng đầu tiên của dãy Fibonacci
-n = int(input())
-
-A = [0, 1]
-for i in range(2, n):
-    A.append(A[i - 1] + A[i - 2])
-
-print(A[:n])
 `,
     testCases: [
       {
@@ -1398,17 +1180,6 @@ Cho một xâu kí tự \`s\` bất kỳ. Hãy duyệt từng kí tự của xâ
 - Xâu kết quả \`skq\`.
 `,
     starterCode: `# Bài 24.1: Lọc các chữ số lẻ từ xâu kí tự
-s = input()
-
-skq = ""
-for ch in s:
-    if ch in "13579":
-        skq = skq + ch
-
-if skq == "":
-    print("KHONG CO")
-else:
-    print(skq)
 `,
     testCases: [
       {
@@ -1450,15 +1221,6 @@ Hãy sử dụng \`.split()\` và \`" ".join()\` để:
 - Dòng 2: \`HO=<họ> | TEN=<tên>\`
 `,
     starterCode: `# Bài 25.1: Chuẩn hóa xâu họ tên và tách Họ, Tên
-s = input()
-
-cac_tu = s.split()
-chuan_hoa = " ".join(cac_tu)
-ho = cac_tu[0]
-ten = cac_tu[-1]
-
-print(chuan_hoa)
-print(f"HO={ho} | TEN={ten}")
 `,
     testCases: [
       {
@@ -1498,20 +1260,6 @@ Hãy định nghĩa hàm \`Number(A)\` nhận đầu vào là danh sách số ng
 - \`CHAN=<p> | LE=<q>\`
 `,
     starterCode: `# Bài 26.1: Viết hàm Number(A) trả về số lượng số chẵn và số lẻ
-def Number(A: list[int]) -> tuple[int, int]:
-    p = 0
-    q = 0
-    for x in A:
-        if x % 2 == 0:
-            p += 1
-        else:
-            q += 1
-    return p, q
-
-if __name__ == "__main__":
-    ds = [int(x) for x in input().split()]
-    chan, le = Number(ds)
-    print(f"CHAN={chan} | LE={le}")
 `,
     testCases: [
       {
@@ -1551,18 +1299,6 @@ Viết hàm \`ucln_bcnn(m, n)\` nhận vào 2 số nguyên dương \`m, n\` và 
 - \`UCLN=<ucln> | BCNN=<bcnn>\`
 `,
     starterCode: `# Bài 27.1: Viết hàm trả về đồng thời UCLN và BCNN của m, n
-def ucln_bcnn(m: int, n: int) -> tuple[int, int]:
-    a, b = m, n
-    while b != 0:
-        a, b = b, a % b
-    ucln = a
-    bcnn = (m * n) // ucln
-    return ucln, bcnn
-
-if __name__ == "__main__":
-    m, n = map(int, input().split())
-    u, b = ucln_bcnn(m, n)
-    print(f"UCLN={u} | BCNN={b}")
 `,
     testCases: [
       {
@@ -1610,15 +1346,6 @@ Hãy sửa lại thành \`for i in range(1, len(A)):\` và \`while j > 0 and A[j
 - In danh sách \`A\` sau khi đã sắp xếp tăng dần.
 `,
     starterCode: `# Bài 29.1: Sửa lỗi thuật toán Sắp xếp chèn (Insertion Sort)
-A = [int(x) for x in input().split()]
-
-for i in range(1, len(A)):
-    j = i
-    while j > 0 and A[j] < A[j - 1]:
-        A[j], A[j - 1] = A[j - 1], A[j]
-        j = j - 1
-
-print(A)
 `,
     testCases: [
       {
@@ -1657,17 +1384,6 @@ Nhập 2 số tự nhiên \`Y1\` và \`Y2\` là hai mốc năm dương lịch ($
 - Số lượng năm nhuận trong khoảng \`[Y1, Y2]\`.
 `,
     starterCode: `# Bài 31.1: Đếm số năm nhuận trong khoảng từ năm Y1 đến Y2
-def la_nam_nhuan(nam: int) -> bool:
-    return (nam % 400 == 0) or (nam % 4 == 0 and nam % 100 != 0)
-
-Y1, Y2 = map(int, input().split())
-
-dem = 0
-for nam in range(Y1, Y2 + 1):
-    if la_nam_nhuan(nam):
-        dem += 1
-
-print(dem)
 `,
     testCases: [
       {
@@ -1715,14 +1431,6 @@ Tiền lãi: 40000.0 vnđ
 - In ra 4 dòng thông tin đúng theo mẫu trên.
 `,
     starterCode: `# Bài 16.3: Tính tiền lãi ngân hàng
-tien_gui = 5000000
-lai_suat = 0.008
-tien_lai = tien_gui * lai_suat
-
-print("Tên người gửi: An")
-print("Số tiền gửi:", tien_gui, "vnđ")
-print("Lãi suất/tháng: 0.8%")
-print("Tiền lãi:", tien_lai, "vnđ")
 `,
     testCases: [
       {
@@ -1751,8 +1459,6 @@ Sử dụng vòng lặp \`for\`, hãy viết chương trình in ra bảng nhân 
 - 10 dòng kết quả từ \`7 x 0 = 0\` đến \`7 x 9 = 63\`.
 `,
     starterCode: `# Bài 20.4: In bảng nhân 7 với các số nhỏ hơn 10
-for i in range(10):
-    print(f"7 x {i} = {7 * i}")
 `,
     testCases: [
       {
@@ -1786,16 +1492,6 @@ Hàm trả về 2 giá trị là:
 - In ra theo định dạng: \`UCLN = <giá trị> | BCNN = <giá trị>\`
 `,
     starterCode: `# Bài 27.2: Hàm tìm UCLN và BCNN của m và n
-import math
-
-def ucln_bcnn(m: int, n: int):
-    u = math.gcd(m, n)
-    b = (m * n) // u
-    return u, b
-
-m, n = map(int, input().split())
-u, b = ucln_bcnn(m, n)
-print(f"UCLN = {u} | BCNN = {b}")
 `,
     testCases: [
       {
@@ -1841,13 +1537,6 @@ Hãy viết chương trình nhập hai số tự nhiên \`a, b\` và in ra ướ
 - In ra một số nguyên duy nhất là ƯCLN của \`a\` và \`b\`.
 `,
     starterCode: `# Bài 31.2: Tìm UCLN của a và b bằng thuật toán Euclid
-def tim_ucln(a: int, b: int) -> int:
-    while b > 0:
-        a, b = b, a % b
-    return a
-
-a, b = map(int, input().split())
-print(tim_ucln(a, b))
 `,
     testCases: [
       {
@@ -1895,10 +1584,6 @@ Chương trình in mỗi dòng của bảng theo cú pháp \`<bảng> x <i> = <t
 - 10 dòng thể hiện bảng cửu chương của \`k\`, mỗi dòng có dạng: \`k x i = <k*i>\` với \`i\` từ 1 đến 10.
 `,
     starterCode: `# Bài 31.3: In bảng nhân k từ 1 đến 10
-k = int(input())
-
-for i in range(1, 11):
-    print(f"{k} x {i} = {k * i}")
 `,
     testCases: [
       {
@@ -1984,7 +1669,7 @@ export const INITIAL_SUBMISSIONS: Submission[] = [
     userClassName: "10A7",
     userEmail: "nguyenminhan.10a7@python.edu.vn",
     assignmentId: "asgn_16_1",
-    code: INITIAL_ASSIGNMENTS[0].starterCode,
+    code: `# Bài 16.1: In hình chữ nhật rỗng kích thước w x 4 bằng dấu *\nw = int(input())\n\ndong_dac = "*" * w\ndong_rong = "*" + " " * (w - 2) + "*"\n\nprint(dong_dac)\nprint(dong_rong)\nprint(dong_rong)\nprint(dong_dac)\n`,
     status: "passed",
     lastExecutedOutput: "************\n*          *\n*          *\n************",
     passedCount: 3,
@@ -1998,7 +1683,7 @@ export const INITIAL_SUBMISSIONS: Submission[] = [
     userClassName: "10A7",
     userEmail: "nguyenminhan.10a7@python.edu.vn",
     assignmentId: "asgn_17_2",
-    code: INITIAL_ASSIGNMENTS[3].starterCode,
+    code: `# Bài 17.2: Đổi số giây sang Ngày, Giờ, Phút, Giây\nss = int(input())\n\nngay = ss // 86400\ncon_lai = ss % 86400\n\ngio = con_lai // 3600\ncon_lai = con_lai % 3600\n\nphut = con_lai // 60\ngiay = con_lai % 60\n\nprint(f"{ngay} ngay {gio} gio {phut} phut {giay} giay")\n`,
     status: "passed",
     lastExecutedOutput: "7 ngay 22 gio 8 phut 20 giay",
     passedCount: 3,
@@ -2012,7 +1697,7 @@ export const INITIAL_SUBMISSIONS: Submission[] = [
     userClassName: "10A12",
     userEmail: "trangiabao.10a12@python.edu.vn",
     assignmentId: "asgn_19_2",
-    code: INITIAL_ASSIGNMENTS[7].starterCode,
+    code: `# Bài 19.2: Kiểm tra năm nhuận\nn = int(input())\n\nif (n % 400 == 0) or (n % 4 == 0 and n % 100 != 0):\n    print("NAM NHUAN")\nelse:\n    print("KHONG NHUAN")\n`,
     status: "passed",
     lastExecutedOutput: "NAM NHUAN",
     passedCount: 4,

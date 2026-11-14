@@ -220,7 +220,7 @@ export const InstructorDashboardPage: React.FC = () => {
     setDescription(
       `### Problem Statement\nWrite a Python program to solve the following task.\n\n### Input\n- Line 1: ...\n\n### Output\n- Print the result using \`print()\`.`
     );
-    setStarterCode(`# Write your Python solution here\nn = int(input())\nprint(n)\n`);
+    setStarterCode(`# Viết code Python của em tại đây\n`);
     setTestCases([
       { input: "10", expectedOutput: "10", isHidden: false },
       { input: "25", expectedOutput: "25", isHidden: true },

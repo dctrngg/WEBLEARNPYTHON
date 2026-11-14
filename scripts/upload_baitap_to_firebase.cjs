@@ -42,10 +42,6 @@ Tiền lãi:  40000.0
 ### Kết quả ra (Output)
 - In ra màn hình đúng 4 dòng thông tin theo mẫu.`,
     starterCode: `# Bài 16.3: Tính tiền lãi ngân hàng của bạn An
-print('Tên người gửi: An')
-print('Số tiền gửi: ', 5000000, 'vnđ')
-print('Lãi suất/tháng: 0.8%')
-print('Tiền lãi: ', 5000000 * 0.008)
 `,
     testCases: [
       {
@@ -72,10 +68,6 @@ print('Tiền lãi: ', 5000000 * 0.008)
 ### Kết quả ra (Output)
 - In ra thời gian ô tô đi hết tuyến đường (tính bằng giờ).`,
     starterCode: `# Bài 16.4: Tính thời gian đi trên đường cao tốc
-chieu_dai = 264
-van_toc = 70
-thoi_gian = chieu_dai / van_toc
-print(thoi_gian)
 `,
     testCases: [
       {
@@ -104,10 +96,6 @@ Năm 2020 nước ta sản xuất được 247 tỉ kWh điện. Sản lượng 
 ### Kết quả ra (Output)
 - In ra sản lượng điện dự báo trong năm 2021.`,
     starterCode: `# Bài 16.5: Dự báo sản lượng điện quốc gia
-san_luong_2020 = 247
-toc_do_tang = 0.086
-san_luong_2021 = san_luong_2020 * (1 + toc_do_tang)
-print(san_luong_2021)
 `,
     testCases: [
       {
@@ -134,8 +122,6 @@ Viết chương trình in ra bảng nhân 7 với các số tự nhiên nhỏ h�
 ### Kết quả ra (Output)
 - In ra bảng nhân 7 gồm 10 dòng theo định dạng chuẩn: \`7 x 0 = 0\`, \`7 x 1 = 7\`, ..., \`7 x 9 = 63\`.`,
     starterCode: `# Bài 16.6: Bảng nhân 7
-for i in range(10):
-    print(f"7 x {i} = {7 * i}")
 `,
     testCases: [
       {
@@ -168,22 +154,6 @@ Thực hiện các phép tính sau trong môi trường lập trình Python:
 ### Kết quả ra (Output)
 - In ra giá trị kết quả của từng câu a, b, c, d trên 4 dòng riêng biệt theo đúng thứ tự.`,
     starterCode: `# Bài 17.3: Thực hiện các phép tính cơ bản
-# Câu a
-print((1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10) ** 3)
-
-# Câu b
-print(1/2 + 1/3 + 1/4 + 1/5)
-
-# Câu c
-x = 2
-y = 5
-print((x + y) * (x**2 + y**2 - 1))
-
-# Câu d
-a = 2
-b = 3
-c = 4
-print((a + b + c) * (a + b - c))
 `,
     testCases: [
       {
@@ -216,14 +186,6 @@ Diện tích hình tròn là: <giá trị diện tích>
 ### Kết quả ra (Output)
 - In ra đúng 2 dòng như định dạng mẫu.`,
     starterCode: `# Bài 17.4: Tính chu vi và diện tích hình tròn
-R = 5
-Pi = 3.14
-
-chu_vi = 2 * Pi * R
-dien_tich = Pi * R * R
-
-print("Chu vi hình tròn là:", chu_vi)
-print("Diện tích hình tròn là:", dien_tich)
 `,
     testCases: [
       {
@@ -261,18 +223,6 @@ Viết các lệnh để thực hiện việc đổi số giây \`ss = 684500\` 
 ### Kết quả ra (Output)
 - In ra 1 dòng theo đúng cú pháp mẫu.`,
     starterCode: `# Bài 17.5: Đổi số giây sang ngày, giờ, phút, giây
-ss = 684500
-
-ngay = ss // 86400
-du_ngay = ss % 86400
-
-gio = du_ngay // 3600
-du_gio = du_ngay % 3600
-
-phut = du_gio // 60
-giay = du_gio % 60
-
-print(f"{ss} giây = {ngay} ngày {gio} giờ {phut} phút {giay} giây")
 `,
     testCases: [
       {
@@ -316,12 +266,6 @@ Viết chương trình cho người dùng nhập vào một số nguyên và m�
 <class 'float'>
 \`\`\``,
     starterCode: `# Bài 18.3: Nhập số nguyên và số thực, tính tổng và in kiểu dữ liệu
-so_nguyen = int(input())
-so_thuc = float(input())
-
-tong = so_nguyen + so_thuc
-print(tong)
-print(type(tong))
 `,
     testCases: [
       {
@@ -378,10 +322,6 @@ Viết chương trình nhập bán kính $R$ từ bàn phím (số thực) và t
 78.5
 \`\`\``,
     starterCode: `# Bài 18.4: Tính diện tích hình tròn
-R = float(input())
-Pi = 3.14
-S = Pi * (R ** 2)
-print(S)
 `,
     testCases: [
       {
@@ -440,18 +380,6 @@ Viết chương trình nhập giá trị \`ss\` là số giây nguyên không â
 684500 giây = 7 ngày 22 giờ 8 phút 20 giây
 \`\`\``,
     starterCode: `# Bài 18.5: Đổi số giây nhập từ bàn phím
-ss = int(input())
-
-ngay = ss // 86400
-du_ngay = ss % 86400
-
-gio = du_ngay // 3600
-du_gio = du_ngay % 3600
-
-phut = du_gio // 60
-giay = du_gio % 60
-
-print(f"{ss} giây = {ngay} ngày {gio} giờ {phut} phút {giay} giây")
 `,
     testCases: [
       {
@@ -512,16 +440,6 @@ $$p = \\frac{a + b + c}{2}, \\quad S = \\sqrt{p(p - a)(p - b)(p - c)}$$
 6.0
 \`\`\``,
     starterCode: `# Bài 18.6: Tính chu vi và diện tích tam giác theo công thức Heron
-import math
-
-a, b, c = map(float, input().split())
-
-P = a + b + c
-p = P / 2
-S = math.sqrt(p * (p - a) * (p - b) * (p - c))
-
-print(P)
-print(S)
 `,
     testCases: [
       {
