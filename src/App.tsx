@@ -8,14 +8,16 @@ import { LoginPage } from "./pages/LoginPage";
 import { StudentWorkspacePage } from "./pages/StudentWorkspacePage";
 import { InstructorDashboardPage } from "./pages/InstructorDashboardPage";
 import { BlueprintPage } from "./pages/BlueprintPage";
+import { ToastProvider } from "./components/ui/Primitives";
 
 export const App: React.FC = () => {
   return (
     <LanguageProvider>
       <ThemeProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <Routes>
+          <ToastProvider>
+            <BrowserRouter>
+              <Routes>
               {/* Default Landing Route (/): Blueprint Page with Tin học 10 Curriculum (know.md) & Lesson-Grouped Exercises */}
               <Route
                 path="/"
@@ -71,6 +73,7 @@ export const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </BrowserRouter>
+          </ToastProvider>
         </AuthProvider>
       </ThemeProvider>
     </LanguageProvider>
