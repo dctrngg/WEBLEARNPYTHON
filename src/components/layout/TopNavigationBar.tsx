@@ -55,11 +55,10 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
         <div className="flex items-center gap-1.5 shrink-0">
           <Link
             to="/"
-            className={`px-3 py-1 border transition-colors font-medium flex items-center gap-1.5 ${
-              isBlueprintRoute
+            className={`px-3 py-1 border transition-colors font-medium flex items-center gap-1.5 ${isBlueprintRoute
                 ? "bg-brand text-white border-brand font-semibold shadow-none"
                 : "bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
-            }`}
+              }`}
           >
             <span>📚</span>
             <span>{t("BÀI HỌC LÝ THUYẾT", "LÝ THUYẾT")}</span>
@@ -67,14 +66,13 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
 
           <Link
             to="/workspace"
-            className={`px-3 py-1 border transition-colors font-medium flex items-center gap-1.5 ${
-              isWorkspaceRoute
+            className={`px-3 py-1 border transition-colors font-medium flex items-center gap-1.5 ${isWorkspaceRoute
                 ? "bg-brand text-white border-brand font-semibold shadow-none"
                 : "bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
-            }`}
+              }`}
           >
             <span>💻</span>
-            <span>{t("PHÒNG THỰC HÀNH IDE", "PHÒNG CODE IDE")}</span>
+            <span>{t("CODE", "CODE")}</span>
           </Link>
 
           {/* Dành cho Giảng viên / Quản trị viên */}

@@ -17,7 +17,7 @@ export const App: React.FC = () => {
       <ThemeProvider>
         <AuthProvider>
           <ToastProvider>
-            <BrowserRouter>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
               <Routes>
               {/* Default Landing Route (/): Blueprint Page with Tin học 10 Curriculum (know.md) & Lesson-Grouped Exercises */}
               <Route

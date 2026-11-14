@@ -51,7 +51,11 @@ export function usePyodide() {
       workerRef.current.terminate();
     }
 
-    const worker = new Worker("/pyodideWorker.js");
+    const workerUrl = `${import.meta.env.BASE_URL}pyodideWorker.js`.replace(
+      /\/\//g,
+      "/"
+    );
+    const worker = new Worker(workerUrl);
     workerRef.current = worker;
 
     worker.onmessage = (event) => {
