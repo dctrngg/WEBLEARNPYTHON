@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #FAFAFA;
+    --bg-surface: #FFFFFF;
+    --bg-subtle: #F4F4F5;
+    --bg-terminal: #0D0D0D;
+    --border-grid: #E4E4E7;
+    --border-strong: #D4D4D8;
+    --text-primary: #09090B;
+    --text-secondary: #52525B;
+    --text-muted: #71717A;
+    --accent-brand: #FF5722;
+    --accent-success: #10B981;
+    --accent-warn: #F59E0B;
+  }
+
+  .dark {
+    --bg-primary: #0A0A0A;
+    --bg-surface: #111111;
+    --bg-subtle: #18181B;
+    --bg-terminal: #050505;
+    --border-grid: #27272A;
+    --border-strong: #3F3F46;
+    --text-primary: #FAFAFA;
+    --text-secondary: #A1A1AA;
+    --text-muted: #71717A;
+    --accent-brand: #FF6433;
+    --accent-success: #34D399;
+    --accent-warn: #FBBF24;
+  }
+
+  * {
+    border-radius: 0px;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: "Geist Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Typography Hierarchy from Chroma Design System */
+.text-hero {
+  font-size: 3.25rem;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.text-h2 {
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+.text-h3 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  letter-spacing: 0em;
+  font-weight: 400;
+}
+
+.text-mono-sm {
+  font-family: "Geist Mono", "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.text-mono-code {
+  font-family: "Geist Mono", "JetBrains Mono", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  letter-spacing: 0em;
+}
+
+/* Technical Bento Background Patterns */
+.bg-dot-matrix {
+  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.bg-diagonal-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 6px,
+    var(--bg-subtle) 6px,
+    var(--bg-subtle) 12px
+  );
+}
+
+/* Custom Technical Hairline Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-grid);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-brand);
+}
+
