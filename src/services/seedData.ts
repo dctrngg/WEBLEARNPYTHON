@@ -1608,6 +1608,732 @@ Chương trình in mỗi dòng của bảng theo cú pháp \`<bảng> x <i> = <t
     createdBy: "usr_instructor_01",
     createdAt: "2026-11-14T14:00:00.000Z",
   },
+  {
+    id: "asgn_19_4",
+    lessonId: "bai_19",
+    glyph: "◇",
+    title: "Bài 19.4: Xếp loại học lực học sinh theo điểm trung bình",
+    difficulty: "Beginner",
+    description: "### Đề bài (Vận dụng rẽ nhánh - Bài 19)\nNhập điểm trung bình môn Tin học $DTB$ ($0.0 \\le DTB \\le 10.0$).\nQuy tắc xếp loại học lực:\n- Nếu $DTB \\ge 8.0$: in `GIOI`\n- Nếu $6.5 \\le DTB < 8.0$: in `KHA`\n- Nếu $5.0 \\le DTB < 6.5$: in `TRUNG BINH`\n- Nếu $DTB < 5.0$: in `YEU`\n\n### Dữ liệu vào (Input)\n- Một số thực duy nhất là điểm trung bình $DTB$.\n\n### Kết quả ra (Output)\n- In ra xếp loại tương ứng (`GIOI`, `KHA`, `TRUNG BINH` hoặc `YEU`).",
+    starterCode: "# Bài 19.4: Xếp loại học lực học sinh theo điểm trung bình\n",
+    testCases: [
+          {
+                "input": "8.5",
+                "expectedOutput": "GIOI",
+                "isHidden": false
+          },
+          {
+                "input": "7.0",
+                "expectedOutput": "KHA",
+                "isHidden": false
+          },
+          {
+                "input": "5.5",
+                "expectedOutput": "TRUNG BINH",
+                "isHidden": true
+          },
+          {
+                "input": "4.2",
+                "expectedOutput": "YEU",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_19_5",
+    lessonId: "bai_19",
+    glyph: "◆",
+    title: "Bài 19.5: Kiểm tra ba cạnh tam giác và phân loại",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Luyện tập rẽ nhánh - Bài 19)\nNhập vào 3 số thực dương $a, b, c$ trên cùng một dòng (cách nhau bởi dấu cách) đại diện cho độ dài 3 cạnh.\nKiểm tra xem $a, b, c$ có tạo thành một tam giác không (thỏa mãn bất đẳng thức tam giác: $a+b>c$, $a+c>b$, $b+c>a$).\n- Nếu không phải tam giác: in ra `KHONG PHAI TAM GIAC`\n- Nếu có:\n  - Nếu 3 cạnh bằng nhau ($a = b = c$): in ra `TAM GIAC DEU`\n  - Nếu là tam giác vuông (thỏa mãn $a^2+b^2=c^2$ hoặc $a^2+c^2=b^2$ hoặc $b^2+c^2=a^2$, với sai số $10^{-5}$): in ra `TAM GIAC VUONG`\n  - Các trường hợp còn lại: in ra `TAM GIAC THUONG`\n\n### Dữ liệu vào (Input)\n- 3 số thực $a, b, c$ trên một dòng cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Chuỗi ký tự tương ứng với loại tam giác.",
+    starterCode: "# Bài 19.5: Kiểm tra ba cạnh tam giác và phân loại\n",
+    testCases: [
+          {
+                "input": "3 4 5",
+                "expectedOutput": "TAM GIAC VUONG",
+                "isHidden": false
+          },
+          {
+                "input": "5 5 5",
+                "expectedOutput": "TAM GIAC DEU",
+                "isHidden": false
+          },
+          {
+                "input": "1 2 5",
+                "expectedOutput": "KHONG PHAI TAM GIAC",
+                "isHidden": true
+          },
+          {
+                "input": "4 5 6",
+                "expectedOutput": "TAM GIAC THUONG",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_19_6",
+    lessonId: "bai_19",
+    glyph: "▣",
+    title: "Bài 19.6: Tính tiền cước xe taxi theo cự ly di chuyển",
+    difficulty: "Beginner",
+    description: "### Đề bài (Toán thực tế - Bài 19)\nBảng giá cước taxi được tính như sau:\n- Km đầu tiên (hoặc dưới 1 km): 10,000 VNĐ.\n- Từ km thứ 2 đến km thứ 10: 8,000 VNĐ / km.\n- Từ km thứ 11 trở đi: 6,000 VNĐ / km.\n\nNhập vào số nguyên dương $k$ là số kilomet khách di chuyển ($k \\ge 1$). Tính và in ra tổng số tiền cước (VNĐ).\n\nVí dụ:\n- Đi 1 km: $10000$ VNĐ\n- Đi 5 km: $10000 + 4 \\times 8000 = 42000$ VNĐ\n- Đi 15 km: $10000 + 9 \\times 8000 + 5 \\times 6000 = 112000$ VNĐ\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $k$.\n\n### Kết quả ra (Output)\n- Số nguyên là tổng số tiền cước taxi.",
+    starterCode: "# Bài 19.6: Tính tiền cước xe taxi theo cự ly di chuyển\n",
+    testCases: [
+          {
+                "input": "1",
+                "expectedOutput": "10000",
+                "isHidden": false
+          },
+          {
+                "input": "5",
+                "expectedOutput": "42000",
+                "isHidden": false
+          },
+          {
+                "input": "15",
+                "expectedOutput": "112000",
+                "isHidden": true
+          },
+          {
+                "input": "10",
+                "expectedOutput": "82000",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_20_5",
+    lessonId: "bai_20",
+    glyph: "◇",
+    title: "Bài 20.5: Tính giai thừa n! bằng vòng lặp for",
+    difficulty: "Beginner",
+    description: "### Đề bài (Luyện tập vòng lặp for - Bài 20)\nNhập vào một số nguyên dương $n$ ($1 \\le n \\le 20$). Sử dụng vòng lặp `for` để tính và in ra giá trị giai thừa của $n$:\n$$n! = 1 \\times 2 \\times 3 \\times \\dots \\times n$$\nQuy ước: $0! = 1$, $1! = 1$.\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $n$.\n\n### Kết quả ra (Output)\n- Giá trị $n!$.",
+    starterCode: "# Bài 20.5: Tính giai thừa n! bằng vòng lặp for\n",
+    testCases: [
+          {
+                "input": "5",
+                "expectedOutput": "120",
+                "isHidden": false
+          },
+          {
+                "input": "1",
+                "expectedOutput": "1",
+                "isHidden": false
+          },
+          {
+                "input": "7",
+                "expectedOutput": "5040",
+                "isHidden": true
+          },
+          {
+                "input": "10",
+                "expectedOutput": "3628800",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_20_6",
+    lessonId: "bai_20",
+    glyph: "◆",
+    title: "Bài 20.6: In tam giác vuông cân bằng dấu *",
+    difficulty: "Beginner",
+    description: "### Đề bài (Vận dụng vòng lặp for - Bài 20)\nNhập vào số nguyên dương $n$ ($1 \\le n \\le 15$). Sử dụng vòng lặp `for` để in ra màn hình một tam giác vuông cân gồm $n$ dòng bằng dấu sao `*`:\n- Dòng 1 có 1 dấu `*`\n- Dòng 2 có 2 dấu `*`\n- ...\n- Dòng $n$ có $n$ dấu `*`\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $n$.\n\n### Kết quả ra (Output)\n- Hình tam giác vuông cân theo yêu cầu.",
+    starterCode: "# Bài 20.6: In tam giác vuông cân bằng dấu *\n",
+    testCases: [
+          {
+                "input": "3",
+                "expectedOutput": "*\n**\n***",
+                "isHidden": false
+          },
+          {
+                "input": "1",
+                "expectedOutput": "*",
+                "isHidden": false
+          },
+          {
+                "input": "4",
+                "expectedOutput": "*\n**\n***\n****",
+                "isHidden": true
+          },
+          {
+                "input": "5",
+                "expectedOutput": "*\n**\n***\n****\n*****",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_21_3",
+    lessonId: "bai_21",
+    glyph: "◇",
+    title: "Bài 21.3: Tính tổng các chữ số của số nguyên N",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Luyện tập vòng lặp while - Bài 21)\nNhập vào số nguyên dương $N$ ($1 \\le N \\le 10^9$). Sử dụng vòng lặp `while` kết hợp phép chia lấy phần dư `% 10` và chia lấy phần nguyên `// 10` để tách từng chữ số và tính tổng các chữ số của $N$.\n\nVí dụ:\n- $N = 1234 \\rightarrow 1 + 2 + 3 + 4 = 10$\n- $N = 905 \\rightarrow 9 + 0 + 5 = 14$\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$.\n\n### Kết quả ra (Output)\n- Tổng các chữ số của số $N$.",
+    starterCode: "# Bài 21.3: Tính tổng các chữ số của N bằng vòng lặp while\n",
+    testCases: [
+          {
+                "input": "1234",
+                "expectedOutput": "10",
+                "isHidden": false
+          },
+          {
+                "input": "905",
+                "expectedOutput": "14",
+                "isHidden": false
+          },
+          {
+                "input": "999999",
+                "expectedOutput": "54",
+                "isHidden": true
+          },
+          {
+                "input": "7",
+                "expectedOutput": "7",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_21_4",
+    lessonId: "bai_21",
+    glyph: "◆",
+    title: "Bài 21.4: Bài toán gửi tiết kiệm ngân hàng lãi kép",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Vận dụng vòng lặp while - Bài 21)\nBác An gửi vào ngân hàng số tiền vốn ban đầu là $A$ triệu đồng với lãi suất $r\\%$/năm theo hình thức lãi kép (tiền lãi hàng năm được cộng gộp vào vốn để tính lãi cho năm sau).\nHỏi sau ít nhất bao nhiêu năm thì số tiền tích lũy trong tài khoản của bác An đạt tối thiểu $B$ triệu đồng?\n\n### Dữ liệu vào (Input)\n- Dòng 1: Số tiền ban đầu $A$ (triệu đồng, số thực).\n- Dòng 2: Lãi suất $r$ (%/năm, số thực).\n- Dòng 3: Số tiền mục tiêu $B$ (triệu đồng, số thực, $B \\ge A$).\n\n### Kết quả ra (Output)\n- Một số nguyên duy nhất là số năm cần thiết.",
+    starterCode: "# Bài 21.4: Tính số năm gửi tiết kiệm lãi kép bằng vòng lặp while\n",
+    testCases: [
+          {
+                "input": "100\n6.5\n200",
+                "expectedOutput": "12",
+                "isHidden": false
+          },
+          {
+                "input": "50\n8.0\n100",
+                "expectedOutput": "10",
+                "isHidden": false
+          },
+          {
+                "input": "10\n10.0\n10",
+                "expectedOutput": "0",
+                "isHidden": true
+          },
+          {
+                "input": "20\n7.5\n50",
+                "expectedOutput": "13",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_21_5",
+    lessonId: "bai_21",
+    glyph: "▣",
+    title: "Bài 21.5: Đảo ngược các chữ số của số nguyên dương N",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Luyện tập thuật toán số học - Bài 21)\nNhập vào một số nguyên dương $N$ ($1 \\le N \\le 10^9$). Sử dụng vòng lặp `while` và các phép toán số học `% 10`, `// 10` để tạo ra số nguyên đảo ngược của $N$ và in ra màn hình.\nLưu ý: Các chữ số 0 ở cuối số $N$ khi đảo ngược sẽ trở thành các chữ số vô nghĩa ở đầu và bị triệt tiêu khi coi là số nguyên (Ví dụ: $1200 \\rightarrow 21$).\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$.\n\n### Kết quả ra (Output)\n- Số nguyên sau khi đảo ngược các chữ số.",
+    starterCode: "# Bài 21.5: Đảo ngược số nguyên dương N bằng vòng lặp while\n",
+    testCases: [
+          {
+                "input": "12345",
+                "expectedOutput": "54321",
+                "isHidden": false
+          },
+          {
+                "input": "1200",
+                "expectedOutput": "21",
+                "isHidden": false
+          },
+          {
+                "input": "7",
+                "expectedOutput": "7",
+                "isHidden": true
+          },
+          {
+                "input": "9000",
+                "expectedOutput": "9",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_21_6",
+    lessonId: "bai_21",
+    glyph: "●",
+    title: "Bài 21.6: Tìm số lớn nhất trong dãy số kết thúc bằng số 0",
+    difficulty: "Beginner",
+    description: "### Đề bài (Vòng lặp while với điều kiện dừng - Bài 21)\nNhập liên tục các số nguyên từ bàn phím, mỗi số trên một dòng riêng biệt, cho đến khi gặp số `0` thì dừng nhập (số `0` chỉ là dấu hiệu kết thúc, không nằm trong dãy cần xét).\nHãy tìm và in ra giá trị lớn nhất trong các số đã nhập.\n\n### Dữ liệu vào (Input)\n- Dãy các số nguyên, mỗi số trên một dòng, kết thúc bởi dòng chứa số 0 (Dãy đảm bảo có ít nhất 1 số trước số 0).\n\n### Kết quả ra (Output)\n- Một số nguyên là giá trị lớn nhất trong dãy.",
+    starterCode: "# Bài 21.6: Tìm số lớn nhất trong dãy số kết thúc bằng 0\n",
+    testCases: [
+          {
+                "input": "5\n12\n8\n3\n0",
+                "expectedOutput": "12",
+                "isHidden": false
+          },
+          {
+                "input": "-5\n-2\n-8\n0",
+                "expectedOutput": "-2",
+                "isHidden": false
+          },
+          {
+                "input": "100\n0",
+                "expectedOutput": "100",
+                "isHidden": true
+          },
+          {
+                "input": "1\n5\n9\n7\n0",
+                "expectedOutput": "9",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_22_2",
+    lessonId: "bai_22_23",
+    glyph: "◇",
+    title: "Bài 22.2: Phân loại danh sách thành số chẵn và số lẻ",
+    difficulty: "Beginner",
+    description: "### Đề bài (Luyện tập Danh sách - Bài 22)\nNhập vào một danh sách các số nguyên trên một dòng, cách nhau bởi dấu cách.\nHãy duyệt danh sách và tách thành 2 danh sách con:\n- Dòng 1: In ra các số chẵn (cách nhau bởi dấu cách). Nếu không có số chẵn nào, in ra `RONG`.\n- Dòng 2: In ra các số lẻ (cách nhau bởi dấu cách). Nếu không có số lẻ nào, in ra `RONG`.\n\n### Dữ liệu vào (Input)\n- Dòng duy nhất chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Đúng 2 dòng theo định dạng mô tả trên.",
+    starterCode: "# Bài 22.2: Phân loại danh sách số chẵn và số lẻ\n",
+    testCases: [
+          {
+                "input": "1 2 3 4 5 6",
+                "expectedOutput": "2 4 6\n1 3 5",
+                "isHidden": false
+          },
+          {
+                "input": "2 4 8",
+                "expectedOutput": "2 4 8\nRONG",
+                "isHidden": false
+          },
+          {
+                "input": "7 9 11",
+                "expectedOutput": "RONG\n7 9 11",
+                "isHidden": true
+          },
+          {
+                "input": "10",
+                "expectedOutput": "10\nRONG",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_22_3",
+    lessonId: "bai_22_23",
+    glyph: "◆",
+    title: "Bài 22.3: Tìm phần tử lớn thứ nhì trong danh sách",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Thao tác trên Danh sách - Bài 22)\nCho một danh sách các số nguyên trên một dòng cách nhau bởi dấu cách.\nHãy tìm và in ra phần tử có giá trị **lớn thứ nhì (nghiêm ngặt khác giá trị lớn nhất)** trong danh sách.\nNếu tất cả các phần tử trong danh sách đều có giá trị bằng nhau (không tồn tại phần tử lớn thứ nhì), hãy in ra `KHONG CO`.\n\nVí dụ:\n- `5 1 9 3 9 7` $\\rightarrow$ Max là 9, lớn thứ nhì là 7.\n- `3 3 3` $\\rightarrow$ In `KHONG CO`.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Giá trị lớn thứ nhì hoặc chuỗi `KHONG CO`.",
+    starterCode: "# Bài 22.3: Tìm phần tử lớn thứ nhì trong danh sách\n",
+    testCases: [
+          {
+                "input": "5 1 9 3 9 7",
+                "expectedOutput": "7",
+                "isHidden": false
+          },
+          {
+                "input": "3 3 3",
+                "expectedOutput": "KHONG CO",
+                "isHidden": false
+          },
+          {
+                "input": "-5 -1 -3 -1 -2",
+                "expectedOutput": "-2",
+                "isHidden": true
+          },
+          {
+                "input": "10 20",
+                "expectedOutput": "10",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_23_2",
+    lessonId: "bai_22_23",
+    glyph: "▣",
+    title: "Bài 23.2: Thống kê điểm thi môn Tin học của tổ",
+    difficulty: "Beginner",
+    description: "### Đề bài (Thực hành với Danh sách - Bài 23)\nNhập vào danh sách điểm thi môn Tin học của các học sinh trong một tổ trên một dòng (các số thực từ 0.0 đến 10.0, cách nhau bởi dấu cách).\nHãy thực hiện các thống kê sau:\n- Dòng 1: In điểm trung bình của cả tổ (làm tròn đến 1 chữ số thập phân).\n- Dòng 2: In số lượng học sinh đạt điểm giỏi (điểm $\\ge 8.0$).\n\n### Dữ liệu vào (Input)\n- Một dòng duy nhất chứa danh sách điểm của các học sinh cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Dòng 1: Điểm trung bình làm tròn 1 chữ số thập phân.\n- Dòng 2: Số nguyên là số học sinh đạt điểm giỏi.",
+    starterCode: "# Bài 23.2: Thống kê điểm thi môn Tin học của tổ\n",
+    testCases: [
+          {
+                "input": "8.5 7.0 9.0 6.5 8.0",
+                "expectedOutput": "7.8\n3",
+                "isHidden": false
+          },
+          {
+                "input": "10.0 10.0",
+                "expectedOutput": "10.0\n2",
+                "isHidden": false
+          },
+          {
+                "input": "5.0 6.0 7.0",
+                "expectedOutput": "6.0\n0",
+                "isHidden": true
+          },
+          {
+                "input": "8.0 8.0 8.0",
+                "expectedOutput": "8.0\n3",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_23_3",
+    lessonId: "bai_22_23",
+    glyph: "●",
+    title: "Bài 23.3: Loại bỏ các phần tử trùng lặp trong danh sách",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Xử lý mảng nâng cao - Bài 23)\nNhập một danh sách các số nguyên trên một dòng cách nhau bởi dấu cách.\nHãy loại bỏ tất cả các phần tử bị trùng lặp, chỉ giữ lại phần tử xuất hiện đầu tiên theo đúng thứ tự ban đầu và in ra danh sách mới trên 1 dòng, các phần tử cách nhau bởi dấu cách.\n\nVí dụ: `1 3 2 3 4 1 5` $\\rightarrow$ `1 3 2 4 5`\n\n### Dữ liệu vào (Input)\n- Một dòng chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Dãy số sau khi đã loại bỏ các phần tử trùng lặp, cách nhau bởi dấu cách.",
+    starterCode: "# Bài 23.3: Loại bỏ các phần tử trùng lặp trong danh sách\n",
+    testCases: [
+          {
+                "input": "1 3 2 3 4 1 5",
+                "expectedOutput": "1 3 2 4 5",
+                "isHidden": false
+          },
+          {
+                "input": "5 5 5 5",
+                "expectedOutput": "5",
+                "isHidden": false
+          },
+          {
+                "input": "10 20 30",
+                "expectedOutput": "10 20 30",
+                "isHidden": true
+          },
+          {
+                "input": "4 2 4 1 2 3",
+                "expectedOutput": "4 2 1 3",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_24_2",
+    lessonId: "bai_24_25",
+    glyph: "◇",
+    title: "Bài 24.2: Đếm số lượng từ trong câu văn bản",
+    difficulty: "Beginner",
+    description: "### Đề bài (Luyện tập thao tác xâu - Bài 24)\nNhập vào một câu văn bản $S$ có thể chứa nhiều khoảng trắng thừa ở đầu câu, cuối câu và giữa các từ liền nhau.\nHãy sử dụng phương thức tách xâu `split()` để đếm và in ra số lượng từ thực tế có trong câu văn bản đó.\n\nVí dụ: `   Lap trinh    Python rat thu vi   ` $\\rightarrow$ Có 6 từ.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa xâu ký tự $S$.\n\n### Kết quả ra (Output)\n- Một số nguyên duy nhất là số lượng từ trong câu.",
+    starterCode: "# Bài 24.2: Đếm số lượng từ trong câu văn bản\n",
+    testCases: [
+          {
+                "input": "Chuc mung nam moi",
+                "expectedOutput": "4",
+                "isHidden": false
+          },
+          {
+                "input": "   Lap trinh    Python rat thu vi   ",
+                "expectedOutput": "6",
+                "isHidden": false
+          },
+          {
+                "input": "Python",
+                "expectedOutput": "1",
+                "isHidden": true
+          },
+          {
+                "input": "  hoc   tin   hoc  10  ",
+                "expectedOutput": "4",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_24_3",
+    lessonId: "bai_24_25",
+    glyph: "◆",
+    title: "Bài 24.3: Đếm số lượng nguyên âm tiếng Anh trong xâu",
+    difficulty: "Beginner",
+    description: "### Đề bài (Duyệt ký tự trong xâu - Bài 24)\nNhập vào một chuỗi ký tự tiếng Anh không dấu.\nHãy đếm tổng số lượng các chữ cái nguyên âm (`a, e, i, o, u`, không phân biệt chữ hoa hay chữ thường) xuất hiện trong chuỗi.\n\nVí dụ: `Hello World` có 3 nguyên âm là `e`, `o`, `o`.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa chuỗi ký tự tiếng Anh.\n\n### Kết quả ra (Output)\n- Một số nguyên là tổng số lượng nguyên âm tìm thấy.",
+    starterCode: "# Bài 24.3: Đếm số lượng nguyên âm tiếng Anh trong xâu\n",
+    testCases: [
+          {
+                "input": "Hello World",
+                "expectedOutput": "3",
+                "isHidden": false
+          },
+          {
+                "input": "PYTHON",
+                "expectedOutput": "1",
+                "isHidden": false
+          },
+          {
+                "input": "rhythm",
+                "expectedOutput": "0",
+                "isHidden": true
+          },
+          {
+                "input": "Education and Training",
+                "expectedOutput": "8",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_25_2",
+    lessonId: "bai_24_25",
+    glyph: "▣",
+    title: "Bài 25.2: Kiểm tra xâu đối xứng (Palindrome)",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Xử lý xâu ký tự nâng cao - Bài 25)\nMột xâu ký tự được gọi là đối xứng (Palindrome) nếu đọc từ trái sang phải hay từ phải sang trái đều giống nhau (Ví dụ: `madam`, `racecar`, `12321`).\nNhập vào một xâu ký tự không chứa khoảng trắng. Hãy kiểm tra:\n- Nếu là xâu đối xứng: in ra `DUNG`\n- Nếu không phải: in ra `SAI`\n\n### Dữ liệu vào (Input)\n- Một dòng chứa một xâu ký tự liền nhau không chứa dấu cách.\n\n### Kết quả ra (Output)\n- In `DUNG` hoặc `SAI`.",
+    starterCode: "# Bài 25.2: Kiểm tra xâu đối xứng (Palindrome)\n",
+    testCases: [
+          {
+                "input": "madam",
+                "expectedOutput": "DUNG",
+                "isHidden": false
+          },
+          {
+                "input": "python",
+                "expectedOutput": "SAI",
+                "isHidden": false
+          },
+          {
+                "input": "12321",
+                "expectedOutput": "DUNG",
+                "isHidden": true
+          },
+          {
+                "input": "abccba",
+                "expectedOutput": "DUNG",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_25_3",
+    lessonId: "bai_24_25",
+    glyph: "●",
+    title: "Bài 25.3: Chuẩn hóa và viết hoa chữ cái đầu mỗi từ",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Chuẩn hóa xâu ký tự - Bài 25)\nNhập vào một chuỗi họ tên hoặc tiêu đề có khoảng trắng thừa lộn xộn và chữ hoa thường không đồng nhất.\nHãy viết chương trình chuẩn hóa xâu sao cho:\n1. Loại bỏ các khoảng trắng thừa ở đầu, cuối và giữa các từ (giữa 2 từ bất kỳ chỉ chừa đúng 1 dấu cách).\n2. Viết hoa chữ cái đầu tiên của mỗi từ và chuyển các chữ cái còn lại trong từ đó thành chữ thường (Title Case).\n\nVí dụ: `  nguyen   duc   trung ` $\\rightarrow$ `Nguyen Duc Trung`\n\n### Dữ liệu vào (Input)\n- Một dòng chứa chuỗi ký tự bất kỳ.\n\n### Kết quả ra (Output)\n- Chuỗi ký tự sau khi đã được chuẩn hóa.",
+    starterCode: "# Bài 25.3: Chuẩn hóa và viết hoa chữ cái đầu mỗi từ\n",
+    testCases: [
+          {
+                "input": "  nguyen   duc   trung ",
+                "expectedOutput": "Nguyen Duc Trung",
+                "isHidden": false
+          },
+          {
+                "input": "tin HOC 10",
+                "expectedOutput": "Tin Hoc 10",
+                "isHidden": false
+          },
+          {
+                "input": "ha noi",
+                "expectedOutput": "Ha Noi",
+                "isHidden": true
+          },
+          {
+                "input": "   cOcOcOdE   pYtHoN   ",
+                "expectedOutput": "Cococode Python",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_26_2",
+    lessonId: "bai_26_28",
+    glyph: "◇",
+    title: "Bài 26.2: Viết hàm kiểm tra số nguyên tố và in danh sách",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Định nghĩa hàm trong Python - Bài 26)\nViết một hàm `is_prime(n)` nhận vào số nguyên dương $n$ và trả về `True` nếu $n$ là số nguyên tố, ngược lại trả về `False`.\nSử dụng hàm vừa định nghĩa, viết chương trình chính nhận vào số nguyên $N$ ($N \\ge 2$) từ bàn phím và in ra tất cả các số nguyên tố $\\le N$ trên một dòng, cách nhau bởi dấu cách.\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$ ($N \\ge 2$).\n\n### Kết quả ra (Output)\n- Dãy các số nguyên tố nhỏ hơn hoặc bằng $N$ trên một dòng, cách nhau bởi dấu cách.",
+    starterCode: "# Bài 26.2: Viết hàm kiểm tra số nguyên tố và liệt kê\n",
+    testCases: [
+          {
+                "input": "10",
+                "expectedOutput": "2 3 5 7",
+                "isHidden": false
+          },
+          {
+                "input": "20",
+                "expectedOutput": "2 3 5 7 11 13 17 19",
+                "isHidden": false
+          },
+          {
+                "input": "2",
+                "expectedOutput": "2",
+                "isHidden": true
+          },
+          {
+                "input": "30",
+                "expectedOutput": "2 3 5 7 11 13 17 19 23 29",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_27_3",
+    lessonId: "bai_26_28",
+    glyph: "◆",
+    title: "Bài 27.3: Viết hàm tính chỉ số khối cơ thể BMI",
+    difficulty: "Beginner",
+    description: "### Đề bài (Hàm có tham số và trả về giá trị - Bài 27)\nChỉ số khối cơ thể (Body Mass Index - BMI) được tính theo công thức:\n$$BMI = \\frac{\\text{Cân nặng (kg)}}{\\text{Chiều cao (m)}^2}$$\n\nHãy viết hàm `tinh_bmi(can_nang, chieu_cao)` nhận vào cân nặng (kg) và chiều cao (m), trả về giá trị BMI đã được làm tròn đến 1 chữ số thập phân.\nChương trình nhập vào từ bàn phím:\n- Dòng 1: Cân nặng (kg, số thực)\n- Dòng 2: Chiều cao (m, số thực)\n\nDựa vào chỉ số BMI, in ra kết quả theo định dạng: `BMI=<giá trị> | <đánh giá>`\nTrong đó đánh giá thể trạng được quy định như sau:\n- $BMI < 18.5$: `GAY`\n- $18.5 \\le BMI < 23.0$: `BINH THUONG`\n- $BMI \\ge 23.0$: `THUA CAN`\n\n### Dữ liệu vào (Input)\n- Dòng 1: Số thực là cân nặng (kg).\n- Dòng 2: Số thực là chiều cao (m).\n\n### Kết quả ra (Output)\n- Một dòng định dạng: `BMI=<giá trị> | <đánh giá>`",
+    starterCode: "# Bài 27.3: Hàm tính chỉ số khối cơ thể BMI\n",
+    testCases: [
+          {
+                "input": "50\n1.65",
+                "expectedOutput": "BMI=18.4 | GAY",
+                "isHidden": false
+          },
+          {
+                "input": "60\n1.70",
+                "expectedOutput": "BMI=20.8 | BINH THUONG",
+                "isHidden": false
+          },
+          {
+                "input": "75\n1.68",
+                "expectedOutput": "BMI=26.6 | THUA CAN",
+                "isHidden": true
+          },
+          {
+                "input": "65\n1.65",
+                "expectedOutput": "BMI=23.9 | THUA CAN",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_28_1",
+    lessonId: "bai_26_28",
+    glyph: "▣",
+    title: "Bài 28.1: Hàm tính tổng và tích các phần tử trong danh sách",
+    difficulty: "Beginner",
+    description: "### Đề bài (Phạm vi của biến và giá trị trả về của hàm - Bài 28)\nViết hàm `tinh_tong_tich(ds)` nhận vào một danh sách các số nguyên và trả về đồng thời hai giá trị: tổng và tích của tất cả các phần tử trong danh sách đó.\nChương trình nhận vào một danh sách các số nguyên trên một dòng cách nhau bởi dấu cách.\nGọi hàm và in kết quả ra màn hình theo định dạng mẫu: `TONG=<tong> | TICH=<tich>`.\n\n### Dữ liệu vào (Input)\n- Một dòng duy nhất chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Một dòng theo cú pháp: `TONG=<tong> | TICH=<tich>`",
+    starterCode: "# Bài 28.1: Hàm tính tổng và tích của danh sách số\n",
+    testCases: [
+          {
+                "input": "1 2 3 4",
+                "expectedOutput": "TONG=10 | TICH=24",
+                "isHidden": false
+          },
+          {
+                "input": "5 10",
+                "expectedOutput": "TONG=15 | TICH=50",
+                "isHidden": false
+          },
+          {
+                "input": "7",
+                "expectedOutput": "TONG=7 | TICH=7",
+                "isHidden": true
+          },
+          {
+                "input": "2 2 2 2",
+                "expectedOutput": "TONG=8 | TICH=16",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_30_1",
+    lessonId: "bai_29_31",
+    glyph: "◇",
+    title: "Bài 30.1: Tìm các số hoàn hảo nhỏ hơn hoặc bằng N",
+    difficulty: "Intermediate",
+    description: "### Đề bài (Gỡ lỗi và hoàn thiện thuật toán - Bài 30)\nSố hoàn hảo (Perfect Number) là số nguyên dương bằng tổng tất cả các ước số thực sự của nó (tức các ước nhỏ hơn chính nó). Ví dụ: $6 = 1 + 2 + 3$, $28 = 1 + 2 + 4 + 7 + 14$.\nHãy viết chương trình nhập vào một số nguyên dương $N$ ($1 \\le N \\le 1000$).\nTìm và in ra tất cả các số hoàn hảo nhỏ hơn hoặc bằng $N$ trên một dòng, cách nhau bởi dấu cách. Nếu trong phạm vi không có số hoàn hảo nào, in ra `KHONG CO`.\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$.\n\n### Kết quả ra (Output)\n- Các số hoàn hảo cách nhau bởi dấu cách hoặc `KHONG CO`.",
+    starterCode: "# Bài 30.1: Tìm các số hoàn hảo nhỏ hơn hoặc bằng N\n",
+    testCases: [
+          {
+                "input": "30",
+                "expectedOutput": "6 28",
+                "isHidden": false
+          },
+          {
+                "input": "5",
+                "expectedOutput": "KHONG CO",
+                "isHidden": false
+          },
+          {
+                "input": "500",
+                "expectedOutput": "6 28 496",
+                "isHidden": true
+          },
+          {
+                "input": "1",
+                "expectedOutput": "KHONG CO",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
+  {
+    id: "asgn_31_4",
+    lessonId: "bai_29_31",
+    glyph: "◆",
+    title: "Bài 31.4: Thuật toán Tìm kiếm nhị phân (Binary Search)",
+    difficulty: "Advanced",
+    description: "### Đề bài (Thuật toán tìm kiếm nhị phân - Bài 31)\nCho một danh sách các số nguyên đã được sắp xếp tăng dần và một số nguyên $x$ cần tìm kiếm.\nHãy áp dụng thuật toán **Tìm kiếm nhị phân (Binary Search)** để xác định vị trí (chỉ số index bắt đầu từ 0) của phần tử $x$ trong danh sách.\n- Nếu tìm thấy phần tử $x$, in ra chỉ số index của $x$.\n- Nếu không tìm thấy, in ra `-1`.\n\n### Dữ liệu vào (Input)\n- Dòng 1: Danh sách các số nguyên đã sắp xếp tăng dần, cách nhau bởi dấu cách.\n- Dòng 2: Số nguyên $x$ cần tìm.\n\n### Kết quả ra (Output)\n- Chỉ số index của $x$ trong danh sách hoặc `-1`.",
+    starterCode: "# Bài 31.4: Thuật toán Tìm kiếm nhị phân (Binary Search)\n",
+    testCases: [
+          {
+                "input": "1 3 5 7 9 11 13\n7",
+                "expectedOutput": "3",
+                "isHidden": false
+          },
+          {
+                "input": "2 4 6 8 10\n5",
+                "expectedOutput": "-1",
+                "isHidden": false
+          },
+          {
+                "input": "10 20 30 40 50\n10",
+                "expectedOutput": "0",
+                "isHidden": true
+          },
+          {
+                "input": "10 20 30 40 50\n50",
+                "expectedOutput": "4",
+                "isHidden": true
+          }
+    ],
+    createdBy: "usr_instructor_01",
+    createdAt: "2026-11-14T15:00:00.000Z",
+  },
 ];
 
 export function localizeAssignment(
