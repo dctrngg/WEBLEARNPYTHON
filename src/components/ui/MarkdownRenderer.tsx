@@ -48,7 +48,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         elements.push(
           <pre
             key={`code-${idx}`}
-            className="font-mono text-xs bg-terminal text-zinc-200 p-3.5 border border-grid overflow-x-auto my-3"
+            className="font-mono text-xs bg-subtle text-primary p-3.5 border border-grid overflow-x-auto my-3"
           >
             {codeBuffer.join("\n")}
           </pre>

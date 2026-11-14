@@ -120,12 +120,12 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
 
       {/* Result score banner when submitted */}
       {isSubmitted && (
-        <div className="p-4 bg-zinc-950 border-b border-grid flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
+        <div className="p-4 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
           <div className="flex items-center gap-3">
             <span
               className={`text-sm font-bold ${
                 correctCount === visibleQuestions.length
-                  ? "text-emerald-400"
+                  ? "text-emerald-500"
                   : "text-brand"
               }`}
             >
@@ -133,17 +133,17 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
                 ? "🎉 XUẤT SẮC! BẠN ĐÃ TRẢ LỜI ĐÚNG TẤT CẢ!"
                 : `KẾT QUẢ ĐẠT: ${correctCount}/${visibleQuestions.length} CÂU ĐÚNG`}
             </span>
-            <span className="text-zinc-600">|</span>
-            <span className="text-zinc-300">
+            <span className="text-grid-strong">|</span>
+            <span className="text-secondary">
               Điểm:{" "}
-              <strong className="text-emerald-400">
+              <strong className="text-emerald-500">
                 {Math.round((correctCount / visibleQuestions.length) * 10)}
                 /10
               </strong>
             </span>
           </div>
 
-          <span className="text-zinc-400 text-[11px]">
+          <span className="text-muted text-[11px]">
             Xem giải thích chi tiết dưới từng câu hỏi bên dưới.
           </span>
         </div>

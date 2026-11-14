@@ -7,6 +7,7 @@ import {
   PanelResizeHandle,
 } from "react-resizable-panels";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePyodide } from "../hooks/usePyodide";
 import {
@@ -89,6 +90,7 @@ export const StudentWorkspacePage: React.FC = () => {
   const { assignmentId } = useParams<{ assignmentId?: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { theme } = useTheme();
   const { lang, t } = useLanguage();
 
   const {
@@ -147,6 +149,15 @@ export const StudentWorkspacePage: React.FC = () => {
       registerPythonIntellisense(monacoRef.current, lang);
     }
   }, [lang]);
+
+  // Synchronize Monaco Editor theme with global Dark / Light theme
+  useEffect(() => {
+    if (monacoRef.current) {
+      monacoRef.current.editor.setTheme(
+        theme === "dark" ? "chroma-carbon-dark" : "chroma-carbon-light"
+      );
+    }
+  }, [theme]);
 
   // Load assignments and student submissions on mount
   useEffect(() => {
@@ -370,7 +381,7 @@ export const StudentWorkspacePage: React.FC = () => {
     }
   };
 
-  // Configure Monaco Editor with Chroma Carbon Dark theme & full Student Python IntelliSense
+  // Configure Monaco Editor with Chroma Carbon Dark & Light themes & full Student Python IntelliSense
   const handleEditorMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
     monacoRef.current = monaco;
@@ -403,7 +414,37 @@ export const StudentWorkspacePage: React.FC = () => {
       },
     });
 
-    monaco.editor.setTheme("chroma-carbon-dark");
+    monaco.editor.defineTheme("chroma-carbon-light", {
+      base: "vs",
+      inherit: true,
+      rules: [
+        { token: "keyword", foreground: "FF5722", fontStyle: "bold" },
+        { token: "string", foreground: "059669" },
+        { token: "number", foreground: "D97706" },
+        { token: "comment", foreground: "71717A", fontStyle: "italic" },
+        { token: "identifier", foreground: "09090B" },
+        { token: "type", foreground: "0284C7" },
+      ],
+      colors: {
+        "editor.background": "#FFFFFF",
+        "editor.foreground": "#09090B",
+        "editorLineNumber.foreground": "#A1A1AA",
+        "editorLineNumber.activeForeground": "#FF5722",
+        "editorCursor.foreground": "#FF5722",
+        "editor.selectionBackground": "#FF572220",
+        "editor.lineHighlightBackground": "#F4F4F5",
+        "editorIndentGuide.background1": "#E4E4E7",
+        "editorIndentGuide.activeBackground1": "#D4D4D8",
+        "editorSuggestWidget.background": "#FFFFFF",
+        "editorSuggestWidget.border": "#E4E4E7",
+        "editorSuggestWidget.selectedBackground": "#F4F4F5",
+        "editorSuggestWidget.highlightForeground": "#FF5722",
+      },
+    });
+
+    monaco.editor.setTheme(
+      theme === "dark" ? "chroma-carbon-dark" : "chroma-carbon-light"
+    );
 
     // Register comprehensive Python autocomplete, signature help & hover docs
     registerPythonIntellisense(monaco, lang);
@@ -714,7 +755,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     <div className="text-[11px] text-brand font-semibold mb-1.5">
                       💻 {t("VÍ DỤ MẪU TRONG BÀI HỌC:", "LESSON CODE EXAMPLE:")}
                     </div>
-                    <pre className="bg-terminal text-zinc-100 p-3 overflow-x-auto whitespace-pre">
+                    <pre className="bg-surface text-primary border border-grid p-3 overflow-x-auto whitespace-pre">
                       {activeLessonForSelected.sampleCode}
                     </pre>
                   </div>
@@ -780,19 +821,19 @@ export const StudentWorkspacePage: React.FC = () => {
                           </button>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 bg-grid gap-[1px]">
-                          <div className="bg-terminal p-3">
-                            <div className="text-[10px] text-zinc-400 uppercase mb-1">
+                          <div className="bg-surface p-3">
+                            <div className="text-[10px] text-muted uppercase mb-1">
                               {t("DỮ LIỆU NHẬP (INPUT)", "INPUT")}
                             </div>
-                            <pre className="text-zinc-100 whitespace-pre-wrap">
+                            <pre className="text-primary whitespace-pre-wrap">
                               {tc.input || t("(trống)", "(empty)")}
                             </pre>
                           </div>
-                          <div className="bg-terminal p-3">
-                            <div className="text-[10px] text-zinc-400 uppercase mb-1">
+                          <div className="bg-surface p-3">
+                            <div className="text-[10px] text-muted uppercase mb-1">
                               {t("KẾT QUẢ IN RA (OUTPUT)", "EXPECTED OUTPUT")}
                             </div>
-                            <pre className="text-emerald-400 whitespace-pre-wrap">
+                            <pre className="text-emerald-500 whitespace-pre-wrap">
                               {tc.expectedOutput}
                             </pre>
                           </div>
@@ -929,12 +970,16 @@ export const StudentWorkspacePage: React.FC = () => {
                 {/* Monaco Editor Surface with Active IntelliSense & Parameter Hints */}
                 <div
                   onKeyDown={(e) => e.stopPropagation()}
-                  className="flex-1 relative overflow-hidden bg-[#050505]"
+                  className="flex-1 relative overflow-hidden bg-surface"
                 >
                   <Editor
                     height="100%"
                     language="python"
-                    theme="chroma-carbon-dark"
+                    theme={
+                      theme === "dark"
+                        ? "chroma-carbon-dark"
+                        : "chroma-carbon-light"
+                    }
                     value={code}
                     onChange={(val) => setCode(val ?? "")}
                     onMount={handleEditorMount}
@@ -992,17 +1037,17 @@ export const StudentWorkspacePage: React.FC = () => {
               <Panel
                 defaultSize={38}
                 minSize={20}
-                className="bg-terminal text-zinc-100 flex flex-col"
+                className="bg-terminal text-primary flex flex-col"
               >
                 {/* Terminal Header Tabs */}
-                <div className="h-9 px-4 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between font-mono text-xs shrink-0">
+                <div className="h-9 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs shrink-0">
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => setActiveBottomTab("CONSOLE")}
                       className={`px-3 py-1.5 transition-colors flex items-center gap-2 ${
                         activeBottomTab === "CONSOLE"
-                          ? "bg-zinc-900 text-white border-t-2 border-t-brand"
-                          : "text-zinc-400 hover:text-white"
+                          ? "bg-surface text-primary border-t-2 border-t-brand font-semibold"
+                          : "text-secondary hover:text-primary"
                       }`}
                     >
                       <span className="text-brand">[▣]</span>
@@ -1020,8 +1065,8 @@ export const StudentWorkspacePage: React.FC = () => {
                       onClick={() => setActiveBottomTab("TEST_CASES")}
                       className={`px-3 py-1.5 transition-colors flex items-center gap-2 ${
                         activeBottomTab === "TEST_CASES"
-                          ? "bg-zinc-900 text-white border-t-2 border-t-brand"
-                          : "text-zinc-400 hover:text-white"
+                          ? "bg-surface text-primary border-t-2 border-t-brand font-semibold"
+                          : "text-secondary hover:text-primary"
                       }`}
                     >
                       <span className="text-brand">[◆]</span>
@@ -1032,7 +1077,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         <span
                           className={`px-1.5 py-0.2 text-[10px] font-bold ${
                             testResults.every((r) => r.passed)
-                              ? "bg-emerald-500/20 text-emerald-400"
+                              ? "bg-emerald-500/20 text-emerald-500"
                               : "bg-brand/20 text-brand"
                           }`}
                         >
@@ -1043,7 +1088,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-3 text-[11px] text-zinc-400">
+                  <div className="flex items-center gap-3 text-[11px] text-muted">
                     <span className="hidden sm:inline">
                       {t(
                         "Gõ lệnh tự hiện gợi ý hàm • Ctrl+Enter để chạy",
@@ -1052,7 +1097,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     </span>
                     <button
                       onClick={clearConsole}
-                      className="px-2 py-0.5 border border-zinc-800 hover:text-white hover:border-zinc-600"
+                      className="px-2 py-0.5 border border-grid hover:text-primary hover:border-brand text-secondary transition-colors"
                     >
                       {t("XÓA MÀN HÌNH", "CLEAR")}
                     </button>
@@ -1061,13 +1106,13 @@ export const StudentWorkspacePage: React.FC = () => {
 
                 {/* Tab 1: Interactive Console Output + Stdin Input Prompt */}
                 {activeBottomTab === "CONSOLE" ? (
-                  <div className="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-1.5 bg-[#050505]">
+                  <div className="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-1.5 bg-terminal">
                     {consoleLogs.map((entry) => (
                       <div
                         key={entry.id}
                         className="flex items-start gap-3 leading-relaxed"
                       >
-                        <span className="text-zinc-600 select-none shrink-0 text-[11px]">
+                        <span className="text-muted select-none shrink-0 text-[11px]">
                           [{entry.timestamp}]
                         </span>
                         <pre
@@ -1075,14 +1120,14 @@ export const StudentWorkspacePage: React.FC = () => {
                             entry.type === "stderr"
                               ? "text-brand"
                               : entry.type === "success"
-                              ? "text-emerald-400"
+                              ? "text-emerald-500"
                               : entry.type === "system"
-                              ? "text-zinc-400 font-semibold"
+                              ? "text-muted font-semibold"
                               : entry.type === "stdin-prompt"
-                              ? "text-amber-400"
+                              ? "text-amber-500"
                               : entry.type === "stdin-echo"
-                              ? "text-sky-400"
-                              : "text-zinc-100"
+                              ? "text-sky-500"
+                              : "text-primary"
                           }`}
                         >
                           {entry.text}
@@ -1094,7 +1139,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     {inputPrompt !== null && (
                       <form
                         onSubmit={handleStdinSubmit}
-                        className="mt-3 p-3 bg-zinc-950 border-2 border-brand flex items-center gap-2"
+                        className="mt-3 p-3 bg-subtle border-2 border-brand flex items-center gap-2"
                       >
                         <span className="text-brand font-semibold shrink-0">
                           {t("NHẬP DỮ LIỆU CHO INPUT() >", "STDIN >")}
@@ -1115,11 +1160,11 @@ export const StudentWorkspacePage: React.FC = () => {
                                   "Type input value and press Enter..."
                                 )
                           }
-                          className="flex-1 bg-transparent text-white font-mono text-xs focus:outline-none"
+                          className="flex-1 bg-surface border border-grid px-3 py-1 font-mono text-xs text-primary focus:outline-none focus:border-brand"
                         />
                         <button
                           type="submit"
-                          className="px-3.5 py-1 bg-brand text-white text-xs font-semibold uppercase"
+                          className="px-3.5 py-1 bg-brand text-white text-xs font-semibold uppercase hover:opacity-90 transition-opacity"
                         >
                           {t("GỬI DỮ LIỆU [↵]", "SEND [↵]")}
                         </button>
@@ -1130,17 +1175,17 @@ export const StudentWorkspacePage: React.FC = () => {
                   </div>
                 ) : (
                   /* Tab 2: Automated Test Case Execution Results Table */
-                  <div className="flex-1 overflow-y-auto p-4 font-mono text-xs bg-[#050505]">
+                  <div className="flex-1 overflow-y-auto p-4 font-mono text-xs bg-terminal">
                     {!testResults ? (
-                      <div className="h-full flex flex-col items-center justify-center text-center p-6 border border-zinc-800/80 bg-zinc-950/40">
+                      <div className="h-full flex flex-col items-center justify-center text-center p-6 border border-grid bg-subtle/50">
                         <div className="text-brand text-base mb-2">[◆]</div>
-                        <div className="text-zinc-200 font-semibold mb-1">
+                        <div className="text-primary font-semibold mb-1">
                           {t(
                             "BẠN CHƯA CHẤM ĐIỂM BÀI TẬP NÀY",
                             "NO GRADING RESULTS YET"
                           )}
                         </div>
-                        <p className="text-zinc-400 max-w-md mb-4">
+                        <p className="text-secondary max-w-md mb-4">
                           {t("Hãy nhấn nút ", "Click ")}
                           <span className="text-brand font-semibold">
                             {t("[✓] NỘP BÀI & CHẤM ĐIỂM", "[✓] SUBMIT & GRADE")}
@@ -1156,7 +1201,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         </p>
                         <button
                           onClick={handleSubmitAndGrade}
-                          className="px-5 py-2.5 bg-brand text-white font-semibold hover:opacity-90"
+                          className="px-5 py-2.5 bg-brand text-white font-semibold hover:opacity-90 transition-opacity"
                         >
                           [✓]{" "}
                           {t(
@@ -1168,12 +1213,12 @@ export const StudentWorkspacePage: React.FC = () => {
                     ) : (
                       <div className="space-y-4">
                         {/* Summary Banner */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 p-3 border border-zinc-800 bg-zinc-950">
+                        <div className="flex flex-wrap items-center justify-between gap-2 p-3 border border-grid bg-subtle">
                           <div className="flex items-center gap-3">
                             <span
                               className={`text-sm font-semibold ${
                                 testResults.every((r) => r.passed)
-                                  ? "text-emerald-400"
+                                  ? "text-emerald-500"
                                   : "text-brand"
                               }`}
                             >
@@ -1187,14 +1232,16 @@ export const StudentWorkspacePage: React.FC = () => {
                                     "✕ SOME TEST CASES FAILED, CHECK DETAILS BELOW"
                                   )}
                             </span>
-                            <span className="text-zinc-500">|</span>
-                            <span className="text-zinc-200 font-semibold">
+                            <span className="text-grid-strong">|</span>
+                            <span className="text-secondary font-semibold">
                               {t("ĐIỂM ĐẠT:", "SCORE:")}{" "}
-                              {testResults.filter((r) => r.passed).length} /{" "}
-                              {testResults.length}
+                              <strong className="text-primary">
+                                {testResults.filter((r) => r.passed).length} /{" "}
+                                {testResults.length}
+                              </strong>
                             </span>
                           </div>
-                          <span className="text-zinc-400">
+                          <span className="text-muted">
                             {t("THỜI GIAN CHẠY:", "TIME:")}{" "}
                             {testResults
                               .reduce((acc, r) => acc + r.durationMs, 0)
@@ -1204,8 +1251,8 @@ export const StudentWorkspacePage: React.FC = () => {
                         </div>
 
                         {/* Technical Results Table */}
-                        <div className="border border-zinc-800 divide-y divide-zinc-800">
-                          <div className="grid grid-cols-12 bg-zinc-950 px-3 py-2 text-[11px] text-zinc-400 uppercase">
+                        <div className="border border-grid divide-y divide-grid">
+                          <div className="grid grid-cols-12 bg-subtle px-3 py-2 text-[11px] text-muted uppercase">
                             <div className="col-span-2">
                               {t("BỘ TEST", "TEST")}
                             </div>
@@ -1229,12 +1276,12 @@ export const StudentWorkspacePage: React.FC = () => {
                           {testResults.map((res) => (
                             <div
                               key={res.index}
-                              className="grid grid-cols-12 px-3 py-2.5 items-start gap-2 text-xs bg-[#080808]"
+                              className="grid grid-cols-12 px-3 py-2.5 items-start gap-2 text-xs bg-surface"
                             >
-                              <div className="col-span-2 flex items-center gap-1.5 text-zinc-300">
+                              <div className="col-span-2 flex items-center gap-1.5 text-primary">
                                 <span>Test #{res.index}</span>
                                 {res.isHidden && (
-                                  <span className="px-1 py-0.2 bg-zinc-800 text-zinc-400 text-[10px]">
+                                  <span className="px-1 py-0.2 bg-subtle border border-grid text-muted text-[10px]">
                                     {t("ẨN", "HIDDEN")}
                                   </span>
                                 )}
@@ -1242,7 +1289,7 @@ export const StudentWorkspacePage: React.FC = () => {
 
                               <div className="col-span-2">
                                 {res.passed ? (
-                                  <span className="text-emerald-400 font-semibold">
+                                  <span className="text-emerald-500 font-semibold">
                                     ✓ {t("ĐÚNG", "PASS")}
                                   </span>
                                 ) : (
@@ -1252,13 +1299,13 @@ export const StudentWorkspacePage: React.FC = () => {
                                 )}
                               </div>
 
-                              <div className="col-span-3 text-zinc-300 whitespace-pre-wrap break-all">
+                              <div className="col-span-3 text-secondary whitespace-pre-wrap break-all">
                                 {res.isHidden
                                   ? t("[Test ẩn của giáo viên]", "[Hidden Test]")
                                   : res.input || t("(trống)", "(empty)")}
                               </div>
 
-                              <div className="col-span-2 text-emerald-400 whitespace-pre-wrap break-all">
+                              <div className="col-span-2 text-emerald-500 whitespace-pre-wrap break-all">
                                 {res.isHidden
                                   ? t("[Đã ẩn]", "[Hidden]")
                                   : res.expectedOutput}
@@ -1270,7 +1317,7 @@ export const StudentWorkspacePage: React.FC = () => {
                                     {res.stderr.split("\n").slice(-1)[0]}
                                   </span>
                                 ) : res.isHidden ? (
-                                  <span className="text-zinc-400">
+                                  <span className="text-muted">
                                     {res.passed
                                       ? t("Khớp đáp án", "Matched")
                                       : t("Khác đáp án", "Mismatch")}
@@ -1279,7 +1326,7 @@ export const StudentWorkspacePage: React.FC = () => {
                                   <span
                                     className={
                                       res.passed
-                                        ? "text-zinc-200"
+                                        ? "text-primary"
                                         : "text-brand"
                                     }
                                   >
@@ -1289,7 +1336,7 @@ export const StudentWorkspacePage: React.FC = () => {
                                 )}
                               </div>
 
-                              <div className="col-span-1 text-right text-emerald-400">
+                              <div className="col-span-1 text-right text-emerald-500">
                                 {res.durationMs}ms
                               </div>
                             </div>

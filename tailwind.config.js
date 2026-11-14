@@ -6,6 +6,7 @@ export default {
     extend: {
       colors: {
         background: "var(--bg-primary)",
+        canvas: "var(--bg-canvas)",
         surface: "var(--bg-surface)",
         subtle: "var(--bg-subtle)",
         terminal: "var(--bg-terminal)",
