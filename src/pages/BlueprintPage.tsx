@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { TopNavigationBar } from "../components/layout/TopNavigationBar";
 import { MarkdownRenderer } from "../components/ui/MarkdownRenderer";
 import { PythonCheatSheetModal } from "../components/ui/PythonCheatSheetModal";
+import { QuizSection } from "../components/ui/QuizSection";
 import { useAuth } from "../contexts/AuthContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import {
   PYTHON_CURRICULUM_LESSONS,
+  LESSON_QUIZZES,
   LessonTopic,
 } from "../services/curriculumData";
 import {
@@ -453,6 +455,12 @@ export const BlueprintPage: React.FC = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Interactive Quizzes from PDF (Trắc nghiệm ôn tập từ tài liệu) */}
+              <QuizSection
+                lessonCode={activeLesson.code}
+                quizzes={LESSON_QUIZZES[activeLesson.id] || []}
+              />
 
               {/* Exercises Assigned to This Lesson */}
               <div className="p-6 bg-surface">

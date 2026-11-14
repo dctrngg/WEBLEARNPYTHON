@@ -1,0 +1,2265 @@
+{
+  "bai_16": [
+    {
+      "id": "bai_16_q_1",
+      "question": "Ngôn ngữ lập trình là gì:",
+      "options": [
+        "Là ngôn ngữ máy tính",
+        "Là ngôn ngữ biểu diễn thuật toán dưới dạng dễ hiểu.",
+        "Là ngôn ngữ dùng để viết các chương trình máy tính.",
+        "Là ngôn ngữ dùng để thực hiện các giao tiếp giữa người và máy tính."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_2",
+      "question": "Chọn phát biểu SAI:",
+      "options": [
+        "Lệnh print() có chức năng in dữ liệu ra màn hình.",
+        "Lệnh print() có thể tính toán và đưa ra kết quả của biểu thức.",
+        "Lệnh print() có thể đưa ra màn hình nhiều giá trị trên một dòng.",
+        "Lệnh print() có thể nhập dữ liệu vào máy tính."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_3",
+      "question": "Ngôn ngữ lập trình có các câu lệnh được viết gần với ngôn ngữ tự nhiên giúp cho việc\nđọc, hiểu chương trình dễ dàng hơn đó là loại ngôn ngữ lập trình nào?",
+      "options": [
+        "Ngôn ngữ máy",
+        "Hợp ngữ",
+        "Ngôn ngữ lập trình bậc cao",
+        "Ngôn ngữ Python."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_4",
+      "question": "Chọn phát biểu SAI trong các phát biểu sau:",
+      "options": [
+        "Chương trình là một bản chỉ dẫn cho máy tính làm việc, được viết bằng một ngôn ngữ lập trình.",
+        "Chỉ có một ngôn ngữ lập trình bậc cao là Python.",
+        "Lập trình bằng Python có thể đưa ra các thông báo bằng tiếng Việt.",
+        "Môi trường lập trình hỗ trợ người lập trình phát hiện ra câu lệnh viết sai ngữ pháp"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_5",
+      "question": "Trong lập trình có mấy kỹ thuật dịch?",
+      "options": [
+        "1 loại (thông dịch)",
+        "2 loại (thông dịch và biên dịch)",
+        "2 loại (thông dịch và hợp dịch)",
+        "2 loại (hợp dịch và biên dịch)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_6",
+      "question": "Chương trình dịch không có khả năng nào trong các khả năng sau?",
+      "options": [
+        "Phát hiện lỗi cú pháp",
+        "Phát hiện lỗi ngữ nghĩa",
+        "Thông báo lỗi cú pháp",
+        "Tạo được chương trình đích"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_7",
+      "question": "Trong quá trình dịch, lỗi nào sau đây sẽ được phát hiện?",
+      "options": [
+        "Chính tả",
+        "Cú pháp",
+        "Giải thuật",
+        "Ngữ nghĩa"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_8",
+      "question": "Đa số lập trình viên lựa chọn ngôn ngữ nào để viết chương trình:",
+      "options": [
+        "Ngôn ngữ máy tính",
+        "Hợp ngữ",
+        "Ngôn ngữ lập trình bậc cao",
+        "Ngôn ngữ tự nhiên"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_9",
+      "question": "Máy tính có thể trực tiếp hiểu được các câu lệnh viết bởi:",
+      "options": [
+        "Ngôn ngữ máy tính",
+        "Hợp ngữ",
+        "Ngôn ngữ lập trình bậc cao",
+        "Ngôn ngữ tự nhiên"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_10",
+      "question": "Chọn phát biểu SAI trong các phát biểu sau:",
+      "options": [
+        "Chế độ gõ trực tiếp và chế độ soạn thảo đều gõ mỗi lệnh trên một dòng.",
+        "Ở chế độ gõ trực tiếp, gõ một lệnh, nhấn Enter sẽ chạy ngay.",
+        "Ở chế độ soạn thảo chương trình thì gõ nhiều lệnh trong 1 tệp và thực hiện chạy một lần.",
+        "Ở chế độ soạn thảo chương trình để thấy kết quả của biểu thức ta chỉ cần gõ biểu thức."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_11",
+      "question": "Phát biểu nào sau đây chắc chắn sai?",
+      "options": [
+        "Máy tính điện tử có thể chạy các chương trình.",
+        "Mọi người sử dụng máy tính đều phải biết lập trình.",
+        "Để giải bài toán bằng máy tính, cần viết chương trình mô tả thuật toán giải bài toán.",
+        "Một bài toán có thể có nhiều thuật toán để giải."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_12",
+      "question": "Chương trình được viết bằng NNLT bậc cao không có đặc điểm nào trong các đặc điểm\nsau?",
+      "options": [
+        "Chương trình có thể được thực hiện trên nhiều máy tính khác nhau.",
+        "Ngắn gọn, dễ hiểu, dễ hiệu chỉnh, dễ nâng cấp.",
+        "Kiểu dữ liệu đa dạng, thuận tiện cho mô tả thuật toán.",
+        "Máy tính có thể hiểu và thực hiện trực tiếp được."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_13",
+      "question": "Chức năng của chương trình dịch:",
+      "options": [
+        "Nối kết chương trình nguồn với chương trình đích cho máy tính thực hiện.",
+        "Chuyển đổi chương trình đích sang chương trình nguồn.",
+        "Chuyển đổi chương trình được viết bằng NNLT bậc cao sang ngôn ngữ máy.",
+        "Dịch chương trình đích sang ngôn ngữ máy cho máy tính hiểu và thực hiện được."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_14",
+      "question": "Biên dịch là gì?",
+      "options": [
+        "Các đại lượng trong Python",
+        "Dịch từng lệnh",
+        "Dịch toàn bộ chương trình",
+        "Chạy chương trình"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_15",
+      "question": "Môi trường lập trình có 2 chế độ: Chế độ gõ trực tiếp và chế độ soạn thảo là của ngôn\nngữ lập trình :",
+      "options": [
+        "Ngôn ngữ lập trình bậc cao.",
+        "Ngôn ngữ Python hoặc C/C++.",
+        "Ngôn ngữ Python.",
+        "Ngôn ngữ Pascal."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_16",
+      "question": "Ngôn ngữ nào sau đây không phải ngôn ngữ bậc cao?",
+      "options": [
+        "C/C++",
+        "Assembly",
+        "Python",
+        "Java"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_17",
+      "question": "Điều nào sau đây được sử dụng để xác định một khối mã trong ngôn ngữ Python?",
+      "options": [
+        "Thụt lề",
+        "Nháy “ ”",
+        "Dấu ngoặc ( )",
+        "Dấu ngoặc [ ]"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_18",
+      "question": "Thứ tự thực hiện các phép tính trong Python ở đáp án nào đúng?",
+      "options": [
+        "/, -, +, *",
+        "(*, /), (+, -)",
+        "Từ trái sang phải",
+        "(+, -), (*, /)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_19",
+      "question": "Câu lệnh sau bị lỗi ở đâu?\n>>> 3 + * 5",
+      "options": [
+        "3",
+        "+ hoặc *",
+        "*",
+        "Không có lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_20",
+      "question": "Output của lệnh sau là:\n>>> print(1+ 2 + 3+ 4)",
+      "options": [
+        "10",
+        "15",
+        "1 + 2 + 3 + 4",
+        "1 + 2 + 3"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_21",
+      "question": "Phát biểu nào sau đây sai khi nói về python?",
+      "options": [
+        "Python là ngôn ngữ lập trình bậc cao.",
+        "Python có mã nguồn mở thu hút được nhiều nhà khoa học cùng phát triển.",
+        "Python có các lệnh phức tạp nên không phổ biến trong giáo dục.",
+        "Python có các câu lệnh khá gần ngôn ngữ tự nhiên."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_22",
+      "question": "Chọn phát biểu đúng khi nói về môi trường lập trình Python?",
+      "options": [
+        "Chế độ soạn thảo có dấu nhắc",
+        "Ngoài chế độ gõ lệnh trực tiếp và soạn thảo còn có các chế độ khác",
+        "Chế độ gõ lệnh trực tiếp thích hợp cho việc tính toán và kiểm tra nhanh các lệnh",
+        "Chế độ gõ lệnh trực tiếp có con trỏ soạn thảo"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_23",
+      "question": "Dùng câu lệnh print và kí tự nào để viết được đoạn văn xuống dòng giữa xâu?",
+      "options": [
+        "Cặp dấu nháy đơn",
+        "Cặp ba dấu nháy kép",
+        "Cặp dấu nháy kép.",
+        "Không thể thực hiện được Câu25: Cho biết các khẳng định nào sau đây là ĐÚNG ? A. Python sẽ bỏ qua chú thích khi dịch chương trình B. Chú thích bắt buộc phải có trong chương trình C. Chú thích làm thay đổi kết quả chạy dịch chương trình D. Chú thích trên một dòng bắt đầu bằng cặp 3 dấu ngoặc đơn"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_24",
+      "question": "Cho biết các khẳng định nào sau đây là ĐÚNG ?",
+      "options": [
+        "Chú thích làm thay đổi kết quả chạy dịch chương trình",
+        "Chú thích dành cho các lập trình viên để hiểu rõ hơn về chương trình",
+        "Chú thích bắt buộc phải có trong chương trình",
+        "Chú thích trên một dòng bắt đầu bằng cặp 3 dấu ngoặc đơn"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_16_q_25",
+      "question": "Cho a = 3, b = 7, c = 9. Lệnh print (a, b, c, sep= ‘,’) sẽ in ra màn hình kết quả nào?",
+      "options": [
+        "379",
+        "3 7 9",
+        "3, 7, 9",
+        "3 – 7 – 9"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_17": [
+    {
+      "id": "bai_17_q_1",
+      "question": "Trong ngôn ngữ Python, tên nào sau đây đặt sai theo quy tắc?",
+      "options": [
+        "11tinhoc",
+        "tinhoc11",
+        "tin_hoc",
+        "_11"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_2",
+      "question": "Đâu là qui tắc ĐÚNG khi đặt tên cho biến trong Python?",
+      "options": [
+        "Tên biến có thể bắt đầu bằng Chữ cái hoặc dấu gạch dưới _.",
+        "Có thể sử dụng từ khóa làm tên biến.",
+        "Tên biến có thể bắt đầu bằng 1 chữ số.",
+        "Tên biến có thể có các kí hiệu @, !, %, $, #,..."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_3",
+      "question": "Lệnh gán giá trị cho biến b nguyên nào sau đây là đúng?",
+      "options": [
+        "b = 10",
+        "B = 10",
+        "b == 10",
+        "b = ‘10’"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_4",
+      "question": "Chọn các phép toán quan hệ:",
+      "options": [
+        "+, -, *, /",
+        "+, -, *, %, //",
+        "<, >, <=, >=, !=, ==",
+        "and, or, not"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_5",
+      "question": "Xét biểu thức logic (n % 100 < 10) and (n // 100 > 0)\nVới giá trị nào của n dưới đây để biểu thức trên cho giá trị True?",
+      "options": [
+        "100",
+        "250",
+        "526",
+        "56"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_6",
+      "question": "Biểu thức logic nào sau đây kiểm tra n là một số dương chẵn?",
+      "options": [
+        "(n % 2 == 0) and (n // 2 == 0)",
+        "(n > 0) and (n // 2 == 0)",
+        "(n % 2 == 0) and (n > 0)",
+        "(n % 2 == 0) and (n // 2 != 0)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_7",
+      "question": "Chọn câu lệnh gán SAI:",
+      "options": [
+        "x+=5",
+        "x=x+5",
+        "x=5>=6",
+        "8+5=x"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_8",
+      "question": "Trong NNLT Python, để chú thích nội dung trên một dòng ta sử dụng:",
+      "options": [
+        "Dấu !",
+        "Dấu *",
+        "Dấu #",
+        "Dấu &"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_9",
+      "question": "Để chia lấy phần dư ta sử dụng toán tử nào?",
+      "options": [
+        "div",
+        "mod",
+        "/",
+        "%"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_10",
+      "question": "Phép toán // dùng để:",
+      "options": [
+        "Chia",
+        "Chia lấy phần nguyên",
+        "Chia lấy phần dư",
+        "Làm tròn số"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_11",
+      "question": "Xác định câu lệnh gán sai, với x, y là kiểu số nguyên:",
+      "options": [
+        "x:= 5",
+        "x+= 5",
+        "x*= 5",
+        "x = 5"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_12",
+      "question": "Trong các tên sau, tên nào đặt sai qui tắc?",
+      "options": [
+        "abc",
+        "_abc_",
+        "5ABC",
+        "AbC"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_13",
+      "question": "Tên nào sau đây là đúng khi đặt tên cho đối tượng của Python:",
+      "options": [
+        "R21",
+        "10A3",
+        "Baitap@1",
+        "__Tong%2"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_14",
+      "question": "Các từ. continue, elif, else, not, try, while,... trong Python được gọi là:",
+      "options": [
+        "Tên chuẩn",
+        "Tên do người lập trình đặt",
+        "Tên đặc biệt",
+        "Từ khóa"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_15",
+      "question": "Trường hợp n ào sau đây không phải lệnh gán trong python?",
+      "options": [
+        "cd = 50",
+        "a = a * 2",
+        "a = 10",
+        "a + b = 100"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_16",
+      "question": "Để tính diện tích đường tròn bán kính R, với pi = 3.14, biểu thức nào sau đây trong\nPython là đúng?",
+      "options": [
+        "S:=R*R*pi",
+        "S=R*R*pi",
+        "S:=2(R)*pi",
+        "S:=R2*pi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_17",
+      "question": "Để viết 3 mũ 4 trong Python chọn",
+      "options": [
+        "3**4",
+        "3//4",
+        "3*3+3*3",
+        "3%4"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_18",
+      "question": "Kết quả khi thực hiện câu lệnh sau:\n>>>10 - 5 ** 2 + 8//3 +2",
+      "options": [
+        "-11",
+        "11",
+        "7",
+        "Câu lệnh bị lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_19",
+      "question": "Biểu thức nào sau đây không ra kết quả là 1?",
+      "options": [
+        "math.sqrt(25)//4",
+        "math.sqrt(25)/4",
+        "math.sqrt(25)%4",
+        "math.sqrt(25)//5"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_20",
+      "question": "Để khai báo thư viện, ta sử dụng từ khóa:",
+      "options": [
+        "uses",
+        "import",
+        "include",
+        "attach"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_21",
+      "question": "Trong Python, kết quả của biến x sau khi thực hiện câu lệnh x = math.sqrt(20//5) là:",
+      "options": [
+        "4",
+        "0",
+        "16",
+        "2"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_22",
+      "question": "Tên biến nào sau đây là hợp lệ?",
+      "options": [
+        "_if",
+        "global",
+        "break",
+        "try"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_23",
+      "question": "Tên biến nào sau đây là hợp lệ?",
+      "options": [
+        "Bai 1",
+        "23bai_1",
+        "tam&12",
+        "Bai_1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_24",
+      "question": "Tên nào đúng khi đặt tên cho đối tượng của Python:",
+      "options": [
+        "2A",
+        "Tong*Tong",
+        "Tam – giac",
+        "Baitap01"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_25",
+      "question": "Với a, b là hai biết kiểu số nguyên thì câu lệnh nào sau đây SAI?",
+      "options": [
+        "x =a+b",
+        "x =a==b",
+        "x =a!=b",
+        "x = a=>b"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_17_q_26",
+      "question": "Câu lệnh gán nào sau đây không hợp lệ ?",
+      "options": [
+        "x = \"\"",
+        "y = [\"so\" , 15, 7.8]",
+        "a,b = 25,6,7",
+        "x,y,z = 3.9, \"tong\", 42 Bài 29. Giá trị của biến x, y sau khi thực hiện đoạn chương trình sau là gì?"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_18": [
+    {
+      "id": "bai_18_q_1",
+      "question": "int là kiểu dữ liệu nào sau đây ?",
+      "options": [
+        "Kiểu số nguyên",
+        "Kiểu số thực",
+        "Kiểu xâu ký tự",
+        "Kiểu logic"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_2",
+      "question": "float là kiểu dữ liệu nào sau đây?",
+      "options": [
+        "Kiểu số nguyên",
+        "Kiểu số thực",
+        "Kiểu xâu ký tự",
+        "Kiểu logic"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_3",
+      "question": "Kiểu dữ liệu của biểu thức nào sau đây không thuộc kiểu bool?",
+      "options": [
+        "67>78",
+        "17 !=12+3",
+        "14 == 10+2",
+        "'12=10+2 '"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_4",
+      "question": "str là kiểu dữ liệu nào sau đây?",
+      "options": [
+        "Kiểu số nguyên",
+        "Kiểu số thực",
+        "Kiểu xâu ký tự",
+        "Kiểu logic"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_5",
+      "question": "Hàm nào sau đây là hàm kiểm tra kiểu dữ liệu ?",
+      "options": [
+        "Style",
+        "Tyle",
+        "Type",
+        "type"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_6",
+      "question": "Cho biến s = ‘Xin chào’, Python sẽ cung cấp cho biến s kiểu dữ liệu nào?",
+      "options": [
+        "string",
+        "bool",
+        "float",
+        "str Nhập từ bàn phím số giây ss Xuất ngay, gio, phut, giay ra màn hình Tính ngay, gio, phut, giay"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_7",
+      "question": "Biết x có giá trị là 5.6, vậy x thuộc kiểu giá trị nào trong các kiểu sau?",
+      "options": [
+        "bool",
+        "int",
+        "float",
+        "str"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_8",
+      "question": "Cho x = -49 và y = 4.9  Python cung cấp kiểu dữ liệu nào cho biến x và y?",
+      "options": [
+        "x là int, y là float",
+        "x là float, y là int",
+        "x, y là int",
+        "x, y là float"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_9",
+      "question": "Hãy cho biết kiểu dữ liệu trả về của biến a sau câu lệnh? a = float(5)",
+      "options": [
+        "Kiểu nguyên",
+        "Kiểu thực",
+        "Kiểu kí tự",
+        "Kiểu logic"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_10",
+      "question": "Cho x = 3.4 và y = int(x). Biến y nhận giá trị là:",
+      "options": [
+        "3",
+        "4",
+        "3.4",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_11",
+      "question": "Chọn đáp án đúng khi khởi tạo a là kiểu số nguyên:",
+      "options": [
+        "a = 1",
+        "a = 1.0",
+        "a = “ ”",
+        "a = True"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_12",
+      "question": "Cho a, b, c là 3 cạnh của tam giác, kiểu dữ liệu là nào phù hợp với 3 biến trên?",
+      "options": [
+        "str",
+        "bool",
+        "float",
+        "int"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_13",
+      "question": "Cho N là tổng học sinh của 1 lớp. Dữ liệu nào sẽ phù hợp với giá trị trên?",
+      "options": [
+        "float",
+        "bool",
+        "int",
+        "str"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_14",
+      "question": "Khi thực hiện câu lệnh x = input(\" nhập giá trị x:\") bạn Lan gõ vào số 5. Câu lệnh\ntiếp theo là print(2*x) sẽ cho kết quả như thế nào?",
+      "options": [
+        "10",
+        "2*x",
+        "`55`",
+        "Thông báo câu lệnh sai."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_15",
+      "question": "Cách khởi tạo các biến nào sau đây không trả về kiểu dữ liệu là số thực?",
+      "options": [
+        "a = float(4)",
+        "b = 5.12",
+        "c = int(3.5)",
+        "d = -5.0"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_16",
+      "question": "Trong NNLT Python, để nhập 1 số nguyên từ bàn phím cho biến n, ta chọn câu lệnh\nnào?",
+      "options": [
+        "input(‘Nhập số nguyên n: ’,n)",
+        "n=int(input(‘Nhập số nguyên n: ’))",
+        "n=int(‘Nhập số nguyên n: ’)",
+        "n:=int(input(‘Nhập số nguyên n: ’))"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_17",
+      "question": "Cho đoạn lệnh sau:\nN = 3\nN = (5+N)**2+10\nprint (N)\nKết quả in ra màn hình:",
+      "options": [
+        "26",
+        "64",
+        "74",
+        "25"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_18",
+      "question": "Lệnh xuất kết quả ra màn hình trong Python là:",
+      "options": [
+        "print",
+        "input",
+        "prints",
+        "pritn"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_19",
+      "question": "Để đưa ra màn hình dòng chữ “Xin chao” trong Python ta dùng lệnh:",
+      "options": [
+        "print (Xin chao)",
+        "print (\"Xin chao\")",
+        "input (Xin chao)",
+        "input ('Xin chao')"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_20",
+      "question": "Cho đoạn chương trình sau:\na = b = 1\nc, d = 1,2\nprint(a+b+c+d)  Kết quả in ra màn hình là:",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_21",
+      "question": "Trong NNLT Python, để nhập số thực cho biến n. Câu lệnh nào đúng?",
+      "options": [
+        "n=input(‘Nhập 1 số thực:’)",
+        "n=int(input(‘Nhập 1 số thực:’))",
+        "n=float(input(‘Nhập 1 số thực:’))",
+        "float(input(‘Nhập số thực n:’))"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_22",
+      "question": "Output của lệnh print (3 >=3) ra kết quả:",
+      "options": [
+        "3 >=3",
+        "True",
+        "False",
+        "None"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_23",
+      "question": "Để khai báo thư viện toán học trong Python ta viết:",
+      "options": [
+        "import",
+        "math",
+        "import_math",
+        "import math"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_24",
+      "question": "Kết quả của câu lệnh sau:    import math\nabs (math.sqrt(25))",
+      "options": [
+        "Error",
+        "-5",
+        "5",
+        "5.0"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_25",
+      "question": "Để nhập 2 số thực a, b (trên cùng 1 dòng) trong Python ta dùng lệnh:",
+      "options": [
+        "a=int(input()) b=int(input())",
+        "a=float(input()) b=float(input())",
+        "a,b=map(int,input().split())",
+        "a,b=map(float,input().split())"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_18_q_26",
+      "question": "Hàm nhập dữ liệu vào từ bàn phím input( ) trả về kiểu dữ liệu nào sau đây?",
+      "options": [
+        "kiểu logic",
+        "kiểu số",
+        "kiểu xâu",
+        "bất kì kiểu nào CÂU HỎI TỰ LUẬN Bài tập 1. Tiền điện được tính như sau: Mỗi 1 kW sau 100 kW đầu tiên phải trả thêm 10% đơn giá điện quy định. Em hãy viết chương trình tính tiền điện, trong đó đơn giá và lượng điện tiêu thụ ( lớn hơn 100 kW) là các số nguyên được nhập vào từ bàn phím. Đáp án:"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_19": [
+    {
+      "id": "bai_19_q_1",
+      "question": "Cho a=15, b=8. Hãy tính giá trị của a, b trong trường hợp sau?\nif a > b:\na=b-a\nb=a+2\nelse:\na=b-a",
+      "options": [
+        "a = 15, b = 8.",
+        "a = -7, b = -5",
+        "a = 5, b = -7.",
+        "a = 5, b = -7."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_2",
+      "question": "Phát biểu nào sau đây có thể lấy làm biếu thức điều kiện trong cấu trúc rẽ nhánh?",
+      "options": [
+        "A+B",
+        "A>B",
+        "A MOD 100",
+        "\"A nho hon B\""
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_3",
+      "question": "Cho đoạn chương trình sau:\nif (a!=0):\nx=9 // a\nelse:\nx=-1\nprint (‘ x= ’, x + 1)\nKhi cho a=0, đoạn chương trình trên sẽ in ra màn hình giá\ntrị x=?",
+      "options": [
+        "0",
+        "-1",
+        "1",
+        "Không xác định"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_4",
+      "question": "Khối lệnh trong đoạn chương trình: if <điều kiện>:\n< khối lệnh>",
+      "options": [
+        "Luôn thực hiện",
+        "Thực hiện khi điều kiện đúng",
+        "Thực hiện khi điều kiện sai",
+        "Điều kiện không tính được."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_5",
+      "question": "Đoạn chương trình:\nif <điều kiện>:\n<khối lệnh 1>\nelse:\n<khối lệnh 2>",
+      "options": [
+        "Thực hiện khối lệnh 1 khi điều kiện đúng",
+        "Thực hiện khối lệnh 1 khi điều kiện sai",
+        "Thực hiện khối lệnh 2 khi điều kiện đúng",
+        "Thực hiện khối lệnh 1 trước rồi đến khối lệnh 2"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_6",
+      "question": "Đoạn chương trình:\nMax=a\nif   b>Max:\nMax=b\nHãy cho biết đoạn chương trình bên dùng để?",
+      "options": [
+        "Tính giá trị a",
+        "Tính giá trị b",
+        "Tìm GTLN trong 2 số a và b",
+        "Tìm GTNN trong 2 số a và b"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_7",
+      "question": "Câu lệnh ghép được sử dụng khi?",
+      "options": [
+        "Cần nhiều lệnh đơn thực hiện một công việc",
+        "Ghép nhiều câu lệnh thành một câu lệnh",
+        "Tác động của câu lệnh trước đó đến nhiều câu lệnh",
+        "Cả ba trường hợp trên"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_8",
+      "question": "Đoạn chương trình:\nif b>a:\nMax=b\nelse:\nMax=a\nHãy cho biết đoạn chương trình bên dùng để?",
+      "options": [
+        "Tính giá trị a",
+        "Tính giá trị b",
+        "Tìm giá trị lớn nhất trong 2 số a và b",
+        "Cả ba lựa chọn trên"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_9",
+      "question": "Cho đoạn chương trình sau:\na=3\nb=2\nif a>b:\na=4\nelse:\nb=1\nSau khi thực hiện đoạn chương trình bên đáp án nào đúng?",
+      "options": [
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_10",
+      "question": "Dạng nào không phải là câu lệnh if – else trong Python:",
+      "options": [
+        "if <điều kiện> <câu lệnh>",
+        "if <điều kiện> <câu lệnh1> else <câu lệnh2>",
+        "if <điều kiện> else <câu lệnh>",
+        "Cả 3 dạng trên đều sai"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_11",
+      "question": "Cho a, b là các biến thực. Câu lệnh nào dưới đây tìm min là giá trị nhỏ nhất của a và\nb?",
+      "options": [
+        "if a<b: min=a;",
+        "if a<b: min=a; else: min=b;",
+        "if a<b: min=a else: min=b",
+        "if a<b: min=a else min=b"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_12",
+      "question": "Cho đoạn chương trình:\nif A>B:\nTG=A\nA=B\nB=TG\nVới A=10 và B=5 thì kết quả của A, B sau khi thực hiện đoạn\nchương trình bên là?",
+      "options": [
+        "A=10; B=5",
+        "A=15; B=10",
+        "A= 5; B=10",
+        "A=10; B=10"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_13",
+      "question": "Trong cấu trúc rẽ nhánh. Sau else phải:",
+      "options": [
+        "Phải có dấu chấm phẩy (;)",
+        "Không có dấu gì hết",
+        "Phải có dấu chấm(.)",
+        "Phải có dấu hai chấm(:)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_14",
+      "question": "Đoạn chương trình 1 bên trên cho kết quả C là bao nhiêu?",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_15",
+      "question": "Lựa chọn kết quả màn hình của đoạn chương trình 2 bên trên:",
+      "options": [
+        "5 + 3 = 8",
+        "m x m = 15",
+        "m + n = 8",
+        "5 x 3 = 15"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_16",
+      "question": "Đoạn chương trình 3 bên trên khi chạy cho kết quả màn hình là?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "Chương trình báo lỗi."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_17",
+      "question": "Chọn kết quả tren màn hình của đoạn chương trình 4 bên trên:",
+      "options": [
+        "8",
+        "9",
+        "10",
+        "Chương trình báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_18",
+      "question": "Đọan chương trình sau cho ra kết quả trên màn hình là gì?\na=0\nif a>0:\na=1\nprint (a)",
+      "options": [
+        "0",
+        "1",
+        "không ra gì cả",
+        "Báo lỗi vì không có else"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_19",
+      "question": "Trong ngôn ngữ lập trình Python, muốn kiểm tra đồng thời cả 3 giá trị của A, B, C có\nlớn hơn 0 hay không ta viết điều kiện sau if nào là đúng?",
+      "options": [
+        "if A, B, C >0: ......",
+        "if A and B and C >0: .......",
+        "if (A>0) or (B>0) or (C>0): .......",
+        "if (A>0 and B>0 and C>0): ........"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_20",
+      "question": "Biểu thức nào sau đây cho kết quả True khi n là số lẻ?",
+      "options": [
+        "n // 2 == 0",
+        "n % 2 ==1",
+        "n % 2 == 0",
+        "n // 2 == 1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_19_q_21",
+      "question": "Câu lệnh nào sau đây đúng:",
+      "options": [
+        "if (n % 2 < 0): print(''Day la so chan!'') else: print(''Day la so le!'')",
+        "if (n % 2 > 0): print(''Day la so chan!'') else: print(''Day la so le!'')",
+        "if (n % 2 == 0): print(''Day la so chan!'') else: print(''Day la so le!'')",
+        "if (n % 2 != 0): print(''Day la so chan!'') else: print(''Day la so le!'')"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_20": [
+    {
+      "id": "bai_20_q_1",
+      "question": "Vòng lặp nào trả về kết quả như cột bên trái dưới đây?\n11111\n22222\n33333\n44444\n55555",
+      "options": [
+        "for i in range(1, 6): print(i, i, i, i, i)",
+        "for i in range(1, 5): print(str(i) * 5)",
+        "for i in range(1, 6): print(str(i) * 5)",
+        "for i in range(0, 5): print(str(i) * 5)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_2",
+      "question": "Điền phần còn thiếu trong đoạn code để được out như cột bên trái dưới đây:\n55555\n44444\n33333\n22222\n11111\nfor i in range(5, 0, ____ ): print(str(i) * 5)",
+      "options": [
+        "0",
+        "None",
+        "1",
+        "-1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_3",
+      "question": "Trong NNLT Python, câu lệnh nào sau đây đúng khi in ra màn hình các số tự nhiên từ\n0 đến 10 trên 1 dòng?",
+      "options": [
+        "for i in range(9): print(i,end='')",
+        "for i in range(10): print(i,end='')",
+        "for i in range(11): print(i,end='')",
+        "for i in range(12): print(i,end='')"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_4",
+      "question": "Trong NNLT Python, câu lệnh nào sau đây sai khi in ra màn hình các số tự nhiên từ 0\nđến 10 trên 1 dòng?",
+      "options": [
+        "for i in range(0,11,1): print(i,end='')",
+        "for i in range(11): print(i,end='')",
+        "for i in range(0,11): print(i,end='')",
+        "for i in range(11,1): print(i,end='')"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_5",
+      "question": "Trong NNLT Python, câu lệnh nào sau đây đúng khi in ra màn hình các số tự nhiên từ\n10 đến 0 trên 1 dòng?",
+      "options": [
+        "for i in range(10,0,-1): print(i,end='')",
+        "for i in range(10,-1): print(i,end='')",
+        "for i in range(10,-1,-1): print(i,end='')",
+        "for i in range(10,1,-1): print(i,end='')"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_6",
+      "question": "Cho đoạn chương trình sau:\ns=0\nfor i in range(5):\ns=s+i\nSau khi thực hiện, giá trị của s bằng bao nhiêu?",
+      "options": [
+        "5",
+        "10",
+        "0",
+        "15"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_7",
+      "question": "Đoạn chương trình  for i in range(5): print(i,end='')  cho kết quả là:",
+      "options": [
+        "1234",
+        "12345",
+        "01234",
+        "012345"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_8",
+      "question": "Đoạn chương trình sau cho kết quả là gì?\nfor i in range(10):\nif i%2==0:\nprint(i,end='')",
+      "options": [
+        "02468",
+        "13579",
+        "2468",
+        "246810"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_9",
+      "question": "Đoạn chương trình for i in range(0,10,2): print(i, end='')  cho kết quả gì?",
+      "options": [
+        "2468",
+        "13579",
+        "02468",
+        "246810"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_10",
+      "question": "Đoạn chương trình for i in range(9, 0, -1): print(i,end='') cho kết quả gì?",
+      "options": [
+        "123456789",
+        "987654321",
+        "02468",
+        "86420"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_11",
+      "question": "Hãy cho biết dãy các số được tạo ra của hàm range(2,6,2)?",
+      "options": [
+        "2, 3, 4, 5",
+        "2, 4",
+        "1, 2, 3",
+        "2, 4, 6"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_12",
+      "question": "Cho đoạn chương trình:\nS= 0\nfor  i in range(3,7):\nS = S + 10 // i\nprint(S)\nKết  quả của  S  sau  khi  thực  hiện đoạn chương\ntrình trên?",
+      "options": [
+        "18",
+        "8",
+        "9",
+        "14"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_13",
+      "question": "Trong NNLT Python, câu lệnh lặp với số lần biết trước là:",
+      "options": [
+        "if",
+        "while",
+        "for",
+        "include"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_14",
+      "question": "Khi thực hiện câu lệnh:  for  i in range(7,12):  print(‘Hello World’)  thì trên màn hình\nsẽ xuất hiện bao nhiêu dòng chữ “Hello World” trên màn hình?",
+      "options": [
+        "12",
+        "6",
+        "5",
+        "7"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_15",
+      "question": "Cho đoạn lệnh sau:\nfor i in range(5):\nprint(i,end= ' ')\nTrên màn hình kết quả xuất hiện:",
+      "options": [
+        "0 1 2 3 4 5",
+        "1 2 3 4 5",
+        "0 1 2 3 4",
+        "1 2 3 4"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_16",
+      "question": "Hày chọn dãy số do hàm range(1,10,2)tạo ra:",
+      "options": [
+        "1,3,5,7,9",
+        "1,2,3,4,5,6,7,8,9,10",
+        "1,3,5,7,9,10",
+        "1,3,5,7,10"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_17",
+      "question": "Cho đoạn chương trình sau:\ns=0\nfor i in range(6):\ns=s+i\nSau khi thực hiện đoạn chương trình bên giá trị của s là:",
+      "options": [
+        "1",
+        "15",
+        "6",
+        "21"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_20_q_18",
+      "question": "Cho đoạn chương trình sau:\ns=0\nfor i in\nrange(1,7,2):\ns=s+i\nSau khi thực hiện đoạn chương trình bên giá trị của s là:",
+      "options": [
+        "9",
+        "15",
+        "6",
+        "21 CÂU HỎI TỰ LUẬN Bài tập 1. Kết quả thực hiện câu lệnh for dưới đây là gì for i in range (10): ........................................................................ print (i*i) ........................................................................"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_21": [
+    {
+      "id": "bai_21_q_1",
+      "question": "Trong câu lệnh While thì dãy câu lệnh nào chỉ được thực hiện khi điều\nkiện còn?",
+      "options": [
+        "True",
+        "True hoặc False",
+        "False",
+        "Khác 0"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_21_q_2",
+      "question": "Trong câu lệnh While, ngay sau điều kiện sẽ là dấu nào?",
+      "options": [
+        ";",
+        "?",
+        "=",
+        ":"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_21_q_3",
+      "question": "Cú pháp của câu lệnh lặp với số lần chưa biết trước là?",
+      "options": [
+        "while <điều kiện>: <Khối lệnh>",
+        "while <điều kiện> do < Khối lệnh>",
+        "while < Khối lệnh>: <điều kiện>",
+        "while < Khối lệnh> do <điều kiện>"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_21_q_4",
+      "question": "Tính tống S = 1 + 2 + 3 + ... + n + ... cho đến khi S>109. Điều kiện nào\nsau đây cho vòng lặp while là đúng:",
+      "options": [
+        "While S>=109:",
+        "While S =109:",
+        "While S <=109:",
+        "While S !=109:"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_21_q_5",
+      "question": "Cho đoạn chương trình sau:\ns=0\ni=1\nwhile i<=5:\ns=s+i\ni=i+1\nSau  khi  thực  hiện  đoạn  chương  trình\ntrên giá trị của s là:",
+      "options": [
+        "9",
+        "15",
+        "5",
+        "10 Bài tập 1. Số hoàn hảo là số tự nhiên có giá trị bằng tổng các ước thực sự của nó ( các ước số nhỏ hơn chính nó). Ví dụ một vài số hoàn hảo : 6: 1+2+3 = 6 28: 1+2+4+7+14 = 28 496: 1+2+4+8+16+31+62+124+248 = 496 8128 : 1+2+4+8+16+32+64+127+254+508+1016+2032+4064=8128 Em hãy viết chương trình số hoàn hảo đầu tiên lớn hơn số tự nhiên n được nhập vào từ bàn phím. ...................................................................................................................................................... ...................................................................................................................................................... ...................................................................................................................................................... ...................................................................................................................................................... ......................................................................................................................................................"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_22": [],
+  "bai_23": [
+    {
+      "id": "bai_23_q_1",
+      "question": "Trong NNLT Python, đối tượng L = [1, 23, “Hello”, 9] thuộc kiểu dữ liệu nào?",
+      "options": [
+        "List",
+        "Dictionary",
+        "Tuple",
+        "Array"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_2",
+      "question": "Đâu là giá trị của color[2]?\ncolor = [‘red’, ‘orange’, ‘yellow’, ‘green’, ‘blue’, ‘indigo’, ‘violet’]",
+      "options": [
+        "orange",
+        "indigo",
+        "blue",
+        "yellow"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_3",
+      "question": "Cho đoạn chương trình dưới đây:\nmylist = [1, 5, 9, int(‘0’)]\nprint (sum (mylist))\nKết quả sau khi chạy chương trình bên là:",
+      "options": [
+        "16",
+        "15",
+        "63",
+        "False"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_4",
+      "question": "Cho đoạn chương trình sau đây:\nlist1=[1, 3]\nlist2 = list1\nlist1[0] = 4\nprint (list2)\nKết quả sau khi chạy chương trình bên là:",
+      "options": [
+        "[4, 3]",
+        "[1, 3]",
+        "[1, 4]",
+        "[1, 3, 4]"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_5",
+      "question": "Kết quả của câu lệnh num = ‘5’ * ‘5’   là gì?",
+      "options": [
+        "333",
+        "27",
+        "25",
+        "TypeError: can't multiply sequence by non-int of type 'str'"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_6",
+      "question": "Muốn tham chiếu đến 1 phần tử nào đó trong danh sách, ta cần phải có thông tin\nnào?",
+      "options": [
+        "Tên danh sách, chỉ số",
+        "Độ dài danh sách",
+        "Chỉ số của kí tự trong danh sách",
+        "Phải biết đó là kí tự gì trong danh sách"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_7",
+      "question": "Chọn câu phát biểu đúng về dữ liệu kiểu danh sách:",
+      "options": [
+        "Các phần tử trong danh sách được phân cách nhau bởi dấu phẩy (,).",
+        "Các phần tử trong danh sách được phân cách nhau bởi dấu chấm phẩy (;).",
+        "Các phần tử trong danh sách được phân cách nhau bởi dấu hai chấm (:).",
+        "Các phần tử trong danh sách được phân cách nhau bởi dấu cách."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_8",
+      "question": "Chọn câu phát biểu sai về dữ liệu kiểu danh sách:",
+      "options": [
+        "Các phần tử trong danh sách có thể khác kiểu.",
+        "Các phần tử trong danh sách phân biệt bằng chỉ số.",
+        "Các phần tử trong danh sách được giới hạn bởi cặp ngoặc tròn ( ).",
+        "Cấu trúc của 1 danh sách rỗng empty = [ ]"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_9",
+      "question": "Cách tham chiếu đến 1 phần tử trong danh sách:",
+      "options": [
+        "Tên danh sách, tiếp theo là chỉ số được viết trong cặp dấu {và}.",
+        "Tên danh sách, tiếp theo là chỉ số được viết trong cặp dấu [và].",
+        "Chỉ số được đặt ngay sau tên danh sách.",
+        "Tên danh sách, tiếp theo là chỉ số được viết trong cặp dấu (và)."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_10",
+      "question": "Muốn truy cập đến phần tử thứ 5 của danh sách A ta phải theo cú pháp:",
+      "options": [
+        "A[4]",
+        "A5",
+        "A[5]",
+        "A{5}"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_11",
+      "question": "Trong NNLT Python, hàm insert(vt,n) thực hiện công việc gì?",
+      "options": [
+        "Thêm n phần tử mới vào danh sách ở vị trí thứ vt.",
+        "Thêm phần tử n mới vào danh sách ở vị trí thứ vt.",
+        "Thêm vt phần tử mới vào danh sách ở vị trí thứ n.",
+        "Thêm phần tử vt mới vào danh sách ở vị trí thứ n."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_12",
+      "question": "Cho danh sách: I = [2, 78, 5, 21]\nNếu muốn danh sách này đảo ngược thứ tự ta sử dụng phương pháp\nnào?",
+      "options": [
+        "I.reverse( )",
+        "reverse(I)",
+        "reversed(I)",
+        "I(reverse[ ])"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_13",
+      "question": "Để kiểm tra một giá trị có nằm trong danh sách hay không, ta dùng cú\npháp nào sau đây?",
+      "options": [
+        "<giá trị> in <danh sách>",
+        "<danh sách> in <giá trị>",
+        "<giá trị> on <danh sách>",
+        "<giá trị> insert <danh sách>"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_14",
+      "question": "Lệnh A . append(x) dùng để làm gì?",
+      "options": [
+        "Bổ sung phần tử x vào cuối danh sách.",
+        "Bổ sung phần tử x vào đầu danh sách.",
+        "Bổ sung phần tử x vào giữa danh sách.",
+        "Xoá phần tử x từ danh sách A."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_15",
+      "question": "Để xoá toàn bộ dữ liệu của danh sách A, dùng lệnh nào sau đây?",
+      "options": [
+        "A . clear()",
+        "A . remove()",
+        "A . del()",
+        "A . append()"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_16",
+      "question": "Lệnh A . insert(k,x) dùng để làm gì?",
+      "options": [
+        "Chèn phần tử x vào vị trí k của danh sách A",
+        "Chèn phần tử k vào vị trí x của danh sách A",
+        "Chèn phần tử k và x vào danh sách A",
+        "Xoá phần tử k và x của danh sách A"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_17",
+      "question": "Để xoá phần tử x từ danh sách A, câu lệnh nào sau đây đúng?",
+      "options": [
+        "A . remove(x)",
+        "A . clear(x)",
+        "A . insert(x)",
+        "remove.A(x)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_23_q_18",
+      "question": "Danh sách A trước và sau lệnh insert() là [1,4,10,0] và [1,4,10,5,0]. Lệnh\nđã dùng là gì?",
+      "options": [
+        "Lệnh đã dùng là A.insert(3,5)",
+        "Lệnh đã dùng là A.insert(2,5)",
+        "Lệnh đã dùng là A.insert(4,5)",
+        "Lệnh đã dùng là A.insert(5, 3)"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_24": [
+    {
+      "id": "bai_24_q_1",
+      "question": "Biểu thức \"\" in \"0123\" _ trả lại giá trị gì?",
+      "options": [
+        "True",
+        "False",
+        "Báo lỗi",
+        "Số 1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_2",
+      "question": "Biểu thức logic sau trả kết quả nào?\n\"010\" in \"001100\"",
+      "options": [
+        "True",
+        "False",
+        "4",
+        "-1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_3",
+      "question": "Xâu rỗng là xâu có độ dài bằng:",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_4",
+      "question": "Để biết độ dài của xâu s, ta dùng hàm:",
+      "options": [
+        "str(s)",
+        "len(s)",
+        "length(s)",
+        "s.len( )"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_5",
+      "question": "Cho xâu s1 = 'ab', xâu s2 = 'a'. Câu lệnh s1 in s2 cho kết quả là:",
+      "options": [
+        "true",
+        "True",
+        "false",
+        "False"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_6",
+      "question": "Cho xâu st = 'abc'. Xâu st có độ dài là:",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_7",
+      "question": "Để khởi tạo xâu rỗng s, ta dùng lệnh:",
+      "options": [
+        "s = '0'",
+        "s = ' '",
+        "s = [ ]",
+        "s = 0"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_8",
+      "question": "Trong NNLT Python, xâu kí tự là:",
+      "options": [
+        "Dãy các kí tự trong bảng mã ASCII.",
+        "Dãy các kí tự Unicode",
+        "Mảng các kí tự.",
+        "Tập hợp các chữ cái và các chữ số trong bảng chữ cái tiếng Anh."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_9",
+      "question": "Trong NNLT Python, phần tử đầu tiên của xâu kí tự mang chỉ số là?",
+      "options": [
+        "0",
+        "1",
+        "Không có chỉ số",
+        "Do người lập trình khai báo"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_10",
+      "question": "Trong NNLT Python, xâu không có kí tự nào được gọi là?",
+      "options": [
+        "Xâu rỗng",
+        "Xâu trắng",
+        "Xâu không",
+        "Không phải xâu"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_11",
+      "question": "Muốn truy cập đến phần tử thứ 5 của xâu A ta phải theo cú\npháp:",
+      "options": [
+        "A[4]",
+        "A4",
+        "A(4)",
+        "A{4}"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_12",
+      "question": "Cho biết giá trị của xâu s sau khi thực hiện các lệnh sau đây:\nS = ‘Hoang Anh Tuan’ x = S[3:7]\nL = len(x)",
+      "options": [
+        "ang",
+        "ng An",
+        "ang An",
+        "ng A"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_13",
+      "question": "Có bao nhiêu cách duyệt từng kí tự của xâu?",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_24_q_14",
+      "question": "Phát biểu nào sau đây là sai?",
+      "options": [
+        "Truy cập từng kí tự của xâu qua chỉ số, chỉ số từ 0 đến độ dài len()",
+        "Truy cập từng kí tự của xâu qua chỉ số, chỉ số từ 0 đến độ dài len() -1",
+        "Xâu kí tự trong Python là dãy các kí tự Unicode",
+        "Xâu có thể được coi là danh sách các kí tự nhưng không thay đổi từng kí tự của xâu"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_25": [
+    {
+      "id": "bai_25_q_1",
+      "question": "Lệnh \"abcde\".find(\"\")   trả lại giá trị gì?",
+      "options": [
+        "-1",
+        "0",
+        "1",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_2",
+      "question": "Lệnh sau trả lại giá trị gì?    \"0123456789\".find(\"012abc\")",
+      "options": [
+        "-1",
+        "0",
+        "1",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_3",
+      "question": "Lệnh sau trả lại giá trị gì?    len(\"  Hà Nội Việt Nam  \".split())",
+      "options": [
+        "0",
+        "4",
+        "5",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_4",
+      "question": "Lệnh sau trả lại giá trị gì?    \"Trường Sơn\".find(\"Sơn\",4)",
+      "options": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_5",
+      "question": "Lệnh sau trả lại giá trị gì?    \"Trường Sơn\".find(\"Sơn\",8)",
+      "options": [
+        "5",
+        "6",
+        "7",
+        "-1"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_6",
+      "question": "Để thay thế kí tự 'a' trong xâu s bằng một xâu mới rỗng ta\ndùng lệnh:",
+      "options": [
+        "s = s.replace('a',' ')",
+        "s = s.replace('a')",
+        "s = replace(a,'')",
+        "s = s.replace( )"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_7",
+      "question": "Trong NNLT Python, để tìm vị trí xuất hiện đầu tiên của xâu A\ntrong xâu B ta viết:",
+      "options": [
+        "<xâu A>.find<xâu B>",
+        "<xâu B>.find(<xâu A>)",
+        "find (<xâu A>,<xâu B>)",
+        "find (<xâu B>,<xâu A>)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_8",
+      "question": "Trong NNLT Python, hàm y[m:n] thực hiện việc gì trong các việc sau\nđây?",
+      "options": [
+        "Xác định xâu con của xâu n từ vị trí y đến trước vị trí m.",
+        "Xác định xâu con của xâu y từ vị trí m đến trước vị trí n+1.",
+        "Xác định xâu con của xâu y từ vị trí n đến trước vị trí m-1.",
+        "Xác định xâu con của xâu y từ vị trí m đến vị trí n-1."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_9",
+      "question": "Cú pháp của lệnh split() là:",
+      "options": [
+        "<xâu mẹ> . split(<kí tự tách>)",
+        "<xâu mẹ> . split(<xâu con>)",
+        "<xâu mẹ> : split(<kí tự tách>)",
+        "<xâu mẹ> : split(<xâu con>)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_10",
+      "question": "Cú pháp của lệnh join() là:",
+      "options": [
+        "‘kí tự nối’ . join(<danh sách>)",
+        "‘kí tự nối’ : join(<danh sách>)",
+        "‘kí tự nối’ . join(<xâu mẹ>)",
+        "‘kí tự nối’ . join(<xâu con>)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_25_q_11",
+      "question": "Phát biểu nào sau đây là sai?",
+      "options": [
+        "Lệnh join() và lệnh split() có chưc năng giống nhau là dùng để nối xâu",
+        "Để tìm một xâu trong một xâu khác có thể dùng toán tử in hoặc lệnh find(). Lệnh find() trả về vị trí của xâu con trong xâu mẹ",
+        "Lệnh split() tách một xâu thành các từ và đưa vào một danh sách",
+        "Lệnh join() có tác dụng ngược với lệnh plit(), có chức năng nối các phần tử (là xâu) của một danh sách thành một xâu"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_26": [
+    {
+      "id": "bai_26_q_1",
+      "question": "Trong định nghĩa của hàm có thể có bao nhiêu từ khóa return?",
+      "options": [
+        "1",
+        "2",
+        "Báo lỗi",
+        "Không hạn chế"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_26_q_2",
+      "question": "Mệnh đề nào dưới đây mô tả đúng về hàm tự định nghĩa không trả lại\ngiá trị?",
+      "options": [
+        "Trong mô tả hàm không có từ khóa return",
+        "Trong mô tả hàm chỉ có một từ khóa return",
+        "Trong mô tả hàm phải có tối thiểu hai từ khóa return",
+        "Trong mô tả hàm hoặc không có return hoặc có return nhưng không có giá trị sau từ khóa return"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_26_q_3",
+      "question": "Từ khóa nào dùng để định nghĩa hàm trong Python?",
+      "options": [
+        "function",
+        "def",
+        "return",
+        "void"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_26_q_4",
+      "question": "Hãy cho biết thứ tự khi thực hiện định nghĩa một hàm trả về giá trị trong\nPython:\n(1) <Khối lệnh>  (2) return <giá trị>  (3) def <tên_hàm> (<tham số>):",
+      "options": [
+        "(1), (2), (3)",
+        "(2), (3), (1)",
+        "(1), (3), (2)",
+        "(3), (1), (2)"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_26_q_5",
+      "question": "Phát biểu nào sau đây sai?",
+      "options": [
+        "Lệnh x = int( ’52 + 25’) chuyển xâu ’52 + 25’ thành số nguyên 77",
+        "Lệnh print(“Thời khoá biểu”) thực hiện việc in xâu kí tự “Thời khoá biểu” trong dấu ngoặc ra màn hình",
+        "Lệnh x = int( ‘52’) chuyển xâu ‘52’ thành số nguyên 52",
+        "Lệnh type(y) trả lại kiểu dữ liệu của biến y"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_26_q_6",
+      "question": "Phát biểu nào sau đây sai?",
+      "options": [
+        "len(): tham số là danh sách hoặc xâu kí tự và trả về giá trị kiểu số thực.",
+        "float(): tham số là một xâu kí tự hoặc số nguyên và trả về giá trị số thực.",
+        "str(): tham số là các kiểu dữ liệu khác nhau và trả về xâu kí tự.",
+        "len(): tham số là danh sách hoặc xâu kí tự và trả về giá trị kiểu số nguyên."
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_27": [
+    {
+      "id": "bai_27_q_1",
+      "question": "Hàm tự định nghĩa trong Python có thể có bao nhiêu tham số",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "Không hạn chế"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_27_q_2",
+      "question": "Khi gọi hàm, dữ liệu được truyền vào hàm được gọi là gì?",
+      "options": [
+        "Tham số",
+        "Hiệu số",
+        "Đối số",
+        "Hàm số"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_27_q_3",
+      "question": "Đoạn chương trình sau sẽ in ra số nào?\n>>> def  f (x, y) :\nz = x + y\nreturn  x*y*z\n>>>  f (1, 4)",
+      "options": [
+        "10",
+        "18",
+        "20",
+        "30"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_27_q_4",
+      "question": "Hàm func(m,n) được định nghĩa như sau:\ndef  func(m, n):\nreturn 3*m + n\nm = 10\nKết quả sẽ in ra số nào?",
+      "options": [
+        "30",
+        "31",
+        "32",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_27_q_5",
+      "question": "Cho biết tham số trong đoạn chương trình sau?\ndef  f (A, x):",
+      "options": [
+        "append (x*x) return A C=[1, 2, 3] print(f(C, 4)) A. A, x",
+        "C",
+        "f(A,x)",
+        "C, 4"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_27_q_6",
+      "question": "Cho biết tham số trong đoạn chương trình sau?\ndef  somu (x, y=2):\nreturn  x * x + y\nprint ( somu(2))",
+      "options": [
+        "x",
+        "x, y",
+        "2",
+        "y"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_27_q_7",
+      "question": "Phát biểu nào sau đây sai?",
+      "options": [
+        "Khi gọi hàm, các tham số sẽ được truyền bằng giá trị thông qua đối số của hàm, số lượng giá trị được truyền vào hàm khác với số tham số trong khai báo của hàm.",
+        "Tham số của hàm được định nghĩa khi khai báo hàm và được dùng như biến trong định nghĩa hàm.",
+        "Đối số là giá trị được truyền vào khi gọi hàm.",
+        "Khi gọi hàm, các tham số sẽ được truyền bằng giá trị thông qua đối số của hàm, số lượng giá trị được truyền vào hàm bằng với số tham số trong khai báo của hàm."
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_28": [
+    {
+      "id": "bai_28_q_1",
+      "question": "Trong Python biến được khai báo và sử dụng bên trong 1 hàm được gọi  gì?",
+      "options": [
+        "Biến địa phương",
+        "Biến tổng thể",
+        "Biến riêng",
+        "Biến thông thường"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_2",
+      "question": "Trong Python biến được khai báo và sử dụng bên ngoài một hàm được gọi\nlà gì?",
+      "options": [
+        "Biến địa phương",
+        "Biến tổng thể",
+        "Biến riêng",
+        "Biến thông thường"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_3",
+      "question": "Mệnh đề nào dưới đây phát biểu sai về phạm vi tác dụng của biến trong\nPython?",
+      "options": [
+        "Biến được khai báo bên trong hàm chỉ có tác dụng trong hàm đó, không có tác dụng bên ngoài",
+        "Biến được khai báo bên ngoài hàm sẽ không có tác dụng bên trong hàm như một biến",
+        "Biến khai báo bên ngoài nếu muốn có tác dụng bên trong hàm thì cần khai báo lại trong hàm với từ khóa global",
+        "Biến trong Python khi đã được khai báo sẽ có tác dụng trong tất cả các hàm và bên ngoài Câu 4: Cho biết kết quả in ra màn hình của đoạn chương trình sau: m, n = 10, 4 def f(a): k = n + m + a A. 10 B. 14 C. 19 D. Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_4",
+      "question": "Đoạn chương trình sau sẽ in ra giá trị gì?\ndef  f(s) :\nm = \"train\"\nreturn  m + s\nm = \"bayby\"\ns = f (\"   go\")\nprint ( s )",
+      "options": [
+        "Báo lỗi",
+        "\"train go\"",
+        "\"baby go\"",
+        "\"train baby go\""
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_5",
+      "question": "Đoạn chương trình sau sẽ in ra giá trị gì?\ndef  f(x, y):\nn = x + y\nm = x - y\nreturn 2*n*(m + 1)\nn = 5\nm = 3\nf (2, 1)\nprint (n, m)",
+      "options": [
+        "2 1",
+        "5 3",
+        "3 1",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_6",
+      "question": "Đoạn chương trình sau sẽ in ra giá trị gì?\ndef  f(a):\nn = a + 1\nn = (3*n+1)**2\nreturn n\nf (1)\nprint (n)",
+      "options": [
+        "49",
+        "2",
+        "0",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_7",
+      "question": "Đoạn chương trình sau sẽ in ra giá trị gì?\ndef  f( ):\nn = n + 1\nreturn n\nn = 15\na = f ( )\nprint ( a )",
+      "options": [
+        "15",
+        "16",
+        "0",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_8",
+      "question": "Sau khi thực hiện đoạn chương trình sau, giá trị của a và b bằng\nbao nhiêu?\na=10\nb=14\ndef  f(a, b ):\na = a + 2\nb = b + 10\nreturn a + b\nprint ( f(a, b) )",
+      "options": [
+        "a=12, b=14",
+        "a= 10, b=14",
+        "a=12, b=24",
+        "Báo lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_28_q_9",
+      "question": "Nếu biến bên ngoài hàm muốn có tác dụng bên trong hàm ta dùng từ\nkhoá nào để khai báo?",
+      "options": [
+        "len",
+        "def",
+        "global",
+        "input"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_29": [
+    {
+      "id": "bai_29_q_1",
+      "question": "Xác định loại lỗi của câu lệnh sau:   >>> A = list ( 12 )",
+      "options": [
+        "Lỗi cú pháp",
+        "Lỗi ngoại lệ",
+        "Lỗi khác",
+        "Không có lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_2",
+      "question": "Nhận biết lỗi của đoạn chương trình sau:\n123ab = { 1, 2, 3 } print (123ab)",
+      "options": [
+        "Lỗi cú pháp",
+        "Lỗi ngoại lệ",
+        "Lỗi khác",
+        "Không có lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_3",
+      "question": "Lỗi ngoại lệ trong Python là lỗi gì?",
+      "options": [
+        "Lỗi khi viết một câu lệnh sai cú pháp của ngôn ngữ lập trình",
+        "Lỗi khi truy cập một biến chưa được khai báo",
+        "Lỗi khi không thể thực hiện một lệnh nào đó của chương trình",
+        "Lỗi khi chương trình biên dịch sang tệp exe."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_4",
+      "question": "Nhận biết loại lỗi của chương trình sau:\nn = 10\nfor  i  in range ( n ) :  Print (i, end = \" \" )",
+      "options": [
+        "SyntaxError",
+        "TypeError",
+        "ValueError",
+        "NameError"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_5",
+      "question": "Nhận biết loại lỗi của chương trình sau:\nA = [ 1, 2, 3 ]\nfor i in range ( 4 ) :  print ( A [ i ] )",
+      "options": [
+        "SyntaxError",
+        "TypeError",
+        "ValueError",
+        "IndexError"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_6",
+      "question": "Nhận biết loại lỗi của chương trình sau:\nn = input (\"nhập số tự nhiên n: \")\nk = int (input (\"nhập số lần cần nhân lên: \")\nprint ( \"kết quả là:\", n*k )",
+      "options": [
+        "SyntaxError",
+        "TypeError",
+        "ValueError",
+        "NameError"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_7",
+      "question": "Trong lời gọi hàm, nếu các đối số được truyền vào hàm bị thiếu thì lỗi ngoại\nlệ phát sinh thuộc loại nào dưới đây?",
+      "options": [
+        "SyntaxError",
+        "TypeError",
+        "NameError",
+        "Không phát sinh lỗi ngoại lệ"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_8",
+      "question": "Đoạn lệnh sau sẽ phát sinh lỗi ngoại lệ nào?\n>>> s = \"abc\"\n>>> s [ 10 ]",
+      "options": [
+        "SyntaxError",
+        "TypeError",
+        "IndexError",
+        "NameError"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_9",
+      "question": "Giả sử chương trình có lệnh nhập dữ liệu như sau:\nN = int ( input(\"Nhập số nguyên n: \"))\nKhi chúng ta nhập 1. 5 thì chương trình có lỗi ngoại lệ nào?",
+      "options": [
+        "SyntaxError",
+        "TypeError",
+        "ValueError",
+        "IndexError"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_10",
+      "question": "Bài toán yêu cầu sắp xếp dãy số ban đầu thành dãy tăng dần. Giả sử dãy\nsố ban đầu là [ 3, 1, 8, 10,  5 ]. Kết quả thu được dãy [1, 3, 8, 5, 10].  Chương trình\ncó lỗi không? Nếu có lỗi thì đó thuộc loại gì?",
+      "options": [
+        "Lỗi cú pháp",
+        "Lỗi logic bên trong chương trình",
+        "Lỗi ngoại lệ",
+        "Không có lỗi"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_29_q_11",
+      "question": "Lệnh nào sau đây không xảy ra lỗi?",
+      "options": [
+        "A [ 1.5 ]",
+        "int (\"abc\")",
+        "\"10\"*3.5",
+        "float(\"123\")"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_30": [
+    {
+      "id": "bai_30_q_1",
+      "question": "Mục đích của kiểm thử chương trình là gì?",
+      "options": [
+        "Để tự động sửa lỗi chương trình",
+        "Để tìm ra lỗi của chương trình",
+        "Để tìm ra lỗi và phòng ngừa, ngăn chặn các lỗi phát sinh trong tương lai",
+        "Để tìm ra lỗi và tự động sửa lỗi chương trình"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_30_q_2",
+      "question": "Nếu chương trình chạy bị lỗi với thông báo là ZeroDivisionError thì\nđó là lỗi gì và em cần sửa lỗi như thế nào? Chọn phương án đúng nhất.",
+      "options": [
+        "Đây là lỗi không thể sửa được",
+        "Đây là lỗi chia cho 0, em cần xóa lệnh này khỏi chương trình",
+        "Đây là lỗi chia cho 0, em cần thay thế phép toán khác để không xảy ra lỗi này nữa",
+        "Đây là lỗi chia cho 0, em cần tìm hiểu nguyên nhân vì sao lại xuất hiện 0 khi chia, có thể bổ sung lệnh kiểm tra trước khi thực hiện phép chia."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_30_q_3",
+      "question": "Điểm dừng (break point) trong các phần mềm soạn thảo lập trình có ý\nnghĩa gì?",
+      "options": [
+        "Đó là vị trí chương trình chạy tới đó thì kết thúc.",
+        "Đó là vị trí chương trình dừng lại để người lập trình quan sát phát hiện lỗi.",
+        "Đó là vị trí chương trình mỗi khi chạy đến dòng lệnh đó sẽ kêu pip pip.",
+        "Đó là vị trí chương trình tạm dừng, người lập trình sẽ quan sát các biến của chương trình và có thể điều khiển để chương trình tiếp tục chạy."
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_30_q_4",
+      "question": "Bộ dữ liệu kiểm thử (test) có những tính chất gì?",
+      "options": [
+        "Tính chất phát hiện lỗi của chương trình",
+        "Cần có càng nhiều càng tốt",
+        "Cần được sinh ngẫu nhiên và phủ kín các trường hợp biên của dữ liệu đầu vào bài toán",
+        "Không cần có giá trị gì?"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_30_q_5",
+      "question": "Phần mềm soạn thảo lập trình có thể tạo bao nhiêu điểm dừng?",
+      "options": [
+        "0",
+        "1",
+        "Không hạn chế",
+        "10"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "bai_30_q_6",
+      "question": "Các phương pháp nào dưới đây KHÔNG được coi là phương pháp\nkiểm thử chương trình?",
+      "options": [
+        "In các dữ liệu trung gian",
+        "Sinh các bộ dữ liệu test để kiểm tra chương trình",
+        "Đặt tên biến và hàm có ý nghĩa",
+        "Tạo điểm dừng để quan sát và phát hiện lỗi chương trình"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "bai_31": []
+}
