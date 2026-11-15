@@ -178,6 +178,14 @@ except BaseException as exc:
   activeSession = null;
 }
 
+function removeDiacritics(str) {
+  return String(str || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+}
+
 function normalizeOutputForMatching(str) {
   return String(str ?? "")
     .replace(/\r\n/g, "\n")
@@ -185,38 +193,123 @@ function normalizeOutputForMatching(str) {
     .trim();
 }
 
-function cleanLineForMatching(line) {
-  return line
-    .trim()
-    .replace(/[ \t]+/g, " ")
-    .replace(/\s*:\s*/g, ": ")
-    .replace(/\s*,\s*/g, ", ")
-    .replace(/["']/g, '"');
+function normalizeToken(tok) {
+  let s = removeDiacritics(tok).toLowerCase();
+  s = s.replace(/[:;,]/g, "");
+  return s;
 }
 
-function isTokenEqual(eTok, aTok) {
-  if (eTok.toLowerCase() === aTok.toLowerCase()) return true;
+const COMMON_UNITS = [
+  "vnd",
+  "vnđ",
+  "d",
+  "đ",
+  "dong",
+  "kwh",
+  "gio",
+  "h",
+  "giay",
+  "s",
+  "phut",
+  "m",
+  "cm",
+  "mm",
+  "km",
+  "kg",
+  "g",
+  "mb",
+  "mb/s",
+  "gb",
+  "kb",
+  "byte",
+  "bytes",
+  "nam",
+  "thang",
+  "ngay",
+  "tuoi",
+  "hoc sinh",
+  "hs",
+  "goi",
+  "phan qua",
+  "do",
+  "c",
+  "f",
+];
 
-  // Numeric equivalence with optional unit support (e.g. 150.0kWh vs 150kWh, 40000.0 vs 40000)
-  const eNum = Number(eTok.replace(/[^0-9.-]/g, ""));
-  const aNum = Number(aTok.replace(/[^0-9.-]/g, ""));
-  if (!isNaN(eNum) && !isNaN(aNum) && Math.abs(eNum - aNum) < 1e-4) {
-    const eUnit = eTok.replace(/[0-9.-]/g, "").toLowerCase();
-    const aUnit = aTok.replace(/[0-9.-]/g, "").toLowerCase();
-    if (eUnit === aUnit) return true;
+function isTokenEqual(eTok, aTok) {
+  const normE = normalizeToken(eTok);
+  const normA = normalizeToken(aTok);
+  if (normE === normA) return true;
+
+  const eNum = Number(normE.replace(/[^0-9.-]/g, ""));
+  const aNum = Number(normA.replace(/[^0-9.-]/g, ""));
+  const eHasNum = normE.replace(/[^0-9]/g, "") !== "";
+  const aHasNum = normA.replace(/[^0-9]/g, "") !== "";
+
+  if (!isNaN(eNum) && !isNaN(aNum) && eHasNum && aHasNum) {
+    if (Math.abs(eNum - aNum) < 1e-3) {
+      const eUnit = normE.replace(/[0-9.-]/g, "").trim();
+      const aUnit = normA.replace(/[0-9.-]/g, "").trim();
+      if (eUnit === aUnit) return true;
+      if (
+        (eUnit === "%" && aUnit === "") ||
+        (eUnit === "" && aUnit === "%")
+      )
+        return true;
+      if (COMMON_UNITS.includes(eUnit) && COMMON_UNITS.includes(aUnit))
+        return true;
+      if (COMMON_UNITS.includes(eUnit) && aUnit === "") return true;
+      if (eUnit === "" && COMMON_UNITS.includes(aUnit)) return true;
+    }
   }
+
   return false;
 }
 
-function isSingleLineMatch(expLine, actLine) {
+function cleanLineTokens(line) {
+  let s = removeDiacritics(line).toLowerCase();
+  s = s.replace(/^[=\-*#_]{2,}\s*/, "").replace(/\s*[=\-*#_]{2,}$/, "");
+  s = s.replace(/[:;,]/g, " ");
+  s = s.replace(/%/g, " % ");
+  return s.split(/\s+/).filter(Boolean).filter((tok) => tok !== "%");
+}
+
+function isLineMatch(expLine, actLine) {
   if (expLine === actLine) return true;
-  if (expLine.toLowerCase() === actLine.toLowerCase()) return true;
 
-  const expTokens = expLine.split(" ").filter(Boolean);
-  const actTokens = actLine.split(" ").filter(Boolean);
+  const eTokens = cleanLineTokens(expLine);
+  const aTokens = cleanLineTokens(actLine);
 
-  if (expTokens.length === actTokens.length) {
-    return expTokens.every((eTok, i) => isTokenEqual(eTok, actTokens[i]));
+  if (eTokens.join(" ") === aTokens.join(" ")) return true;
+
+  if (eTokens.length === aTokens.length) {
+    if (eTokens.every((tok, i) => isTokenEqual(tok, aTokens[i]))) return true;
+  }
+
+  // Handle optional unit tokens (e.g. ['5000000', 'vnd'] vs ['5000000'])
+  const eCore = eTokens.filter((t) => !COMMON_UNITS.includes(t));
+  const aCore = aTokens.filter((t) => !COMMON_UNITS.includes(t));
+  if (eCore.length === aCore.length && eCore.length > 0) {
+    if (eCore.every((tok, i) => isTokenEqual(tok, aCore[i]))) return true;
+  }
+
+  // Single-value line match (e.g. expected has label, actual only has value)
+  if (aCore.length === 1 && eCore.length > 1) {
+    const lastETok = eCore[eCore.length - 1];
+    if (isTokenEqual(lastETok, aCore[0])) return true;
+  }
+
+  // Both lines end with the same numerical value / calculation result
+  if (eCore.length > 0 && aCore.length > 0) {
+    const lastE = eCore[eCore.length - 1];
+    const lastA = aCore[aCore.length - 1];
+    if (isTokenEqual(lastE, lastA)) {
+      const eNum = Number(lastE.replace(/[^0-9.-]/g, ""));
+      const aNum = Number(lastA.replace(/[^0-9.-]/g, ""));
+      if (!isNaN(eNum) && !isNaN(aNum) && Math.abs(eNum - aNum) < 1e-3) {
+        return true;
+      }
+    }
   }
 
   return false;
@@ -224,45 +317,78 @@ function isSingleLineMatch(expLine, actLine) {
 
 /**
  * Smart / Lenient Output Matcher for High School Python Pedagogy:
- * - Tolerates extra/missing spaces (e.g. after colons or commas)
- * - Tolerates case mismatch (e.g. vnđ vs VNĐ, kWh vs KWH)
- * - Tolerates numeric equivalence (e.g. 450000 vs 450000.0)
+ * - Tolerates missing or extra colons (:), commas, hyphens
+ * - Tolerates missing percent sign (%) or currency units (vnđ, đ, kWh)
+ * - Tolerates unaccented Vietnamese (Tiếng Việt không dấu)
+ * - Tolerates case mismatch (e.g. vnđ vs VNĐ, true vs True)
+ * - Tolerates numeric equivalence (e.g. 40000 vs 40000.0)
  * - Tolerates leaked input() prompts (e.g. input("Nhap n: "))
+ * - Aligns core calculation output values
  */
 function isOutputMatch(expectedRaw, actualRaw) {
   if (expectedRaw === actualRaw) return true;
 
-  const expected = normalizeOutputForMatching(expectedRaw);
-  const actual = normalizeOutputForMatching(actualRaw);
-  if (expected === actual) return true;
+  const normExpected = normalizeOutputForMatching(expectedRaw);
+  const normActual = normalizeOutputForMatching(actualRaw);
+  if (normExpected === normActual) return true;
 
-  const expLines = expected.split("\n").map(cleanLineForMatching).filter((l) => l.length > 0);
-  let actLines = actual.split("\n").map(cleanLineForMatching).filter((l) => l.length > 0);
+  let expLines = normExpected
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+  let actLines = normActual
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
 
-  // 1. Clean line string match (exact or case-insensitive)
-  if (expLines.join("\n") === actLines.join("\n")) return true;
-  if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
+  // 1. Direct or unaccented case-insensitive full text match
+  if (
+    removeDiacritics(normExpected).toLowerCase() ===
+    removeDiacritics(normActual).toLowerCase()
+  ) {
+    return true;
+  }
 
-  // 2. Input prompt leak stripping
+  // 2. Leaked prompt filter in first line
   if (actLines.length > 0 && expLines.length > 0) {
-    const promptRegex = /^(.*?(?:nhập|nhap|enter|input|cho|hãy|hay|prompt).*?[:\?]\s*)/i;
+    const promptRegex =
+      /^(.*?(?:nhập|nhap|enter|input|cho|hãy|hay|prompt).*?[:\?]\s*)/i;
     if (promptRegex.test(actLines[0])) {
-      actLines[0] = cleanLineForMatching(actLines[0].replace(promptRegex, ""));
+      actLines[0] = actLines[0].replace(promptRegex, "").trim();
       actLines = actLines.filter((l) => l.length > 0);
-      if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
+      if (
+        removeDiacritics(expLines.join("\n")).toLowerCase() ===
+        removeDiacritics(actLines.join("\n")).toLowerCase()
+      ) {
+        return true;
+      }
     }
   }
 
-  // 3. Line-by-line token & numeric comparison
+  // 3. Line by line match
   if (expLines.length === actLines.length && expLines.length > 0) {
-    let allLinesMatch = true;
-    for (let i = 0; i < expLines.length; i++) {
-      if (!isSingleLineMatch(expLines[i], actLines[i])) {
-        allLinesMatch = false;
-        break;
+    if (expLines.every((l, i) => isLineMatch(l, actLines[i]))) return true;
+  }
+
+  // 4. Value extraction comparison (tolerates different Vietnamese label wording)
+  const extractCoreValues = (lines) => {
+    const vals = [];
+    for (const line of lines) {
+      const tokens = cleanLineTokens(line).filter(
+        (t) => !COMMON_UNITS.includes(t)
+      );
+      if (tokens.length > 0) {
+        vals.push(tokens[tokens.length - 1]);
       }
     }
-    if (allLinesMatch) return true;
+    return vals;
+  };
+
+  const expValues = extractCoreValues(expLines);
+  const actValues = extractCoreValues(actLines);
+
+  if (expValues.length > 0 && expValues.length === actValues.length) {
+    if (expValues.every((ev, i) => isTokenEqual(ev, actValues[i]))) return true;
   }
 
   return false;

@@ -2,10 +2,14 @@
  * Chroma Python Answer Diagnostic Engine & Smart Matcher
  * Analyzes and flexibly matches student output against expected output.
  * Tolerates:
- * 1. Extra/missing spaces (especially after colons or commas)
- * 2. Case sensitivity (e.g. vnđ vs VNĐ, kWh vs KWH)
- * 3. Numeric equivalence (e.g. 450000 vs 450000.0, 150 vs 150.0)
- * 4. Leaked input prompts (e.g. input("Nhap so gio: "))
+ * 1. Missing or extra punctuation like colons (:) or hyphens (-) or percent (%)
+ * 2. Unaccented Vietnamese (Tiếng Việt không dấu) e.g. "So tien gui" vs "Số tiền gửi"
+ * 3. Extra/missing spaces around colons, commas, or words
+ * 4. Case sensitivity (e.g. vnđ vs VNĐ, kWh vs KWH)
+ * 5. Numeric equivalence (e.g. 40000 vs 40000.0, 150 vs 150.0)
+ * 6. Optional units (e.g. vnđ, %, kWh, giây, s, MB)
+ * 7. Leaked input prompts (e.g. input("Nhap n: "))
+ * 8. Core output value alignment (focusing on computational formula results)
  */
 
 export interface DiagnosticResult {
@@ -26,6 +30,17 @@ export interface DiagnosticResult {
 }
 
 /**
+ * Strips Vietnamese diacritics / accents for flexible comparison
+ */
+export function removeDiacritics(str: string): string {
+  return String(str || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+}
+
+/**
  * Normalizes newlines across platforms (\r\n -> \n)
  */
 export function normalizeNewlines(str: string): string {
@@ -36,8 +51,211 @@ export function normalizeNewlines(str: string): string {
 }
 
 /**
- * Cleans a line by collapsing spaces and normalizing colons/commas
+ * Normalizes a token by stripping trailing punctuation and accents
  */
+function normalizeToken(tok: string): string {
+  let s = removeDiacritics(tok).toLowerCase();
+  s = s.replace(/[:;,]/g, "");
+  return s;
+}
+
+const COMMON_UNITS = [
+  "vnd",
+  "vnđ",
+  "d",
+  "đ",
+  "dong",
+  "kwh",
+  "gio",
+  "h",
+  "giay",
+  "s",
+  "phut",
+  "m",
+  "cm",
+  "mm",
+  "km",
+  "kg",
+  "g",
+  "mb",
+  "mb/s",
+  "gb",
+  "kb",
+  "byte",
+  "bytes",
+  "nam",
+  "thang",
+  "ngay",
+  "tuoi",
+  "hoc sinh",
+  "hs",
+  "goi",
+  "phan qua",
+  "do",
+  "c",
+  "f",
+];
+
+/**
+ * Checks if two tokens are equal, unaccented equivalent, or numerically equivalent
+ */
+export function isTokenEqual(eTok: string, aTok: string): boolean {
+  const normE = normalizeToken(eTok);
+  const normA = normalizeToken(aTok);
+  if (normE === normA) return true;
+
+  const eNum = Number(normE.replace(/[^0-9.-]/g, ""));
+  const aNum = Number(normA.replace(/[^0-9.-]/g, ""));
+  const eHasNum = normE.replace(/[^0-9]/g, "") !== "";
+  const aHasNum = normA.replace(/[^0-9]/g, "") !== "";
+
+  if (!isNaN(eNum) && !isNaN(aNum) && eHasNum && aHasNum) {
+    if (Math.abs(eNum - aNum) < 1e-3) {
+      const eUnit = normE.replace(/[0-9.-]/g, "").trim();
+      const aUnit = normA.replace(/[0-9.-]/g, "").trim();
+      if (eUnit === aUnit) return true;
+      if (
+        (eUnit === "%" && aUnit === "") ||
+        (eUnit === "" && aUnit === "%")
+      )
+        return true;
+      if (COMMON_UNITS.includes(eUnit) && COMMON_UNITS.includes(aUnit))
+        return true;
+      if (COMMON_UNITS.includes(eUnit) && aUnit === "") return true;
+      if (eUnit === "" && COMMON_UNITS.includes(aUnit)) return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Cleans a line into unaccented, punctuation-free tokens
+ */
+export function cleanLineTokens(line: string): string[] {
+  let s = removeDiacritics(line).toLowerCase();
+  s = s.replace(/^[=\-*#_]{2,}\s*/, "").replace(/\s*[=\-*#_]{2,}$/, "");
+  s = s.replace(/[:;,]/g, " ");
+  s = s.replace(/%/g, " % ");
+  return s.split(/\s+/).filter(Boolean).filter((tok) => tok !== "%");
+}
+
+/**
+ * Checks if a single line matches flexibly
+ */
+export function isLineMatch(expLine: string, actLine: string): boolean {
+  if (expLine === actLine) return true;
+
+  const eTokens = cleanLineTokens(expLine);
+  const aTokens = cleanLineTokens(actLine);
+
+  if (eTokens.join(" ") === aTokens.join(" ")) return true;
+
+  if (eTokens.length === aTokens.length) {
+    if (eTokens.every((tok, i) => isTokenEqual(tok, aTokens[i]))) return true;
+  }
+
+  // Handle optional unit tokens (e.g. ['5000000', 'vnd'] vs ['5000000'])
+  const eCore = eTokens.filter((t) => !COMMON_UNITS.includes(t));
+  const aCore = aTokens.filter((t) => !COMMON_UNITS.includes(t));
+  if (eCore.length === aCore.length && eCore.length > 0) {
+    if (eCore.every((tok, i) => isTokenEqual(tok, aCore[i]))) return true;
+  }
+
+  // Single-value line match (e.g. expected has label, actual only has value)
+  if (aCore.length === 1 && eCore.length > 1) {
+    const lastETok = eCore[eCore.length - 1];
+    if (isTokenEqual(lastETok, aCore[0])) return true;
+  }
+
+  // Both lines end with the same numerical value / calculation result
+  if (eCore.length > 0 && aCore.length > 0) {
+    const lastE = eCore[eCore.length - 1];
+    const lastA = aCore[aCore.length - 1];
+    if (isTokenEqual(lastE, lastA)) {
+      const eNum = Number(lastE.replace(/[^0-9.-]/g, ""));
+      const aNum = Number(lastA.replace(/[^0-9.-]/g, ""));
+      if (!isNaN(eNum) && !isNaN(aNum) && Math.abs(eNum - aNum) < 1e-3) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Smart / Lenient Output Matcher for High School Python Pedagogy
+ */
+export function isOutputMatch(expectedRaw: string, actualRaw: string): boolean {
+  if (expectedRaw === actualRaw) return true;
+
+  const normExpected = normalizeNewlines(expectedRaw);
+  const normActual = normalizeNewlines(actualRaw);
+  if (normExpected === normActual) return true;
+
+  let expLines = normExpected
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+  let actLines = normActual
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+
+  // 1. Direct or unaccented case-insensitive full text match
+  if (
+    removeDiacritics(normExpected).toLowerCase() ===
+    removeDiacritics(normActual).toLowerCase()
+  ) {
+    return true;
+  }
+
+  // 2. Leaked prompt filter in first line
+  if (actLines.length > 0 && expLines.length > 0) {
+    const promptRegex =
+      /^(.*?(?:nhập|nhap|enter|input|cho|hãy|hay|prompt).*?[:\?]\s*)/i;
+    if (promptRegex.test(actLines[0])) {
+      actLines[0] = actLines[0].replace(promptRegex, "").trim();
+      actLines = actLines.filter((l) => l.length > 0);
+      if (
+        removeDiacritics(expLines.join("\n")).toLowerCase() ===
+        removeDiacritics(actLines.join("\n")).toLowerCase()
+      ) {
+        return true;
+      }
+    }
+  }
+
+  // 3. Line by line match
+  if (expLines.length === actLines.length && expLines.length > 0) {
+    if (expLines.every((l, i) => isLineMatch(l, actLines[i]))) return true;
+  }
+
+  // 4. Value extraction comparison (tolerates different Vietnamese label wording)
+  const extractCoreValues = (lines: string[]) => {
+    const vals: string[] = [];
+    for (const line of lines) {
+      const tokens = cleanLineTokens(line).filter(
+        (t) => !COMMON_UNITS.includes(t)
+      );
+      if (tokens.length > 0) {
+        vals.push(tokens[tokens.length - 1]);
+      }
+    }
+    return vals;
+  };
+
+  const expValues = extractCoreValues(expLines);
+  const actValues = extractCoreValues(actLines);
+
+  if (expValues.length > 0 && expValues.length === actValues.length) {
+    if (expValues.every((ev, i) => isTokenEqual(ev, actValues[i]))) return true;
+  }
+
+  return false;
+}
+
 export function cleanLine(line: string): string {
   return line
     .trim()
@@ -45,85 +263,6 @@ export function cleanLine(line: string): string {
     .replace(/\s*:\s*/g, ": ")
     .replace(/\s*,\s*/g, ", ")
     .replace(/["']/g, '"');
-}
-
-/**
- * Checks if two tokens are equal or numerically equivalent (with optional unit like vnđ, kWh)
- */
-function isTokenEqual(eTok: string, aTok: string): boolean {
-  if (eTok.toLowerCase() === aTok.toLowerCase()) return true;
-
-  const eNum = Number(eTok.replace(/[^0-9.-]/g, ""));
-  const aNum = Number(aTok.replace(/[^0-9.-]/g, ""));
-  if (!isNaN(eNum) && !isNaN(aNum) && Math.abs(eNum - aNum) < 1e-4) {
-    const eUnit = eTok.replace(/[0-9.-]/g, "").toLowerCase();
-    const aUnit = aTok.replace(/[0-9.-]/g, "").toLowerCase();
-    if (eUnit === aUnit) return true;
-  }
-  return false;
-}
-
-/**
- * Compares two lines flexibly
- */
-function isSingleLineMatch(expLine: string, actLine: string): boolean {
-  if (expLine === actLine) return true;
-  if (expLine.toLowerCase() === actLine.toLowerCase()) return true;
-
-  const expTokens = expLine.split(" ").filter(Boolean);
-  const actTokens = actLine.split(" ").filter(Boolean);
-
-  if (expTokens.length === actTokens.length) {
-    return expTokens.every((eTok, i) => isTokenEqual(eTok, actTokens[i]));
-  }
-
-  return false;
-}
-
-/**
- * Smart / Lenient Output Matcher for High School Python Pedagogy:
- * - Tolerates extra/missing spaces
- * - Tolerates case mismatch
- * - Tolerates numeric equivalence (e.g. 450000 vs 450000.0)
- * - Tolerates leaked input() prompts
- */
-export function isOutputMatch(expectedRaw: string, actualRaw: string): boolean {
-  if (expectedRaw === actualRaw) return true;
-
-  const expected = normalizeNewlines(expectedRaw);
-  const actual = normalizeNewlines(actualRaw);
-  if (expected === actual) return true;
-
-  const expLines = expected.split("\n").map(cleanLine).filter((l) => l.length > 0);
-  let actLines = actual.split("\n").map(cleanLine).filter((l) => l.length > 0);
-
-  // 1. Clean line string match (exact or case-insensitive)
-  if (expLines.join("\n") === actLines.join("\n")) return true;
-  if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
-
-  // 2. Input prompt leak stripping
-  if (actLines.length > 0 && expLines.length > 0) {
-    const promptRegex = /^(.*?(?:nhập|nhap|enter|input|cho|hãy|hay|prompt).*?[:\?]\s*)/i;
-    if (promptRegex.test(actLines[0])) {
-      actLines[0] = cleanLine(actLines[0].replace(promptRegex, ""));
-      actLines = actLines.filter((l) => l.length > 0);
-      if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
-    }
-  }
-
-  // 3. Line-by-line token & numeric comparison
-  if (expLines.length === actLines.length && expLines.length > 0) {
-    let allLinesMatch = true;
-    for (let i = 0; i < expLines.length; i++) {
-      if (!isSingleLineMatch(expLines[i], actLines[i])) {
-        allLinesMatch = false;
-        break;
-      }
-    }
-    if (allLinesMatch) return true;
-  }
-
-  return false;
 }
 
 /**
@@ -219,7 +358,7 @@ export function diagnose(expected: string, actual: string): DiagnosticResult {
     // Same line count: pinpoint the exact first line that differs!
     if (expLines.length === actLines.length) {
       for (let i = 0; i < expLines.length; i++) {
-        if (!isSingleLineMatch(expLines[i], actLines[i])) {
+        if (!isLineMatch(expLines[i], actLines[i])) {
           return {
             isDiagnosed: true,
             type: "CONTENT_MISMATCH",

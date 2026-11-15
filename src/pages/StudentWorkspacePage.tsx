@@ -102,6 +102,25 @@ export const StudentWorkspacePage: React.FC = () => {
     "SPLIT"
   );
   const [cheatSheetOpen, setCheatSheetOpen] = useState<boolean>(false);
+  const [isLeftPaneOpen, setIsLeftPaneOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem("chroma_py_workspace_left_pane");
+      return saved !== null ? saved === "true" : true;
+    } catch {
+      return true;
+    }
+  });
+
+  const toggleLeftPane = () => {
+    setIsLeftPaneOpen((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("chroma_py_workspace_left_pane", String(next));
+      } catch {}
+      return next;
+    });
+  };
+
   const [editorFontSize, setEditorFontSize] = useState<number>(() => {
     const saved = localStorage.getItem("chroma_py_editor_font_size");
     const parsed = saved ? parseInt(saved, 10) : 14;
@@ -840,7 +859,7 @@ export const StudentWorkspacePage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col bg-background text-primary">
+    <div className="h-screen min-h-[480px] w-full overflow-hidden flex flex-col bg-background text-primary">
       {/* 1. Student-Friendly Top Status Bar */}
       <TopNavigationBar
         breadcrumb={t(
@@ -858,14 +877,20 @@ export const StudentWorkspacePage: React.FC = () => {
       />
 
       {/* 2. Main Full-Viewport 3-Pane Split Layout */}
-      <div className="flex-1 overflow-hidden bg-grid">
-        <PanelGroup direction="horizontal" className="h-full w-full">
+      <div className="flex-1 min-h-0 overflow-hidden bg-grid">
+        <PanelGroup
+          key={isLeftPaneOpen ? "with-left" : "without-left"}
+          direction="horizontal"
+          className="h-full w-full"
+        >
           {/* LEFT PANE: Exercise Selector + Problem Specification */}
-          <Panel
-            defaultSize={34}
-            minSize={24}
-            className="bg-surface flex flex-col h-full"
-          >
+          {isLeftPaneOpen && (
+            <>
+              <Panel
+                defaultSize={32}
+                minSize={20}
+                className="bg-surface flex flex-col h-full min-w-0"
+              >
             {/* Left Pane Header + Difficulty Filter */}
             <div className="px-4 py-2.5 bg-subtle border-b border-grid space-y-2 shrink-0 font-mono text-xs">
               <div className="flex items-center justify-between">
@@ -1212,25 +1237,44 @@ export const StudentWorkspacePage: React.FC = () => {
 
           {/* 1px Vertical Structural Hairline Handle */}
           <PanelResizeHandle className="w-[1px] bg-grid hover:bg-brand transition-colors cursor-col-resize" />
+        </>
+      )}
 
-          {/* CENTER + RIGHT/BOTTOM PANES: Monaco Editor & Interactive Terminal */}
-          <Panel defaultSize={66} minSize={40}>
-            <PanelGroup direction="vertical" className="h-full w-full">
+      {/* CENTER + RIGHT/BOTTOM PANES: Monaco Editor & Interactive Terminal */}
+      <Panel defaultSize={isLeftPaneOpen ? 68 : 100} minSize={30} className="min-w-0">
+        <PanelGroup direction="vertical" className="h-full w-full">
               {/* CENTER PANE: Monaco Code Editor */}
               <Panel
                 defaultSize={62}
                 minSize={28}
                 className="bg-terminal flex flex-col"
               >
-                {/* Row 1: Primary Editor Action Toolbar */}
-                <div className="h-11 px-4 bg-surface border-b border-grid flex items-center justify-between font-mono text-xs shrink-0 gap-2 overflow-x-auto">
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="px-2.5 py-1 bg-subtle border border-grid text-primary font-semibold">
+                {/* Row 1: Primary Editor Action Toolbar (Responsive for high browser zoom / scaling) */}
+                <div className="min-h-[44px] h-auto py-1.5 px-3 bg-surface border-b border-grid flex flex-wrap items-center justify-between font-mono text-xs shrink-0 gap-1.5 sm:gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
+                    {/* Nút Thu gọn / Mở rộng Đề bài */}
+                    <button
+                      type="button"
+                      onClick={toggleLeftPane}
+                      title={
+                        isLeftPaneOpen
+                          ? t("Thu gọn đề bài để mở rộng khung code", "Collapse problem panel")
+                          : t("Mở lại đề bài tập", "Show problem panel")
+                      }
+                      className="neo-btn px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-secondary hover:text-primary transition-colors flex items-center gap-1.5 shrink-0"
+                    >
+                      <span className="text-brand font-bold">{isLeftPaneOpen ? "◀" : "▶"}</span>
+                      <span className="font-semibold text-xs">
+                        {isLeftPaneOpen ? t("ẨN ĐỀ", "HIDE PROBLEM") : t("XEM ĐỀ", "SHOW PROBLEM")}
+                      </span>
+                    </button>
+
+                    <span className="px-2.5 py-1 bg-subtle border border-grid text-primary font-semibold hidden md:inline shrink-0">
                       🐍 bai_lam.py
                     </span>
 
                     {/* Bộ công cụ Zoom / Chỉnh cỡ chữ */}
-                    <div className="flex items-center border border-grid bg-subtle">
+                    <div className="flex items-center border border-grid bg-subtle shrink-0">
                       <button
                         type="button"
                         onClick={handleZoomOut}
@@ -1247,7 +1291,7 @@ export const StudentWorkspacePage: React.FC = () => {
                           "Cỡ chữ hiện tại - Bấm để đặt lại về 14px",
                           "Current font size - Click to reset to 14px"
                         )}
-                        className="px-2 py-1 text-primary hover:text-brand font-semibold text-[11px] min-w-[42px] text-center transition-colors"
+                        className="px-2 py-1 text-primary hover:text-brand font-semibold text-[11px] min-w-[38px] text-center transition-colors"
                       >
                         {editorFontSize}px
                       </button>
@@ -1267,15 +1311,16 @@ export const StudentWorkspacePage: React.FC = () => {
                       type="button"
                       onClick={() => setCheatSheetOpen(true)}
                       title={t("Mở sổ tay tra cứu hàm Python cơ bản", "Open Python Cheat Sheet")}
-                      className="px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-secondary hover:text-primary transition-colors hidden sm:flex items-center gap-1"
+                      className="px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-secondary hover:text-primary transition-colors flex items-center gap-1 shrink-0"
                     >
                       <span>📖</span>
-                      <span>{t("SỔ TAY HÀM", "CHEAT SHEET")}</span>
+                      <span className="hidden sm:inline">{t("SỔ TAY HÀM", "CHEAT SHEET")}</span>
                     </button>
                   </div>
 
                   {/* Primary Execution & Cloud Actions */}
-                  <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                    {/* 1. CHẠY THỬ */}
                     <button
                       onClick={handleRunCode}
                       disabled={engineState === "initializing"}
@@ -1283,13 +1328,31 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Chạy thử chương trình Python (Phím tắt: Ctrl+Enter)",
                         "Run Python program (Shortcut: Ctrl+Enter)"
                       )}
-                      className="neo-btn px-3.5 py-1.5 bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors flex items-center gap-1.5 disabled:opacity-40"
+                      className="neo-btn px-3 py-1 bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors flex items-center gap-1 disabled:opacity-40 shrink-0"
                     >
-                      <span>[▶]</span>
-                      <span>{t("CHẠY THỬ", "RUN CODE")}</span>
+                      <span>▶</span>
+                      <span>{t("CHẠY THỬ", "RUN")}</span>
                     </button>
 
-                    {/* Step-by-Step Tracer Button */}
+                    {/* 2. NỘP BÀI & CHẤM ĐIỂM (Đặt ngay cạnh Chạy thử để không bao giờ bị khuất) */}
+                    <button
+                      onClick={handleSubmitAndGrade}
+                      disabled={isGrading || engineState === "initializing"}
+                      title={t(
+                        "Nộp bài và chấm điểm tự động với bộ Test Cases",
+                        "Submit & grade automatically against all test cases"
+                      )}
+                      className="neo-btn px-3.5 py-1 bg-brand text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-1 shrink-0"
+                    >
+                      <span>{isGrading ? "◐" : "✓"}</span>
+                      <span>
+                        {isGrading
+                          ? t("ĐANG CHẤM...", "GRADING...")
+                          : t("NỘP BÀI", "SUBMIT & GRADE")}
+                      </span>
+                    </button>
+
+                    {/* 3. Step-by-Step Tracer Button */}
                     <button
                       onClick={isTracing ? handleStopTracing : handleInitiateTrace}
                       disabled={engineState === "initializing" || isTraceLoading}
@@ -1297,7 +1360,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Chạy từng bước thuật toán & trực quan hóa giá trị biến qua từng dòng",
                         "Step-by-step execution & variable state inspector"
                       )}
-                      className={`neo-btn px-3 py-1.5 font-semibold transition-colors flex items-center gap-1.5 disabled:opacity-40 text-xs ${
+                      className={`neo-btn px-2.5 py-1 font-semibold transition-colors flex items-center gap-1 disabled:opacity-40 text-xs shrink-0 ${
                         isTracing
                           ? "bg-amber-500 text-black hover:bg-amber-400 font-bold"
                           : "bg-surface border-amber-500/50 text-amber-500 hover:bg-amber-500/10"
@@ -1306,13 +1369,14 @@ export const StudentWorkspacePage: React.FC = () => {
                       <span>{isTraceLoading ? "◐" : "🔍"}</span>
                       <span>
                         {isTraceLoading
-                          ? t("ĐANG NẠP...", "LOADING...")
+                          ? t("NẠP...", "LOADING...")
                           : isTracing
-                          ? t("DỪNG SOI BIẾN [✕]", "STOP TRACE [✕]")
-                          : t("CHẠY TỪNG BƯỚC", "STEP TRACE")}
+                          ? t("DỪNG SOI [✕]", "STOP [✕]")
+                          : t("SOI BIẾN", "TRACE")}
                       </span>
                     </button>
 
+                    {/* 4. Dừng */}
                     <button
                       onClick={() => {
                         stopExecution();
@@ -1322,42 +1386,30 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Dừng chương trình ngay lập tức (khi bị lặp vô hạn)",
                         "Stop running program immediately"
                       )}
-                      className="neo-btn px-3 py-1.5 bg-surface text-secondary hover:text-brand transition-colors"
+                      className="neo-btn px-2.5 py-1 bg-surface text-secondary hover:text-brand transition-colors shrink-0"
                     >
                       [■] {t("DỪNG", "STOP")}
                     </button>
 
+                    {/* 5. Làm lại */}
                     <button
                       onClick={handleResetCode}
                       title={t(
                         "Đặt lại về code gợi ý ban đầu",
                         "Reset to starter code"
                       )}
-                      className="neo-btn px-2.5 py-1.5 bg-surface text-secondary hover:text-primary transition-colors"
+                      className="neo-btn px-2 py-1 bg-surface text-secondary hover:text-primary transition-colors shrink-0"
                     >
                       {t("LÀM LẠI", "RESET")}
                     </button>
 
+                    {/* 6. Lưu bài */}
                     <button
                       onClick={handleManualSave}
                       title={t("Lưu bài làm", "Save code")}
-                      className="neo-btn px-2.5 py-1.5 bg-surface text-secondary hover:text-primary transition-colors"
+                      className="neo-btn px-2 py-1 bg-surface text-secondary hover:text-primary transition-colors shrink-0"
                     >
-                      {t("LƯU BÀI", "SAVE")}
-                    </button>
-
-                    <button
-                      onClick={handleSubmitAndGrade}
-                      disabled={isGrading || engineState === "initializing"}
-                      title={t(
-                        "Nộp bài và chấm điểm tự động với bộ Test Cases",
-                        "Submit & grade automatically against all test cases"
-                      )}
-                      className="neo-btn px-4 py-1.5 bg-brand text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
-                    >
-                      {isGrading
-                        ? t("◐ ĐANG CHẤM ĐIỂM...", "◐ GRADING...")
-                        : t("[✓] NỘP BÀI & CHẤM ĐIỂM", "[✓] SUBMIT & GRADE")}
+                      {t("LƯU", "SAVE")}
                     </button>
                   </div>
                 </div>
@@ -1436,12 +1488,12 @@ export const StudentWorkspacePage: React.FC = () => {
                 minSize={20}
                 className="bg-terminal text-primary flex flex-col"
               >
-                {/* Terminal Header Tabs */}
-                <div className="h-9 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs shrink-0">
-                  <div className="flex items-center gap-1">
+                {/* Terminal Header Tabs (Responsive for high browser zoom / scaling) */}
+                <div className="min-h-[36px] h-auto py-1 px-3 bg-subtle border-b border-grid flex flex-wrap items-center justify-between font-mono text-xs shrink-0 gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1 shrink-0">
                     <button
                       onClick={() => setActiveBottomTab("CONSOLE")}
-                      className={`px-3 py-1.5 transition-colors flex items-center gap-2 ${
+                      className={`px-2.5 py-1 transition-colors flex items-center gap-1.5 shrink-0 ${
                         activeBottomTab === "CONSOLE"
                           ? "bg-surface text-primary border-t-2 border-t-brand font-semibold"
                           : "text-secondary hover:text-primary"
@@ -1449,7 +1501,8 @@ export const StudentWorkspacePage: React.FC = () => {
                     >
                       <span className="text-brand">[▣]</span>
                       <span>
-                        {t("MÀN HÌNH KẾT QUẢ (CONSOLE)", "CONSOLE OUTPUT")}
+                        <span className="hidden sm:inline">MÀN HÌNH </span>
+                        {t("KẾT QUẢ", "CONSOLE")}
                       </span>
                       {engineState === "awaiting_input" && (
                         <span className="px-1.5 py-0.2 bg-brand text-white text-[10px] animate-pulse">
@@ -1460,7 +1513,7 @@ export const StudentWorkspacePage: React.FC = () => {
 
                     <button
                       onClick={() => setActiveBottomTab("TEST_CASES")}
-                      className={`px-3 py-1.5 transition-colors flex items-center gap-2 ${
+                      className={`px-2.5 py-1 transition-colors flex items-center gap-1.5 shrink-0 ${
                         activeBottomTab === "TEST_CASES"
                           ? "bg-surface text-primary border-t-2 border-t-brand font-semibold"
                           : "text-secondary hover:text-primary"
@@ -1468,7 +1521,8 @@ export const StudentWorkspacePage: React.FC = () => {
                     >
                       <span className="text-brand">[◆]</span>
                       <span>
-                        {t("BẢNG CHẤM ĐIỂM (TEST CASES)", "GRADING RESULTS")}
+                        <span className="hidden sm:inline">BẢNG </span>
+                        {t("CHẤM ĐIỂM", "TESTS")}
                       </span>
                       {testResults && (
                         <span
@@ -1486,7 +1540,7 @@ export const StudentWorkspacePage: React.FC = () => {
 
                     <button
                       onClick={() => setActiveBottomTab("TRACER")}
-                      className={`px-3 py-1.5 transition-colors flex items-center gap-2 ${
+                      className={`px-2.5 py-1 transition-colors flex items-center gap-1.5 shrink-0 ${
                         activeBottomTab === "TRACER"
                           ? "bg-surface text-primary border-t-2 border-t-amber-500 font-semibold"
                           : "text-secondary hover:text-primary"
@@ -1494,7 +1548,8 @@ export const StudentWorkspacePage: React.FC = () => {
                     >
                       <span className="text-amber-500">[🔍]</span>
                       <span>
-                        {t("TRỰC QUAN HÓA BIẾN (TRACER)", "VARIABLE TRACER")}
+                        <span className="hidden sm:inline">TRỰC QUAN HÓA </span>
+                        {t("SOI BIẾN", "TRACER")}
                       </span>
                       {isTracing && (
                         <span className="px-1.5 py-0.2 bg-amber-500 text-black text-[10px] font-bold">
@@ -1504,11 +1559,11 @@ export const StudentWorkspacePage: React.FC = () => {
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-3 text-[11px] text-muted">
-                    <span className="hidden sm:inline">
+                  <div className="flex items-center gap-2 text-[11px] text-muted shrink-0">
+                    <span className="hidden lg:inline">
                       {t(
-                        "Gõ lệnh tự hiện gợi ý hàm • Ctrl+Enter để chạy",
-                        "Type for function hints • Ctrl+Enter to run"
+                        "Gõ lệnh tự gợi ý hàm • Ctrl+Enter để chạy",
+                        "Function hints enabled • Ctrl+Enter to run"
                       )}
                     </span>
                     <button
