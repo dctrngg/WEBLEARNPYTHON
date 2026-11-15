@@ -1162,7 +1162,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     {publicTestCases.map((tc, i) => (
                       <div
                         key={i}
-                        className="border border-grid bg-subtle font-mono text-xs"
+                        className="neo-box-sm bg-subtle font-mono text-xs overflow-hidden"
                       >
                         <div className="px-3 py-1.5 border-b border-grid flex items-center justify-between text-[11px] text-secondary bg-surface">
                           <span className="font-semibold text-primary">
@@ -1283,7 +1283,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Chạy thử chương trình Python (Phím tắt: Ctrl+Enter)",
                         "Run Python program (Shortcut: Ctrl+Enter)"
                       )}
-                      className="px-3.5 py-1.5 bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors flex items-center gap-1.5 disabled:opacity-40"
+                      className="neo-btn px-3.5 py-1.5 bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors flex items-center gap-1.5 disabled:opacity-40"
                     >
                       <span>[▶]</span>
                       <span>{t("CHẠY THỬ", "RUN CODE")}</span>
@@ -1297,10 +1297,10 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Chạy từng bước thuật toán & trực quan hóa giá trị biến qua từng dòng",
                         "Step-by-step execution & variable state inspector"
                       )}
-                      className={`px-3 py-1.5 font-semibold transition-colors flex items-center gap-1.5 disabled:opacity-40 text-xs ${
+                      className={`neo-btn px-3 py-1.5 font-semibold transition-colors flex items-center gap-1.5 disabled:opacity-40 text-xs ${
                         isTracing
-                          ? "bg-amber-500 text-black hover:bg-amber-400 font-bold shadow-sm"
-                          : "bg-surface border border-amber-500/50 text-amber-500 hover:bg-amber-500/10"
+                          ? "bg-amber-500 text-black hover:bg-amber-400 font-bold"
+                          : "bg-surface border-amber-500/50 text-amber-500 hover:bg-amber-500/10"
                       }`}
                     >
                       <span>{isTraceLoading ? "◐" : "🔍"}</span>
@@ -1322,7 +1322,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Dừng chương trình ngay lập tức (khi bị lặp vô hạn)",
                         "Stop running program immediately"
                       )}
-                      className="px-3 py-1.5 bg-surface border border-grid hover:border-brand hover:text-brand text-secondary transition-colors"
+                      className="neo-btn px-3 py-1.5 bg-surface text-secondary hover:text-brand transition-colors"
                     >
                       [■] {t("DỪNG", "STOP")}
                     </button>
@@ -1333,7 +1333,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Đặt lại về code gợi ý ban đầu",
                         "Reset to starter code"
                       )}
-                      className="px-2.5 py-1.5 bg-surface border border-grid hover:bg-subtle text-secondary hover:text-primary transition-colors"
+                      className="neo-btn px-2.5 py-1.5 bg-surface text-secondary hover:text-primary transition-colors"
                     >
                       {t("LÀM LẠI", "RESET")}
                     </button>
@@ -1341,7 +1341,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     <button
                       onClick={handleManualSave}
                       title={t("Lưu bài làm", "Save code")}
-                      className="px-2.5 py-1.5 bg-surface border border-grid hover:bg-subtle text-secondary hover:text-primary transition-colors"
+                      className="neo-btn px-2.5 py-1.5 bg-surface text-secondary hover:text-primary transition-colors"
                     >
                       {t("LƯU BÀI", "SAVE")}
                     </button>
@@ -1353,7 +1353,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Nộp bài và chấm điểm tự động với bộ Test Cases",
                         "Submit & grade automatically against all test cases"
                       )}
-                      className="px-4 py-1.5 bg-brand text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+                      className="neo-btn px-4 py-1.5 bg-brand text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
                     >
                       {isGrading
                         ? t("◐ ĐANG CHẤM ĐIỂM...", "◐ GRADING...")
@@ -1525,7 +1525,7 @@ export const StudentWorkspacePage: React.FC = () => {
                   <div className="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-1.5 bg-terminal">
                     {/* Feature 4: Friendly Error Translator Banner */}
                     {translatedError && (
-                      <div className="mb-4 p-3.5 bg-red-950/20 border-2 border-brand/50 font-sans shadow-lg animate-in fade-in duration-200">
+                      <div className="mb-4 p-3.5 bg-red-950/20 border-2 border-brand/50 font-sans animate-in fade-in duration-200">
                         <div className="flex items-start justify-between gap-3 pb-2.5 border-b border-brand/20">
                           <div className="flex flex-wrap items-center gap-2 font-mono">
                             <span className="px-1.5 py-0.5 bg-brand text-white font-bold text-[10px]">
@@ -1544,7 +1544,7 @@ export const StudentWorkspacePage: React.FC = () => {
                             {translatedError.lineNumber && (
                               <button
                                 onClick={() => handleJumpToLine(translatedError.lineNumber!)}
-                                className="px-2.5 py-1 bg-brand text-white text-[11px] font-mono font-semibold hover:opacity-90 transition-opacity flex items-center gap-1 shadow-sm"
+                                className="px-2.5 py-1 bg-brand text-white text-[11px] font-mono font-semibold hover:opacity-90 transition-opacity flex items-center gap-1"
                               >
                                 <span>🔍</span>
                                 <span>Xem dòng {translatedError.lineNumber} trong Code</span>
@@ -1699,7 +1699,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     ) : (
                       <div className="space-y-4">
                         {/* Summary Banner */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 p-3 border border-grid bg-subtle">
+                        <div className="neo-box-sm flex flex-wrap items-center justify-between gap-2 p-3 bg-subtle">
                           <div className="flex items-center gap-3">
                             <span
                               className={`text-sm font-semibold ${
@@ -1747,7 +1747,7 @@ export const StudentWorkspacePage: React.FC = () => {
                             firstFailed.actualOutput
                           );
                           return (
-                            <div className="p-3 bg-amber-500/10 border border-amber-500/40 text-xs font-sans flex items-start gap-2.5">
+                            <div className="neo-box-sm p-3 bg-amber-500/10 border-amber-500/40 text-xs font-sans flex items-start gap-2.5">
                               <span className="text-amber-500 font-bold text-sm shrink-0">
                                 💡
                               </span>
@@ -1770,7 +1770,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         })()}
 
                         {/* Technical Results Table */}
-                        <div className="border border-grid divide-y divide-grid">
+                        <div className="neo-box-sm overflow-hidden divide-y divide-grid">
                           <div className="grid grid-cols-12 bg-subtle px-3 py-2 text-[11px] text-muted uppercase">
                             <div className="col-span-2">
                               {t("BỘ TEST", "TEST")}

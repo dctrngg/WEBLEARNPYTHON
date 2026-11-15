@@ -52,13 +52,14 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
         <span className="text-grid-strong hidden sm:inline">|</span>
 
         {/* Chuyển đổi Bài học lý thuyết ↔ Phòng Code IDE */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/"
-            className={`px-3 py-1 border transition-colors font-medium flex items-center gap-1.5 ${isBlueprintRoute
-                ? "bg-brand text-white border-brand font-semibold shadow-none"
-                : "bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
-              }`}
+            className={`px-3 py-1 font-medium flex items-center gap-1.5 transition-all ${
+              isBlueprintRoute
+                ? "neo-btn bg-brand text-white border-brand font-semibold"
+                : "neo-btn bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
+            }`}
           >
             <span>📚</span>
             <span>{t("BÀI HỌC LÝ THUYẾT", "LÝ THUYẾT")}</span>
@@ -66,10 +67,11 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
 
           <Link
             to="/workspace"
-            className={`px-3 py-1 border transition-colors font-medium flex items-center gap-1.5 ${isWorkspaceRoute
-                ? "bg-brand text-white border-brand font-semibold shadow-none"
-                : "bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
-              }`}
+            className={`px-3 py-1 font-medium flex items-center gap-1.5 transition-all ${
+              isWorkspaceRoute
+                ? "neo-btn bg-brand text-white border-brand font-semibold"
+                : "neo-btn bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
+            }`}
           >
             <span>💻</span>
             <span>{t("CODE", "CODE")}</span>
@@ -80,7 +82,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
             <>
               <Link
                 to={isAdminRoute ? "/" : "/admin"}
-                className="ml-1 px-2.5 py-1 border border-brand/40 text-brand bg-brand/10 hover:bg-brand hover:text-white transition-colors font-semibold"
+                className="ml-1 neo-btn px-2.5 py-1 border border-brand/40 text-brand bg-brand/10 hover:bg-brand hover:text-white transition-colors font-semibold"
               >
                 {isAdminRoute
                   ? t("[◀ VỀ GIAO DIỆN HỌC]", "[◀ STUDENT VIEW]")
@@ -88,7 +90,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
               </Link>
               <Link
                 to="/projector"
-                className="px-2.5 py-1 border border-grid bg-subtle text-secondary hover:text-brand hover:border-brand transition-colors font-semibold flex items-center gap-1"
+                className="neo-btn px-2.5 py-1 border border-grid bg-subtle text-secondary hover:text-brand hover:border-brand transition-colors font-semibold flex items-center gap-1"
                 title={t(
                   "Mở chế độ trình chiếu máy chiếu lớp học",
                   "Open Classroom Projector Mode"
@@ -111,7 +113,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
           type="button"
           onClick={toggleLanguage}
           title={t("Chuyển đổi ngôn ngữ", "Switch Language")}
-          className="px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-primary font-semibold transition-colors flex items-center gap-1"
+          className="neo-btn px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-primary font-semibold transition-colors flex items-center gap-1"
         >
           <span className={lang === "vi" ? "text-brand font-bold" : "text-muted"}>
             VI
@@ -127,7 +129,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
           type="button"
           onClick={toggleTheme}
           title={t("Chuyển đổi giao diện Sáng / Tối", "Toggle Dark / Light Theme")}
-          className="px-2.5 py-1 bg-surface border border-grid text-secondary hover:text-primary hover:bg-subtle transition-colors"
+          className="neo-btn px-2.5 py-1 bg-surface border border-grid text-secondary hover:text-primary hover:bg-subtle transition-colors"
         >
           {theme === "dark"
             ? t("[◐] NỀN TỐI", "[◐] DARK")

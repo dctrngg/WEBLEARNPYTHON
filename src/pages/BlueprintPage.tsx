@@ -33,6 +33,24 @@ export const BlueprintPage: React.FC = () => {
     "curriculum" | "all_exercises"
   >("curriculum");
   const [copiedSample, setCopiedSample] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem("chroma_py_curriculum_sidebar");
+      return saved !== null ? saved === "true" : true;
+    } catch {
+      return true;
+    }
+  });
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("chroma_py_curriculum_sidebar", String(next));
+      } catch {}
+      return next;
+    });
+  };
 
   useEffect(() => {
     async function loadData() {
@@ -92,89 +110,55 @@ export const BlueprintPage: React.FC = () => {
         onOpenCheatSheet={() => setCheatSheetOpen(true)}
       />
 
-      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-5 space-y-6">
-        {/* TOP BENTO BANNER: Curriculum Overview + Progress Metrics */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 bg-grid gap-[1px] border border-grid">
-          <div className="lg:col-span-8 bg-surface p-6 sm:p-7 flex flex-col justify-between">
-            <div>
-              <div className="flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm text-brand uppercase tracking-widest mb-2.5">
-                <span>▣ CHƯƠNG TRÌNH TIN HỌC 10 — LẬP TRÌNH PYTHON</span>
-                <span className="text-grid-strong">|</span>
-                <span className="text-secondary font-semibold">
-                  {t(
-                    "BÀI 16 ĐẾN BÀI 31 (ĐẦY ĐỦ LÝ THUYẾT & BÀI TẬP)",
-                    "LESSONS 16 TO 31 (FULL THEORY & EXERCISES)"
-                  )}
-                </span>
-              </div>
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-primary mb-2.5">
-                {t(
-                  "Lộ Trình Học Python & Bài Tập Thực Hành Theo Từng Bài Học",
-                  "Python Learning Blueprint & Lesson-by-Lesson Exercises"
-                )}
-              </h1>
-              <p className="text-sm sm:text-base text-secondary max-w-[85ch] leading-relaxed">
-                {t(
-                  "Chọn từng bài học từ Bài 16 đến Bài 31 bên dưới để đọc lý thuyết chi tiết, xem ví dụ code mẫu và làm ngay các bài tập lập trình được phân chia theo đúng bài học đó.",
-                  "Select any lesson from Lesson 16 to Lesson 31 below to study detailed theory, inspect sample code, and practice exercises grouped specifically for that lesson."
-                )}
-              </p>
-            </div>
-
-            <div className="mt-5 pt-4 border-t border-grid flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm">
-                <button
-                  onClick={() => setActiveSectionTab("curriculum")}
-                  className={`px-4 py-2 border font-semibold transition-colors ${
-                    activeSectionTab === "curriculum"
-                      ? "bg-brand text-white border-brand"
-                      : "bg-subtle text-secondary border-grid hover:text-primary"
-                  }`}
-                >
-                  [📚 {t("XEM CHI TIẾT TỪNG BÀI HỌC (BÀI 16 - 31)", "STUDY LESSON BY LESSON")}]
-                </button>
-                <button
-                  onClick={() => setActiveSectionTab("all_exercises")}
-                  className={`px-4 py-2 border font-semibold transition-colors ${
-                    activeSectionTab === "all_exercises"
-                      ? "bg-brand text-white border-brand"
-                      : "bg-subtle text-secondary border-grid hover:text-primary"
-                  }`}
-                >
-                  [🗂 {t("DANH SÁCH BÀI TẬP THEO BÀI HỌC", "EXERCISES BY LESSON")} ({assignments.length})]
-                </button>
-              </div>
-
-              <Link
-                to={
-                  activeLessonExercises[0]
-                    ? `/workspace/${activeLessonExercises[0].id}`
-                    : "/workspace"
-                }
-                className="px-4 py-2 bg-subtle border border-brand text-brand hover:bg-brand hover:text-white font-mono text-xs sm:text-sm font-semibold transition-colors"
-              >
-                [▶ {t("MỞ PHÒNG THỰC HÀNH IDE NGAY", "OPEN PYTHON IDE WORKSPACE")}]
-              </Link>
-            </div>
+      <main className="flex-1 w-full px-3 sm:px-6 lg:px-8 py-4 sm:py-5 space-y-5">
+        {/* MINIMALIST HEADER BAR (CHROMA RETRO-MINIMALIST) */}
+        <section className="neo-box bg-surface p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="px-2.5 py-1 bg-brand text-white font-mono text-xs font-bold uppercase tracking-wider">
+              TIN HỌC 10
+            </span>
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary">
+              {t("Lý Thuyết & Thực Hành Python", "Python Theory & Practice")}
+            </h1>
+            <span className="text-secondary font-mono text-xs hidden md:inline">
+              (Bài 16 → 31)
+            </span>
           </div>
 
-          {/* Right 4 Cols: Student Progress Summary */}
-          <div className="lg:col-span-4 bg-subtle p-6 flex flex-col justify-between font-mono">
-            <div>
-              <div className="text-xs uppercase tracking-wider text-secondary mb-3 flex items-center justify-between">
-                <span>
-                  {t("TIẾN ĐỘ HỌC TẬP CỦA BẠN", "YOUR LEARNING PROGRESS")}
-                </span>
-                <span className="text-success font-semibold">
-                  {assignments.length > 0
-                    ? Math.round((passedTotalCount / assignments.length) * 100)
-                    : 0}
-                  %
-                </span>
-              </div>
+          <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs sm:text-sm">
+            {/* Tab switch */}
+            <div className="flex items-center border border-grid bg-subtle">
+              <button
+                onClick={() => setActiveSectionTab("curriculum")}
+                className={`px-3 py-1.5 font-bold transition-colors ${
+                  activeSectionTab === "curriculum"
+                    ? "bg-brand text-white"
+                    : "text-secondary hover:text-primary hover:bg-surface"
+                }`}
+              >
+                📚 {t("Lý thuyết", "Theory")}
+              </button>
+              <button
+                onClick={() => setActiveSectionTab("all_exercises")}
+                className={`px-3 py-1.5 font-bold transition-colors ${
+                  activeSectionTab === "all_exercises"
+                    ? "bg-brand text-white"
+                    : "text-secondary hover:text-primary hover:bg-surface"
+                }`}
+              >
+                🗂 {t("75 Bài tập", "75 Tasks")}
+              </button>
+            </div>
 
-              {/* Progress Bar */}
-              <div className="w-full h-2.5 bg-canvas border border-grid mb-4 overflow-hidden">
+            {/* Progress pill */}
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-canvas border border-grid text-xs">
+              <span className="text-secondary font-semibold">
+                {t("Đã đạt:", "Done:")}
+              </span>
+              <strong className="text-success">
+                {passedTotalCount}/{assignments.length}
+              </strong>
+              <div className="w-16 h-2 bg-subtle border border-grid overflow-hidden">
                 <div
                   className="h-full bg-success transition-all duration-300"
                   style={{
@@ -186,165 +170,202 @@ export const BlueprintPage: React.FC = () => {
                   }}
                 />
               </div>
-
-              <div className="grid grid-cols-3 bg-grid gap-[1px] border border-grid text-center">
-                <div className="bg-surface p-3">
-                  <div className="text-[11px] text-secondary">
-                    {t("CHUYÊN ĐỀ", "LESSONS")}
-                  </div>
-                  <div className="text-xl font-bold text-primary mt-0.5">
-                    {PYTHON_CURRICULUM_LESSONS.length}
-                  </div>
-                  <div className="text-[10px] text-muted">Bài 16 → 31</div>
-                </div>
-                <div className="bg-surface p-3">
-                  <div className="text-[11px] text-secondary">
-                    {t("TỔNG BÀI TẬP", "EXERCISES")}
-                  </div>
-                  <div className="text-xl font-bold text-brand mt-0.5">
-                    {assignments.length}
-                  </div>
-                  <div className="text-[10px] text-muted">
-                    {t("Có chấm tự động", "Auto-graded")}
-                  </div>
-                </div>
-                <div className="bg-surface p-3">
-                  <div className="text-[11px] text-secondary">
-                    {t("ĐÃ HOÀN THÀNH", "COMPLETED")}
-                  </div>
-                  <div className="text-xl font-bold text-success mt-0.5">
-                    {passedTotalCount}
-                  </div>
-                  <div className="text-[10px] text-muted">
-                    /{assignments.length} {t("bài", "passed")}
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-grid text-[11px] text-secondary flex items-center justify-between">
-              <span>
-                {t("Học sinh:", "Student:")}{" "}
-                <strong className="text-primary">
-                  {user?.displayName || "Học sinh"}
-                </strong>
-                {user?.className && (
-                  <span className="ml-1.5 px-1.5 py-0.5 bg-brand/15 border border-brand/40 text-brand font-bold">
-                    {t("Lớp", "Class")} {user.className}
-                  </span>
-                )}
-              </span>
-              <button
-                onClick={() => setCheatSheetOpen(true)}
-                className="text-brand hover:underline"
-              >
-                [📖 {t("Tra cứu hàm Python", "Python Cheat Sheet")}]
-              </button>
-            </div>
+            {/* Quick Open IDE */}
+            <Link
+              to={
+                activeLessonExercises[0]
+                  ? `/workspace/${activeLessonExercises[0].id}`
+                  : "/workspace"
+              }
+              className="neo-btn px-3.5 py-1.5 bg-surface text-brand hover:bg-brand hover:text-white font-bold transition-colors flex items-center gap-1"
+            >
+              <span>[▶</span>
+              <span>{t("Phòng IDE", "IDE")}</span>
+              <span>]</span>
+            </Link>
           </div>
         </section>
 
         {/* VIEW MODE 1: INTERACTIVE LESSON EXPLORER + EXERCISES OF SELECTED LESSON */}
         {activeSectionTab === "curriculum" && (
-          <section className="grid grid-cols-1 lg:grid-cols-12 bg-grid gap-[1px] border border-grid">
+          <section
+            className={`grid grid-cols-1 ${
+              sidebarOpen ? "lg:grid-cols-12" : ""
+            } bg-grid gap-[1px] border border-grid transition-all duration-200 neo-box`}
+          >
             {/* LEFT 3-4 COLS: LESSON ROADMAP (BÀI 16 -> BÀI 31) */}
-            <aside className="lg:col-span-4 xl:col-span-3 bg-surface flex flex-col">
-              <div className="h-11 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs sm:text-sm">
-                <span className="uppercase tracking-wider text-secondary font-bold">
-                  {t(
-                    "MỤC LỤC BÀI HỌC (TIN HỌC 10)",
-                    "CURRICULUM LESSONS (16 - 31)"
-                  )}
-                </span>
-                <span className="text-muted font-semibold">
-                  {PYTHON_CURRICULUM_LESSONS.length} {t("chuyên đề", "modules")}
-                </span>
-              </div>
-
-              <div className="divide-y divide-grid">
-                {PYTHON_CURRICULUM_LESSONS.map((lesson, idx) => {
-                  const isSelected = lesson.id === activeLesson.id;
-                  const lessonAsgns = getExercisesForLesson(lesson.id);
-                  const passedInLesson = lessonAsgns.filter(
-                    (a) => userSubmissions[a.id]?.status === "passed"
-                  ).length;
-                  const allDone =
-                    lessonAsgns.length > 0 &&
-                    passedInLesson === lessonAsgns.length;
-
-                  return (
+            {sidebarOpen && (
+              <aside className="lg:col-span-4 xl:col-span-3 bg-surface flex flex-col lg:sticky lg:top-14 lg:self-start lg:max-h-[calc(100vh-4rem)] overflow-y-auto">
+                <div className="h-12 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs sm:text-sm">
+                  <span className="uppercase tracking-wider text-secondary font-bold truncate">
+                    {t(
+                      "MỤC LỤC BÀI HỌC (TIN HỌC 10)",
+                      "CURRICULUM LESSONS (16 - 31)"
+                    )}
+                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-muted font-semibold text-xs hidden sm:inline">
+                      {PYTHON_CURRICULUM_LESSONS.length}{" "}
+                      {t("chuyên đề", "modules")}
+                    </span>
                     <button
-                      key={lesson.id}
-                      onClick={() => setSelectedLessonId(lesson.id)}
-                      className={`w-full text-left p-4 transition-colors flex flex-col gap-1.5 ${
-                        isSelected
-                          ? "bg-subtle border-l-4 border-l-brand"
-                          : "bg-surface hover:bg-subtle/60"
-                      }`}
+                      onClick={toggleSidebar}
+                      className="px-2.5 py-1 bg-surface hover:bg-canvas border border-grid text-secondary hover:text-brand hover:border-brand text-xs font-semibold transition-colors flex items-center gap-1"
+                      title={t(
+                        "Thu gọn danh sách để mở rộng tối đa trang lý thuyết",
+                        "Collapse lessons to expand theory view"
+                      )}
                     >
-                      <div className="flex items-center justify-between gap-2 font-mono text-xs">
-                        <span
-                          className={`px-2 py-0.5 border font-semibold ${
-                            isSelected
-                              ? "bg-brand text-white border-brand"
-                              : "bg-canvas text-brand border-grid"
-                          }`}
-                        >
-                          {lesson.code}
-                        </span>
-
-                        <span
-                          className={`px-2 py-0.5 border text-[11px] ${
-                            allDone
-                              ? "border-success/40 bg-success/10 text-success font-semibold"
-                              : passedInLesson > 0
-                              ? "border-warn/40 bg-warn/10 text-warn"
-                              : "border-grid bg-canvas text-secondary"
-                          }`}
-                        >
-                          {allDone ? "✓ " : ""}
-                          {passedInLesson}/{lessonAsgns.length}{" "}
-                          {t("bài tập", "tasks")}
-                        </span>
-                      </div>
-
-                      <div className="text-base font-bold text-primary leading-snug mt-1">
-                        {idx + 1}.{" "}
-                        {lang === "vi" ? lesson.titleVi : lesson.titleEn}
-                      </div>
-
-                      <p className="text-sm text-secondary line-clamp-2 leading-relaxed mt-0.5">
-                        {lang === "vi" ? lesson.summaryVi : lesson.summaryEn}
-                      </p>
+                      <span>◀</span>
+                      <span>{t("Thu gọn", "Collapse")}</span>
                     </button>
-                  );
-                })}
-              </div>
-            </aside>
-
-            {/* RIGHT 8-9 COLS: ACTIVE LESSON THEORY + CODE SAMPLE + EXERCISES FOR THIS LESSON */}
-            <div className="lg:col-span-8 xl:col-span-9 bg-surface flex flex-col">
-              {/* Lesson Header Bar */}
-              <div className="p-5 sm:p-6 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <div className="flex items-center gap-2 font-mono text-xs sm:text-sm mb-1.5">
-                    <span className="px-2.5 py-1 bg-brand text-white font-bold">
-                      {activeLesson.code}
-                    </span>
-                    <span className="text-secondary font-semibold">
-                      {t("Chuyên đề", "Module")} {activeLessonIndex + 1}/
-                      {PYTHON_CURRICULUM_LESSONS.length}
-                    </span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
-                    {lang === "vi"
-                      ? activeLesson.titleVi
-                      : activeLesson.titleEn}
-                  </h2>
                 </div>
 
-                {/* Prev / Next Lesson Buttons */}
-                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm">
+                <div className="divide-y divide-grid">
+                  {PYTHON_CURRICULUM_LESSONS.map((lesson, idx) => {
+                    const isSelected = lesson.id === activeLesson.id;
+                    const lessonAsgns = getExercisesForLesson(lesson.id);
+                    const passedInLesson = lessonAsgns.filter(
+                      (a) => userSubmissions[a.id]?.status === "passed"
+                    ).length;
+                    const allDone =
+                      lessonAsgns.length > 0 &&
+                      passedInLesson === lessonAsgns.length;
+
+                    return (
+                      <button
+                        key={lesson.id}
+                        onClick={() => setSelectedLessonId(lesson.id)}
+                        className={`w-full text-left p-4 transition-colors flex flex-col gap-1.5 ${
+                          isSelected
+                            ? "bg-subtle border-l-4 border-l-brand"
+                            : "bg-surface hover:bg-subtle/60"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2 font-mono text-xs">
+                          <span
+                            className={`px-2 py-0.5 border font-semibold ${
+                              isSelected
+                                ? "bg-brand text-white border-brand"
+                                : "bg-canvas text-brand border-grid"
+                            }`}
+                          >
+                            {lesson.code}
+                          </span>
+
+                          <span
+                            className={`px-2 py-0.5 border text-[11px] ${
+                              allDone
+                                ? "border-success/40 bg-success/10 text-success font-semibold"
+                                : passedInLesson > 0
+                                ? "border-warn/40 bg-warn/10 text-warn"
+                                : "border-grid bg-canvas text-secondary"
+                            }`}
+                          >
+                            {allDone ? "✓ " : ""}
+                            {passedInLesson}/{lessonAsgns.length}{" "}
+                            {t("bài tập", "tasks")}
+                          </span>
+                        </div>
+
+                        <div className="text-base font-bold text-primary leading-snug mt-1">
+                          {idx + 1}.{" "}
+                          {lang === "vi" ? lesson.titleVi : lesson.titleEn}
+                        </div>
+
+                        <p className="text-sm text-secondary line-clamp-2 leading-relaxed mt-0.5">
+                          {lang === "vi" ? lesson.summaryVi : lesson.summaryEn}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </aside>
+            )}
+
+            {/* RIGHT COLS: ACTIVE LESSON THEORY + CODE SAMPLE + EXERCISES FOR THIS LESSON */}
+            <div
+              className={`${
+                sidebarOpen ? "lg:col-span-8 xl:col-span-9" : "w-full"
+              } bg-surface flex flex-col`}
+            >
+              {/* Lesson Header Bar */}
+              <div className="p-5 sm:p-6 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-start sm:items-center gap-3">
+                  {!sidebarOpen && (
+                    <button
+                      onClick={toggleSidebar}
+                      className="px-3.5 py-2 bg-brand/10 hover:bg-brand text-brand hover:text-white border border-brand/50 font-mono text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors shrink-0"
+                      title={t("Mở lại danh sách mục lục bài học", "Expand lesson list")}
+                    >
+                      <span>📑</span>
+                      <span>{t("Hiện mục lục", "Show Index")}</span>
+                    </button>
+                  )}
+                  <div>
+                    <div className="flex items-center gap-2 font-mono text-xs sm:text-sm mb-1.5">
+                      <span className="px-2.5 py-1 bg-brand text-white font-bold">
+                        {activeLesson.code}
+                      </span>
+                      <span className="text-secondary font-semibold">
+                        {t("Chuyên đề", "Module")} {activeLessonIndex + 1}/
+                        {PYTHON_CURRICULUM_LESSONS.length}
+                      </span>
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
+                      {lang === "vi"
+                        ? activeLesson.titleVi
+                        : activeLesson.titleEn}
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Prev / Next Lesson Buttons & Actions */}
+                <div className="flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm">
+                  {/* Quick Lesson Jump Selector when sidebar is collapsed */}
+                  {!sidebarOpen && (
+                    <div className="flex items-center gap-1.5 bg-surface border border-grid px-2.5 py-1.5">
+                      <span className="text-secondary text-xs font-mono">
+                        {t("Chuyển bài:", "Jump:")}
+                      </span>
+                      <select
+                        value={activeLesson.id}
+                        onChange={(e) => setSelectedLessonId(e.target.value)}
+                        className="bg-transparent text-primary text-xs sm:text-sm font-sans font-semibold focus:outline-none cursor-pointer"
+                      >
+                        {PYTHON_CURRICULUM_LESSONS.map((l, idx) => (
+                          <option
+                            key={l.id}
+                            value={l.id}
+                            className="bg-surface text-primary"
+                          >
+                            {l.code}: {idx + 1}.{" "}
+                            {lang === "vi" ? l.titleVi : l.titleEn}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {sidebarOpen && (
+                    <button
+                      onClick={toggleSidebar}
+                      className="px-3.5 py-2 bg-surface hover:bg-canvas border border-grid text-secondary hover:text-brand hover:border-brand font-semibold transition-colors flex items-center gap-1.5"
+                      title={t(
+                        "Thu gọn mục lục để xem lý thuyết toàn màn hình rộng rãi",
+                        "Collapse sidebar for maximum theory reading space"
+                      )}
+                    >
+                      <span>◀</span>
+                      <span className="hidden sm:inline">
+                        {t("Thu gọn mục lục", "Collapse Sidebar")}
+                      </span>
+                    </button>
+                  )}
+
                   <button
                     disabled={activeLessonIndex <= 0}
                     onClick={() =>
@@ -376,15 +397,22 @@ export const BlueprintPage: React.FC = () => {
               </div>
 
               {/* Key Takeaways Box */}
-              <div className="p-5 sm:p-6 border-b border-grid bg-canvas/50">
-                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-brand font-bold mb-3">
-                  ★ {t("TÓM TẮT TRỌNG TÂM CẦN NHỚ", "KEY TAKEAWAYS")}
+              <div className="p-5 sm:p-6 border-b border-grid bg-canvas/30">
+                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-brand font-bold mb-3 flex items-center gap-1.5">
+                  <span>★</span>
+                  <span>{t("TÓM TẮT TRỌNG TÂM CẦN NHỚ", "KEY TAKEAWAYS")}</span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div
+                  className={`grid grid-cols-1 ${
+                    sidebarOpen
+                      ? "md:grid-cols-2"
+                      : "md:grid-cols-2 lg:grid-cols-4"
+                  } gap-3`}
+                >
                   {activeLesson.keyPointsVi.map((pt: string, i: number) => (
                     <div
                       key={i}
-                      className="p-3.5 bg-surface border border-grid text-sm sm:text-base text-primary leading-relaxed flex items-start gap-2.5 shadow-sm"
+                      className="neo-box-sm p-3.5 bg-surface text-sm sm:text-base text-primary leading-relaxed flex items-start gap-2.5"
                     >
                       <span className="font-mono text-brand font-bold shrink-0 text-sm sm:text-base">
                         0{i + 1}.
@@ -397,14 +425,16 @@ export const BlueprintPage: React.FC = () => {
 
               {/* Detailed Markdown Theory Content from know.md */}
               <div className="p-6 sm:p-8 border-b border-grid">
-                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold mb-3.5">
-                  📖{" "}
-                  {t(
-                    "NỘI DUNG LÝ THUYẾT CHI TIẾT (THEO SÁCH GIÁO KHOA TIN HỌC 10)",
-                    "DETAILED LESSON THEORY"
-                  )}
+                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold mb-3.5 flex items-center gap-2">
+                  <span>📖</span>
+                  <span>
+                    {t(
+                      "NỘI DUNG LÝ THUYẾT CHI TIẾT (THEO SÁCH GIÁO KHOA TIN HỌC 10)",
+                      "DETAILED LESSON THEORY"
+                    )}
+                  </span>
                 </div>
-                <div className="bg-canvas border border-grid p-6 sm:p-8 md:p-10 shadow-sm">
+                <div className="bg-canvas border border-grid p-6 sm:p-8 md:p-10">
                   <MarkdownRenderer
                     content={
                       lang === "vi"
@@ -416,18 +446,20 @@ export const BlueprintPage: React.FC = () => {
               </div>
 
               {/* Code Example & Output Preview */}
-              <div className="p-6 border-b border-grid bg-subtle/40">
+              <div className="p-5 sm:p-6 border-b border-grid bg-subtle/30">
                 <div className="flex items-center justify-between mb-3.5">
-                  <span className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold">
-                    💻{" "}
-                    {t(
-                      "VÍ DỤ CODE PYTHON MINH HỌA TRONG BÀI",
-                      "INTERACTIVE CODE EXAMPLE"
-                    )}
+                  <span className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold flex items-center gap-1.5">
+                    <span>💻</span>
+                    <span>
+                      {t(
+                        "VÍ DỤ CODE PYTHON MINH HỌA TRONG BÀI",
+                        "INTERACTIVE CODE EXAMPLE"
+                      )}
+                    </span>
                   </span>
                   <button
                     onClick={handleCopySample}
-                    className="px-3.5 py-1.5 bg-surface border border-grid font-mono text-xs sm:text-sm text-secondary hover:text-brand hover:border-brand transition-colors font-semibold"
+                    className="neo-btn px-3.5 py-1.5 bg-surface font-mono text-xs sm:text-sm text-secondary hover:text-brand transition-colors font-semibold"
                   >
                     {copiedSample
                       ? t("[✓ ĐÃ SAO CHÉP CODE]", "[✓ COPIED]")
@@ -435,12 +467,13 @@ export const BlueprintPage: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-12 bg-grid gap-[1px] border border-grid font-mono text-sm">
+                <div className="neo-box grid grid-cols-1 md:grid-cols-12 bg-grid gap-[1px] font-mono text-sm overflow-hidden">
                   <div className="md:col-span-7 bg-canvas p-4 sm:p-5 overflow-x-auto">
-                    <div className="text-xs text-muted mb-2 border-b border-grid pb-1.5 font-semibold">
-                      vi_du_{activeLesson.id}.py
+                    <div className="text-xs text-muted mb-2 border-b border-grid pb-1.5 font-semibold flex items-center justify-between">
+                      <span>vi_du_{activeLesson.id}.py</span>
+                      <span className="text-[10px] text-muted">Python 3</span>
                     </div>
-                    <pre className="text-primary text-sm sm:text-base leading-relaxed whitespace-pre">
+                    <pre className="text-primary text-sm sm:text-base leading-relaxed whitespace-pre font-mono">
                       {activeLesson.sampleCode}
                     </pre>
                   </div>
@@ -448,7 +481,7 @@ export const BlueprintPage: React.FC = () => {
                     <div className="text-xs text-success mb-2 border-b border-grid pb-1.5 font-semibold">
                       ► {t("KẾT QUẢ CHẠY (OUTPUT)", "CONSOLE OUTPUT")}
                     </div>
-                    <pre className="text-success text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
+                    <pre className="text-success text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-mono">
                       {activeLesson.sampleOutput.join("\n")}
                     </pre>
                   </div>
@@ -481,7 +514,13 @@ export const BlueprintPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 bg-grid gap-[1px] border border-grid">
+                <div
+                  className={`grid grid-cols-1 ${
+                    sidebarOpen
+                      ? "md:grid-cols-2"
+                      : "md:grid-cols-2 lg:grid-cols-3"
+                  } gap-3.5`}
+                >
                   {activeLessonExercises.map((asgn) => {
                     const sub = userSubmissions[asgn.id];
                     const isPassed = sub?.status === "passed";
@@ -490,7 +529,7 @@ export const BlueprintPage: React.FC = () => {
                     return (
                       <div
                         key={asgn.id}
-                        className="bg-canvas p-5 flex flex-col justify-between hover:bg-subtle/60 transition-colors"
+                        className="neo-card-interactive bg-canvas p-4 sm:p-5 flex flex-col justify-between"
                       >
                         <div>
                           <div className="flex items-center justify-between gap-2 font-mono text-xs mb-2.5">
@@ -541,15 +580,15 @@ export const BlueprintPage: React.FC = () => {
                           </span>
                           <button
                             onClick={() => navigate(`/workspace/${asgn.id}`)}
-                            className={`px-3.5 py-2 border font-bold text-xs sm:text-sm transition-colors ${
+                            className={`neo-btn px-3.5 py-1.5 font-bold text-xs sm:text-sm transition-colors ${
                               isPassed
                                 ? "bg-surface border-success text-success hover:bg-success hover:text-black"
-                                : "bg-brand border-brand text-white hover:opacity-90"
+                                : "bg-brand border-brand text-white hover:opacity-95"
                             }`}
                           >
                             {isPassed
-                              ? t("[↻ XEM LẠI CODE]", "[↻ REVIEW CODE]")
-                              : t("[▶ LÀM BÀI NÀY]", "[▶ SOLVE NOW]")}
+                              ? t("[↻ XEM CODE]", "[↻ REVIEW]")
+                              : t("[▶ LÀM BÀI]", "[▶ SOLVE]")}
                           </button>
                         </div>
                       </div>
@@ -573,7 +612,7 @@ export const BlueprintPage: React.FC = () => {
               return (
                 <div
                   key={lesson.id}
-                  className="border border-grid bg-surface overflow-hidden"
+                  className="neo-box bg-surface overflow-hidden"
                 >
                   {/* Lesson Group Header */}
                   <div className="p-4 bg-subtle border-b border-grid flex flex-wrap items-center justify-between gap-3">

@@ -36,7 +36,6 @@
   }
 
   * {
-    border-radius: 0px;
     box-sizing: border-box;
   }
 
@@ -103,13 +102,11 @@
 }
 
 .bg-diagonal-stripes {
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 6px,
-    var(--bg-subtle) 6px,
-    var(--bg-subtle) 12px
-  );
+  background: repeating-linear-gradient(-45deg,
+      transparent,
+      transparent 6px,
+      var(--bg-subtle) 6px,
+      var(--bg-subtle) 12px);
 }
 
 /* Custom Technical Hairline Scrollbars */
@@ -131,3 +128,62 @@
   background: var(--accent-brand);
 }
 
+/* Minimalist Flat Design (Zero Box-Shadow) */
+.neo-box {
+  border: 1px solid var(--border-grid);
+  box-shadow: none !important;
+}
+
+.dark .neo-box {
+  border: 1px solid var(--border-strong);
+  box-shadow: none !important;
+}
+
+.neo-box-sm {
+  border: 1px solid var(--border-grid);
+  box-shadow: none !important;
+}
+
+.dark .neo-box-sm {
+  border: 1px solid var(--border-strong);
+  box-shadow: none !important;
+}
+
+.neo-btn {
+  border: 1px solid var(--border-strong);
+  box-shadow: none !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.neo-btn:hover:not(:disabled) {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.neo-btn:active:not(:disabled) {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.neo-card-interactive {
+  border: 1px solid var(--border-grid);
+  box-shadow: none !important;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.dark .neo-card-interactive {
+  border: 1px solid var(--border-strong);
+  box-shadow: none !important;
+}
+
+.neo-card-interactive:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: var(--accent-brand);
+}
+
+/* Stipple / Dither Retro Pattern */
+.bg-stipple {
+  background-image: radial-gradient(circle, currentColor 0.75px, transparent 0.75px);
+  background-size: 4px 4px;
+}

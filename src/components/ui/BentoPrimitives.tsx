@@ -52,7 +52,7 @@ export const BentoGrid: React.FC<BentoGridProps> = ({
 
   return (
     <div
-      className={`grid ${colClasses[cols]} bg-grid gap-[1px] border-y border-grid ${className}`}
+      className={`grid ${colClasses[cols]} bg-grid gap-[1px] border border-grid neo-box ${className}`}
     >
       {children}
     </div>

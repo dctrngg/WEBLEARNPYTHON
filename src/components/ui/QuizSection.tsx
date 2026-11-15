@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { QuizQuestion, getQuizzesByLessonId } from "../../services/quizService";
 import { useLanguage } from "../../contexts/LanguageContext";
 
@@ -18,8 +18,12 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   // Submitted state
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  // Filter or show all
-  const [displayCount, setDisplayCount] = useState<number>(5);
+
+  // Reset when lessonId changes
+  useEffect(() => {
+    setSelectedAnswers({});
+    setIsSubmitted(false);
+  }, [lessonId]);
 
   if (questions.length === 0) {
     return (
@@ -32,8 +36,6 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
     );
   }
 
-  const visibleQuestions = questions.slice(0, displayCount);
-
   const handleSelectOption = (qId: string, optIdx: number) => {
     if (isSubmitted) return; // Locked once submitted
     setSelectedAnswers((prev) => ({
@@ -42,7 +44,14 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
     }));
   };
 
+  const unansweredQuestions = questions.filter(
+    (q) => selectedAnswers[q.id] === undefined
+  );
+  const totalAnswered = questions.length - unansweredQuestions.length;
+  const isAllAnswered = unansweredQuestions.length === 0;
+
   const handleGradeQuiz = () => {
+    if (!isAllAnswered) return;
     setIsSubmitted(true);
   };
 
@@ -51,11 +60,20 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
     setIsSubmitted(false);
   };
 
+  const scrollToQuestion = (idx: number) => {
+    const el = document.getElementById(`quiz-question-${idx}`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   // Calculate score
-  const totalAnswered = Object.keys(selectedAnswers).length;
-  const correctCount = visibleQuestions.filter(
+  const correctCount = questions.filter(
     (q) => selectedAnswers[q.id] === q.correctIndex
   ).length;
+
+  const score10 = questions.length > 0 ? ((correctCount / questions.length) * 10).toFixed(1) : "0";
+  const progressPercent = Math.round((totalAnswered / questions.length) * 100);
 
   return (
     <div className="border border-grid bg-surface">
@@ -74,49 +92,99 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
             </h3>
             <p className="text-xs text-secondary font-mono mt-0.5">
               {t(
-                `Ngân hàng gồm ${questions.length} câu hỏi trích xuất từ tài liệu SGK Tin học 10.`,
-                `Bank of ${questions.length} multiple choice questions from Grade 10 CS textbook.`
+                `Bắt buộc hoàn thành tất cả ${questions.length} câu hỏi theo SGK Tin học 10 trước khi nộp bài.`,
+                `Must complete all ${questions.length} questions from Grade 10 CS textbook before submitting.`
               )}
             </p>
           </div>
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2 font-mono text-xs sm:text-sm">
-          <select
-            value={displayCount}
-            onChange={(e) => {
-              setDisplayCount(Number(e.target.value));
-              setIsSubmitted(false);
-            }}
-            className="bg-canvas border border-grid px-2.5 py-1 text-primary focus:outline-none focus:border-brand"
-          >
-            <option value={5}>5 câu ôn tập</option>
-            <option value={10}>10 câu ôn tập</option>
-            <option value={15}>15 câu ôn tập</option>
-            <option value={questions.length}>
-              Toàn bộ ({questions.length} câu)
-            </option>
-          </select>
+        {/* Action Controls & Progress */}
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm">
+          {!isSubmitted && (
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-canvas border border-grid text-xs">
+              <span className="text-secondary font-semibold">
+                {t("Tiến độ:", "Progress:")}
+              </span>
+              <strong className={isAllAnswered ? "text-success" : "text-brand"}>
+                {totalAnswered}/{questions.length} {t("câu", "questions")}
+              </strong>
+              <div className="w-16 h-2 bg-subtle border border-grid overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-300 ${
+                    isAllAnswered ? "bg-success" : "bg-brand"
+                  }`}
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+            </div>
+          )}
 
           {isSubmitted ? (
             <button
               onClick={handleResetQuiz}
-              className="px-3 py-1 bg-subtle border border-grid text-primary hover:border-brand hover:text-brand font-semibold transition-colors"
+              className="neo-btn px-4 py-1.5 bg-surface text-primary hover:text-brand font-semibold transition-colors"
             >
-              [↻ Làm lại]
+              [↻ {t("Làm lại toàn bộ", "Retry All")}]
             </button>
           ) : (
             <button
               onClick={handleGradeQuiz}
-              disabled={totalAnswered === 0}
-              className="px-4 py-1 bg-brand text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-40"
+              disabled={!isAllAnswered}
+              className={`neo-btn px-4 py-1.5 font-bold transition-all ${
+                isAllAnswered
+                  ? "bg-brand text-white hover:opacity-95 cursor-pointer"
+                  : "bg-subtle text-muted cursor-not-allowed opacity-60"
+              }`}
+              title={
+                !isAllAnswered
+                  ? t(
+                      `Bạn phải làm đủ ${questions.length}/${questions.length} câu mới được nộp bài (Còn thiếu ${unansweredQuestions.length} câu)`,
+                      `Must answer all ${questions.length} questions before submitting (${unansweredQuestions.length} remaining)`
+                    )
+                  : t("Nộp bài và xem điểm số", "Submit and view score")
+              }
             >
-              [✓ Nộp & Xem đáp án]
+              {isAllAnswered
+                ? `[✓ ${t("Nộp bài & Xem đáp án", "Submit & View Answers")}]`
+                : `[🔒 ${t("Cần làm đủ", "Answer all")} ${totalAnswered}/${questions.length}]`}
             </button>
           )}
         </div>
       </div>
+
+      {/* Unanswered reminder banner when still in progress */}
+      {!isSubmitted && !isAllAnswered && unansweredQuestions.length > 0 && (
+        <div className="px-4 py-2.5 bg-brand/5 border-b border-brand/20 flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
+          <span className="text-secondary flex items-center gap-1.5">
+            <span className="text-brand font-bold">ℹ {t("LƯU Ý:", "NOTE:")}</span>
+            <span>
+              {t(
+                `Bài kiểm tra yêu cầu hoàn thành đủ 100% câu hỏi. Bạn còn thiếu ${unansweredQuestions.length} câu chưa chọn.`,
+                `100% completion required. You have ${unansweredQuestions.length} unanswered questions remaining.`
+              )}
+            </span>
+          </span>
+
+          {unansweredQuestions.length <= 8 && (
+            <div className="flex items-center gap-1.5">
+              <span className="text-muted text-[11px]">{t("Nhảy tới:", "Jump to:")}</span>
+              {unansweredQuestions.map((uq) => {
+                const qNum = questions.findIndex((x) => x.id === uq.id) + 1;
+                return (
+                  <button
+                    key={uq.id}
+                    onClick={() => scrollToQuestion(qNum)}
+                    className="px-1.5 py-0.5 bg-canvas border border-brand/40 text-brand font-bold hover:bg-brand hover:text-white transition-colors text-[11px]"
+                  >
+                    C{qNum}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Result score banner when submitted */}
       {isSubmitted && (
@@ -124,22 +192,25 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
           <div className="flex items-center gap-3">
             <span
               className={`text-sm font-bold ${
-                correctCount === visibleQuestions.length
+                correctCount === questions.length
                   ? "text-emerald-500"
                   : "text-brand"
               }`}
             >
-              {correctCount === visibleQuestions.length
+              {correctCount === questions.length
                 ? "🎉 XUẤT SẮC! BẠN ĐÃ TRẢ LỜI ĐÚNG TẤT CẢ!"
-                : `KẾT QUẢ ĐẠT: ${correctCount}/${visibleQuestions.length} CÂU ĐÚNG`}
+                : `KẾT QUẢ ĐẠT: ${correctCount}/${questions.length} CÂU ĐÚNG`}
             </span>
             <span className="text-grid-strong">|</span>
             <span className="text-secondary">
               Điểm:{" "}
-              <strong className="text-emerald-500">
-                {Math.round((correctCount / visibleQuestions.length) * 10)}
-                /10
+              <strong className="text-emerald-500 text-sm">
+                {score10}/10
               </strong>
+            </span>
+            <span className="text-grid-strong">|</span>
+            <span className="text-secondary">
+              Tỷ lệ: <strong>{Math.round((correctCount / questions.length) * 100)}%</strong>
             </span>
           </div>
 
@@ -151,7 +222,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
 
       {/* Questions list */}
       <div className="p-5 space-y-6">
-        {visibleQuestions.map((q, qIndex) => {
+        {questions.map((q, qIndex) => {
           const selected = selectedAnswers[q.id];
           const isAnswered = selected !== undefined;
           const isCorrect = selected === q.correctIndex;
@@ -159,16 +230,35 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
           return (
             <div
               key={q.id}
-              className="p-4 bg-canvas border border-grid space-y-3 font-mono text-xs"
+              id={`quiz-question-${qIndex + 1}`}
+              className={`p-4 bg-canvas transition-all space-y-3 font-mono text-xs ${
+                isAnswered
+                  ? "neo-box-sm"
+                  : "neo-box-sm border-brand/50 ring-1 ring-brand/30"
+              }`}
             >
               {/* Question title */}
-              <div className="flex items-start gap-2.5">
-                <span className="px-2.5 py-1 bg-subtle border border-grid text-brand font-bold text-xs sm:text-sm shrink-0">
-                  Câu {qIndex + 1}
-                </span>
-                <span className="text-primary font-bold text-base sm:text-[17px] leading-relaxed">
-                  {q.question}
-                </span>
+              <div className="flex items-start justify-between gap-2.5">
+                <div className="flex items-start gap-2.5">
+                  <span
+                    className={`px-2.5 py-1 border font-bold text-xs sm:text-sm shrink-0 ${
+                      isAnswered
+                        ? "bg-subtle border-grid text-primary"
+                        : "bg-brand/10 border-brand/40 text-brand"
+                    }`}
+                  >
+                    Câu {qIndex + 1}
+                  </span>
+                  <span className="text-primary font-bold text-base sm:text-[17px] leading-relaxed">
+                    {q.question}
+                  </span>
+                </div>
+
+                {isAnswered && !isSubmitted && (
+                  <span className="text-success text-xs font-semibold shrink-0">
+                    ✓ Đã chọn
+                  </span>
+                )}
               </div>
 
               {/* 4 Options Grid */}
@@ -240,20 +330,42 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
       </div>
 
       {/* Footer bar */}
-      <div className="p-3 bg-subtle border-t border-grid font-mono text-xs text-secondary flex items-center justify-between">
-        <span>
-          Đã chọn:{" "}
-          <strong className="text-primary">{totalAnswered}</strong>/
-          {visibleQuestions.length} câu
-        </span>
+      <div className="p-3.5 bg-subtle border-t border-grid font-mono text-xs text-secondary flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span>
+            {t("Tiến độ:", "Progress:")}{" "}
+            <strong className={isAllAnswered ? "text-success" : "text-brand"}>
+              {totalAnswered}
+            </strong>
+            /{questions.length} {t("câu", "questions")}
+          </span>
+          {!isAllAnswered && (
+            <span className="text-muted text-[11px]">
+              ({t("Còn thiếu", "Remaining")}: {unansweredQuestions.length} {t("câu", "questions")})
+            </span>
+          )}
+        </div>
 
-        {!isSubmitted && (
+        {!isSubmitted ? (
           <button
             onClick={handleGradeQuiz}
-            disabled={totalAnswered === 0}
-            className="px-4 py-1.5 bg-brand text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-40"
+            disabled={!isAllAnswered}
+            className={`px-4 py-2 font-bold transition-all ${
+              isAllAnswered
+                ? "bg-brand text-white hover:opacity-95 cursor-pointer ring-1 ring-brand"
+                : "bg-subtle text-muted border border-grid cursor-not-allowed opacity-60"
+            }`}
           >
-            [✓ Chấm điểm trắc nghiệm]
+            {isAllAnswered
+              ? `[✓ ${t("Chấm điểm trắc nghiệm", "Grade Quiz")}]`
+              : `[🔒 ${t("Cần làm đủ", "Complete all")} ${totalAnswered}/${questions.length} ${t("câu để nộp", "questions to submit")}]`}
+          </button>
+        ) : (
+          <button
+            onClick={handleResetQuiz}
+            className="px-4 py-1.5 bg-surface border border-grid text-primary hover:border-brand hover:text-brand font-semibold transition-colors"
+          >
+            [↻ {t("Làm lại toàn bộ", "Retry All")}]
           </button>
         )}
       </div>
