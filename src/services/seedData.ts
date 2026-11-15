@@ -1,4 +1,4 @@
-import {
+﻿import {
   Assignment,
   DifficultyLevel,
   Submission,
@@ -13,6 +13,7 @@ export const GRADE_10_CLASSES: string[] = [
   "10A14",
   "10A15",
   "10A16",
+  "Lớp khác",
 ];
 
 export const INITIAL_USERS: UserProfile[] = [

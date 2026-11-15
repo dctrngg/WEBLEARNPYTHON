@@ -6,6 +6,7 @@ import {
   setDoc,
   deleteDoc,
   query,
+  where,
   orderBy,
   writeBatch,
   onSnapshot,
@@ -22,6 +23,8 @@ import {
 const LS_USERS_KEY = "chroma_py_users_v9";
 const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v9";
 const LS_SUBMISSIONS_KEY = "chroma_py_submissions_v9";
+const LS_ASSIGNMENTS_CACHED_AT_KEY = "chroma_py_asgn_cache_time";
+const ASSIGNMENTS_CACHE_TTL_MS = 15 * 60 * 1000; // 15 phút cache trình duyệt để tối ưu lượt đọc Firestore
 
 function ensureLocalSeed() {
   if (!localStorage.getItem(LS_USERS_KEY)) {
@@ -172,7 +175,27 @@ export async function getAllUsers(): Promise<UserProfile[]> {
 
 // --- ASSIGNMENTS COLLECTION (docId = auto-generated or custom slug) ---
 
-export async function getAssignments(): Promise<Assignment[]> {
+export async function getAssignments(forceRefresh: boolean = false): Promise<Assignment[]> {
+  ensureLocalSeed();
+
+  // 1. Kiểm tra cache cục bộ (TTL: 15 phút) để tiết kiệm 100% lượt đọc Firestore cho học sinh
+  if (!forceRefresh) {
+    try {
+      const cachedAtStr = localStorage.getItem(LS_ASSIGNMENTS_CACHED_AT_KEY);
+      const cachedData = localStorage.getItem(LS_ASSIGNMENTS_KEY);
+      if (cachedAtStr && cachedData) {
+        const cachedAt = parseInt(cachedAtStr, 10);
+        if (Date.now() - cachedAt < ASSIGNMENTS_CACHE_TTL_MS) {
+          const parsed = JSON.parse(cachedData);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return sortAssignmentsByCurriculum(parsed);
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // 2. Chỉ gửi request lên Cloud Firestore khi hết hạn cache hoặc forceRefresh = true
   if (isFirebaseConfigured && db) {
     try {
       const snap = await getDocs(collection(db, "assignments"));
@@ -183,11 +206,13 @@ export async function getAssignments(): Promise<Assignment[]> {
         }));
         const sorted = sortAssignmentsByCurriculum(rawList);
         localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
+        localStorage.setItem(LS_ASSIGNMENTS_CACHED_AT_KEY, Date.now().toString());
         return sorted;
       } else {
         // Auto-seed the Tin học 10 assignments into empty Cloud Firestore on first connect
         const seeded = await seedCloudFirestoreData();
         if (seeded.success) {
+          localStorage.setItem(LS_ASSIGNMENTS_CACHED_AT_KEY, Date.now().toString());
           return sortAssignmentsByCurriculum(INITIAL_ASSIGNMENTS);
         }
       }
@@ -196,7 +221,6 @@ export async function getAssignments(): Promise<Assignment[]> {
     }
   }
 
-  ensureLocalSeed();
   const list: Assignment[] = JSON.parse(
     localStorage.getItem(LS_ASSIGNMENTS_KEY) || "[]"
   );
@@ -407,8 +431,28 @@ export async function getAllSubmissions(): Promise<Submission[]> {
 }
 
 export async function getUserSubmissions(userId: string): Promise<Submission[]> {
-  const all = await getAllSubmissions();
-  return all.filter((s) => s.userId === userId);
+  if (isFirebaseConfigured && db) {
+    try {
+      // Query có filter userId giúp chỉ đọc đúng bài nộp của học sinh, không đọc toàn trường
+      const q = query(
+        collection(db, "submissions"),
+        where("userId", "==", userId)
+      );
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        return snap.docs.map((d) => d.data() as Submission);
+      }
+      return [];
+    } catch (err) {
+      console.warn("[Firestore] Query user submissions error, fallback to local:", err);
+    }
+  }
+
+  ensureLocalSeed();
+  const list: Submission[] = JSON.parse(
+    localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]"
+  );
+  return list.filter((s) => s.userId === userId);
 }
 
 /**

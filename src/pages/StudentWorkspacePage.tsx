@@ -38,8 +38,18 @@ import {
   parseAndTranslatePythonError,
   TranslatedError,
 } from "../services/pythonErrorTranslator";
+import { diagnose } from "../services/answerDiagnostic";
 
 const GLYPHS = ["◇", "◆", "●", "◐", "▣", "◊"];
+
+function computeCodeHash(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash.toString(36);
+}
 
 export const StudentWorkspacePage: React.FC = () => {
   const { assignmentId } = useParams<{ assignmentId?: string }>();
@@ -150,6 +160,9 @@ export const StudentWorkspacePage: React.FC = () => {
   const consoleEndRef = useRef<HTMLDivElement | null>(null);
   const stdinInputRef = useRef<HTMLInputElement | null>(null);
   const isInitialLoadRef = useRef<boolean>(true);
+  const lastSyncedHashRef = useRef<string>("");
+  const codeRef = useRef<string>(code);
+  codeRef.current = code;
 
   // Re-register Python IntelliSense whenever language changes
   useEffect(() => {
@@ -196,7 +209,7 @@ export const StudentWorkspacePage: React.FC = () => {
     };
   }, [assignmentId, user]);
 
-  // Load saved submission or starter code when assignment changes
+  // Load saved submission, starter code, or newest local draft when assignment changes
   useEffect(() => {
     let active = true;
     async function loadAssignmentCode() {
@@ -204,6 +217,17 @@ export const StudentWorkspacePage: React.FC = () => {
       isInitialLoadRef.current = true;
       setTestResults(null);
 
+      // 1. Inspect local draft in localStorage first
+      const draftKey = user
+        ? `chroma_draft_${user.uid}_${selectedAssignment.id}`
+        : `chroma_draft_anon_${selectedAssignment.id}`;
+      let localDraft: { code: string; updatedAt: number } | null = null;
+      try {
+        const raw = localStorage.getItem(draftKey);
+        if (raw) localDraft = JSON.parse(raw);
+      } catch {}
+
+      // 2. Fetch submission from Cloud Firestore
       if (user) {
         const existingSub = await getSubmission(
           user.uid,
@@ -211,12 +235,28 @@ export const StudentWorkspacePage: React.FC = () => {
         );
         if (!active) return;
         if (existingSub) {
-          setCode(existingSub.code);
-          setSubmissionStatus(existingSub.status);
-          const timeStr = new Date(existingSub.updatedAt)
-            .toTimeString()
-            .split(" ")[0];
-          setSyncBadge(t(`✓ ĐÃ LƯU LÚC ${timeStr}`, `✓ SYNCED ${timeStr}`));
+          const cloudTime = new Date(existingSub.updatedAt).getTime();
+          // If local draft is newer than cloud by at least 1s, restore draft
+          if (
+            localDraft &&
+            localDraft.updatedAt > cloudTime + 1000 &&
+            localDraft.code !== existingSub.code
+          ) {
+            setCode(localDraft.code);
+            setSubmissionStatus(existingSub.status);
+            lastSyncedHashRef.current = computeCodeHash(existingSub.code);
+            setSyncBadge(
+              t("● ĐÃ KHÔI PHỤC BẢN NHÁP CỤC BỘ", "● LOCAL DRAFT RESTORED")
+            );
+          } else {
+            setCode(existingSub.code);
+            setSubmissionStatus(existingSub.status);
+            lastSyncedHashRef.current = computeCodeHash(existingSub.code);
+            const timeStr = new Date(existingSub.updatedAt)
+              .toTimeString()
+              .split(" ")[0];
+            setSyncBadge(t(`✓ ĐÃ LƯU LÚC ${timeStr}`, `✓ SYNCED ${timeStr}`));
+          }
           setTimeout(() => {
             isInitialLoadRef.current = false;
           }, 150);
@@ -225,9 +265,24 @@ export const StudentWorkspacePage: React.FC = () => {
       }
 
       if (!active) return;
-      setCode(selectedAssignment.starterCode);
-      setSubmissionStatus("in_progress");
-      setSyncBadge(t("● ĐANG DÙNG CODE MẪU", "● STARTER TEMPLATE"));
+      // 3. Fallback for new assignment: check local draft or use starterCode
+      if (localDraft && localDraft.code) {
+        setCode(localDraft.code);
+        setSubmissionStatus("in_progress");
+        lastSyncedHashRef.current = computeCodeHash(
+          selectedAssignment.starterCode
+        );
+        setSyncBadge(
+          t("● ĐÃ KHÔI PHỤC BẢN NHÁP CỤC BỘ", "● LOCAL DRAFT RESTORED")
+        );
+      } else {
+        setCode(selectedAssignment.starterCode);
+        setSubmissionStatus("in_progress");
+        lastSyncedHashRef.current = computeCodeHash(
+          selectedAssignment.starterCode
+        );
+        setSyncBadge(t("● ĐANG DÙNG CODE MẪU", "● STARTER TEMPLATE"));
+      }
       setTimeout(() => {
         isInitialLoadRef.current = false;
       }, 150);
@@ -239,7 +294,7 @@ export const StudentWorkspacePage: React.FC = () => {
     };
   }, [selectedAssignment, user, setTestResults, t]);
 
-  // Persist code helper
+  // Persist code helper (synchronizes to Firestore & updates lastSyncedHash)
   const persistCodeToCloud = useCallback(
     async (
       codeToSave: string,
@@ -248,6 +303,7 @@ export const StudentWorkspacePage: React.FC = () => {
       totalCount?: number
     ) => {
       if (!user || !selectedAssignment) return;
+      const targetHash = computeCodeHash(codeToSave);
       setSyncBadge(t("◐ ĐANG LƯU BÀI...", "◐ SAVING..."));
       const nextStatus = overrideStatus || submissionStatus;
       const saved = await saveSubmission({
@@ -264,31 +320,54 @@ export const StudentWorkspacePage: React.FC = () => {
         totalCount,
         updatedAt: new Date().toISOString(),
       });
+      lastSyncedHashRef.current = targetHash;
       setSubmissionStatus(nextStatus);
       setUserSubmissionsMap((prev) => ({
         ...prev,
         [selectedAssignment.id]: saved,
       }));
       const stamp = new Date().toTimeString().split(" ")[0];
-      setSyncBadge(t(`✓ ĐÃ LƯU ${stamp}`, `✓ SAVED ${stamp}`));
+      setSyncBadge(t(`✓ ĐÃ ĐỒNG BỘ ${stamp}`, `✓ SYNCED ${stamp}`));
     },
     [user, selectedAssignment, submissionStatus, lastStdoutText, t]
   );
 
-  // 10-second Auto-Save Debounce Mechanism
+  // Auto-Save: Instant LocalStorage Draft + 25-second Debounced Cloud Sync with Hash Verification
   useEffect(() => {
     if (isInitialLoadRef.current || !selectedAssignment || !user) return;
 
+    // Step A: Immediately save draft to localStorage
+    const draftKey = `chroma_draft_${user.uid}_${selectedAssignment.id}`;
+    try {
+      localStorage.setItem(
+        draftKey,
+        JSON.stringify({ code, updatedAt: Date.now() })
+      );
+    } catch {}
+
+    // Step B: Compare hash with last cloud-synced code. If identical, skip Firestore write!
+    const currentHash = computeCodeHash(code);
+    if (currentHash === lastSyncedHashRef.current) {
+      return;
+    }
+
+    // Step C: Mark modified and debounce Cloud Sync for 25 seconds
     setSyncBadge(
-      t("● ĐÃ SỬA (TỰ LƯU SAU 10 GIÂY)", "● MODIFIED (AUTO-SAVE IN 10S)")
+      t(
+        "● ĐÃ LƯU BẢN NHÁP (ĐỒNG BỘ ĐÁM MÂY SAU 25s)",
+        "● DRAFT SAVED (SYNC IN 25S)"
+      )
     );
+
     if (autoSaveTimerRef.current) {
       clearTimeout(autoSaveTimerRef.current);
     }
 
     autoSaveTimerRef.current = setTimeout(() => {
-      persistCodeToCloud(code);
-    }, 10000);
+      if (computeCodeHash(codeRef.current) !== lastSyncedHashRef.current) {
+        persistCodeToCloud(codeRef.current);
+      }
+    }, 25000);
 
     return () => {
       if (autoSaveTimerRef.current) {
@@ -296,6 +375,25 @@ export const StudentWorkspacePage: React.FC = () => {
       }
     };
   }, [code, selectedAssignment, user, persistCodeToCloud, t]);
+
+  // Flush cloud sync immediately when user switches tabs (blur) or navigates away (beforeunload)
+  useEffect(() => {
+    const handleFlushSync = () => {
+      const cur = codeRef.current;
+      if (!user || !selectedAssignment || isInitialLoadRef.current) return;
+      if (computeCodeHash(cur) !== lastSyncedHashRef.current) {
+        persistCodeToCloud(cur);
+      }
+    };
+
+    window.addEventListener("beforeunload", handleFlushSync);
+    window.addEventListener("blur", handleFlushSync);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleFlushSync);
+      window.removeEventListener("blur", handleFlushSync);
+    };
+  }, [user, selectedAssignment, persistCodeToCloud]);
 
   // Scroll console to bottom on new output
   useEffect(() => {
@@ -1638,6 +1736,39 @@ export const StudentWorkspacePage: React.FC = () => {
                           </span>
                         </div>
 
+                        {/* Top Wrong Answer Diagnostic Highlight */}
+                        {(() => {
+                          const firstFailed = testResults.find(
+                            (r) => !r.passed && !r.isHidden && !r.stderr
+                          );
+                          if (!firstFailed) return null;
+                          const diag = diagnose(
+                            firstFailed.expectedOutput,
+                            firstFailed.actualOutput
+                          );
+                          return (
+                            <div className="p-3 bg-amber-500/10 border border-amber-500/40 text-xs font-sans flex items-start gap-2.5">
+                              <span className="text-amber-500 font-bold text-sm shrink-0">
+                                💡
+                              </span>
+                              <div>
+                                <div className="font-bold text-amber-400">
+                                  Chẩn đoán nhanh (Test #{firstFailed.index}):{" "}
+                                  {diag.titleVi}
+                                </div>
+                                <p className="text-secondary mt-0.5">
+                                  {diag.messageVi}
+                                </p>
+                                {diag.suggestionVi && (
+                                  <p className="text-emerald-400 font-mono text-[11px] mt-1">
+                                    ↳ Gợi ý: {diag.suggestionVi}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })()}
+
                         {/* Technical Results Table */}
                         <div className="border border-grid divide-y divide-grid">
                           <div className="grid grid-cols-12 bg-subtle px-3 py-2 text-[11px] text-muted uppercase">
@@ -1687,13 +1818,13 @@ export const StudentWorkspacePage: React.FC = () => {
                                 )}
                               </div>
 
-                              <div className="col-span-3 text-secondary whitespace-pre-wrap break-all">
+                              <div className="col-span-3 text-secondary whitespace-pre-wrap break-all font-mono">
                                 {res.isHidden
                                   ? t("[Test ẩn của giáo viên]", "[Hidden Test]")
                                   : res.input || t("(trống)", "(empty)")}
                               </div>
 
-                              <div className="col-span-2 text-emerald-500 whitespace-pre-wrap break-all">
+                              <div className="col-span-2 text-emerald-500 whitespace-pre-wrap break-all font-mono">
                                 {res.isHidden
                                   ? t("[Đã ẩn]", "[Hidden]")
                                   : res.expectedOutput}
@@ -1701,30 +1832,49 @@ export const StudentWorkspacePage: React.FC = () => {
 
                               <div className="col-span-2 whitespace-pre-wrap break-all">
                                 {res.stderr ? (
-                                  <span className="text-brand">
+                                  <span className="text-brand font-mono">
                                     {res.stderr.split("\n").slice(-1)[0]}
                                   </span>
                                 ) : res.isHidden ? (
-                                  <span className="text-muted">
+                                  <span className="text-muted font-mono">
                                     {res.passed
                                       ? t("Khớp đáp án", "Matched")
                                       : t("Khác đáp án", "Mismatch")}
                                   </span>
                                 ) : (
-                                  <span
-                                    className={
-                                      res.passed
-                                        ? "text-primary"
-                                        : "text-brand"
-                                    }
-                                  >
-                                    {res.actualOutput ||
-                                      t("(chưa in gì)", "(no output)")}
-                                  </span>
+                                  <div>
+                                    <span
+                                      className={
+                                        res.passed
+                                          ? "text-primary font-mono"
+                                          : "text-brand font-mono font-semibold"
+                                      }
+                                    >
+                                      {res.actualOutput ||
+                                        t("(chưa in gì)", "(no output)")}
+                                    </span>
+                                    {!res.passed &&
+                                      (() => {
+                                        const diag = diagnose(
+                                          res.expectedOutput,
+                                          res.actualOutput
+                                        );
+                                        return (
+                                          <div className="mt-1.5 p-1.5 bg-amber-500/10 border-l-2 border-amber-500 font-sans text-[11px] leading-relaxed">
+                                            <div className="font-bold text-amber-400">
+                                              💡 {diag.titleVi}
+                                            </div>
+                                            <p className="text-secondary mt-0.5 text-[10px]">
+                                              {diag.messageVi}
+                                            </p>
+                                          </div>
+                                        );
+                                      })()}
+                                  </div>
                                 )}
                               </div>
 
-                              <div className="col-span-1 text-right text-emerald-500">
+                              <div className="col-span-1 text-right text-emerald-500 font-mono">
                                 {res.durationMs}ms
                               </div>
                             </div>

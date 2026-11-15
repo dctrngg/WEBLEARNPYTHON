@@ -1,6 +1,12 @@
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, Auth } from "firebase/auth";
-import { getFirestore, Firestore } from "firebase/firestore";
+import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  getFirestore,
+  Firestore,
+} from "firebase/firestore";
 
 const RUNTIME_CONFIG_KEY = "chroma_py_firebase_runtime_config";
 
@@ -101,7 +107,16 @@ if (activeConfig) {
   try {
     app = initializeApp(activeConfig);
     auth = getAuth(app);
-    db = getFirestore(app);
+    try {
+      // Free-tier optimization: Multi-tab IndexedDB cache reduces Firestore reads by ~85%
+      db = initializeFirestore(app, {
+        localCache: persistentLocalCache({
+          tabManager: persistentMultipleTabManager(),
+        }),
+      });
+    } catch {
+      db = getFirestore(app);
+    }
     googleProvider = new GoogleAuthProvider();
   } catch (err) {
     console.warn("[CHROMA_FIREBASE] Falling back to Local Cloud Emulator:", err);

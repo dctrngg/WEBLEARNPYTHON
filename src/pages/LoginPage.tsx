@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
@@ -7,6 +7,11 @@ import { getAllUsers } from "../services/firestoreService";
 import { GRADE_10_CLASSES } from "../services/seedData";
 import { isFirebaseConfigured, activeConfig } from "../firebase/config";
 import { UserProfile } from "../types/ide";
+import {
+  preloadPyodide,
+  subscribePyodidePreload,
+  PyodidePreloadStatus,
+} from "../services/pyodidePreloader";
 import {
   BentoCell,
   BentoGrid,
@@ -30,6 +35,17 @@ export const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [existingStudents, setExistingStudents] = useState<UserProfile[]>([]);
+  const [pyodideStatus, setPyodideStatus] = useState<PyodidePreloadStatus>({
+    state: "idle",
+    progress: 0,
+    message: "",
+  });
+
+  useEffect(() => {
+    preloadPyodide();
+    const unsub = subscribePyodidePreload((st) => setPyodideStatus(st));
+    return unsub;
+  }, []);
 
   useEffect(() => {
     async function fetchRegisteredStudents() {
@@ -144,7 +160,7 @@ export const LoginPage: React.FC = () => {
           <div className="bg-subtle px-6 py-2.5 flex items-center justify-between">
             <span>{t("DANH SÁCH LỚP HỌC", "CLASSES")}</span>
             <strong className="text-brand">
-              10A7 • 10A12 • 10A13 • 10A14 • 10A15 • 10A16
+              {GRADE_10_CLASSES.join(" • ")}
             </strong>
           </div>
         </div>
@@ -423,7 +439,7 @@ export const LoginPage: React.FC = () => {
                         <span className="text-brand">*</span>
                       </label>
 
-                      <div className="grid grid-cols-3 sm:grid-cols-6 bg-grid gap-[1px] border border-grid">
+                      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 bg-grid gap-[1px] border border-grid">
                         {GRADE_10_CLASSES.map((cls) => {
                           const active = selectedClass === cls;
                           return (
@@ -475,6 +491,47 @@ export const LoginPage: React.FC = () => {
                     )}
                     className="w-full bg-background border border-grid px-3.5 py-2.5 text-primary text-sm focus:outline-none focus:border-brand"
                   />
+                </div>
+
+                {/* Pyodide CPython 3.12 WebAssembly Pre-warm Progress */}
+                <div className="p-2.5 bg-subtle border border-grid font-mono text-[11px]">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className={
+                          pyodideStatus.state === "ready"
+                            ? "text-emerald-500 font-bold"
+                            : "text-amber-500"
+                        }
+                      >
+                        {pyodideStatus.state === "ready" ? "✓" : "◐"}
+                      </span>
+                      <span className="text-primary font-semibold">
+                        {pyodideStatus.state === "ready"
+                          ? t(
+                              "CPython 3.12 WASM: ĐÃ SẴN SÀNG",
+                              "CPython 3.12: READY"
+                            )
+                          : t(
+                              "ĐANG NẠP PYTHON KERNEL VÀO CACHE...",
+                              "CACHING PYTHON KERNEL..."
+                            )}
+                      </span>
+                    </div>
+                    <span className="text-secondary font-bold">
+                      {pyodideStatus.progress}%
+                    </span>
+                  </div>
+                  <div className="w-full h-1 bg-surface border border-grid overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        pyodideStatus.state === "ready"
+                          ? "bg-emerald-500"
+                          : "bg-amber-500"
+                      }`}
+                      style={{ width: `${pyodideStatus.progress}%` }}
+                    />
+                  </div>
                 </div>
 
                 {/* Submit Button */}

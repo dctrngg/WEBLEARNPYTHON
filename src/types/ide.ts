@@ -46,6 +46,7 @@ export interface Submission {
   lastExecutedOutput: string;
   passedCount?: number;
   totalCount?: number;
+  tabSwitchesCount?: number;
   updatedAt: string;
 }
 

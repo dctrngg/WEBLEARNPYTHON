@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+﻿import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import { useAuth, normalizeUsername } from "../contexts/AuthContext";
@@ -17,6 +17,7 @@ import {
   syncAssignmentsFromCloud,
   upsertUserProfile,
 } from "../services/firestoreService";
+import { exportGradesToCSV, exportGradesDetailedCSV } from "../services/gradeExportService";
 import { GRADE_10_CLASSES, localizeAssignment } from "../services/seedData";
 import {
   PYTHON_CURRICULUM_LESSONS,
@@ -161,9 +162,9 @@ export const InstructorDashboardPage: React.FC = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [isFormDirty]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = async (forceRefresh: boolean = false) => {
     const [asgnData, subData, usrData] = await Promise.all([
-      getAssignments(),
+      getAssignments(forceRefresh),
       getAllSubmissions(),
       getAllUsers(),
     ]);
@@ -1345,8 +1346,42 @@ export const InstructorDashboardPage: React.FC = () => {
                     activeId={subViewMode}
                     onChange={(id) => setSubViewMode(id as "MATRIX" | "LIST")}
                   />
-                  <Button variant="outline" size="sm" onClick={handleExportCsv}>
-                    [↓] EXPORT CSV
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      exportGradesToCSV(subClassFilter, studentList, assignments, submissions);
+                      pushToast(
+                        t(
+                          `ĐÃ XUẤT BẢNG ĐIỂM (${subClassFilter}) CHO VnEdu/SMAS!`,
+                          `EXPORTED GRADEBOOK (${subClassFilter}) FOR VnEdu/SMAS!`
+                        ),
+                        "success"
+                      );
+                    }}
+                    title={t(
+                      "Xuất bảng điểm tiếng Việt chuẩn UTF-8 BOM để nhập điểm VnEdu/SMAS",
+                      "Export UTF-8 BOM CSV compatible with VnEdu/SMAS"
+                    )}
+                  >
+                    [📥] {t("XUẤT ĐIỂM VnEdu/SMAS", "EXPORT VnEdu")}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      exportGradesDetailedCSV(subClassFilter, studentList, assignments, submissions);
+                      pushToast(
+                        t(
+                          "ĐÃ XUẤT CHI TIẾT MA TRẬN BÀI TẬP!",
+                          "EXPORTED DETAILED MATRIX CSV!"
+                        ),
+                        "success"
+                      );
+                    }}
+                    title={t("Xuất ma trận chi tiết điểm từng bài làm", "Export detailed per-assignment matrix")}
+                  >
+                    [↓] {t("MA TRẬN CSV", "MATRIX CSV")}
                   </Button>
                 </div>
               }
@@ -1387,7 +1422,7 @@ export const InstructorDashboardPage: React.FC = () => {
                   setSubPage(1);
                 }}
               >
-                <option value="ALL">ALL 6 CLASSES (10A7 → 10A16)</option>
+                <option value="ALL">ALL CLASSES (10A7 → LỚP KHÁC)</option>
                 {GRADE_10_CLASSES.map((cls) => (
                   <option key={cls} value={cls}>
                     CLASS {cls}
@@ -1635,8 +1670,8 @@ export const InstructorDashboardPage: React.FC = () => {
           <div>
             <SectionHeader
               glyph="[📊]"
-              badge="CLASS ANALYTICS // 6 GRADE 10 CLASSES"
-              title="Tình hình Học tập của 6 Lớp (10A7, 10A12 → 10A16)"
+              badge="CLASS ANALYTICS // TOÀN BỘ CÁC LỚP"
+              title="Tình hình Học tập của các Lớp (10A7 → Lớp khác)"
             />
 
             <BentoGrid cols={3}>
