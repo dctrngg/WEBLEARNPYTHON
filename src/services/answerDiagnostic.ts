@@ -1,12 +1,11 @@
 /**
- * Chroma Python Answer Diagnostic Engine
- * Analyzes Wrong Answer discrepancies between Expected Output and Actual Student Output.
- * Detects 5 primary student error patterns with actionable Vietnamese guidance:
- * 1. Whitespace or newline differences
- * 2. Case sensitivity mismatch (Upper / Lower case)
- * 3. Numeric format mismatch (e.g. 5 vs 5.0, floating point rounding)
- * 4. Input prompt / prefix leak (e.g. input("Nhap n: ") printing to stdout)
- * 5. Line ordering, empty output, or missing/extra lines
+ * Chroma Python Answer Diagnostic Engine & Smart Matcher
+ * Analyzes and flexibly matches student output against expected output.
+ * Tolerates:
+ * 1. Extra/missing spaces (especially after colons or commas)
+ * 2. Case sensitivity (e.g. vnđ vs VNĐ, kWh vs KWH)
+ * 3. Numeric equivalence (e.g. 450000 vs 450000.0, 150 vs 150.0)
+ * 4. Leaked input prompts (e.g. input("Nhap so gio: "))
  */
 
 export interface DiagnosticResult {
@@ -29,63 +28,118 @@ export interface DiagnosticResult {
 /**
  * Normalizes newlines across platforms (\r\n -> \n)
  */
-function normalizeNewlines(str: string): string {
-  return str.replace(/\r\n/g, "\n");
+export function normalizeNewlines(str: string): string {
+  return String(str ?? "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim();
 }
 
 /**
- * Strips trailing whitespace from each line and trims trailing blank lines
+ * Cleans a line by collapsing spaces and normalizing colons/commas
  */
-function cleanWhitespace(str: string): string {
-  return normalizeNewlines(str)
-    .split("\n")
-    .map((line) => line.trimEnd())
-    .join("\n")
-    .trimEnd();
+export function cleanLine(line: string): string {
+  return line
+    .trim()
+    .replace(/[ \t]+/g, " ")
+    .replace(/\s*:\s*/g, ": ")
+    .replace(/\s*,\s*/g, ", ")
+    .replace(/["']/g, '"');
 }
 
 /**
- * Extracts and compares numerical tokens if all tokens represent valid numbers
+ * Checks if two tokens are equal or numerically equivalent (with optional unit like vnđ, kWh)
  */
-function compareAsNumbers(expected: string, actual: string): boolean {
-  const expTokens = expected.trim().split(/\s+/).filter(Boolean);
-  const actTokens = actual.trim().split(/\s+/).filter(Boolean);
+function isTokenEqual(eTok: string, aTok: string): boolean {
+  if (eTok.toLowerCase() === aTok.toLowerCase()) return true;
 
-  if (expTokens.length === 0 || expTokens.length !== actTokens.length) {
-    return false;
+  const eNum = Number(eTok.replace(/[^0-9.-]/g, ""));
+  const aNum = Number(aTok.replace(/[^0-9.-]/g, ""));
+  if (!isNaN(eNum) && !isNaN(aNum) && Math.abs(eNum - aNum) < 1e-4) {
+    const eUnit = eTok.replace(/[0-9.-]/g, "").toLowerCase();
+    const aUnit = aTok.replace(/[0-9.-]/g, "").toLowerCase();
+    if (eUnit === aUnit) return true;
+  }
+  return false;
+}
+
+/**
+ * Compares two lines flexibly
+ */
+function isSingleLineMatch(expLine: string, actLine: string): boolean {
+  if (expLine === actLine) return true;
+  if (expLine.toLowerCase() === actLine.toLowerCase()) return true;
+
+  const expTokens = expLine.split(" ").filter(Boolean);
+  const actTokens = actLine.split(" ").filter(Boolean);
+
+  if (expTokens.length === actTokens.length) {
+    return expTokens.every((eTok, i) => isTokenEqual(eTok, actTokens[i]));
   }
 
-  for (let i = 0; i < expTokens.length; i++) {
-    const expNum = Number(expTokens[i]);
-    const actNum = Number(actTokens[i]);
-
-    if (isNaN(expNum) || isNaN(actNum)) {
-      return false;
-    }
-
-    // Compare with small epsilon for floating-point tolerance
-    if (Math.abs(expNum - actNum) > 1e-5) {
-      return false;
-    }
-  }
-
-  return true;
+  return false;
 }
 
 /**
- * Main diagnosis function
+ * Smart / Lenient Output Matcher for High School Python Pedagogy:
+ * - Tolerates extra/missing spaces
+ * - Tolerates case mismatch
+ * - Tolerates numeric equivalence (e.g. 450000 vs 450000.0)
+ * - Tolerates leaked input() prompts
+ */
+export function isOutputMatch(expectedRaw: string, actualRaw: string): boolean {
+  if (expectedRaw === actualRaw) return true;
+
+  const expected = normalizeNewlines(expectedRaw);
+  const actual = normalizeNewlines(actualRaw);
+  if (expected === actual) return true;
+
+  const expLines = expected.split("\n").map(cleanLine).filter((l) => l.length > 0);
+  let actLines = actual.split("\n").map(cleanLine).filter((l) => l.length > 0);
+
+  // 1. Clean line string match (exact or case-insensitive)
+  if (expLines.join("\n") === actLines.join("\n")) return true;
+  if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
+
+  // 2. Input prompt leak stripping
+  if (actLines.length > 0 && expLines.length > 0) {
+    const promptRegex = /^(.*?(?:nhập|nhap|enter|input|cho|hãy|hay|prompt).*?[:\?]\s*)/i;
+    if (promptRegex.test(actLines[0])) {
+      actLines[0] = cleanLine(actLines[0].replace(promptRegex, ""));
+      actLines = actLines.filter((l) => l.length > 0);
+      if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
+    }
+  }
+
+  // 3. Line-by-line token & numeric comparison
+  if (expLines.length === actLines.length && expLines.length > 0) {
+    let allLinesMatch = true;
+    for (let i = 0; i < expLines.length; i++) {
+      if (!isSingleLineMatch(expLines[i], actLines[i])) {
+        allLinesMatch = false;
+        break;
+      }
+    }
+    if (allLinesMatch) return true;
+  }
+
+  return false;
+}
+
+/**
+ * Main diagnosis function with pinpoint feedback
  */
 export function diagnose(expected: string, actual: string): DiagnosticResult {
   const normExpected = normalizeNewlines(expected ?? "");
   const normActual = normalizeNewlines(actual ?? "");
 
-  // If already exactly equal, no diagnosis needed
-  if (normExpected === normActual) {
+  // If already matches (either strictly or leniently)
+  if (isOutputMatch(normExpected, normActual)) {
     return {
       isDiagnosed: false,
       type: "CONTENT_MISMATCH",
       titleVi: "Chính xác",
-      messageVi: "Kết quả in ra hoàn toàn trùng khớp với đáp án mẫu.",
+      messageVi: "Kết quả in ra hoàn toàn trùng khớp hoặc tương đương với đáp án mẫu.",
       suggestionVi: "",
     };
   }
@@ -101,80 +155,54 @@ export function diagnose(expected: string, actual: string): DiagnosticResult {
     };
   }
 
-  // Case 1: Equal after trimming whitespace on lines and at the end
-  if (cleanWhitespace(normExpected) === cleanWhitespace(normActual)) {
+  // Case 1: Equal after collapsing spaces
+  const cleanExp = normExpected.split("\n").map(cleanLine).filter(Boolean).join("\n");
+  const cleanAct = normActual.split("\n").map(cleanLine).filter(Boolean).join("\n");
+  if (cleanExp === cleanAct) {
     return {
       isDiagnosed: true,
       type: "WHITESPACE_OR_NEWLINE",
       titleVi: "Thừa/thiếu dấu cách hoặc xuống dòng",
-      messageVi: "Các chữ và số của bạn đã đúng, nhưng bị thừa hoặc thiếu dấu cách (space) hoặc ký tự xuống dòng (Enter).",
-      suggestionVi: "Kiểm tra kỹ các dấu cách trong lệnh print() hoặc đối số sep='', end=''.",
+      messageVi: "Các chữ và số của bạn đã đúng, nhưng bị thừa/thiếu dấu cách (space) quanh dấu hai chấm hoặc giữa các từ.",
+      suggestionVi: "Kiểm tra kỹ các dấu cách trong chuỗi in print() hoặc đối số sep='', end=''.",
     };
   }
 
   // Case 2: Equal when ignoring case (Upper vs Lower)
-  if (cleanWhitespace(normExpected).toLowerCase() === cleanWhitespace(normActual).toLowerCase()) {
+  if (cleanExp.toLowerCase() === cleanAct.toLowerCase()) {
     return {
       isDiagnosed: true,
       type: "CASE_MISMATCH",
       titleVi: "Sai chữ hoa/chữ thường",
-      messageVi: "Nội dung đúng nhưng sai định dạng viết hoa hoặc viết thường (Ví dụ: 'True' vs 'true', 'CHẴN' vs 'chẵn').",
+      messageVi: "Nội dung đúng nhưng sai định dạng viết hoa hoặc viết thường (Ví dụ: 'True' vs 'true', 'vnđ' vs 'VNĐ').",
       suggestionVi: "Quan sát kỹ chữ hoa và chữ thường trong phần Kết quả mong đợi (Expected).",
     };
   }
 
-  // Case 3: Same numerical values but different format (e.g. 5 vs 5.0, 3.333 vs 3.33)
-  if (compareAsNumbers(cleanWhitespace(normExpected), cleanWhitespace(normActual))) {
-    return {
-      isDiagnosed: true,
-      type: "NUMBER_FORMAT",
-      titleVi: "Sai định dạng số",
-      messageVi: "Giá trị tính toán đã đúng, nhưng định dạng hiển thị số chưa chuẩn (Ví dụ: in 5.0 thay vì 5, hoặc số chữ số thập phân làm tròn chưa đúng).",
-      suggestionVi: "Dùng int(...) để ép về số nguyên, hoặc dùng round(x, n) / f-string f'{x:.2f}' để định dạng chữ số thập phân.",
-    };
-  }
-
-  // Case 4: Actual has extra text at start, but ends with expected
-  // Very common Grade 10 mistake: input("Nhap n: ") or print("Ket qua la:", x)
-  const trimmedExp = cleanWhitespace(normExpected);
-  const trimmedAct = cleanWhitespace(normActual);
-  if (trimmedAct.endsWith(trimmedExp) && trimmedAct.length > trimmedExp.length) {
-    const leakedPrefix = trimmedAct.slice(0, trimmedAct.length - trimmedExp.length).trim();
+  // Case 4: Actual has input prompt leak
+  const promptRegex = /^(.*?(?:nhập|nhap|enter|input|cho|hãy|hay).*?[:\?]\s*)/i;
+  if (promptRegex.test(normActual)) {
     return {
       isDiagnosed: true,
       type: "INPUT_PROMPT_OR_PREFIX",
-      titleVi: "In thừa lời nhắc hoặc chú thích",
-      messageVi: `Bạn in cả lời nhắc trong input(...) hoặc thêm chữ vào trước kết quả (Đoạn thừa: "${leakedPrefix}").`,
-      suggestionVi: "Khi làm bài chấm tự động, hãy dùng input() không có lời nhắc (không ghi chữ trong ngoặc) và chỉ in đúng kết quả số/chữ đề bài yêu cầu.",
+      titleVi: "In thừa lời nhắc trong input()",
+      messageVi: "Bạn đã ghi câu nhắc bên trong lệnh input(\"...\"), khiến câu nhắc bị in ra màn hình kết quả.",
+      suggestionVi: "Hãy để input() trống (ví dụ: n = int(input())), không ghi chữ bên trong ngoặc.",
     };
   }
 
-  // Case 5b: Line-based analysis (Order, missing lines, extra lines)
-  const expLines = trimmedExp.split("\n").map((l) => l.trim()).filter(Boolean);
-  const actLines = trimmedAct.split("\n").map((l) => l.trim()).filter(Boolean);
+  // Case 5b: Line-based analysis (Order, missing lines, extra lines, or pinpointing line error)
+  const expLines = normExpected.split("\n").map(cleanLine).filter(Boolean);
+  const actLines = normActual.split("\n").map(cleanLine).filter(Boolean);
 
   if (expLines.length > 0 && actLines.length > 0) {
-    // Check if same lines but in different order
-    const sortedExp = [...expLines].sort().join("\n");
-    const sortedAct = [...actLines].sort().join("\n");
-
-    if (sortedExp === sortedAct) {
-      return {
-        isDiagnosed: true,
-        type: "LINE_ORDER",
-        titleVi: "Sai thứ tự các dòng",
-        messageVi: "Tất cả các dòng kết quả đều đúng nội dung, nhưng thứ tự in ra chưa đúng theo yêu cầu.",
-        suggestionVi: "Kiểm tra lại thứ tự thực hiện của các vòng lặp hoặc điều kiện in ấn.",
-      };
-    }
-
     if (actLines.length < expLines.length) {
       return {
         isDiagnosed: true,
         type: "MISSING_LINES",
         titleVi: "In thiếu dòng kết quả",
         messageVi: `Chương trình in thiếu dòng (Đáp án yêu cầu ${expLines.length} dòng, bạn mới in được ${actLines.length} dòng).`,
-        suggestionVi: "Kiểm tra điều kiện dừng của vòng lặp (range(a, b)) hoặc kiểm tra xem có trường hợp nào chưa in không.",
+        suggestionVi: "Kiểm tra xem bạn đã in đủ tất cả các thông tin yêu cầu của đề bài chưa.",
       };
     }
 
@@ -183,9 +211,24 @@ export function diagnose(expected: string, actual: string): DiagnosticResult {
         isDiagnosed: true,
         type: "EXTRA_LINES",
         titleVi: "In thừa dòng kết quả",
-        messageVi: `Chương trình in thừa dòng hoặc lệnh in bị lặp lại nhiều lần (Đáp án chỉ cần ${expLines.length} dòng, bạn in ra ${actLines.length} dòng).`,
-        suggestionVi: "Kiểm tra xem lệnh print() có bị vô tình đặt bên trong vòng lặp thay vì đặt ở ngoài không.",
+        messageVi: `Chương trình in thừa dòng (Đáp án chỉ cần ${expLines.length} dòng, bạn in ra ${actLines.length} dòng).`,
+        suggestionVi: "Kiểm tra xem lệnh print() có bị vô tình lặp lại hoặc in thừa thông tin không cần thiết.",
       };
+    }
+
+    // Same line count: pinpoint the exact first line that differs!
+    if (expLines.length === actLines.length) {
+      for (let i = 0; i < expLines.length; i++) {
+        if (!isSingleLineMatch(expLines[i], actLines[i])) {
+          return {
+            isDiagnosed: true,
+            type: "CONTENT_MISMATCH",
+            titleVi: `Chưa đúng tại Dòng ${i + 1}`,
+            messageVi: `Dòng ${i + 1} bạn in: "${actLines[i]}", trong khi đáp án là: "${expLines[i]}".`,
+            suggestionVi: `Hãy kiểm tra lại công thức tính toán hoặc biến in ra ở Dòng ${i + 1}.`,
+          };
+        }
+      }
     }
   }
 

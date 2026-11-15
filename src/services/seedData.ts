@@ -1,4 +1,4 @@
-﻿import {
+import {
   Assignment,
   DifficultyLevel,
   Submission,
@@ -57,2484 +57,2120 @@ export const INITIAL_USERS: UserProfile[] = [
     role: "student",
     createdAt: "2026-11-12T14:15:00.000Z",
   },
+  {
+    uid: "usr_hskhac",
+    username: "hskhac",
+    email: "hskhac@python.edu.vn",
+    displayName: "Học sinh (Lớp khác)",
+    className: "Lớp khác",
+    password: "123456",
+    role: "student",
+    createdAt: "2026-11-13T10:00:00.000Z",
+  },
 ];
 
 export const INITIAL_ASSIGNMENTS: Assignment[] = [
   {
-    id: "asgn_16_1",
-    lessonId: "bai_16",
-    glyph: "◇",
-    title: "Bài 16.1: In hình chữ nhật rỗng bằng phép nối & lặp xâu",
-    difficulty: "Beginner",
-    description: "### Đề bài (Thực hành Bài 4 & 5 - Bài 16 SGK Tin học 10)\nViết chương trình nhập vào chiều rộng `w` (số dấu `*` trên 1 hàng ngang, $w \\ge 3$) và in ra hình chữ nhật rỗng có **4 dòng** bằng các dấu `*`, kết hợp phép lặp xâu (`*`) và nối xâu (`+`).\n\n### Dữ liệu vào (Input)\n- Một dòng chứa số nguyên `w` (ví dụ `w = 12` như trong SGK).\n\n### Kết quả ra (Output)\n- Dòng 1 và dòng 4: gồm `w` dấu `*` liền nhau.\n- Dòng 2 và dòng 3: đầu và cuối là dấu `*`, ở giữa có `w - 2` dấu cách `' '`.\n\n### 💡 Gợi ý cách làm\n- Dòng đặc: `\"*\" * w`\n- Dòng rỗng ở giữa: `\"*\" + \" \" * (w - 2) + \"*\"`\n",
-    starterCode: "# Bài 16.1: In hình chữ nhật rỗng kích thước w x 4 bằng dấu *\n",
-    testCases: [
-          {
-                "input": "12",
-                "expectedOutput": "************\n*          *\n*          *\n************",
-                "isHidden": false
-          },
-          {
-                "input": "6",
-                "expectedOutput": "******\n*    *\n*    *\n******",
-                "isHidden": false
-          },
-          {
-                "input": "4",
-                "expectedOutput": "****\n*  *\n*  *\n****",
-                "isHidden": true
-          },
-          {
-                "input": "8",
-                "expectedOutput": "********\n*      *\n*      *\n********",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "**********\n*        *\n*        *\n**********",
-                "isHidden": true
-          },
-          {
-                "input": "16",
-                "expectedOutput": "****************\n*              *\n*              *\n****************",
-                "isHidden": true
-          }
+    "id": "asgn_16_1",
+    "lessonId": "bai_16",
+    "glyph": "●",
+    "title": "Bài 16.1: Tính tiền lãi gửi tiết kiệm ngân hàng của bạn An (Luyện tập Bài 16)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Tài chính cá nhân - Bài 16 SGK Tin học 10)\nBạn An gửi tiết kiệm trực tuyến vào ngân hàng với mức lãi suất cố định `0.8%/tháng` (tương đương hệ số `0.008`). Hãy sử dụng lệnh `int(input())` để nhập số tiền gốc `so_tien` (VNĐ) và viết các câu lệnh `print()` hiển thị thông tin sổ tiết kiệm và số tiền lãi sau 1 tháng theo đúng định dạng mẫu.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTên người gửi: An\nSố tiền gửi: 5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 40000.0\n```\n\n*Tiền lãi được tính theo công thức: `so_tien * 0.008`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `so_tien` là số tiền gửi ban đầu.\n\n### Kết quả ra (Output)\nIn ra màn hình đúng 4 dòng thông tin theo mẫu: Tên người gửi, Số tiền gửi, Lãi suất/tháng và Tiền lãi.",
+    "starterCode": "# Bài 16.1: Tính tiền lãi gửi tiết kiệm ngân hàng của bạn An\n# Hãy viết các câu lệnh nhập số tiền và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "5000000",
+        "expectedOutput": "Tên người gửi: An\nSố tiền gửi: 5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 40000.0",
+        "isHidden": false
+      },
+      {
+        "input": "10000000",
+        "expectedOutput": "Tên người gửi: An\nSố tiền gửi: 10000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 80000.0",
+        "isHidden": false
+      },
+      {
+        "input": "2500000",
+        "expectedOutput": "Tên người gửi: An\nSố tiền gửi: 2500000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 20000.0",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-10T08:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_16_3",
-    lessonId: "bai_16",
-    glyph: "●",
-    title: "Bài 16.3: Tính tiền lãi ngân hàng của bạn An (Luyện tập Bài 16)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập Bài 3 - Bài 16 SGK Tin học 10)\nBạn An có số tiền 5,000,000 VNĐ gửi vào ngân hàng với mức lãi suất 0.8%/tháng. Hãy viết chương trình hiển thị ra màn hình thông tin gửi tiết kiệm và tiền lãi theo đúng định dạng mẫu bên dưới:\n\n```text\nTên người gửi: An\nSố tiền gửi:  5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi:  40000.0\n```\n\n*Tiền lãi được tính theo công thức: `5000000 * 0.008`.*\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu vào từ bàn phím.\n\n### Kết quả ra (Output)\n- In ra màn hình đúng 4 dòng thông tin theo mẫu.",
-    starterCode: "# Bài 16.3: Tính tiền lãi ngân hàng của bạn An\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "Tên người gửi: An\nSố tiền gửi:  5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi:  40000.0",
-                "isHidden": false
-          }
+    "id": "asgn_16_2",
+    "lessonId": "bai_16",
+    "glyph": "●",
+    "title": "Bài 16.2: Ước tính chi phí điện năng tiêu thụ của máy điều hòa (Luyện tập Bài 16)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Tiết kiệm năng lượng gia đình - Bài 16 SGK Tin học 10)\nMột máy điều hòa tại phòng học tiêu thụ trung bình `1.5` kWh điện mỗi giờ hoạt động. Giá điện trung bình là `3000` VNĐ/kWh. Hãy sử dụng lệnh `int(input())` để nhập số giờ sử dụng `so_gio`, sau đó dùng biểu thức toán học và lệnh `print()` để in báo cáo điện năng tiêu thụ và tiền điện phải trả.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố giờ sử dụng: 100 giờ\nĐiện năng tiêu thụ: 150.0 kWh\nChi phí tiền điện: 450000.0 vnđ\n```\n\n*Điện năng tiêu thụ = `so_gio * 1.5`, Chi phí = `so_gio * 1.5 * 3000`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `so_gio` là tổng số giờ bật điều hòa trong tháng.\n\n### Kết quả ra (Output)\nIn ra 3 dòng gồm: Số giờ sử dụng, Điện năng tiêu thụ (kWh) và Chi phí tiền điện (VNĐ).",
+    "starterCode": "# Bài 16.2: Ước tính chi phí điện năng tiêu thụ của máy điều hòa\n# Hãy viết các câu lệnh nhập số giờ sử dụng và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "100",
+        "expectedOutput": "Số giờ sử dụng: 100 giờ\nĐiện năng tiêu thụ: 150.0 kWh\nChi phí tiền điện: 450000.0 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "60",
+        "expectedOutput": "Số giờ sử dụng: 60 giờ\nĐiện năng tiêu thụ: 90.0 kWh\nChi phí tiền điện: 270000.0 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "120",
+        "expectedOutput": "Số giờ sử dụng: 120 giờ\nĐiện năng tiêu thụ: 180.0 kWh\nChi phí tiền điện: 540000.0 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_16_4",
-    lessonId: "bai_16",
-    glyph: "◆",
-    title: "Bài 16.4: Tính thời gian chạy xe trên cao tốc Hà Nội – Lào Cai",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập Bài 4 - Bài 16 SGK Tin học 10)\nĐường cao tốc Hà Nội – Lào Cai (kí hiệu CT.05) có chiều dài 264 km. Một ô tô chạy với tốc độ trung bình toàn tuyến là 70 km/h. Em hãy dùng ngôn ngữ lập trình Python để tính và in ra thời gian ô tô đó đi hết đường cao tốc Hà Nội – Lào Cai (tính bằng giờ).\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu vào từ bàn phím.\n\n### Kết quả ra (Output)\n- In ra thời gian ô tô đi hết tuyến đường (tính bằng giờ).",
-    starterCode: "# Bài 16.4: Tính thời gian đi trên đường cao tốc\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "3.7714285714285714",
-                "isHidden": false
-          }
+    "id": "asgn_16_3",
+    "lessonId": "bai_16",
+    "glyph": "●",
+    "title": "Bài 16.3: Chia phần quà từ thiện cho học sinh vùng cao (Luyện tập Bài 16)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Hoạt động thiện nguyện học đường - Bài 16 SGK Tin học 10)\nHãy nhập vào `tong_so_vo` quyển vở mà đoàn trường quyên góp được để chia đều cho `25` học sinh tại một điểm trường vùng cao. Hãy sử dụng phép chia lấy thương nguyên (`//`) và phép chia lấy số dư (`%`) trong Python để tính số quyển vở mỗi học sinh nhận được và số quyển vở còn dư lại.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng số vở: 260\nMỗi học sinh nhận: 10 quyển\nSố vở còn dư: 10 quyển\n```\n\n*Sử dụng toán tử `// 25` để tính thương nguyên và `% 25` để tính phần dư.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `tong_so_vo`.\n\n### Kết quả ra (Output)\nIn ra 3 dòng theo mẫu: Tổng số vở, Số vở mỗi học sinh nhận và Số vở còn dư.",
+    "starterCode": "# Bài 16.3: Chia phần quà từ thiện cho học sinh vùng cao\n# Hãy viết các câu lệnh nhập tổng số vở và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "260",
+        "expectedOutput": "Tổng số vở: 260\nMỗi học sinh nhận: 10 quyển\nSố vở còn dư: 10 quyển",
+        "isHidden": false
+      },
+      {
+        "input": "500",
+        "expectedOutput": "Tổng số vở: 500\nMỗi học sinh nhận: 20 quyển\nSố vở còn dư: 0 quyển",
+        "isHidden": false
+      },
+      {
+        "input": "312",
+        "expectedOutput": "Tổng số vở: 312\nMỗi học sinh nhận: 12 quyển\nSố vở còn dư: 12 quyển",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:05:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_16_5",
-    lessonId: "bai_16",
-    glyph: "▣",
-    title: "Bài 16.5: Dự báo sản lượng điện quốc gia năm 2021",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập Bài 5 - Bài 16 SGK Tin học 10)\nNăm 2020 nước ta sản xuất được 247 tỉ kWh điện. Sản lượng điện của nước ta được dự báo sẽ tiếp tục tăng nhanh với tốc độ trung bình là 8.6%/năm. Em hãy viết chương trình Python để tính và in ra sản lượng điện của nước ta sản xuất được trong năm 2021 theo dự báo (tính bằng tỉ kWh).\n\n*Công thức: `247 * (1 + 0.086)`*\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu vào từ bàn phím.\n\n### Kết quả ra (Output)\n- In ra sản lượng điện dự báo trong năm 2021.",
-    starterCode: "# Bài 16.5: Dự báo sản lượng điện quốc gia\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "268.2422",
-                "isHidden": false
-          }
+    "id": "asgn_16_4",
+    "lessonId": "bai_16",
+    "glyph": "●",
+    "title": "Bài 16.4: Tính thời gian tải tệp bài giảng qua mạng cáp quang (Luyện tập Bài 16)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Viễn thông & Internet - Bài 16 SGK Tin học 10)\nMột tệp video bài giảng Tin học có dung lượng `dung_luong_mb` (MB). Đường truyền mạng của trường có tốc độ tải xuống thực tế ổn định là `12.5` MB/giây. Hãy viết chương trình hiển thị dung lượng tệp, tốc độ mạng và thời gian cần thiết (tính bằng giây) để tải xong tệp đó.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nDung lượng tệp: 250 MB\nTốc độ mạng: 12.5 MB/s\nThời gian tải: 20.0 giây\n```\n\n*Thời gian tải được tính bằng công thức: `dung_luong_mb / 12.5`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `dung_luong_mb` là dung lượng tệp tính theo MB.\n\n### Kết quả ra (Output)\nIn ra đúng 3 dòng thông tin theo định dạng mẫu.",
+    "starterCode": "# Bài 16.4: Tính thời gian tải tệp bài giảng qua mạng cáp quang\n# Hãy viết các câu lệnh nhập dung lượng tệp và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "250",
+        "expectedOutput": "Dung lượng tệp: 250 MB\nTốc độ mạng: 12.5 MB/s\nThời gian tải: 20.0 giây",
+        "isHidden": false
+      },
+      {
+        "input": "500",
+        "expectedOutput": "Dung lượng tệp: 500 MB\nTốc độ mạng: 12.5 MB/s\nThời gian tải: 40.0 giây",
+        "isHidden": false
+      },
+      {
+        "input": "125",
+        "expectedOutput": "Dung lượng tệp: 125 MB\nTốc độ mạng: 12.5 MB/s\nThời gian tải: 10.0 giây",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:10:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_16_6",
-    lessonId: "bai_16",
-    glyph: "◊",
-    title: "Bài 16.6: In bảng nhân 7 với các số tự nhiên từ 0 đến 9",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập Bài 6 - Bài 16 SGK Tin học 10)\nViết chương trình in ra bảng nhân 7 với các số tự nhiên nhỏ hơn 10 (từ 0 đến 9).\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu vào từ bàn phím.\n\n### Kết quả ra (Output)\n- In ra bảng nhân 7 gồm 10 dòng theo định dạng chuẩn: `7 x 0 = 0`, `7 x 1 = 7`, ..., `7 x 9 = 63`.",
-    starterCode: "# Bài 16.6: Bảng nhân 7\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "7 x 0 = 0\n7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35\n7 x 6 = 42\n7 x 7 = 49\n7 x 8 = 56\n7 x 9 = 63",
-                "isHidden": false
-          }
+    "id": "asgn_16_5",
+    "lessonId": "bai_16",
+    "glyph": "●",
+    "title": "Bài 16.5: Tính diện tích phủ sóng bộ phát Wi-Fi thư viện (Luyện tập Bài 16)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Hạ tầng mạng trường học - Bài 16 SGK Tin học 10)\nThư viện trường lắp đặt một bộ phát Wi-Fi ở chính giữa phòng với bán kính phủ sóng ổn định là `ban_kinh` (mét). Hãy sử dụng toán tử lũy thừa (`**`) với số `pi = 3.14` để tính và in ra diện tích vùng phủ sóng Wi-Fi hình tròn.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nBán kính phủ sóng: 10 m\nDiện tích phủ sóng: 314.0 m2\n```\n\n*Công thức diện tích hình tròn: `3.14 * (ban_kinh ** 2)`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `ban_kinh` (mét) đã được đọc sẵn trong `starterCode`.\n\n### Kết quả ra (Output)\nIn ra 2 dòng gồm Bán kính phủ sóng và Diện tích phủ sóng (m2).",
+    "starterCode": "# Bài 16.5: Tính diện tích phủ sóng bộ phát Wi-Fi thư viện\n# Hãy viết các câu lệnh nhập bán kính và in diện tích:\n",
+    "testCases": [
+      {
+        "input": "10",
+        "expectedOutput": "Bán kính phủ sóng: 10 m\nDiện tích phủ sóng: 314.0 m2",
+        "isHidden": false
+      },
+      {
+        "input": "20",
+        "expectedOutput": "Bán kính phủ sóng: 20 m\nDiện tích phủ sóng: 1256.0 m2",
+        "isHidden": false
+      },
+      {
+        "input": "15",
+        "expectedOutput": "Bán kính phủ sóng: 15 m\nDiện tích phủ sóng: 706.5 m2",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:15:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_17_1",
-    lessonId: "bai_17",
-    glyph: "◆",
-    title: "Bài 17.1: Tính giá trị biểu thức đại số (Thực hành Bài 17)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Thực hành Nhiệm vụ 1c - Bài 17 SGK Tin học 10)\nCho hai số nguyên `x` và `y`. Hãy viết chương trình tính giá trị của biểu thức toán học:\n$$A = (x + y)(x^2 + y^2 - 1)$$\n\n### Dữ liệu vào (Input)\n- Dòng 1: Số nguyên `x`.\n- Dòng 2: Số nguyên `y`.\n\n### Kết quả ra (Output)\n- In ra giá trị của biểu thức `A`.\n\n### 💡 Gợi ý cách làm\n- Trong Python, phép lũy thừa $x^2$ viết là `x**2`.\n- Công thức: `A = (x + y) * (x**2 + y**2 - 1)`\n",
-    starterCode: "# Bài 17.1: Tính biểu thức (x + y)(x^2 + y^2 - 1)\n",
-    testCases: [
-          {
-                "input": "2\n5",
-                "expectedOutput": "196",
-                "isHidden": false
-          },
-          {
-                "input": "1\n2",
-                "expectedOutput": "12",
-                "isHidden": false
-          },
-          {
-                "input": "3\n4",
-                "expectedOutput": "168",
-                "isHidden": true
-          },
-          {
-                "input": "0\n1",
-                "expectedOutput": "0",
-                "isHidden": true
-          },
-          {
-                "input": "5\n3",
-                "expectedOutput": "264",
-                "isHidden": true
-          },
-          {
-                "input": "-2\n4",
-                "expectedOutput": "38",
-                "isHidden": true
-          }
+    "id": "asgn_17_1",
+    "lessonId": "bai_17",
+    "glyph": "●",
+    "title": "Bài 17.1: Cập nhật điểm thưởng thẻ thành viên siêu thị (Luyện tập Bài 17)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Thương mại bán lẻ - Bài 17 SGK Tin học 10)\nKhách hàng có số điểm tích lũy ban đầu là `diem_hien_tai`. Khi mua hàng với hóa đơn `tien_mua_hang` (VNĐ), cứ mỗi `10000` VNĐ (tính phần nguyên) khách được cộng thêm 1 điểm thưởng. Sau đó khách dùng `50` điểm để đổi phiếu giảm giá. Hãy dùng biến và các phép gán cập nhật để tính số điểm cuối cùng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nĐiểm ban đầu: 120\nĐiểm cộng thêm: 35\nTổng điểm còn lại: 105\n```\n\n*Điểm cộng thêm = `tien_mua_hang // 10000`; Điểm còn lại = `diem_hien_tai + diem_cong - 50`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `diem_hien_tai`.\nDòng 2: Số nguyên `tien_mua_hang`.\n\n### Kết quả ra (Output)\nIn ra 3 dòng: Điểm ban đầu, Điểm cộng thêm và Tổng điểm còn lại.",
+    "starterCode": "# Bài 17.1: Cập nhật điểm thưởng thẻ thành viên siêu thị\n# Hãy viết các câu lệnh nhập điểm hiện tại, tiền mua hàng và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "120\n350000",
+        "expectedOutput": "Điểm ban đầu: 120\nĐiểm cộng thêm: 35\nTổng điểm còn lại: 105",
+        "isHidden": false
+      },
+      {
+        "input": "80\n500000",
+        "expectedOutput": "Điểm ban đầu: 80\nĐiểm cộng thêm: 50\nTổng điểm còn lại: 80",
+        "isHidden": false
+      },
+      {
+        "input": "200\n185000",
+        "expectedOutput": "Điểm ban đầu: 200\nĐiểm cộng thêm: 18\nTổng điểm còn lại: 168",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-10T09:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_17_2",
-    lessonId: "bai_17",
-    glyph: "◆",
-    title: "Bài 17.2: Bài toán đổi Giây sang Ngày, Giờ, Phút, Giây",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng - Bài 17 SGK Tin học 10)\nCho trước số giây `ss` (ví dụ `ss = 684500`). Hãy sử dụng phép chia lấy phần nguyên `//` và phép chia lấy phần dư `%` để đổi `ss` sang số **ngày, giờ, phút, giây**.\nBiết rằng:\n- $1\\text{ ngày} = 86400\\text{ giây}$\n- $1\\text{ giờ} = 3600\\text{ giây}$\n- $1\\text{ phút} = 60\\text{ giây}$\n\n### Dữ liệu vào (Input)\n- Một số nguyên `ss` là tổng số giây.\n\n### Kết quả ra (Output)\n- In theo đúng định dạng: `<ngay> ngay <gio> gio <phut> phut <giay> giay`\n",
-    starterCode: "# Bài 17.2: Đổi số giây sang Ngày, Giờ, Phút, Giây\n",
-    testCases: [
-          {
-                "input": "684500",
-                "expectedOutput": "7 ngay 22 gio 8 phut 20 giay",
-                "isHidden": false
-          },
-          {
-                "input": "90061",
-                "expectedOutput": "1 ngay 1 gio 1 phut 1 giay",
-                "isHidden": false
-          },
-          {
-                "input": "3665",
-                "expectedOutput": "0 ngay 1 gio 1 phut 5 giay",
-                "isHidden": true
-          },
-          {
-                "input": "60",
-                "expectedOutput": "0 ngay 0 gio 1 phut 0 giay",
-                "isHidden": true
-          },
-          {
-                "input": "86400",
-                "expectedOutput": "1 ngay 0 gio 0 phut 0 giay",
-                "isHidden": true
-          },
-          {
-                "input": "1000000",
-                "expectedOutput": "11 ngay 13 gio 46 phut 40 giay",
-                "isHidden": true
-          }
+    "id": "asgn_17_2",
+    "lessonId": "bai_17",
+    "glyph": "●",
+    "title": "Bài 17.2: Tính chỉ số khối cơ thể BMI tại phòng y tế trường (Luyện tập Bài 17)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Sức khỏe học đường - Bài 17 SGK Tin học 10)\nPhòng y tế trường học cần tính chỉ số khối cơ thể (`BMI`) cho học sinh dựa trên biến cân nặng `can_nang` (kg) và chiều cao `chieu_cao` (m). Hãy gán công thức tính BMI vào biến `bmi` (làm tròn 2 chữ số thập phân bằng hàm `round(bmi, 2)`) và hiển thị ra màn hình.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nCân nặng: 54.0 kg\nChiều cao: 1.65 m\nChỉ số BMI: 19.83\n```\n\n*Công thức: `bmi = round(can_nang / (chieu_cao ** 2), 2)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực `can_nang` (kg).\nDòng 2: Số thực `chieu_cao` (m).\n\n### Kết quả ra (Output)\nIn ra 3 dòng gồm Cân nặng, Chiều cao và Chỉ số BMI.",
+    "starterCode": "# Bài 17.2: Tính chỉ số khối cơ thể BMI tại phòng y tế trường\n# Hãy viết các câu lệnh nhập cân nặng, chiều cao và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "54.0\n1.65",
+        "expectedOutput": "Cân nặng: 54.0 kg\nChiều cao: 1.65 m\nChỉ số BMI: 19.83",
+        "isHidden": false
+      },
+      {
+        "input": "60.0\n1.5",
+        "expectedOutput": "Cân nặng: 60.0 kg\nChiều cao: 1.5 m\nChỉ số BMI: 26.67",
+        "isHidden": false
+      },
+      {
+        "input": "48.0\n1.6",
+        "expectedOutput": "Cân nặng: 48.0 kg\nChiều cao: 1.6 m\nChỉ số BMI: 18.75",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-10T09:10:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_17_3",
-    lessonId: "bai_17",
-    glyph: "●",
-    title: "Bài 17.3: Thực hiện các phép tính và biểu thức số học cơ bản",
-    difficulty: "Beginner",
-    description: "### Đề bài (Nhiệm vụ 1 - Bài 17 SGK Tin học 10)\nThực hiện các phép tính sau trong môi trường lập trình Python:\n- **a)** $(1 + 2 + 3 + ... + 10)^3$\n- **b)** $\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{4} + \\frac{1}{5}$\n- **c)** Lệnh gán $x = 2$, $y = 5$ rồi tính giá trị biểu thức $(x + y)(x^2 + y^2 - 1)$\n- **d)** Lệnh gán $a = 2$, $b = 3$, $c = 4$ rồi tính giá trị biểu thức $(a + b + c)(a + b - c)$\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu vào từ bàn phím.\n\n### Kết quả ra (Output)\n- In ra giá trị kết quả của từng câu a, b, c, d trên 4 dòng riêng biệt theo đúng thứ tự.",
-    starterCode: "# Bài 17.3: Thực hiện các phép tính cơ bản\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "166375\n1.2833333333333332\n196\n9",
-                "isHidden": false
-          }
+    "id": "asgn_17_3",
+    "lessonId": "bai_17",
+    "glyph": "●",
+    "title": "Bài 17.3: Hoán đổi vị trí hai thùng hàng trong kho tự động (Luyện tập Bài 17)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Kho vận thông minh - Bài 17 SGK Tin học 10)\nTrong hệ thống kho hàng tự động, robot cần hoán đổi mã kiện hàng giữa hai kệ `ke_A` và `ke_B`. Hãy sử dụng cú pháp gán đồng thời của Python (`ke_A, ke_B = ke_B, ke_A`) để đổi giá trị của hai biến và in trạng thái trước và sau khi hoán đổi.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTrước khi đổi: Kệ A = BOX_101, Kệ B = BOX_205\nSau khi đổi: Kệ A = BOX_205, Kệ B = BOX_101\n```\n\n*Sử dụng lệnh gán đồng thời `ke_A, ke_B = ke_B, ke_A`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Chuỗi mã hàng ở `ke_A`.\nDòng 2: Chuỗi mã hàng ở `ke_B`.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Trạng thái trước khi đổi và Trạng thái sau khi đổi.",
+    "starterCode": "# Bài 17.3: Hoán đổi vị trí hai thùng hàng trong kho tự động\n# Hãy viết các câu lệnh nhập tên hai kệ hàng và thực hiện hoán đổi:\n",
+    "testCases": [
+      {
+        "input": "BOX_101\nBOX_205",
+        "expectedOutput": "Trước khi đổi: Kệ A = BOX_101, Kệ B = BOX_205\nSau khi đổi: Kệ A = BOX_205, Kệ B = BOX_101",
+        "isHidden": false
+      },
+      {
+        "input": "LAPTOP_01\nMONITOR_09",
+        "expectedOutput": "Trước khi đổi: Kệ A = LAPTOP_01, Kệ B = MONITOR_09\nSau khi đổi: Kệ A = MONITOR_09, Kệ B = LAPTOP_01",
+        "isHidden": false
+      },
+      {
+        "input": "BOOK_A\nBOOK_B",
+        "expectedOutput": "Trước khi đổi: Kệ A = BOOK_A, Kệ B = BOOK_B\nSau khi đổi: Kệ A = BOOK_B, Kệ B = BOOK_A",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:20:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_17_4",
-    lessonId: "bai_17",
-    glyph: "◆",
-    title: "Bài 17.4: Tính chu vi và diện tích hình tròn (với R = 5, Pi = 3.14)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Nhiệm vụ 2 - Bài 17 SGK Tin học 10)\nGán giá trị cho biến `R = 5` là bán kính hình tròn, hằng số `Pi = 3.14`.\nHãy viết chương trình tính và in ra kết quả theo đúng mẫu:\n\n```text\nChu vi hình tròn là: <giá trị chu vi>\nDiện tích hình tròn là: <giá trị diện tích>\n```\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu vào từ bàn phím (dùng `R = 5`, `Pi = 3.14`).\n\n### Kết quả ra (Output)\n- In ra đúng 2 dòng như định dạng mẫu.",
-    starterCode: "# Bài 17.4: Tính chu vi và diện tích hình tròn\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "Chu vi hình tròn là: 31.400000000000002\nDiện tích hình tròn là: 78.5",
-                "isHidden": false
-          }
+    "id": "asgn_17_4",
+    "lessonId": "bai_17",
+    "glyph": "●",
+    "title": "Bài 17.4: Quy đổi chi phí du học từ USD sang VNĐ (Luyện tập Bài 17)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Tài chính & Du học - Bài 17 SGK Tin học 10)\nMột học sinh chuẩn bị hồ sơ du học cần đóng lệ phí thi chứng chỉ quốc tế là `phi_usd` (USD) và phí dịch thuật hồ sơ là `phi_dich_thuat` (VNĐ). Biết tỷ giá quy đổi hiện tại được gán vào biến `ty_gia = 25400`. Hãy gán và tính tổng chi phí bằng VNĐ.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nLệ phí quy đổi: 3810000 vnđ\nPhí dịch thuật: 500000 vnđ\nTổng chi phí: 4310000 vnđ\n```\n\n*Lệ phí quy đổi = `phi_usd * 25400`; Tổng chi phí = `le_phi_vnd + phi_dich_thuat`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `phi_usd`.\nDòng 2: Số nguyên `phi_dich_thuat`.\n\n### Kết quả ra (Output)\nIn ra 3 dòng gồm: Lệ phí quy đổi (VNĐ), Phí dịch thuật (VNĐ) và Tổng chi phí (VNĐ).",
+    "starterCode": "# Bài 17.4: Quy đổi chi phí du học từ USD sang VNĐ\n# Hãy viết các câu lệnh nhập phí USD, phí dịch thuật và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "150\n500000",
+        "expectedOutput": "Lệ phí quy đổi: 3810000 vnđ\nPhí dịch thuật: 500000 vnđ\nTổng chi phí: 4310000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "200\n300000",
+        "expectedOutput": "Lệ phí quy đổi: 5080000 vnđ\nPhí dịch thuật: 300000 vnđ\nTổng chi phí: 5380000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "80\n250000",
+        "expectedOutput": "Lệ phí quy đổi: 2032000 vnđ\nPhí dịch thuật: 250000 vnđ\nTổng chi phí: 2282000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:25:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_17_5",
-    lessonId: "bai_17",
-    glyph: "▣",
-    title: "Bài 17.5: Đổi số giây mẫu ss = 684500 sang ngày, giờ, phút, giây",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Vận dụng - Bài 17 SGK Tin học 10)\nViết các lệnh để thực hiện việc đổi số giây `ss = 684500` cho trước sang số ngày, giờ, phút, giây rồi in kết quả ra màn hình theo đúng định dạng:\n\n```text\n684500 giây = 7 ngày 22 giờ 8 phút 20 giây\n```\n\n### 💡 Gợi ý thuật toán\n- `1 ngày = 86400 giây`, `1 giờ = 3600 giây`, `1 phút = 60 giây`\n- Dùng phép chia lấy phần nguyên `//` và chia lấy phần dư `%`:\n  - `ngay = ss // 86400`, `du_ngay = ss % 86400`\n  - `gio = du_ngay // 3600`, `du_gio = du_ngay % 3600`\n  - `phut = du_gio // 60`, `giay = du_gio % 60`\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu vào từ bàn phím.\n\n### Kết quả ra (Output)\n- In ra 1 dòng theo đúng cú pháp mẫu.",
-    starterCode: "# Bài 17.5: Đổi số giây sang ngày, giờ, phút, giây\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "684500 giây = 7 ngày 22 giờ 8 phút 20 giây",
-                "isHidden": false
-          }
+    "id": "asgn_17_5",
+    "lessonId": "bai_17",
+    "glyph": "●",
+    "title": "Bài 17.5: Tính tổng thanh toán đơn đặt đồ ăn trực tuyến (Luyện tập Bài 17)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Ứng dụng giao đồ ăn - Bài 17 SGK Tin học 10)\nKhi đặt suất ăn trưa qua ứng dụng, khách hàng mua `so_suat` phần cơm với đơn giá `35000` VNĐ/phần, phí giao hàng cố định là `15000` VNĐ và được áp dụng mã giảm giá `giam_gia` (VNĐ). Hãy sử dụng các biến để tính tiền món ăn và tổng số tiền thực tế phải thanh toán.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTiền món ăn: 140000 vnđ\nPhí giao hàng: 15000 vnđ\nTổng thanh toán: 135000 vnđ\n```\n\n*Tổng thanh toán = `so_suat * 35000 + 15000 - giam_gia`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `so_suat`.\nDòng 2: Số nguyên `giam_gia`.\n\n### Kết quả ra (Output)\nIn ra 3 dòng: Tiền món ăn, Phí giao hàng và Tổng thanh toán.",
+    "starterCode": "# Bài 17.5: Tính tổng thanh toán đơn đặt đồ ăn trực tuyến\n# Hãy viết các câu lệnh nhập số suất ăn, số tiền giảm giá và in kết quả:\n",
+    "testCases": [
+      {
+        "input": "4\n20000",
+        "expectedOutput": "Tiền món ăn: 140000 vnđ\nPhí giao hàng: 15000 vnđ\nTổng thanh toán: 135000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "2\n10000",
+        "expectedOutput": "Tiền món ăn: 70000 vnđ\nPhí giao hàng: 15000 vnđ\nTổng thanh toán: 75000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "5\n30000",
+        "expectedOutput": "Tiền món ăn: 175000 vnđ\nPhí giao hàng: 15000 vnđ\nTổng thanh toán: 160000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:30:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_18_1",
-    lessonId: "bai_18",
-    glyph: "●",
-    title: "Bài 18.1: Tính Chu vi & Diện tích Tam giác (Công thức Heron)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng 2 - Bài 18 SGK Tin học 10)\nNhập 3 số thực dương `a, b, c` trên **cùng một dòng** (thỏa mãn 3 cạnh của một tam giác). Hãy tính và in ra **Chu vi** và **Diện tích** tam giác theo công thức Heron:\n$$p = \\frac{a + b + c}{2}, \\quad S = \\sqrt{p(p - a)(p - b)(p - c)}$$\n\n### Dữ liệu vào (Input)\n- Một dòng gồm 3 số thực `a b c` cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- In theo mẫu: `CHU_VI=<chu_vi> | DIEN_TICH=<diện_tích>` (làm tròn **2 chữ số thập phân**).\n\n### 💡 Gợi ý cách làm\n- Dùng `a, b, c = map(float, input().split())` để nhập 3 số thực trên 1 dòng.\n- Dùng `import math` và `math.sqrt(...)` để tính căn bậc hai.\n",
-    starterCode: "# Bài 18.1: Tính Chu vi và Diện tích tam giác theo công thức Heron\n",
-    testCases: [
-          {
-                "input": "3 4 5",
-                "expectedOutput": "CHU_VI=12.00 | DIEN_TICH=6.00",
-                "isHidden": false
-          },
-          {
-                "input": "5 5 6",
-                "expectedOutput": "CHU_VI=16.00 | DIEN_TICH=12.00",
-                "isHidden": false
-          },
-          {
-                "input": "6 8 10",
-                "expectedOutput": "CHU_VI=24.00 | DIEN_TICH=24.00",
-                "isHidden": true
-          },
-          {
-                "input": "10 10 12",
-                "expectedOutput": "CHU_VI=32.00 | DIEN_TICH=48.00",
-                "isHidden": true
-          },
-          {
-                "input": "7 24 25",
-                "expectedOutput": "CHU_VI=56.00 | DIEN_TICH=84.00",
-                "isHidden": true
-          },
-          {
-                "input": "13 14 15",
-                "expectedOutput": "CHU_VI=42.00 | DIEN_TICH=84.00",
-                "isHidden": true
-          }
+    "id": "asgn_18_1",
+    "lessonId": "bai_18",
+    "glyph": "●",
+    "title": "Bài 18.1: Tạo thẻ thư viện điện tử cho học sinh lớp 10 (Luyện tập Bài 18)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản lý trường học số - Bài 18 SGK Tin học 10)\nThư viện nhà trường triển khai cấp thẻ bạn đọc điện tử. Hãy viết chương trình sử dụng lệnh `input()` để nhập lần lượt Họ và tên, Lớp và Năm sinh của học sinh, sau đó tính tuổi hiện tại (lấy năm `2026` trừ đi năm sinh) và in thông tin thẻ thư viện ra màn hình.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\n=== THẺ THƯ VIỆN ===\nHọ tên: Nguyen Minh Khoa\nLớp: 10A1\nTuổi: 16\n```\n\n*Sử dụng `int(input())` để chuyển năm sinh sang số nguyên trước khi tính `2026 - nam_sinh`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Chuỗi họ và tên học sinh.\nDòng 2: Chuỗi tên lớp (ví dụ: `10A1`).\nDòng 3: Số nguyên năm sinh.\n\n### Kết quả ra (Output)\nIn ra 4 dòng thông tin thẻ thư viện theo đúng định dạng mẫu.",
+    "starterCode": "# Bài 18.1: Tạo thẻ thư viện điện tử cho học sinh lớp 10\n",
+    "testCases": [
+      {
+        "input": "Nguyen Minh Khoa\n10A1\n2010",
+        "expectedOutput": "=== THẺ THƯ VIỆN ===\nHọ tên: Nguyen Minh Khoa\nLớp: 10A1\nTuổi: 16",
+        "isHidden": false
+      },
+      {
+        "input": "Tran Thu Ha\n10A5\n2011",
+        "expectedOutput": "=== THẺ THƯ VIỆN ===\nHọ tên: Tran Thu Ha\nLớp: 10A5\nTuổi: 15",
+        "isHidden": false
+      },
+      {
+        "input": "Le Hoang Nam\n10T2\n2010",
+        "expectedOutput": "=== THẺ THƯ VIỆN ===\nHọ tên: Le Hoang Nam\nLớp: 10T2\nTuổi: 16",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-10T10:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_18_2",
-    lessonId: "bai_18",
-    glyph: "●",
-    title: "Bài 18.2: Tính tiền điện vượt định mức 100kW (Tự luận Bài 18)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Tự luận 1 - Bài 18 SGK Tin học 10)\nMỗi kW điện vượt quá $100\\text{ kW}$ đầu tiên phải trả thêm $10\\%$ đơn giá quy định (tức là nhân $1.1$).\nCho đơn giá `don_gia` và lượng điện tiêu thụ `so_kw` (biết `so_kw > 100`). Hãy tính tổng số tiền điện phải trả (làm tròn thành số nguyên bằng `round()`).\n\n### Dữ liệu vào (Input)\n- Một dòng chứa 2 số nguyên `don_gia` và `so_kw` cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Một số nguyên duy nhất là tổng tiền điện phải trả.\n",
-    starterCode: "# Bài 18.2: Tính tiền điện vượt định mức 100kW\n",
-    testCases: [
-          {
-                "input": "2000 150",
-                "expectedOutput": "310000",
-                "isHidden": false
-          },
-          {
-                "input": "1500 120",
-                "expectedOutput": "183000",
-                "isHidden": false
-          },
-          {
-                "input": "2000 200",
-                "expectedOutput": "420000",
-                "isHidden": true
-          },
-          {
-                "input": "1800 80",
-                "expectedOutput": "144000",
-                "isHidden": true
-          },
-          {
-                "input": "2500 100",
-                "expectedOutput": "250000",
-                "isHidden": true
-          },
-          {
-                "input": "3000 250",
-                "expectedOutput": "795000",
-                "isHidden": true
-          }
+    "id": "asgn_18_2",
+    "lessonId": "bai_18",
+    "glyph": "●",
+    "title": "Bài 18.2: Chia đều hóa đơn liên hoan lớp (Bill Splitter) (Luyện tập Bài 18)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Đời sống học sinh - Bài 18 SGK Tin học 10)\nSau buổi liên hoan cuối tuần, nhóm học sinh cần chia đều tổng hóa đơn thanh toán (đã cộng thêm 10% phí phục vụ) cho tất cả thành viên tham gia. Hãy viết chương trình nhập vào tổng tiền món ăn (số thực) và số người tham gia (số nguyên), sau đó in ra tổng tiền sau phí phục vụ và số tiền mỗi người cần đóng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng hóa đơn: 550000.0 vnđ\nMỗi người đóng: 110000.0 vnđ\n```\n\n*Tổng hóa đơn = `round(tong_tien * 1.1, 1)`, Mỗi người đóng = `round(tong_hoa_don / so_nguoi, 1)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực `tong_tien` là tiền món ăn chưa tính phí.\nDòng 2: Số nguyên `so_nguoi` là số thành viên.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Tổng hóa đơn (gồm 10% phí) và Số tiền mỗi người đóng (làm tròn 1 chữ số thập phân bằng `round(..., 1)`).",
+    "starterCode": "# Bài 18.2: Chia đều hóa đơn liên hoan lớp (Bill Splitter)\n",
+    "testCases": [
+      {
+        "input": "500000\n5",
+        "expectedOutput": "Tổng hóa đơn: 550000.0 vnđ\nMỗi người đóng: 110000.0 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "800000\n8",
+        "expectedOutput": "Tổng hóa đơn: 880000.0 vnđ\nMỗi người đóng: 110000.0 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "360000\n4",
+        "expectedOutput": "Tổng hóa đơn: 396000.0 vnđ\nMỗi người đóng: 99000.0 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-10T10:15:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_18_3",
-    lessonId: "bai_18",
-    glyph: "●",
-    title: "Bài 18.3: Nhập số nguyên, số thực và kiểm tra kiểu dữ liệu của tổng",
-    difficulty: "Beginner",
-    description: "### Đề bài (Thực hành 1 - Bài 18 SGK Tin học 10)\nViết chương trình cho người dùng nhập vào một số nguyên và một số thực từ bàn phím, sau đó tính tổng giá trị của hai số và hiển thị kết quả cùng kiểu dữ liệu của biến tổng (dùng hàm `type()`) ra màn hình.\n\n### Dữ liệu vào (Input)\n- Dòng 1: Một số nguyên `so_nguyen`\n- Dòng 2: Một số thực `so_thuc`\n*(Lưu ý: Dùng `input()` không truyền chuỗi nhắc bên trong).* \n\n### Kết quả ra (Output)\n- Dòng 1: Giá trị tổng của hai số vừa nhập.\n- Dòng 2: Kiểu dữ liệu của biến tổng (dùng hàm `type()`).\n\n### Ví dụ\n**Input:**\n```text\n5\n3.5\n```\n**Output:**\n```text\n8.5\n<class 'float'>\n```",
-    starterCode: "# Bài 18.3: Nhập số nguyên và số thực, tính tổng và in kiểu dữ liệu\n",
-    testCases: [
-          {
-                "input": "5\n3.5",
-                "expectedOutput": "8.5\n<class 'float'>",
-                "isHidden": false
-          },
-          {
-                "input": "10\n2.0",
-                "expectedOutput": "12.0\n<class 'float'>",
-                "isHidden": false
-          },
-          {
-                "input": "-4\n1.25",
-                "expectedOutput": "-2.75\n<class 'float'>",
-                "isHidden": true
-          },
-          {
-                "input": "0\n0.0",
-                "expectedOutput": "0.0\n<class 'float'>",
-                "isHidden": true
-          },
-          {
-                "input": "100\n-50.75",
-                "expectedOutput": "49.25\n<class 'float'>",
-                "isHidden": true
-          },
-          {
-                "input": "20\n5.5",
-                "expectedOutput": "25.5\n<class 'float'>",
-                "isHidden": true
-          },
-          {
-                "input": "-10\n-5.25",
-                "expectedOutput": "-15.25\n<class 'float'>",
-                "isHidden": true
-          }
+    "id": "asgn_18_3",
+    "lessonId": "bai_18",
+    "glyph": "●",
+    "title": "Bài 18.3: Quy đổi thời gian chạy bộ từ giây sang giờ - phút - giây (Luyện tập Bài 18)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Thể thao & Đồng hồ bấm giờ - Bài 18 SGK Tin học 10)\nĐồng hồ bấm giờ tại giải chạy việt dã của trường ghi nhận thành tích của vận động viên bằng tổng số giây `tong_giay`. Hãy viết chương trình nhập vào số nguyên `tong_giay` và quy đổi ra số giờ, số phút và số giây tương ứng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\n1 giờ 1 phút 5 giây\n```\n\n*Gợi ý: `gio = tong_giay // 3600`, `phut = (tong_giay % 3600) // 60`, `giay = tong_giay % 60`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên dương `tong_giay`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng theo định dạng: `<gio> giờ <phut> phút <giay> giây`.",
+    "starterCode": "# Bài 18.3: Quy đổi thời gian chạy bộ từ giây sang giờ - phút - giây\n",
+    "testCases": [
+      {
+        "input": "3665",
+        "expectedOutput": "1 giờ 1 phút 5 giây",
+        "isHidden": false
+      },
+      {
+        "input": "7322",
+        "expectedOutput": "2 giờ 2 phút 2 giây",
+        "isHidden": false
+      },
+      {
+        "input": "1845",
+        "expectedOutput": "0 giờ 30 phút 45 giây",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:35:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_18_4",
-    lessonId: "bai_18",
-    glyph: "◆",
-    title: "Bài 18.4: Nhập bán kính R từ bàn phím và tính diện tích hình tròn",
-    difficulty: "Beginner",
-    description: "### Đề bài (Thực hành 2 - Bài 18 SGK Tin học 10)\nViết chương trình nhập bán kính $R$ từ bàn phím (số thực) và tính diện tích hình tròn $S = \\pi \\cdot R^2$ (lấy giá trị $\\pi = 3.14$).\n\n### Dữ liệu vào (Input)\n- Một dòng duy nhất chứa số thực $R$ (bán kính hình tròn).\n\n### Kết quả ra (Output)\n- In ra diện tích hình tròn $S$.\n\n### Ví dụ\n**Input:**\n```text\n5\n```\n**Output:**\n```text\n78.5\n```",
-    starterCode: "# Bài 18.4: Tính diện tích hình tròn\n",
-    testCases: [
-          {
-                "input": "5",
-                "expectedOutput": "78.5",
-                "isHidden": false
-          },
-          {
-                "input": "1",
-                "expectedOutput": "3.14",
-                "isHidden": false
-          },
-          {
-                "input": "2.5",
-                "expectedOutput": "19.625",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "314.0",
-                "isHidden": true
-          },
-          {
-                "input": "0",
-                "expectedOutput": "0.0",
-                "isHidden": true
-          },
-          {
-                "input": "3.5",
-                "expectedOutput": "38.465",
-                "isHidden": true
-          },
-          {
-                "input": "7",
-                "expectedOutput": "153.86",
-                "isHidden": true
-          },
-          {
-                "input": "15",
-                "expectedOutput": "706.5",
-                "isHidden": true
-          }
+    "id": "asgn_18_4",
+    "lessonId": "bai_18",
+    "glyph": "●",
+    "title": "Bài 18.4: Dự toán lượng sơn cần mua để trang trí bức tường lớp học (Luyện tập Bài 18)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Xây dựng & Trang trí nội thất - Bài 18 SGK Tin học 10)\nLớp 10A muốn sơn lại bức tường cuối lớp hình chữ nhật có chiều dài `dai` (m) và chiều cao `cao` (m). Biết rằng mỗi lít sơn phủ được `5` m2 tường. Hãy nhập chiều dài và chiều cao từ bàn phím, sau đó tính diện tích bức tường và số lít sơn cần mua.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nDiện tích tường: 28.0 m2\nLượng sơn cần dùng: 5.6 lít\n```\n\n*Diện tích = `dai * cao`, Lượng sơn = `dien_tich / 5`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực `dai` (m).\nDòng 2: Số thực `cao` (m).\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Diện tích tường (m2) và Lượng sơn cần dùng (lít).",
+    "starterCode": "# Bài 18.4: Dự toán lượng sơn cần mua để trang trí bức tường lớp học\n",
+    "testCases": [
+      {
+        "input": "8.0\n3.5",
+        "expectedOutput": "Diện tích tường: 28.0 m2\nLượng sơn cần dùng: 5.6 lít",
+        "isHidden": false
+      },
+      {
+        "input": "10.0\n4.0",
+        "expectedOutput": "Diện tích tường: 40.0 m2\nLượng sơn cần dùng: 8.0 lít",
+        "isHidden": false
+      },
+      {
+        "input": "6.5\n3.0",
+        "expectedOutput": "Diện tích tường: 19.5 m2\nLượng sơn cần dùng: 3.9 lít",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:40:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_18_5",
-    lessonId: "bai_18",
-    glyph: "▣",
-    title: "Bài 18.5: Đổi số giây ss nhập từ bàn phím sang ngày, giờ, phút, giây",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Vận dụng 1 - Bài 18 SGK Tin học 10)\nViết chương trình nhập giá trị `ss` là số giây nguyên không âm từ bàn phím. Thông báo ra màn hình thời gian `ss` giây này sau khi đổi thành thời gian tính bằng ngày, giờ, phút, giây theo định dạng mẫu:\n\n`<ss> giây = <ngay> ngày <gio> giờ <phut> phút <giay> giây`\n\n### Dữ liệu vào (Input)\n- Một dòng duy nhất chứa số nguyên không âm `ss`.\n\n### Kết quả ra (Output)\n- In ra 1 dòng theo đúng cú pháp mẫu.\n\n### Ví dụ\n**Input:**\n```text\n684500\n```\n**Output:**\n```text\n684500 giây = 7 ngày 22 giờ 8 phút 20 giây\n```",
-    starterCode: "# Bài 18.5: Đổi số giây nhập từ bàn phím\n",
-    testCases: [
-          {
-                "input": "684500",
-                "expectedOutput": "684500 giây = 7 ngày 22 giờ 8 phút 20 giây",
-                "isHidden": false
-          },
-          {
-                "input": "3661",
-                "expectedOutput": "3661 giây = 0 ngày 1 giờ 1 phút 1 giây",
-                "isHidden": false
-          },
-          {
-                "input": "86400",
-                "expectedOutput": "86400 giây = 1 ngày 0 giờ 0 phút 0 giây",
-                "isHidden": true
-          },
-          {
-                "input": "59",
-                "expectedOutput": "59 giây = 0 ngày 0 giờ 0 phút 59 giây",
-                "isHidden": true
-          },
-          {
-                "input": "0",
-                "expectedOutput": "0 giây = 0 ngày 0 giờ 0 phút 0 giây",
-                "isHidden": true
-          },
-          {
-                "input": "120",
-                "expectedOutput": "120 giây = 0 ngày 0 giờ 2 phút 0 giây",
-                "isHidden": true
-          },
-          {
-                "input": "7200",
-                "expectedOutput": "7200 giây = 0 ngày 2 giờ 0 phút 0 giây",
-                "isHidden": true
-          },
-          {
-                "input": "31536000",
-                "expectedOutput": "31536000 giây = 365 ngày 0 giờ 0 phút 0 giây",
-                "isHidden": true
-          }
+    "id": "asgn_18_5",
+    "lessonId": "bai_18",
+    "glyph": "●",
+    "title": "Bài 18.5: In phiếu xác nhận đặt vé xem phim rạp chiếu phim (Luyện tập Bài 18)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Giải trí & Đặt vé trực tuyến - Bài 18 SGK Tin học 10)\nHệ thống bán vé rạp chiếu phim cần in hóa đơn tóm tắt cho khách hàng. Hãy viết chương trình nhập vào Tên bộ phim, Số lượng vé và Đơn giá 1 vé (số nguyên), sau đó in ra phiếu xác nhận kèm tổng số tiền phải trả.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nPhim: Dao Pho Va Piano\nSố vé: 3\nThành tiền: 180000 vnđ\n```\n\n*Thành tiền = `so_ve * don_gia`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Chuỗi tên bộ phim.\nDòng 2: Số nguyên `so_ve`.\nDòng 3: Số nguyên `don_gia` (VNĐ).\n\n### Kết quả ra (Output)\nIn ra 3 dòng gồm Tên phim, Số lượng vé và Thành tiền.",
+    "starterCode": "# Bài 18.5: In phiếu xác nhận đặt vé xem phim rạp chiếu phim\n",
+    "testCases": [
+      {
+        "input": "Dao Pho Va Piano\n3\n60000",
+        "expectedOutput": "Phim: Dao Pho Va Piano\nSố vé: 3\nThành tiền: 180000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "Mat Biec\n2\n75000",
+        "expectedOutput": "Phim: Mat Biec\nSố vé: 2\nThành tiền: 150000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "Lat Mat 7\n5\n80000",
+        "expectedOutput": "Phim: Lat Mat 7\nSố vé: 5\nThành tiền: 400000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:45:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_18_6",
-    lessonId: "bai_18",
-    glyph: "◊",
-    title: "Bài 18.6: Tính chu vi và diện tích tam giác theo công thức Heron",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Vận dụng 2 - Bài 18 SGK Tin học 10)\nViết chương trình nhập ba số thực dương $a, b, c$ trên cùng một dòng (cách nhau bởi dấu cách) và tính chu vi $P$, diện tích $S$ của tam giác có độ dài ba cạnh là $a, b, c$ theo công thức Heron:\n\n$$p = \\frac{a + b + c}{2}, \\quad S = \\sqrt{p(p - a)(p - b)(p - c)}$$\n\n### Dữ liệu vào (Input)\n- Một dòng duy nhất chứa 3 số thực dương $a, b, c$ cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Dòng 1: Chu vi $P$ của tam giác.\n- Dòng 2: Diện tích $S$ của tam giác.\n\n### Ví dụ\n**Input:**\n```text\n3 4 5\n```\n**Output:**\n```text\n12.0\n6.0\n```",
-    starterCode: "# Bài 18.6: Tính chu vi và diện tích tam giác theo công thức Heron\n",
-    testCases: [
-          {
-                "input": "3 4 5",
-                "expectedOutput": "12.0\n6.0",
-                "isHidden": false
-          },
-          {
-                "input": "5 12 13",
-                "expectedOutput": "30.0\n30.0",
-                "isHidden": false
-          },
-          {
-                "input": "6 8 10",
-                "expectedOutput": "24.0\n24.0",
-                "isHidden": true
-          },
-          {
-                "input": "2.5 2.5 3.0",
-                "expectedOutput": "8.0\n3.0",
-                "isHidden": true
-          },
-          {
-                "input": "1 1 1",
-                "expectedOutput": "3.0\n0.4330127018922193",
-                "isHidden": true
-          },
-          {
-                "input": "8 15 17",
-                "expectedOutput": "40.0\n60.0",
-                "isHidden": true
-          },
-          {
-                "input": "9 12 15",
-                "expectedOutput": "36.0\n54.0",
-                "isHidden": true
-          }
+    "id": "asgn_19_1",
+    "lessonId": "bai_19",
+    "glyph": "●",
+    "title": "Bài 19.1: Hệ thống cảnh báo chất lượng không khí AQI tại trường học (Luyện tập Bài 19)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Môi trường & Đô thị thông minh - Bài 19 SGK Tin học 10)\nTrạm quan trắc môi trường đặt tại cổng trường đo chỉ số chất lượng không khí `aqi` (số nguyên). Quy tắc phân loại như sau:\n- Nếu `aqi <= 50`: `Tốt`\n- Nếu `51 <= aqi <= 100`: `Trung bình`\n- Nếu `101 <= aqi <= 150`: `Kém`\n- Nếu `aqi > 150`: `Xấu`\nHãy viết chương trình nhập chỉ số `aqi` và in ra mức cảnh báo tương ứng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nChất lượng không khí: Tốt\n```\n\n*Sử dụng cấu trúc `if - elif - else` để kiểm tra các khoảng giá trị của `aqi`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên dương `aqi`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng theo định dạng: `Chất lượng không khí: <Mức phân loại>`.",
+    "starterCode": "# Bài 19.1: Hệ thống cảnh báo chất lượng không khí AQI tại trường học\n",
+    "testCases": [
+      {
+        "input": "45",
+        "expectedOutput": "Chất lượng không khí: Tốt",
+        "isHidden": false
+      },
+      {
+        "input": "85",
+        "expectedOutput": "Chất lượng không khí: Trung bình",
+        "isHidden": false
+      },
+      {
+        "input": "165",
+        "expectedOutput": "Chất lượng không khí: Xấu",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T10:50:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_19_1",
-    lessonId: "bai_19",
-    glyph: "◐",
-    title: "Bài 19.1: Tính tiền mua cam theo khối lượng (Vận dụng 1 - Bài 19)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng 1 - Bài 19 SGK Tin học 10)\nTại cửa hàng trái cây:\n- Nếu mua **dưới 5 kg** cam thì giá là `12000` đồng/kg.\n- Nếu mua **từ 5 kg trở lên** thì giá ưu đãi là `10000` đồng/kg.\n\nViết chương trình nhập số kg cam cần mua (số nguyên) và in ra số tiền phải trả.\n\n### Dữ liệu vào (Input)\n- Một số nguyên `kg` là số kg cam.\n\n### Kết quả ra (Output)\n- Số tiền phải trả.\n",
-    starterCode: "# Bài 19.1: Tính tiền mua cam bằng câu lệnh if - else\n",
-    testCases: [
-          {
-                "input": "3",
-                "expectedOutput": "36000",
-                "isHidden": false
-          },
-          {
-                "input": "5",
-                "expectedOutput": "50000",
-                "isHidden": false
-          },
-          {
-                "input": "8",
-                "expectedOutput": "80000",
-                "isHidden": true
-          },
-          {
-                "input": "4.5",
-                "expectedOutput": "54000",
-                "isHidden": true
-          },
-          {
-                "input": "5.0",
-                "expectedOutput": "50000",
-                "isHidden": true
-          },
-          {
-                "input": "12.5",
-                "expectedOutput": "125000",
-                "isHidden": true
-          }
+    "id": "asgn_19_2",
+    "lessonId": "bai_19",
+    "glyph": "●",
+    "title": "Bài 19.2: Tính tiền điện sinh hoạt hộ gia đình theo 3 bậc thang (Luyện tập Bài 19)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Tiện ích gia đình - Bài 19 SGK Tin học 10)\nCông ty điện lực tính tiền điện sinh hoạt hàng tháng dựa trên số kWh tiêu thụ `so_dien` (số nguyên không âm) theo 3 bậc lũy tiến:\n- Bậc 1 (từ 0 đến 50 kWh đầu): `1800` VNĐ/kWh.\n- Bậc 2 (từ kWh thứ 51 đến 100): `2000` VNĐ/kWh.\n- Bậc 3 (từ kWh thứ 101 trở lên): `2500` VNĐ/kWh.\nHãy viết chương trình nhập `so_dien` và tính tổng tiền điện phải trả.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTiền điện phải trả: 240000 vnđ\n```\n\n*Với `so_dien = 120`: Tiền điện = `50 * 1800 + 50 * 2000 + (120 - 100) * 2500 = 240000`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `so_dien` (kWh).\n\n### Kết quả ra (Output)\nIn ra 1 dòng theo định dạng: `Tiền điện phải trả: <so_tien> vnđ`.",
+    "starterCode": "# Bài 19.2: Tính tiền điện sinh hoạt hộ gia đình theo 3 bậc thang\n",
+    "testCases": [
+      {
+        "input": "120",
+        "expectedOutput": "Tiền điện phải trả: 240000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "40",
+        "expectedOutput": "Tiền điện phải trả: 72000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "80",
+        "expectedOutput": "Tiền điện phải trả: 150000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-11T08:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_19_2",
-    lessonId: "bai_19",
-    glyph: "◐",
-    title: "Bài 19.2: Kiểm tra Năm nhuận (Vận dụng 2 - Bài 19)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng 2 - Bài 19 SGK Tin học 10)\nNhập vào số năm dương lịch `n`. Năm `n` là **năm nhuận** nếu thỏa mãn:\n- Chia hết cho `400`, **HOẶC**\n- Chia hết cho `4` **VÀ** không chia hết cho `100`.\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương `n`.\n\n### Kết quả ra (Output)\n- In ra `NAM NHUAN` nếu là năm nhuận, ngược lại in ra `KHONG NHUAN`.\n",
-    starterCode: "# Bài 19.2: Kiểm tra năm nhuận\n",
-    testCases: [
-          {
-                "input": "2024",
-                "expectedOutput": "NAM NHUAN",
-                "isHidden": false
-          },
-          {
-                "input": "1900",
-                "expectedOutput": "KHONG NHUAN",
-                "isHidden": false
-          },
-          {
-                "input": "2000",
-                "expectedOutput": "NAM NHUAN",
-                "isHidden": true
-          },
-          {
-                "input": "2023",
-                "expectedOutput": "KHONG NHUAN",
-                "isHidden": true
-          },
-          {
-                "input": "2100",
-                "expectedOutput": "KHONG NHUAN",
-                "isHidden": true
-          },
-          {
-                "input": "2400",
-                "expectedOutput": "NAM NHUAN",
-                "isHidden": true
-          },
-          {
-                "input": "1600",
-                "expectedOutput": "NAM NHUAN",
-                "isHidden": true
-          }
+    "id": "asgn_19_3",
+    "lessonId": "bai_19",
+    "glyph": "●",
+    "title": "Bài 19.3: Xét duyệt học bổng khuyến khích học tập cuối học kì (Luyện tập Bài 19)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Giáo dục & Thi đua - Bài 19 SGK Tin học 10)\nNhà trường xét cấp học bổng cuối kì cho học sinh dựa trên điểm trung bình `dtb` (số thực) và điểm rèn luyện `drl` (số nguyên):\n- Đạt `Học bổng Xuất sắc` nếu `dtb >= 9.0` và `drl >= 90`.\n- Đạt `Học bổng Giỏi` nếu không đạt Xuất sắc nhưng `dtb >= 8.0` và `drl >= 80`.\n- Các trường hợp còn lại: `Không đạt học bổng`.\nHãy viết chương trình nhập `dtb`, `drl` và in kết quả xét duyệt.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nHọc bổng Xuất sắc\n```\n\n*Kết hợp toán tử lôgic `and` trong điều kiện `if`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực `dtb`.\nDòng 2: Số nguyên `drl`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng là kết quả xét học bổng.",
+    "starterCode": "# Bài 19.3: Xét duyệt học bổng khuyến khích học tập cuối học kì\n",
+    "testCases": [
+      {
+        "input": "9.2\n95",
+        "expectedOutput": "Học bổng Xuất sắc",
+        "isHidden": false
+      },
+      {
+        "input": "8.5\n85",
+        "expectedOutput": "Học bổng Giỏi",
+        "isHidden": false
+      },
+      {
+        "input": "8.5\n75",
+        "expectedOutput": "Không đạt học bổng",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-11T08:20:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_19_3",
-    lessonId: "bai_19",
-    glyph: "◐",
-    title: "Bài 19.3: Tính tiền điện lũy kế 3 bậc thang (Thực hành Bài 19)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Thực hành Bài toán 1 - Bài 19 SGK Tin học 10)\nNhập số kWh điện tiêu thụ `k` và tính tiền điện lũy kế (đơn vị: đồng) theo 3 mức:\n- **Mức 1 ($0 \\le k \\le 50$):** giá `1678` đồng/kWh.\n- **Mức 2 ($51 \\le k \\le 100$):** 50 kWh đầu giá `1678`, phần vượt trên 50 giá `1734` đồng/kWh.\n- **Mức 3 ($k > 100$):** 50 kWh đầu giá `1678`, 50 kWh tiếp theo giá `1734`, phần vượt trên 100 giá `2014` đồng/kWh.\n\n### Dữ liệu vào (Input)\n- Một số nguyên `k` là số kWh tiêu thụ.\n\n### Kết quả ra (Output)\n- Tổng số tiền điện (số nguyên).\n",
-    starterCode: "# Bài 19.3: Tính tiền điện lũy kế 3 bậc thang bằng if - elif - else\n",
-    testCases: [
-          {
-                "input": "40",
-                "expectedOutput": "67120",
-                "isHidden": false
-          },
-          {
-                "input": "80",
-                "expectedOutput": "135920",
-                "isHidden": false
-          },
-          {
-                "input": "120",
-                "expectedOutput": "210880",
-                "isHidden": true
-          },
-          {
-                "input": "50",
-                "expectedOutput": "83900",
-                "isHidden": true
-          },
-          {
-                "input": "100",
-                "expectedOutput": "170600",
-                "isHidden": true
-          },
-          {
-                "input": "150",
-                "expectedOutput": "271300",
-                "isHidden": true
-          }
+    "id": "asgn_19_4",
+    "lessonId": "bai_19",
+    "glyph": "●",
+    "title": "Bài 19.4: Tính phí giao hàng nhanh theo khối lượng bưu kiện (Luyện tập Bài 19)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Logistics & Giao nhận - Bài 19 SGK Tin học 10)\nMột dịch vụ chuyển phát nhanh nội thành quy định mức phí vận chuyển theo khối lượng bưu kiện `khoi_luong` (kg, số thực) như sau:\n- Nếu `khoi_luong <= 2`: Phí cố định là `20000` VNĐ.\n- Nếu `khoi_luong > 2`: Phí là `20000` VNĐ cộng thêm `5000` VNĐ cho mỗi kg vượt quá 2 kg.\nHãy viết chương trình nhập `khoi_luong` và in ra cước phí giao hàng (ép kiểu về số nguyên `int` khi in).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nPhí giao hàng: 35000 vnđ\n```\n\n*Nếu `khoi_luong > 2`, phí = `int(20000 + (khoi_luong - 2) * 5000)`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số thực hoặc số nguyên `khoi_luong` (kg).\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Phí giao hàng: <phi> vnđ`.",
+    "starterCode": "# Bài 19.4: Tính phí giao hàng nhanh theo khối lượng bưu kiện\n",
+    "testCases": [
+      {
+        "input": "5",
+        "expectedOutput": "Phí giao hàng: 35000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "1.5",
+        "expectedOutput": "Phí giao hàng: 20000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "8",
+        "expectedOutput": "Phí giao hàng: 50000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-11T08:40:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_20_1",
-    lessonId: "bai_20",
-    glyph: "▣",
-    title: "Bài 20.1: Tìm các ước số và đếm ước thực sự của n (Thực hành Bài 20)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Thực hành Nhiệm vụ 1 & 2 - Bài 20 SGK Tin học 10)\nNhập số tự nhiên `n` ($n \\ge 2$). Hãy dùng vòng lặp `for` để:\n1. Tìm tất cả các ước số của `n`.\n2. Đếm số lượng các **ước số thực sự** của `n` (là các ước dương nhỏ hơn `n`).\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương `n`.\n\n### Kết quả ra (Output)\n- Dòng 1: Các ước của `n` cách nhau bởi dấu cách.\n- Dòng 2: `SO_UOC_THUC_SU=<số_lượng>`\n",
-    starterCode: "# Bài 20.1: Tìm các ước số và đếm số ước thực sự của n\n",
-    testCases: [
-          {
-                "input": "12",
-                "expectedOutput": "1 2 3 4 6 12\nSO_UOC_THUC_SU=5",
-                "isHidden": false
-          },
-          {
-                "input": "7",
-                "expectedOutput": "1 7\nSO_UOC_THUC_SU=1",
-                "isHidden": false
-          },
-          {
-                "input": "28",
-                "expectedOutput": "1 2 4 7 14 28\nSO_UOC_THUC_SU=5",
-                "isHidden": true
-          },
-          {
-                "input": "1",
-                "expectedOutput": "1\nSO_UOC_THUC_SU=0",
-                "isHidden": true
-          },
-          {
-                "input": "16",
-                "expectedOutput": "1 2 4 8 16\nSO_UOC_THUC_SU=4",
-                "isHidden": true
-          },
-          {
-                "input": "36",
-                "expectedOutput": "1 2 3 4 6 9 12 18 36\nSO_UOC_THUC_SU=8",
-                "isHidden": true
-          }
+    "id": "asgn_19_5",
+    "lessonId": "bai_19",
+    "glyph": "●",
+    "title": "Bài 19.5: Tính giá vé tham quan bảo tàng lịch sử theo độ tuổi (Luyện tập Bài 19)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Văn hóa & Du lịch - Bài 19 SGK Tin học 10)\nBảo tàng Lịch sử quy định giá vé tham quan cho khách theo độ tuổi `tuoi` (số nguyên) như sau:\n- Trẻ em dưới 6 tuổi (`tuoi < 6`): `Miễn phí (0 vnđ)`\n- Học sinh từ 6 đến 18 tuổi (`6 <= tuoi <= 18`): `30000 vnđ`\n- Người lớn từ 19 đến 59 tuổi (`19 <= tuoi <= 59`): `60000 vnđ`\n- Người cao tuổi từ 60 tuổi trở lên (`tuoi >= 60`): `20000 vnđ`\nHãy viết chương trình nhập `tuoi` và in ra mức giá vé tương ứng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nGiá vé: 30000 vnđ\n```\n\n*Kiểm tra lần lượt các mốc tuổi bằng `if - elif - else`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `tuoi`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng theo định dạng: `Giá vé: <muc_gia>`.",
+    "starterCode": "# Bài 19.5: Tính giá vé tham quan bảo tàng lịch sử theo độ tuổi\n",
+    "testCases": [
+      {
+        "input": "16",
+        "expectedOutput": "Giá vé: 30000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "4",
+        "expectedOutput": "Giá vé: Miễn phí (0 vnđ)",
+        "isHidden": false
+      },
+      {
+        "input": "65",
+        "expectedOutput": "Giá vé: 20000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-11T10:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_20_2",
-    lessonId: "bai_20",
-    glyph: "▣",
-    title: "Bài 20.2: Tính tổng bậc ba S = 1³ + 2³ + ... + n³ (Vận dụng 2 - Bài 20)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng 2 - Bài 20 SGK Tin học 10)\nNhập số nguyên dương `n`. Hãy dùng vòng lặp `for` để tính tổng:\n$$S = 1^3 + 2^3 + 3^3 + \\dots + n^3$$\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương `n`.\n\n### Kết quả ra (Output)\n- Giá trị tổng `S`.\n",
-    starterCode: "# Bài 20.2: Tính tổng S = 1^3 + 2^3 + ... + n^3\n",
-    testCases: [
-          {
-                "input": "3",
-                "expectedOutput": "36",
-                "isHidden": false
-          },
-          {
-                "input": "5",
-                "expectedOutput": "225",
-                "isHidden": false
-          },
-          {
-                "input": "10",
-                "expectedOutput": "3025",
-                "isHidden": true
-          },
-          {
-                "input": "1",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "4",
-                "expectedOutput": "100",
-                "isHidden": true
-          },
-          {
-                "input": "6",
-                "expectedOutput": "441",
-                "isHidden": true
-          }
+    "id": "asgn_20_1",
+    "lessonId": "bai_20",
+    "glyph": "●",
+    "title": "Bài 20.1: Tính tổng tiền quyên góp sách qua N ngày hội trại (Luyện tập Bài 20)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Hoạt động ngoại khóa - Bài 20 SGK Tin học 10)\nTrong hội trại xuân kéo dài `n` ngày, ngày thứ `i` (với `i` chạy từ `1` đến `n`) gian hàng của lớp 10A thu được `i * 50000` VNĐ tiền bán sách gây quỹ. Hãy sử dụng vòng lặp `for` để tính tổng số tiền quỹ thu được sau `n` ngày.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng quỹ thu được sau 5 ngày: 750000 vnđ\n```\n\n*Duyệt `for i in range(1, n + 1):` và cộng dồn `i * 50000` vào biến tổng.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên dương `n` là số ngày diễn ra hội trại.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Tổng quỹ thu được sau <n> ngày: <tong_tien> vnđ`.",
+    "starterCode": "# Bài 20.1: Tính tổng tiền quyên góp sách qua N ngày hội trại\n",
+    "testCases": [
+      {
+        "input": "5",
+        "expectedOutput": "Tổng quỹ thu được sau 5 ngày: 750000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "3",
+        "expectedOutput": "Tổng quỹ thu được sau 3 ngày: 300000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "10",
+        "expectedOutput": "Tổng quỹ thu được sau 10 ngày: 2750000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-11T10:20:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_20_3",
-    lessonId: "bai_20",
-    glyph: "▣",
-    title: "Bài 20.3: Bài toán dân gian Gà và Chó (Tự luận 3 - Bài 20)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Tự luận 3 - Bài 20 SGK Tin học 10)\n*\"Vừa gà vừa chó, bó lại cho tròn, `tong_con` con, `tong_chan` chân chẵn\"*.\nCho tổng số con và tổng số chân (biết gà có 2 chân, chó có 4 chân). Hãy dùng vòng lặp `for` tìm số gà và số chó.\n\n### Dữ liệu vào (Input)\n- Một dòng gồm 2 số nguyên `tong_con` và `tong_chan` (mặc định bài toán cổ là `36 100`).\n\n### Kết quả ra (Output)\n- In theo mẫu: `GA=<số_gà> | CHO=<số_chó>`\n",
-    starterCode: "# Bài 20.3: Bài toán dân gian Vừa gà vừa chó\n",
-    testCases: [
-          {
-                "input": "36 100",
-                "expectedOutput": "GA=22 | CHO=14",
-                "isHidden": false
-          },
-          {
-                "input": "10 28",
-                "expectedOutput": "GA=6 | CHO=4",
-                "isHidden": false
-          },
-          {
-                "input": "50 140",
-                "expectedOutput": "GA=30 | CHO=20",
-                "isHidden": true
-          },
-          {
-                "input": "20 56",
-                "expectedOutput": "GA=12 | CHO=8",
-                "isHidden": true
-          },
-          {
-                "input": "45 130",
-                "expectedOutput": "GA=25 | CHO=20",
-                "isHidden": true
-          },
-          {
-                "input": "100 280",
-                "expectedOutput": "GA=60 | CHO=40",
-                "isHidden": true
-          }
+    "id": "asgn_20_2",
+    "lessonId": "bai_20",
+    "glyph": "●",
+    "title": "Bài 20.2: Đếm số ngày nắng nóng vượt ngưỡng trong đợt quan trắc (Luyện tập Bài 20)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Khí tượng thủy văn - Bài 20 SGK Tin học 10)\nTrạm khí tượng ghi nhận nhiệt độ cao nhất trong `n` ngày liên tiếp. Một ngày được gọi là nắng nóng nếu nhiệt độ từ `35` độ C trở lên (`>= 35`). Hãy dùng vòng lặp `for` để nhập nhiệt độ của `n` ngày và đếm xem có bao nhiêu ngày nắng nóng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố ngày nắng nóng: 2\n```\n\n*Dùng `for _ in range(n):` để đọc từng nhiệt độ và tăng biến đếm nếu `nhiet_do >= 35`.*\n\n### Dữ liệu vào (Input)\nDòng đầu tiên chứa số nguyên `n`.\n`n` dòng tiếp theo, mỗi dòng chứa một số nguyên là nhiệt độ của ngày đó.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Số ngày nắng nóng: <so_ngay>`.",
+    "starterCode": "# Bài 20.2: Đếm số ngày nắng nóng vượt ngưỡng trong đợt quan trắc\n",
+    "testCases": [
+      {
+        "input": "4\n33\n36\n35\n31",
+        "expectedOutput": "Số ngày nắng nóng: 2",
+        "isHidden": false
+      },
+      {
+        "input": "5\n30\n32\n34\n31\n29",
+        "expectedOutput": "Số ngày nắng nóng: 0",
+        "isHidden": false
+      },
+      {
+        "input": "6\n35\n37\n38\n34\n36\n39",
+        "expectedOutput": "Số ngày nắng nóng: 5",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-11T10:40:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_21_1",
-    lessonId: "bai_21",
-    glyph: "◊",
-    title: "Bài 21.1: Đếm số chia hết cho 5 hoặc chia 3 dư 1 bằng while",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập 2 - Bài 21 SGK Tin học 10)\nSử dụng vòng lặp `while`, hãy đếm xem trong `n` số tự nhiên đầu tiên (từ `0` đến `n - 1`) có bao nhiêu số **chia hết cho 5 HOẶC chia cho 3 dư 1**.\n\n### Dữ liệu vào (Input)\n- Số nguyên dương `n` (trong SGK là `n = 100`).\n\n### Kết quả ra (Output)\n- Số lượng các số thỏa mãn điều kiện.\n",
-    starterCode: "# Bài 21.1: Đếm số chia hết cho 5 hoặc chia 3 dư 1 trong n số tự nhiên đầu tiên\n",
-    testCases: [
-          {
-                "input": "100",
-                "expectedOutput": "47",
-                "isHidden": false
-          },
-          {
-                "input": "10",
-                "expectedOutput": "5",
-                "isHidden": false
-          },
-          {
-                "input": "50",
-                "expectedOutput": "24",
-                "isHidden": true
-          },
-          {
-                "input": "20",
-                "expectedOutput": "10",
-                "isHidden": true
-          },
-          {
-                "input": "35",
-                "expectedOutput": "17",
-                "isHidden": true
-          },
-          {
-                "input": "200",
-                "expectedOutput": "94",
-                "isHidden": true
-          }
+    "id": "asgn_20_3",
+    "lessonId": "bai_20",
+    "glyph": "●",
+    "title": "Bài 20.3: Liệt kê các mốc giờ kiểm tra máy chủ định kỳ trong ngày (Luyện tập Bài 20)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản trị hệ thống CNTT - Bài 20 SGK Tin học 10)\nPhòng máy tính của trường cài đặt lịch tự động kiểm tra trạng thái máy chủ bắt đầu từ giờ `bat_dau` đến giờ `ket_thuc` (tính theo thang 24 giờ), mỗi lần cách nhau đúng `buoc_nhay` giờ. Hãy dùng vòng lặp `for` với hàm `range(bat_dau, ket_thuc + 1, buoc_nhay)` để in ra các mốc giờ kiểm tra.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nKiểm tra lúc: 6 giờ\nKiểm tra lúc: 10 giờ\nKiểm tra lúc: 14 giờ\nKiểm tra lúc: 18 giờ\n```\n\n*Sử dụng `range(bat_dau, ket_thuc + 1, buoc_nhay)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `bat_dau`.\nDòng 2: Số nguyên `ket_thuc`.\nDòng 3: Số nguyên `buoc_nhay`.\n\n### Kết quả ra (Output)\nIn ra các mốc giờ, mỗi mốc trên một dòng theo mẫu: `Kiểm tra lúc: <gio> giờ`.",
+    "starterCode": "# Bài 20.3: Liệt kê các mốc giờ kiểm tra máy chủ định kỳ trong ngày\n",
+    "testCases": [
+      {
+        "input": "6\n18\n4",
+        "expectedOutput": "Kiểm tra lúc: 6 giờ\nKiểm tra lúc: 10 giờ\nKiểm tra lúc: 14 giờ\nKiểm tra lúc: 18 giờ",
+        "isHidden": false
+      },
+      {
+        "input": "8\n20\n6",
+        "expectedOutput": "Kiểm tra lúc: 8 giờ\nKiểm tra lúc: 14 giờ\nKiểm tra lúc: 20 giờ",
+        "isHidden": false
+      },
+      {
+        "input": "0\n15\n5",
+        "expectedOutput": "Kiểm tra lúc: 0 giờ\nKiểm tra lúc: 5 giờ\nKiểm tra lúc: 10 giờ\nKiểm tra lúc: 15 giờ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-12T08:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_21_2",
-    lessonId: "bai_21",
-    glyph: "◊",
-    title: "Bài 21.2: Tìm Số hoàn hảo đầu tiên lớn hơn n (Nâng cao Bài 21)",
-    difficulty: "Advanced",
-    description: "### Đề bài (Bài tập nâng cao - Bài 21 SGK Tin học 10)\n**Số hoàn hảo** là số tự nhiên bằng tổng các ước thực sự của nó (ví dụ: $6 = 1 + 2 + 3$; $28 = 1 + 2 + 4 + 7 + 14$).\nHãy viết chương trình nhập số tự nhiên `n` và dùng vòng lặp `while` tìm **số hoàn hảo đầu tiên lớn hơn `n`**.\n\n### Dữ liệu vào (Input)\n- Số tự nhiên `n` ($1 \\le n \\le 500$).\n\n### Kết quả ra (Output)\n- Số hoàn hảo đầu tiên lớn hơn `n`.\n",
-    starterCode: "# Bài 21.2: Tìm số hoàn hảo đầu tiên lớn hơn n\n",
-    testCases: [
-          {
-                "input": "1",
-                "expectedOutput": "6",
-                "isHidden": false
-          },
-          {
-                "input": "6",
-                "expectedOutput": "28",
-                "isHidden": false
-          },
-          {
-                "input": "30",
-                "expectedOutput": "496",
-                "isHidden": true
-          },
-          {
-                "input": "2",
-                "expectedOutput": "6",
-                "isHidden": true
-          },
-          {
-                "input": "7",
-                "expectedOutput": "28",
-                "isHidden": true
-          },
-          {
-                "input": "28",
-                "expectedOutput": "496",
-                "isHidden": true
-          }
+    "id": "asgn_20_4",
+    "lessonId": "bai_20",
+    "glyph": "●",
+    "title": "Bài 20.4: Tính tổng số cây xanh trồng được trong chiến dịch Mùa hè xanh (Luyện tập Bài 20)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Bảo vệ môi trường - Bài 20 SGK Tin học 10)\nChiến dịch trồng cây xanh có `n` đội tình nguyện tham gia. Đội thứ `i` trồng được số cây nhập từ bàn phím. Hãy viết chương trình sử dụng vòng lặp `for` để nhập số cây của từng đội và tính tổng số cây toàn chiến dịch trồng được.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng số cây đã trồng: 100 cây\n```\n\n*Khởi tạo `tong_cay = 0` trước vòng lặp `for`.*\n\n### Dữ liệu vào (Input)\nDòng đầu chứa số nguyên dương `n`.\n`n` dòng tiếp theo, mỗi dòng là số nguyên biểu thị số cây của một đội.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Tổng số cây đã trồng: <tong_cay> cây`.",
+    "starterCode": "# Bài 20.4: Tính tổng số cây xanh trồng được trong chiến dịch Mùa hè xanh\n",
+    "testCases": [
+      {
+        "input": "3\n25\n40\n35",
+        "expectedOutput": "Tổng số cây đã trồng: 100 cây",
+        "isHidden": false
+      },
+      {
+        "input": "4\n10\n20\n15\n30",
+        "expectedOutput": "Tổng số cây đã trồng: 75 cây",
+        "isHidden": false
+      },
+      {
+        "input": "2\n120\n80",
+        "expectedOutput": "Tổng số cây đã trồng: 200 cây",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-12T08:20:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_22_1",
-    lessonId: "bai_22_23",
-    glyph: "◇",
-    title: "Bài 22.1: Tính tổng, đếm số chẵn & tìm Max trong Danh sách",
-    difficulty: "Beginner",
-    description: "### Đề bài (Thực hành Nhiệm vụ 2 & Vận dụng - Bài 22 SGK Tin học 10)\nNhập vào một dãy số nguyên `A` trên một dòng. Hãy tính và in ra:\n1. Tổng các phần tử trong dãy (`sum(A)`).\n2. Số lượng các số chẵn trong dãy.\n3. Giá trị lớn nhất (`max(A)`) và chỉ số xuất hiện đầu tiên của nó (`A.index(max(A))`).\n\n### Dữ liệu vào (Input)\n- Một dòng chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- `TONG=<tổng> | CHAN=<số_chẵn> | MAX=<giá_trị_max> | VI_TRI=<chỉ_số>`\n",
-    starterCode: "# Bài 22.1: Thao tác với Danh sách (List)\n",
-    testCases: [
-          {
-                "input": "7 -3 5 12 -6 8 0",
-                "expectedOutput": "TONG=23 | CHAN=4 | MAX=12 | VI_TRI=3",
-                "isHidden": false
-          },
-          {
-                "input": "2 4 6 8 10",
-                "expectedOutput": "TONG=30 | CHAN=5 | MAX=10 | VI_TRI=4",
-                "isHidden": false
-          },
-          {
-                "input": "15 3 9 15 1",
-                "expectedOutput": "TONG=43 | CHAN=0 | MAX=15 | VI_TRI=0",
-                "isHidden": true
-          },
-          {
-                "input": "-1 -5 -3 -8",
-                "expectedOutput": "TONG=-17 | CHAN=1 | MAX=-1 | VI_TRI=0",
-                "isHidden": true
-          },
-          {
-                "input": "100",
-                "expectedOutput": "TONG=100 | CHAN=1 | MAX=100 | VI_TRI=0",
-                "isHidden": true
-          },
-          {
-                "input": "0 0 0 0",
-                "expectedOutput": "TONG=0 | CHAN=4 | MAX=0 | VI_TRI=0",
-                "isHidden": true
-          }
+    "id": "asgn_20_5",
+    "lessonId": "bai_20",
+    "glyph": "●",
+    "title": "Bài 20.5: In bảng ước tính chi phí thuê sân bóng đá theo số giờ (Luyện tập Bài 20)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Thể thao học đường - Bài 20 SGK Tin học 10)\nSân bóng đá mini gần trường có giá thuê là `don_gia` (VNĐ/giờ). Đội bóng của lớp muốn in bảng tra cứu chi phí thuê sân từ `1` giờ đến `so_gio_toi_da` giờ để dễ chọn gói thuê. Hãy dùng vòng lặp `for` để in bảng chi phí.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\n1 giờ: 150000 vnđ\n2 giờ: 300000 vnđ\n3 giờ: 450000 vnđ\n```\n\n*Trong vòng lặp `for i in range(1, so_gio_toi_da + 1):`, chi phí là `i * don_gia`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `don_gia` (VNĐ/giờ).\nDòng 2: Số nguyên `so_gio_toi_da`.\n\n### Kết quả ra (Output)\nIn ra `so_gio_toi_da` dòng, mỗi dòng theo định dạng: `<i_gio> giờ: <chi_phi> vnđ`.",
+    "starterCode": "# Bài 20.5: In bảng ước tính chi phí thuê sân bóng đá theo số giờ\n",
+    "testCases": [
+      {
+        "input": "150000\n3",
+        "expectedOutput": "1 giờ: 150000 vnđ\n2 giờ: 300000 vnđ\n3 giờ: 450000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "200000\n4",
+        "expectedOutput": "1 giờ: 200000 vnđ\n2 giờ: 400000 vnđ\n3 giờ: 600000 vnđ\n4 giờ: 800000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "120000\n2",
+        "expectedOutput": "1 giờ: 120000 vnđ\n2 giờ: 240000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-12T10:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_23_1",
-    lessonId: "bai_22_23",
-    glyph: "◇",
-    title: "Bài 23.1: Tạo danh sách n số hạng đầu tiên của dãy Fibonacci",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Thực hành 4 - Bài 23 SGK Tin học 10)\nNhập số nguyên dương `n` ($n \\ge 2$). Hãy dùng phương thức `.append()` để tạo và in ra danh sách `A` gồm `n` số hạng đầu tiên của dãy Fibonacci:\n$$F_0 = 0, \\quad F_1 = 1, \\quad F_k = F_{k-1} + F_{k-2}$$\n\n### Dữ liệu vào (Input)\n- Một số nguyên `n`.\n\n### Kết quả ra (Output)\n- In danh sách `A` ra màn hình.\n",
-    starterCode: "# Bài 23.1: Tạo danh sách n số hạng đầu tiên của dãy Fibonacci\n",
-    testCases: [
-          {
-                "input": "6",
-                "expectedOutput": "[0, 1, 1, 2, 3, 5]",
-                "isHidden": false
-          },
-          {
-                "input": "8",
-                "expectedOutput": "[0, 1, 1, 2, 3, 5, 8, 13]",
-                "isHidden": false
-          },
-          {
-                "input": "10",
-                "expectedOutput": "[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]",
-                "isHidden": true
-          },
-          {
-                "input": "1",
-                "expectedOutput": "[0]",
-                "isHidden": true
-          },
-          {
-                "input": "2",
-                "expectedOutput": "[0, 1]",
-                "isHidden": true
-          },
-          {
-                "input": "5",
-                "expectedOutput": "[0, 1, 1, 2, 3]",
-                "isHidden": true
-          }
+    "id": "asgn_21_1",
+    "lessonId": "bai_21",
+    "glyph": "●",
+    "title": "Bài 21.1: Tính số tháng tiết kiệm để đủ tiền mua khóa học lập trình (Luyện tập Bài 21)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Kế hoạch học tập cá nhân - Bài 21 SGK Tin học 10)\nBạn Bình hiện có `so_du` (VNĐ) trong heo đất và muốn mua một khóa học lập trình trị giá `muc_tieu` (VNĐ). Mỗi tháng bạn tiết kiệm thêm được đúng `tiet_kiem_thang` (VNĐ). Hãy dùng vòng lặp `while` để tính xem sau ít nhất bao nhiêu tháng thì số tiền của Bình lớn hơn hoặc bằng `muc_tieu`.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố tháng cần tiết kiệm: 3\nTổng số tiền đạt được: 1100000 vnđ\n```\n\n*Lặp với điều kiện `while so_du < muc_tieu:` và tăng `so_thang` thêm 1 mỗi vòng.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `so_du` ban đầu.\nDòng 2: Số nguyên `muc_tieu`.\nDòng 3: Số nguyên dương `tiet_kiem_thang`.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Số tháng cần tiết kiệm và Tổng số tiền sau khi đạt mục tiêu.",
+    "starterCode": "# Bài 21.1: Tính số tháng tiết kiệm để đủ tiền mua khóa học lập trình\n",
+    "testCases": [
+      {
+        "input": "200000\n1000000\n300000",
+        "expectedOutput": "Số tháng cần tiết kiệm: 3\nTổng số tiền đạt được: 1100000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "500000\n1500000\n250000",
+        "expectedOutput": "Số tháng cần tiết kiệm: 4\nTổng số tiền đạt được: 1500000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "100000\n600000\n200000",
+        "expectedOutput": "Số tháng cần tiết kiệm: 3\nTổng số tiền đạt được: 700000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-12T10:20:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_24_1",
-    lessonId: "bai_24_25",
-    glyph: "◆",
-    title: "Bài 24.1: Lọc các chữ số lẻ từ xâu kí tự (Luyện tập Bài 24)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập - Bài 24 SGK Tin học 10)\nCho một xâu kí tự `s` bất kỳ. Hãy duyệt từng kí tự của xâu `s` và trích lọc tất cả các **chữ số lẻ** (`'1', '3', '5', '7', '9'`) ghép theo thứ tự vào biến `skq`. Nếu không có chữ số lẻ nào thì in ra `KHONG CO`.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa xâu `s` (ví dụ: `81723`).\n\n### Kết quả ra (Output)\n- Xâu kết quả `skq`.\n",
-    starterCode: "# Bài 24.1: Lọc các chữ số lẻ từ xâu kí tự\n",
-    testCases: [
-          {
-                "input": "81723",
-                "expectedOutput": "173",
-                "isHidden": false
-          },
-          {
-                "input": "Lop10A9va5",
-                "expectedOutput": "195",
-                "isHidden": false
-          },
-          {
-                "input": "24680abc",
-                "expectedOutput": "KHONG CO",
-                "isHidden": true
-          },
-          {
-                "input": "abcxyz",
-                "expectedOutput": "KHONG CO",
-                "isHidden": true
-          },
-          {
-                "input": "13579",
-                "expectedOutput": "13579",
-                "isHidden": true
-          },
-          {
-                "input": "2024TinHoc10",
-                "expectedOutput": "1",
-                "isHidden": true
-          }
+    "id": "asgn_21_2",
+    "lessonId": "bai_21",
+    "glyph": "●",
+    "title": "Bài 21.2: Mô phỏng bộ sạc nhanh pin xe máy điện đến mức an toàn (Luyện tập Bài 21)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Giao thông xanh - Bài 21 SGK Tin học 10)\nMột trạm sạc nhanh xe máy điện tự động ngắt sạc khi dung lượng pin đạt từ `80%` trở lên để bảo vệ tuổi thọ pin. Biết mức pin ban đầu là `pin_hien_tai` (%) và cứ mỗi chu kỳ sạc 5 phút pin tăng thêm `toc_do_sac` (%). Hãy dùng vòng lặp `while` để tính số phút cần sạc và mức pin khi dừng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nThời gian sạc: 20 phút\nMức pin đạt được: 85%\n```\n\n*Lặp `while pin_hien_tai < 80:`: cộng `toc_do_sac` vào pin và cộng `5` vào tổng số phút.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `pin_hien_tai` (%).\nDòng 2: Số nguyên dương `toc_do_sac` (% tăng thêm mỗi 5 phút).\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Thời gian sạc (phút) và Mức pin sau khi sạc (%).",
+    "starterCode": "# Bài 21.2: Mô phỏng bộ sạc nhanh pin xe máy điện đến mức an toàn\n",
+    "testCases": [
+      {
+        "input": "25\n15",
+        "expectedOutput": "Thời gian sạc: 20 phút\nMức pin đạt được: 85%",
+        "isHidden": false
+      },
+      {
+        "input": "50\n10",
+        "expectedOutput": "Thời gian sạc: 15 phút\nMức pin đạt được: 80%",
+        "isHidden": false
+      },
+      {
+        "input": "10\n20",
+        "expectedOutput": "Thời gian sạc: 20 phút\nMức pin đạt được: 90%",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-13T08:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_25_1",
-    lessonId: "bai_24_25",
-    glyph: "◆",
-    title: "Bài 25.1: Chuẩn hóa Họ tên & Tách Họ, Đệm, Tên (Bài 7 & 10 - Bài 25)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Thực hành Bài 7 & Bài 10 - Bài 25 SGK Tin học 10)\nCho một xâu họ tên đầy đủ (có thể chứa nhiều dấu cách thừa ở đầu, cuối và giữa các từ, ví dụ: `\"  Nguyễn   Xuân  Quang Lâm  \"`).\nHãy sử dụng `.split()` và `\" \".join()` để:\n1. In ra xâu họ tên đã chuẩn hóa (giữa các từ chỉ có đúng 1 dấu cách).\n2. Tách và in ra **Họ** (từ đầu tiên) và **Tên** (từ cuối cùng).\n\n### Dữ liệu vào (Input)\n- Một dòng chứa xâu họ tên (ít nhất 2 từ).\n\n### Kết quả ra (Output)\n- Dòng 1: Họ tên đã chuẩn hóa.\n- Dòng 2: `HO=<họ> | TEN=<tên>`\n",
-    starterCode: "# Bài 25.1: Chuẩn hóa xâu họ tên và tách Họ, Tên\n",
-    testCases: [
-          {
-                "input": "   Nguyen   Xuan  Quang Lam  ",
-                "expectedOutput": "Nguyen Xuan Quang Lam\nHO=Nguyen | TEN=Lam",
-                "isHidden": false
-          },
-          {
-                "input": "Tran   Gia   Bao",
-                "expectedOutput": "Tran Gia Bao\nHO=Tran | TEN=Bao",
-                "isHidden": false
-          },
-          {
-                "input": "  Le   Ha ",
-                "expectedOutput": "Le Ha\nHO=Le | TEN=Ha",
-                "isHidden": true
-          },
-          {
-                "input": "Pham Van Dong",
-                "expectedOutput": "Pham Van Dong\nHO=Pham | TEN=Dong",
-                "isHidden": true
-          },
-          {
-                "input": "Ho Chi Minh",
-                "expectedOutput": "Ho Chi Minh\nHO=Ho | TEN=Minh",
-                "isHidden": true
-          },
-          {
-                "input": "Vo Thi Sau",
-                "expectedOutput": "Vo Thi Sau\nHO=Vo | TEN=Sau",
-                "isHidden": true
-          }
+    "id": "asgn_21_3",
+    "lessonId": "bai_21",
+    "glyph": "●",
+    "title": "Bài 21.3: Chia tối đa số túi quà cứu trợ đồng đều (Thuật toán Euclid) (Luyện tập Bài 21)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Cứu trợ nhân đạo - Bài 21 SGK Tin học 10)\nĐội tình nguyện có `a` thùng mì tôm và `b` thùng sữa muốn chia đều vào nhiều túi quà cứu trợ nhất có thể sao cho số thùng mì và số thùng sữa ở mỗi túi đều bằng nhau và không dư thùng nào (tức là tìm Ước chung lớn nhất của `a` và `b`). Hãy dùng vòng lặp `while` theo thuật toán Euclid để tìm số túi quà tối đa.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố túi quà tối đa chia được: 12\n```\n\n*Thuật toán Euclid: Lặp `while b != 0: a, b = b, a % b`, kết quả là `a`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên dương `a`.\nDòng 2: Số nguyên dương `b`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Số túi quà tối đa chia được: <ucln>`.",
+    "starterCode": "# Bài 21.3: Chia tối đa số túi quà cứu trợ đồng đều (Thuật toán Euclid)\n",
+    "testCases": [
+      {
+        "input": "48\n36",
+        "expectedOutput": "Số túi quà tối đa chia được: 12",
+        "isHidden": false
+      },
+      {
+        "input": "100\n75",
+        "expectedOutput": "Số túi quà tối đa chia được: 25",
+        "isHidden": false
+      },
+      {
+        "input": "42\n56",
+        "expectedOutput": "Số túi quà tối đa chia được: 14",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-13T08:30:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_26_1",
-    lessonId: "bai_26_28",
-    glyph: "●",
-    title: "Bài 26.1: Viết hàm Number(A) đếm số chẵn và số lẻ (Thực hành Bài 4)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Thực hành Bài 4 - Bài 26 SGK Tin học 10)\nHãy định nghĩa hàm `Number(A)` nhận đầu vào là danh sách số nguyên `A` và trả về đồng thời 2 giá trị `p, q` (trong đó `p` là số lượng số chẵn, `q` là số lượng số lẻ trong `A`).\n\n### Dữ liệu vào (Input)\n- Một dòng chứa các số nguyên của danh sách `A` cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- `CHAN=<p> | LE=<q>`\n",
-    starterCode: "# Bài 26.1: Viết hàm Number(A) trả về số lượng số chẵn và số lẻ\n",
-    testCases: [
-          {
-                "input": "1 2 3 4 5 6 8",
-                "expectedOutput": "CHAN=4 | LE=3",
-                "isHidden": false
-          },
-          {
-                "input": "10 20 30",
-                "expectedOutput": "CHAN=3 | LE=0",
-                "isHidden": false
-          },
-          {
-                "input": "1 3 5 7 9",
-                "expectedOutput": "CHAN=0 | LE=5",
-                "isHidden": true
-          },
-          {
-                "input": "2 4 6 8",
-                "expectedOutput": "CHAN=4 | LE=0",
-                "isHidden": true
-          },
-          {
-                "input": "0 1 2 3 4 5",
-                "expectedOutput": "CHAN=3 | LE=3",
-                "isHidden": true
-          }
+    "id": "asgn_21_4",
+    "lessonId": "bai_21",
+    "glyph": "●",
+    "title": "Bài 21.4: Theo dõi mực nước hồ chứa thủy lợi trong mùa khô (Luyện tập Bài 21)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Nông nghiệp & Thủy lợi - Bài 21 SGK Tin học 10)\nMột hồ chứa nước tưới tiêu nông nghiệp hiện có trữ lượng `tru_luong` (m3). Mỗi ngày nắng hạn, lượng nước giảm đi `luong_giam` (m3). Trạm thủy lợi sẽ phát cảnh báo khẩn cấp ngay khi trữ lượng nước giảm xuống dưới mức an toàn `muc_an_toan` (m3). Hãy dùng vòng lặp `while` để tính sau bao nhiêu ngày hồ chạm ngưỡng cảnh báo.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố ngày đến khi cảnh báo: 5\nTrữ lượng còn lại: 250 m3\n```\n\n*Lặp `while tru_luong >= muc_an_toan:` để trừ dần `luong_giam` và tăng biến đếm ngày.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `tru_luong` ban đầu.\nDòng 2: Số nguyên `muc_an_toan`.\nDòng 3: Số nguyên dương `luong_giam` mỗi ngày.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Số ngày duy trì và Trữ lượng nước còn lại khi phát cảnh báo.",
+    "starterCode": "# Bài 21.4: Theo dõi mực nước hồ chứa thủy lợi trong mùa khô\n",
+    "testCases": [
+      {
+        "input": "1000\n400\n150",
+        "expectedOutput": "Số ngày đến khi cảnh báo: 5\nTrữ lượng còn lại: 250 m3",
+        "isHidden": false
+      },
+      {
+        "input": "500\n200\n100",
+        "expectedOutput": "Số ngày đến khi cảnh báo: 4\nTrữ lượng còn lại: 100 m3",
+        "isHidden": false
+      },
+      {
+        "input": "800\n300\n200",
+        "expectedOutput": "Số ngày đến khi cảnh báo: 3\nTrữ lượng còn lại: 200 m3",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-13T10:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_27_1",
-    lessonId: "bai_26_28",
-    glyph: "●",
-    title: "Bài 27.1: Viết hàm tìm UCLN và BCNN của hai số m, n (Bài 13 - Bài 27)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Thực hành Bài 13 - Bài 27 SGK Tin học 10)\nViết hàm `ucln_bcnn(m, n)` nhận vào 2 số nguyên dương `m, n` và trả về đồng thời 2 giá trị:\n- **Ước chung lớn nhất (UCLN)** của `m, n`.\n- **Bội chung nhỏ nhất (BCNN)** của `m, n`, biết $\\text{BCNN}(m, n) = (m \\times n) // \\text{UCLN}(m, n)$.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa 2 số nguyên dương `m` và `n` cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- `UCLN=<ucln> | BCNN=<bcnn>`\n",
-    starterCode: "# Bài 27.1: Viết hàm trả về đồng thời UCLN và BCNN của m, n\n",
-    testCases: [
-          {
-                "input": "12 18",
-                "expectedOutput": "UCLN=6 | BCNN=36",
-                "isHidden": false
-          },
-          {
-                "input": "15 25",
-                "expectedOutput": "UCLN=5 | BCNN=75",
-                "isHidden": false
-          },
-          {
-                "input": "7 13",
-                "expectedOutput": "UCLN=1 | BCNN=91",
-                "isHidden": true
-          },
-          {
-                "input": "20 30",
-                "expectedOutput": "UCLN=10 | BCNN=60",
-                "isHidden": true
-          },
-          {
-                "input": "14 28",
-                "expectedOutput": "UCLN=14 | BCNN=28",
-                "isHidden": true
-          },
-          {
-                "input": "100 80",
-                "expectedOutput": "UCLN=20 | BCNN=400",
-                "isHidden": true
-          }
+    "id": "asgn_21_5",
+    "lessonId": "bai_21",
+    "glyph": "●",
+    "title": "Bài 21.5: Tính tổng các chữ số để tạo mã kiểm tra (Checksum) thẻ học sinh (Luyện tập Bài 21)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Hệ thống thẻ thông minh - Bài 21 SGK Tin học 10)\nĐể phát hiện lỗi khi quét mã vạch thẻ học sinh, hệ thống tạo một mã kiểm tra (Checksum) bằng cách tính tổng tất cả các chữ số của mã số nguyên dương `ma_so`. Hãy sử dụng vòng lặp `while ma_so > 0:` kết hợp phép chia `% 10` và `// 10` để tính tổng các chữ số.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nMã kiểm tra (Checksum): 11\n```\n\n*Trong vòng lặp `while ma_so > 0:`, cộng `ma_so % 10` vào tổng rồi gán `ma_so = ma_so // 10`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên dương `ma_so`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Mã kiểm tra (Checksum): <tong_chu_so>`.",
+    "starterCode": "# Bài 21.5: Tính tổng các chữ số để tạo mã kiểm tra (Checksum) thẻ học sinh\n",
+    "testCases": [
+      {
+        "input": "202610",
+        "expectedOutput": "Mã kiểm tra (Checksum): 11",
+        "isHidden": false
+      },
+      {
+        "input": "19875",
+        "expectedOutput": "Mã kiểm tra (Checksum): 30",
+        "isHidden": false
+      },
+      {
+        "input": "100504",
+        "expectedOutput": "Mã kiểm tra (Checksum): 10",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-13T10:30:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_29_1",
-    lessonId: "bai_29_31",
-    glyph: "▣",
-    title: "Bài 29.1: Gỡ lỗi thuật toán Sắp xếp chèn (Insertion Sort - Bài 29)",
-    difficulty: "Advanced",
-    description: "### Đề bài (Bài 2 Gỡ lỗi - Bài 29 SGK Tin học 10)\nTrong SGK có đoạn chương trình sắp xếp dãy `A` bị **2 lỗi logic** như sau:\n```python\nfor i in range(len(A) - 1):      # Lỗi 1: Bỏ sót phần tử cuối cùng\n    j = i\n    while j > 1 and A[j] < A[j-1]: # Lỗi 2: j > 1 bỏ sót việc so sánh với A[0]\n        A[j], A[j-1] = A[j-1], A[j]\n        j = j - 1\n```\nHãy sửa lại thành `for i in range(1, len(A)):` và `while j > 0 and A[j] < A[j-1]:` để sắp xếp dãy số nguyên tăng dần chính xác.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa các số nguyên của dãy `A`.\n\n### Kết quả ra (Output)\n- In danh sách `A` sau khi đã sắp xếp tăng dần.\n",
-    starterCode: "# Bài 29.1: Sửa lỗi thuật toán Sắp xếp chèn (Insertion Sort)\n",
-    testCases: [
-          {
-                "input": "10 1 5 2 8 0 4",
-                "expectedOutput": "[0, 1, 2, 4, 5, 8, 10]",
-                "isHidden": false
-          },
-          {
-                "input": "9 7 5 3 1",
-                "expectedOutput": "[1, 3, 5, 7, 9]",
-                "isHidden": false
-          },
-          {
-                "input": "4 -2 0 11 3",
-                "expectedOutput": "[-2, 0, 3, 4, 11]",
-                "isHidden": true
-          },
-          {
-                "input": "1 2 3 4 5",
-                "expectedOutput": "[1, 2, 3, 4, 5]",
-                "isHidden": true
-          },
-          {
-                "input": "5 4 3 2 1",
-                "expectedOutput": "[1, 2, 3, 4, 5]",
-                "isHidden": true
-          },
-          {
-                "input": "100 -50 0 25 -10",
-                "expectedOutput": "[-50, -10, 0, 25, 100]",
-                "isHidden": true
-          }
+    "id": "asgn_22_1",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 22.1: Thống kê số bước chân đi bộ trong tuần từ đồng hồ thông minh (Luyện tập Bài 22)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Thiết bị đeo thông minh & Sức khỏe - Bài 22 SGK Tin học 10)\nVòng đeo tay thông minh lưu số bước chân mỗi ngày của bạn Nam thành một danh sách các số nguyên. Hãy viết chương trình đọc danh sách số bước chân (nhập trên 1 dòng, cách nhau bởi dấu cách), sau đó in ra số ngày đã ghi nhận, số bước ngày đầu tiên, số bước ngày cuối cùng và tổng số bước cả đợt.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố ngày ghi nhận: 5\nNgày đầu tiên: 5000 bước\nNgày cuối cùng: 8000 bước\nTổng số bước: 31000 bước\n```\n\n*Sử dụng `ds = [int(x) for x in input().split()]`, `len(ds)`, `ds[0]`, `ds[-1]` và vòng lặp duyệt danh sách để tính tổng.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa các số nguyên dương cách nhau bởi khoảng trắng.\n\n### Kết quả ra (Output)\nIn ra 4 dòng: Số ngày ghi nhận, Ngày đầu tiên, Ngày cuối cùng và Tổng số bước.",
+    "starterCode": "# Bài 22.1: Thống kê số bước chân đi bộ trong tuần từ đồng hồ thông minh\n",
+    "testCases": [
+      {
+        "input": "5000 6200 4800 7000 8000",
+        "expectedOutput": "Số ngày ghi nhận: 5\nNgày đầu tiên: 5000 bước\nNgày cuối cùng: 8000 bước\nTổng số bước: 31000 bước",
+        "isHidden": false
+      },
+      {
+        "input": "4000 5000 6000",
+        "expectedOutput": "Số ngày ghi nhận: 3\nNgày đầu tiên: 4000 bước\nNgày cuối cùng: 6000 bước\nTổng số bước: 15000 bước",
+        "isHidden": false
+      },
+      {
+        "input": "10000 8500 9500 7000",
+        "expectedOutput": "Số ngày ghi nhận: 4\nNgày đầu tiên: 10000 bước\nNgày cuối cùng: 7000 bước\nTổng số bước: 35000 bước",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T08:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_31_1",
-    lessonId: "bai_29_31",
-    glyph: "▣",
-    title: "Bài 31.1: Đếm số năm nhuận từ năm Y1 đến năm Y2 (Bài tập 3 - Bài 31)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Bài tập 3 - Bài 31 SGK Tin học 10)\nNhập 2 số tự nhiên `Y1` và `Y2` là hai mốc năm dương lịch ($Y1 \\le Y2$). Hãy viết chương trình đếm xem từ năm `Y1` đến năm `Y2` (tính cả 2 đầu mút) có tất cả bao nhiêu **năm nhuận**.\n*(Áp dụng để tính số năm nhuận của thế kỉ XXI từ năm 2001 đến 2100).*\n\n### Dữ liệu vào (Input)\n- Một dòng chứa 2 số nguyên `Y1` và `Y2` cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Số lượng năm nhuận trong khoảng `[Y1, Y2]`.\n",
-    starterCode: "# Bài 31.1: Đếm số năm nhuận trong khoảng từ năm Y1 đến Y2\n",
-    testCases: [
-          {
-                "input": "2001 2100",
-                "expectedOutput": "24",
-                "isHidden": false
-          },
-          {
-                "input": "2000 2024",
-                "expectedOutput": "7",
-                "isHidden": false
-          },
-          {
-                "input": "1990 2000",
-                "expectedOutput": "3",
-                "isHidden": true
-          },
-          {
-                "input": "1890 1910",
-                "expectedOutput": "4",
-                "isHidden": true
-          },
-          {
-                "input": "1999 2005",
-                "expectedOutput": "2",
-                "isHidden": true
-          },
-          {
-                "input": "2020 2020",
-                "expectedOutput": "1",
-                "isHidden": true
-          }
+    "id": "asgn_22_2",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 22.2: Ghép danh sách học sinh đăng ký câu lạc bộ Tin học của hai lớp (Luyện tập Bài 22)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản lý câu lạc bộ - Bài 22 SGK Tin học 10)\nCâu lạc bộ Lập trình nhận danh sách mã học sinh đăng ký từ lớp 10A và lớp 10B. Hãy viết chương trình nhập 2 danh sách mã học sinh (mỗi danh sách trên 1 dòng, các mã cách nhau bởi dấu cách), sử dụng phép ghép danh sách (`+`) để tạo danh sách tổng hợp và in ra tổng số thành viên cùng danh sách ghép.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng số thành viên: 5\nDanh sách tổng hợp: ['A01', 'A02', 'A03', 'B01', 'B02']\n```\n\n*Sử dụng toán tử `+` để nối hai danh sách `ds_a + ds_b`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Các mã học sinh lớp 10A cách nhau bởi dấu cách.\nDòng 2: Các mã học sinh lớp 10B cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nDòng 1: `Tổng số thành viên: <so_luong>`\nDòng 2: `Danh sách tổng hợp: <danh_sach>`.",
+    "starterCode": "# Bài 22.2: Ghép danh sách học sinh đăng ký câu lạc bộ Tin học của hai lớp\n",
+    "testCases": [
+      {
+        "input": "A01 A02 A03\nB01 B02",
+        "expectedOutput": "Tổng số thành viên: 5\nDanh sách tổng hợp: ['A01', 'A02', 'A03', 'B01', 'B02']",
+        "isHidden": false
+      },
+      {
+        "input": "HS1 HS2\nHS3 HS4 HS5",
+        "expectedOutput": "Tổng số thành viên: 5\nDanh sách tổng hợp: ['HS1', 'HS2', 'HS3', 'HS4', 'HS5']",
+        "isHidden": false
+      },
+      {
+        "input": "T01\nT02 T03",
+        "expectedOutput": "Tổng số thành viên: 3\nDanh sách tổng hợp: ['T01', 'T02', 'T03']",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T08:30:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_16_7",
-    lessonId: "bai_16",
-    glyph: "◇",
-    title: "Bài 16.7: Tính tiền lãi suất gửi ngân hàng (Bài tập 3 - Bài 16)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Bài tập 3 - Bài 16 Tài liệu PDF Tin học 10)\nBạn An có `5000000` đồng gửi vào ngân hàng với lãi suất `0.8%/tháng` (`0.008`).\nHãy viết chương trình tính số tiền lãi của bạn An sau 1 tháng và in ra màn hình đúng theo định dạng sau:\n```\nTên người gửi: An\nSố tiền gửi: 5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 40000.0 vnđ\n```\n*(Biết rằng tiền lãi = số tiền gửi * 0.008).*\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu nhập từ bàn phím.\n\n### Kết quả ra (Output)\n- In ra 4 dòng thông tin đúng theo mẫu trên.\n",
-    starterCode: "# Bài 16.3: Tính tiền lãi ngân hàng\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "Tên người gửi: An\nSố tiền gửi: 5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 40000.0 vnđ",
-                "isHidden": false
-          }
+    "id": "asgn_22_3",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 22.3: Tìm mức doanh thu cao nhất của gian hàng ẩm thực trường (Luyện tập Bài 22)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Phân tích kinh doanh học đường - Bài 22 SGK Tin học 10)\nGian hàng ẩm thực của lớp ghi lại doanh thu (nghìn đồng) của các khung giờ trong ngày vào một danh sách số nguyên. Hãy duyệt qua danh sách để tìm mức doanh thu cao nhất và chỉ số khung giờ đầu tiên đạt mức doanh thu đó (chỉ số tính từ 0).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nDoanh thu cao nhất: 350 nghìn đồng\nVị trí khung giờ: 1\n```\n\n*Duyệt danh sách bằng chỉ số `for i in range(len(ds)):` để tìm giá trị lớn nhất.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa các số nguyên là doanh thu từng khung giờ, cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Doanh thu cao nhất và Vị trí khung giờ (chỉ số).",
+    "starterCode": "# Bài 22.3: Tìm mức doanh thu cao nhất của gian hàng ẩm thực trường\n",
+    "testCases": [
+      {
+        "input": "120 350 280 350 190",
+        "expectedOutput": "Doanh thu cao nhất: 350 nghìn đồng\nVị trí khung giờ: 1",
+        "isHidden": false
+      },
+      {
+        "input": "500 420 610 580",
+        "expectedOutput": "Doanh thu cao nhất: 610 nghìn đồng\nVị trí khung giờ: 2",
+        "isHidden": false
+      },
+      {
+        "input": "900 750 800",
+        "expectedOutput": "Doanh thu cao nhất: 900 nghìn đồng\nVị trí khung giờ: 0",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T14:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_20_4",
-    lessonId: "bai_20",
-    glyph: "◆",
-    title: "Bài 20.4: In bảng nhân 7 với số tự nhiên nhỏ hơn 10 (Bài tập 6 - Bài 20)",
-    difficulty: "Beginner",
-    description: "### Đề bài (Bài tập 6 - Bài 20 Tài liệu PDF Tin học 10)\nSử dụng vòng lặp `for`, hãy viết chương trình in ra bảng nhân 7 với các số tự nhiên nhỏ hơn 10 (từ 0 đến 9), mỗi phép tính trên 1 dòng theo định dạng `7 x i = <kết quả>`.\n\n### Dữ liệu vào (Input)\n- Không có dữ liệu nhập.\n\n### Kết quả ra (Output)\n- 10 dòng kết quả từ `7 x 0 = 0` đến `7 x 9 = 63`.\n",
-    starterCode: "# Bài 20.4: In bảng nhân 7 với các số nhỏ hơn 10\n",
-    testCases: [
-          {
-                "input": "",
-                "expectedOutput": "7 x 0 = 0\n7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35\n7 x 6 = 42\n7 x 7 = 49\n7 x 8 = 56\n7 x 9 = 63",
-                "isHidden": false
-          }
+    "id": "asgn_22_4",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 22.4: Đếm số sản phẩm đạt chuẩn khối lượng trên dây chuyền đóng gói (Luyện tập Bài 22)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Kiểm soát chất lượng sản xuất - Bài 22 SGK Tin học 10)\nTrên dây chuyền đóng gói bánh quy, một gói bánh được coi là đạt chuẩn nếu có khối lượng từ `195` gam đến `205` gam (bao gồm cả hai mốc). Cho danh sách khối lượng các gói bánh kiểm tra ngẫu nhiên, hãy duyệt danh sách và đếm số gói đạt chuẩn.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố gói đạt chuẩn: 4/6\n```\n\n*Duyệt `for kl in ds:` và kiểm tra điều kiện `195 <= kl <= 205`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa các số nguyên là khối lượng (gam) của từng gói bánh, cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Số gói đạt chuẩn: <so_goi>/<tong_so_goi>`.",
+    "starterCode": "# Bài 22.4: Đếm số sản phẩm đạt chuẩn khối lượng trên dây chuyền đóng gói\n",
+    "testCases": [
+      {
+        "input": "198 190 200 205 210 195",
+        "expectedOutput": "Số gói đạt chuẩn: 4/6",
+        "isHidden": false
+      },
+      {
+        "input": "200 201 199 202",
+        "expectedOutput": "Số gói đạt chuẩn: 4/4",
+        "isHidden": false
+      },
+      {
+        "input": "180 194 206 220",
+        "expectedOutput": "Số gói đạt chuẩn: 0/4",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T14:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_27_2",
-    lessonId: "bai_26_28",
-    glyph: "●",
-    title: "Bài 27.2: Hàm tìm ƯCLN và BCNN của hai số m, n (Bài tập vận dụng - Bài 27)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Bài tập vận dụng - Bài 27 Tài liệu PDF Tin học 10)\nViết hàm `ucln_bcnn(m, n)` nhận vào hai số nguyên dương `m` và `n`.\nHàm trả về 2 giá trị là:\n1. **Ước chung lớn nhất (UCLN)** của `m` và `n`\n2. **Bội chung nhỏ nhất (BCNN)** của `m` và `n`\n\n*(Biết rằng BCNN(m, n) = (m * n) // UCLN(m, n)).*\n\n### Dữ liệu vào (Input)\n- Một dòng chứa 2 số nguyên dương `m` và `n` cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- In ra theo định dạng: `UCLN = <giá trị> | BCNN = <giá trị>`\n",
-    starterCode: "# Bài 27.2: Hàm tìm UCLN và BCNN của m và n\n",
-    testCases: [
-          {
-                "input": "12 18",
-                "expectedOutput": "UCLN = 6 | BCNN = 36",
-                "isHidden": false
-          },
-          {
-                "input": "15 25",
-                "expectedOutput": "UCLN = 5 | BCNN = 75",
-                "isHidden": false
-          },
-          {
-                "input": "24 36",
-                "expectedOutput": "UCLN = 12 | BCNN = 72",
-                "isHidden": true
-          },
-          {
-                "input": "7 13",
-                "expectedOutput": "UCLN = 1 | BCNN = 91",
-                "isHidden": true
-          },
-          {
-                "input": "20 30",
-                "expectedOutput": "UCLN = 10 | BCNN = 60",
-                "isHidden": true
-          },
-          {
-                "input": "14 28",
-                "expectedOutput": "UCLN = 14 | BCNN = 28",
-                "isHidden": true
-          },
-          {
-                "input": "100 80",
-                "expectedOutput": "UCLN = 20 | BCNN = 400",
-                "isHidden": true
-          }
+    "id": "asgn_22_5",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 22.5: Trích xuất danh sách điểm thi các môn tự chọn theo lát cắt (Slicing) (Luyện tập Bài 22)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản lý điểm học tập - Bài 22 SGK Tin học 10)\nBảng điểm của một học sinh gồm các môn học được lưu trong danh sách số thực, trong đó 3 môn đầu tiên là Toán, Văn, Anh (môn bắt buộc) và các môn còn lại là môn tự chọn. Hãy sử dụng cú pháp cắt danh sách (slicing `ds[:3]` và `ds[3:]`) để tách và in riêng danh sách điểm môn bắt buộc và môn tự chọn.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nĐiểm môn bắt buộc: [8.5, 7.5, 9.0]\nĐiểm môn tự chọn: [8.0, 9.5]\n```\n\n*Sử dụng `ds[:3]` cho 3 phần tử đầu và `ds[3:]` cho các phần tử từ vị trí 3 trở đi.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa ít nhất 4 số thực cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nDòng 1: `Điểm môn bắt buộc: <ds_bat_buoc>`\nDòng 2: `Điểm môn tự chọn: <ds_tu_chon>`.",
+    "starterCode": "# Bài 22.5: Trích xuất danh sách điểm thi các môn tự chọn theo lát cắt (Slicing)\n",
+    "testCases": [
+      {
+        "input": "8.5 7.5 9.0 8.0 9.5",
+        "expectedOutput": "Điểm môn bắt buộc: [8.5, 7.5, 9.0]\nĐiểm môn tự chọn: [8.0, 9.5]",
+        "isHidden": false
+      },
+      {
+        "input": "7.0 8.0 8.5 9.0 7.5 8.0",
+        "expectedOutput": "Điểm môn bắt buộc: [7.0, 8.0, 8.5]\nĐiểm môn tự chọn: [9.0, 7.5, 8.0]",
+        "isHidden": false
+      },
+      {
+        "input": "9.0 9.5 10.0 8.5",
+        "expectedOutput": "Điểm môn bắt buộc: [9.0, 9.5, 10.0]\nĐiểm môn tự chọn: [8.5]",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T14:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_31_2",
-    lessonId: "bai_29_31",
-    glyph: "▣",
-    title: "Bài 31.2: Thuật toán Euclid tìm UCLN(a, b) bằng đệ quy / vòng lặp (Bài tập 4 - Bài 31)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Bài tập 4 - Bài 31 Tài liệu PDF Tin học 10)\nGọi `UCLN(a, b)` là hàm tìm ước chung lớn nhất của hai số tự nhiên `a, b`.\nTheo thuật toán Euclid:\n$$\\text{UCLN}(a, b) = \\begin{cases} a & \\text{nếu } b = 0 \\\\ \\text{UCLN}(b, a \\% b) & \\text{nếu } b > 0 \\end{cases}$$\nHãy viết chương trình nhập hai số tự nhiên `a, b` và in ra ước chung lớn nhất của `a` và `b`.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa 2 số tự nhiên `a` và `b` cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- In ra một số nguyên duy nhất là ƯCLN của `a` và `b`.\n",
-    starterCode: "# Bài 31.2: Tìm UCLN của a và b bằng thuật toán Euclid\n",
-    testCases: [
-          {
-                "input": "48 18",
-                "expectedOutput": "6",
-                "isHidden": false
-          },
-          {
-                "input": "100 25",
-                "expectedOutput": "25",
-                "isHidden": false
-          },
-          {
-                "input": "17 19",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "123456 654321",
-                "expectedOutput": "3",
-                "isHidden": true
-          },
-          {
-                "input": "100 100",
-                "expectedOutput": "100",
-                "isHidden": true
-          },
-          {
-                "input": "81 27",
-                "expectedOutput": "27",
-                "isHidden": true
-          },
-          {
-                "input": "1000 350",
-                "expectedOutput": "50",
-                "isHidden": true
-          }
+    "id": "asgn_23_1",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 23.1: Quản lý hàng đợi khám bệnh ưu tiên tại phòng khám (Luyện tập Bài 23)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Y tế số - Bài 23 SGK Tin học 10)\nPhòng khám đang có danh sách mã bệnh nhân xếp hàng chờ khám. Khi có một bệnh nhân cấp cứu `ma_cap_cuu` đến, hệ thống cần chèn mã này vào đầu danh sách (vị trí `0` bằng `insert(0, ...)`), và có một bệnh nhân běž `ma_huy` hủy khám nên cần xóa khỏi danh sách bằng `remove(...)`. Hãy in danh sách hàng đợi sau khi cập nhật.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nHàng đợi cập nhật: ['BN99', 'BN01', 'BN03']\n```\n\n*Sử dụng `ds.insert(0, ma_cap_cuu)` và `ds.remove(ma_huy)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Các mã bệnh nhân ban đầu cách nhau bởi dấu cách.\nDòng 2: Mã bệnh nhân cấp cứu cần chèn vào đầu.\nDòng 3: Mã bệnh nhân hủy khám cần xóa.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Hàng đợi cập nhật: <danh_sach>`.",
+    "starterCode": "# Bài 23.1: Quản lý hàng đợi khám bệnh ưu tiên tại phòng khám\n",
+    "testCases": [
+      {
+        "input": "BN01 BN02 BN03\nBN99\nBN02",
+        "expectedOutput": "Hàng đợi cập nhật: ['BN99', 'BN01', 'BN03']",
+        "isHidden": false
+      },
+      {
+        "input": "A1 A2 A3 A4\nVIP1\nA4",
+        "expectedOutput": "Hàng đợi cập nhật: ['VIP1', 'A1', 'A2', 'A3']",
+        "isHidden": false
+      },
+      {
+        "input": "P10 P20\nP00\nP10",
+        "expectedOutput": "Hàng đợi cập nhật: ['P00', 'P20']",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T14:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_31_3",
-    lessonId: "bai_29_31",
-    glyph: "▣",
-    title: "Bài 31.3: In bảng cửu chương dạng lưới 2 tầng (Bài tập 2 - Bài 31)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Bài tập 2 - Bài 31 Tài liệu PDF Tin học 10)\nViết chương trình in bảng cửu chương ra màn hình:\n- Tầng 1: In lần lượt các bảng nhân từ 1 đến 5 (mỗi phép tính `k x i = ...`).\n- Tầng 2: In lần lượt các bảng nhân từ 6 đến 10.\nChương trình in mỗi dòng của bảng theo cú pháp `<bảng> x <i> = <tích>`.\n\nĐể đơn giản hóa và đồng bộ việc chấm tự động, chương trình nhận vào số nguyên `k` ($1 \\le k \\le 10$) đại diện cho bảng nhân cần in (hoặc in toàn bộ bảng nhân của `k` từ 1 đến 10).\n\n### Dữ liệu vào (Input)\n- Một số nguyên `k` ($1 \\le k \\le 10$).\n\n### Kết quả ra (Output)\n- 10 dòng thể hiện bảng cửu chương của `k`, mỗi dòng có dạng: `k x i = <k*i>` với `i` từ 1 đến 10.\n",
-    starterCode: "# Bài 31.3: In bảng nhân k từ 1 đến 10\n",
-    testCases: [
-          {
-                "input": "5",
-                "expectedOutput": "5 x 1 = 5\n5 x 2 = 10\n5 x 3 = 15\n5 x 4 = 20\n5 x 5 = 25\n5 x 6 = 30\n5 x 7 = 35\n5 x 8 = 40\n5 x 9 = 45\n5 x 10 = 50",
-                "isHidden": false
-          },
-          {
-                "input": "9",
-                "expectedOutput": "9 x 1 = 9\n9 x 2 = 18\n9 x 3 = 27\n9 x 4 = 36\n9 x 5 = 45\n9 x 6 = 54\n9 x 7 = 63\n9 x 8 = 72\n9 x 9 = 81\n9 x 10 = 90",
-                "isHidden": false
-          },
-          {
-                "input": "2",
-                "expectedOutput": "2 x 1 = 2\n2 x 2 = 4\n2 x 3 = 6\n2 x 4 = 8\n2 x 5 = 10\n2 x 6 = 12\n2 x 7 = 14\n2 x 8 = 16\n2 x 9 = 18\n2 x 10 = 20",
-                "isHidden": true
-          },
-          {
-                "input": "1",
-                "expectedOutput": "1 x 1 = 1\n1 x 2 = 2\n1 x 3 = 3\n1 x 4 = 4\n1 x 5 = 5\n1 x 6 = 6\n1 x 7 = 7\n1 x 8 = 8\n1 x 9 = 9\n1 x 10 = 10",
-                "isHidden": true
-          },
-          {
-                "input": "7",
-                "expectedOutput": "7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35\n7 x 6 = 42\n7 x 7 = 49\n7 x 8 = 56\n7 x 9 = 63\n7 x 10 = 70",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "10 x 1 = 10\n10 x 2 = 20\n10 x 3 = 30\n10 x 4 = 40\n10 x 5 = 50\n10 x 6 = 60\n10 x 7 = 70\n10 x 8 = 80\n10 x 9 = 90\n10 x 10 = 100",
-                "isHidden": true
-          }
+    "id": "asgn_23_2",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 23.2: Sắp xếp bảng điểm thi đấu Rung chuông vàng của lớp (Luyện tập Bài 23)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Cuộc thi học đường - Bài 23 SGK Tin học 10)\nBan tổ chức cuộc thi Rung chuông vàng ghi nhận điểm số của các thí sinh vào một danh sách số nguyên. Hãy thêm điểm của thí sinh bổ sung vào cuối danh sách bằng `append()`, sau đó sắp xếp danh sách điểm theo thứ tự tăng dần bằng `sort()` và in ra kết quả.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nBảng điểm tăng dần: [12, 15, 16, 18, 20]\nĐiểm cao nhất: 20\n```\n\n*Gọi `ds.append(diem_moi)` rồi gọi `ds.sort()`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Các số nguyên là điểm của các thí sinh ban đầu, cách nhau bởi dấu cách.\nDòng 2: Một số nguyên là điểm của thí sinh bổ sung.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Danh sách điểm tăng dần và Điểm cao nhất (phần tử cuối sau khi sắp xếp).",
+    "starterCode": "# Bài 23.2: Sắp xếp bảng điểm thi đấu Rung chuông vàng của lớp\n",
+    "testCases": [
+      {
+        "input": "15 20 12 18\n16",
+        "expectedOutput": "Bảng điểm tăng dần: [12, 15, 16, 18, 20]\nĐiểm cao nhất: 20",
+        "isHidden": false
+      },
+      {
+        "input": "30 10 25\n40",
+        "expectedOutput": "Bảng điểm tăng dần: [10, 25, 30, 40]\nĐiểm cao nhất: 40",
+        "isHidden": false
+      },
+      {
+        "input": "5 9 7 3\n8",
+        "expectedOutput": "Bảng điểm tăng dần: [3, 5, 7, 8, 9]\nĐiểm cao nhất: 9",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T14:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_19_4",
-    lessonId: "bai_19",
-    glyph: "◇",
-    title: "Bài 19.4: Xếp loại học lực học sinh theo điểm trung bình",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng rẽ nhánh - Bài 19)\nNhập điểm trung bình môn Tin học $DTB$ ($0.0 \\le DTB \\le 10.0$).\nQuy tắc xếp loại học lực:\n- Nếu $DTB \\ge 8.0$: in `GIOI`\n- Nếu $6.5 \\le DTB < 8.0$: in `KHA`\n- Nếu $5.0 \\le DTB < 6.5$: in `TRUNG BINH`\n- Nếu $DTB < 5.0$: in `YEU`\n\n### Dữ liệu vào (Input)\n- Một số thực duy nhất là điểm trung bình $DTB$.\n\n### Kết quả ra (Output)\n- In ra xếp loại tương ứng (`GIOI`, `KHA`, `TRUNG BINH` hoặc `YEU`).",
-    starterCode: "# Bài 19.4: Xếp loại học lực học sinh theo điểm trung bình\n",
-    testCases: [
-          {
-                "input": "8.5",
-                "expectedOutput": "GIOI",
-                "isHidden": false
-          },
-          {
-                "input": "7.0",
-                "expectedOutput": "KHA",
-                "isHidden": false
-          },
-          {
-                "input": "5.5",
-                "expectedOutput": "TRUNG BINH",
-                "isHidden": true
-          },
-          {
-                "input": "4.2",
-                "expectedOutput": "YEU",
-                "isHidden": true
-          },
-          {
-                "input": "8.0",
-                "expectedOutput": "GIOI",
-                "isHidden": true
-          },
-          {
-                "input": "6.5",
-                "expectedOutput": "KHA",
-                "isHidden": true
-          },
-          {
-                "input": "5.0",
-                "expectedOutput": "TRUNG BINH",
-                "isHidden": true
-          },
-          {
-                "input": "10.0",
-                "expectedOutput": "GIOI",
-                "isHidden": true
-          }
+    "id": "asgn_23_3",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 23.3: Kiểm tra mã vé hợp lệ tại cổng soát vé đêm nhạc trường (Luyện tập Bài 23)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Sự kiện & Vé điện tử - Bài 23 SGK Tin học 10)\nTại cổng soát vé đêm nhạc hội của trường, hệ thống lưu danh sách các mã vé hợp lệ. Khi một học sinh quét mã `ma_quet`, hãy dùng toán tử `in` để kiểm tra xem `ma_quet` có nằm trong danh sách hợp lệ hay không.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nVé hợp lệ - Mời vào cổng\n```\n\n*Sử dụng câu lệnh `if ma_quet in ds_ve:`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Các mã vé hợp lệ cách nhau bởi dấu cách.\nDòng 2: Mã vé `ma_quet` cần kiểm tra.\n\n### Kết quả ra (Output)\nNếu có trong danh sách thì in `Vé hợp lệ - Mời vào cổng`, ngược lại in `Vé không hợp lệ - Vui lòng kiểm tra lại`.",
+    "starterCode": "# Bài 23.3: Kiểm tra mã vé hợp lệ tại cổng soát vé đêm nhạc trường\n",
+    "testCases": [
+      {
+        "input": "VE101 VE102 VE105 VE200\nVE105",
+        "expectedOutput": "Vé hợp lệ - Mời vào cổng",
+        "isHidden": false
+      },
+      {
+        "input": "VE101 VE102 VE105 VE200\nVE999",
+        "expectedOutput": "Vé không hợp lệ - Vui lòng kiểm tra lại",
+        "isHidden": false
+      },
+      {
+        "input": "VIP01 VIP02 VIP03\nVIP01",
+        "expectedOutput": "Vé hợp lệ - Mời vào cổng",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_19_5",
-    lessonId: "bai_19",
-    glyph: "◆",
-    title: "Bài 19.5: Kiểm tra ba cạnh tam giác và phân loại",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Luyện tập rẽ nhánh - Bài 19)\nNhập vào 3 số thực dương $a, b, c$ trên cùng một dòng (cách nhau bởi dấu cách) đại diện cho độ dài 3 cạnh.\nKiểm tra xem $a, b, c$ có tạo thành một tam giác không (thỏa mãn bất đẳng thức tam giác: $a+b>c$, $a+c>b$, $b+c>a$).\n- Nếu không phải tam giác: in ra `KHONG PHAI TAM GIAC`\n- Nếu có:\n  - Nếu 3 cạnh bằng nhau ($a = b = c$): in ra `TAM GIAC DEU`\n  - Nếu là tam giác vuông (thỏa mãn $a^2+b^2=c^2$ hoặc $a^2+c^2=b^2$ hoặc $b^2+c^2=a^2$, với sai số $10^{-5}$): in ra `TAM GIAC VUONG`\n  - Các trường hợp còn lại: in ra `TAM GIAC THUONG`\n\n### Dữ liệu vào (Input)\n- 3 số thực $a, b, c$ trên một dòng cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Chuỗi ký tự tương ứng với loại tam giác.",
-    starterCode: "# Bài 19.5: Kiểm tra ba cạnh tam giác và phân loại\n",
-    testCases: [
-          {
-                "input": "3 4 5",
-                "expectedOutput": "TAM GIAC VUONG",
-                "isHidden": false
-          },
-          {
-                "input": "5 5 5",
-                "expectedOutput": "TAM GIAC DEU",
-                "isHidden": false
-          },
-          {
-                "input": "1 2 5",
-                "expectedOutput": "KHONG PHAI TAM GIAC",
-                "isHidden": true
-          },
-          {
-                "input": "4 5 6",
-                "expectedOutput": "TAM GIAC THUONG",
-                "isHidden": true
-          },
-          {
-                "input": "6 8 10",
-                "expectedOutput": "TAM GIAC VUONG",
-                "isHidden": true
-          },
-          {
-                "input": "7 7 10",
-                "expectedOutput": "TAM GIAC THUONG",
-                "isHidden": true
-          },
-          {
-                "input": "2 2 4",
-                "expectedOutput": "KHONG PHAI TAM GIAC",
-                "isHidden": true
-          }
+    "id": "asgn_23_4",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 23.4: Tính điểm trung bình phần thi thuyết trình sau khi bỏ điểm cực trị (Luyện tập Bài 23)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Hệ thống chấm thi công bằng - Bài 23 SGK Tin học 10)\nTrong cuộc thi thuyết trình tiếng Anh, để đảm bảo khách quan, ban giám khảo sẽ sắp xếp danh sách điểm (từ thấp đến cao), sau đó loại bỏ 1 điểm thấp nhất (ở đầu danh sách) và 1 điểm cao nhất (ở cuối danh sách) trước khi tính trung bình cộng của các điểm còn lại.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nĐiểm tính giải: [8.0, 8.5, 9.0]\nĐiểm trung bình: 8.5\n```\n\n*Gợi ý: `ds.sort()`, sau đó dùng `ds.pop(0)` và `ds.pop()` để xóa phần tử đầu và cuối.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa ít nhất 4 số thực là điểm của các giám khảo, cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Danh sách điểm còn lại (sau khi đã sắp xếp và bỏ 2 đầu) và Điểm trung bình (làm tròn 2 chữ số thập phân).",
+    "starterCode": "# Bài 23.4: Tính điểm trung bình phần thi thuyết trình sau khi bỏ điểm cực trị\n",
+    "testCases": [
+      {
+        "input": "8.0 9.5 7.0 8.5 9.0",
+        "expectedOutput": "Điểm tính giải: [8.0, 8.5, 9.0]\nĐiểm trung bình: 8.5",
+        "isHidden": false
+      },
+      {
+        "input": "6.0 10.0 8.0 8.0 7.0",
+        "expectedOutput": "Điểm tính giải: [7.0, 8.0, 8.0]\nĐiểm trung bình: 7.67",
+        "isHidden": false
+      },
+      {
+        "input": "9.0 9.0 9.5 8.5",
+        "expectedOutput": "Điểm tính giải: [9.0, 9.0]\nĐiểm trung bình: 9.0",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_19_6",
-    lessonId: "bai_19",
-    glyph: "▣",
-    title: "Bài 19.6: Tính tiền cước xe taxi theo cự ly di chuyển",
-    difficulty: "Beginner",
-    description: "### Đề bài (Toán thực tế - Bài 19)\nBảng giá cước taxi được tính như sau:\n- Km đầu tiên (hoặc dưới 1 km): 10,000 VNĐ.\n- Từ km thứ 2 đến km thứ 10: 8,000 VNĐ / km.\n- Từ km thứ 11 trở đi: 6,000 VNĐ / km.\n\nNhập vào số nguyên dương $k$ là số kilomet khách di chuyển ($k \\ge 1$). Tính và in ra tổng số tiền cước (VNĐ).\n\nVí dụ:\n- Đi 1 km: $10000$ VNĐ\n- Đi 5 km: $10000 + 4 \\times 8000 = 42000$ VNĐ\n- Đi 15 km: $10000 + 9 \\times 8000 + 5 \\times 6000 = 112000$ VNĐ\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $k$.\n\n### Kết quả ra (Output)\n- Số nguyên là tổng số tiền cước taxi.",
-    starterCode: "# Bài 19.6: Tính tiền cước xe taxi theo cự ly di chuyển\n",
-    testCases: [
-          {
-                "input": "1",
-                "expectedOutput": "10000",
-                "isHidden": false
-          },
-          {
-                "input": "5",
-                "expectedOutput": "42000",
-                "isHidden": false
-          },
-          {
-                "input": "15",
-                "expectedOutput": "112000",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "82000",
-                "isHidden": true
-          },
-          {
-                "input": "2",
-                "expectedOutput": "18000",
-                "isHidden": true
-          },
-          {
-                "input": "9",
-                "expectedOutput": "74000",
-                "isHidden": true
-          },
-          {
-                "input": "25",
-                "expectedOutput": "172000",
-                "isHidden": true
-          }
+    "id": "asgn_23_5",
+    "lessonId": "bai_22_23",
+    "glyph": "●",
+    "title": "Bài 23.5: Lọc danh sách mã sách mượn không trùng lặp tại thư viện (Luyện tập Bài 23)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Thư viện số - Bài 23 SGK Tin học 10)\nTrong ngày, máy quét ghi nhận các mã sách được học sinh mượn theo thứ tự thời gian (một đầu sách có thể được mượn nhiều lần). Hãy tạo một danh sách mới chỉ chứa các mã sách duy nhất (giữ nguyên thứ tự xuất hiện lần đầu) bằng cách dùng toán tử `not in` và lệnh `append()`.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố đầu sách khác nhau: 4\nDanh sách mã sách: ['S01', 'S02', 'S03', 'S04']\n```\n\n*Duyệt `for ma in ds_muon:`: nếu `ma not in ds_duy_nhat:` thì `ds_duy_nhat.append(ma)`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa các mã sách cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nIn ra 2 dòng: Số đầu sách khác nhau và Danh sách mã sách duy nhất.",
+    "starterCode": "# Bài 23.5: Lọc danh sách mã sách mượn không trùng lặp tại thư viện\n",
+    "testCases": [
+      {
+        "input": "S01 S02 S01 S03 S02 S04",
+        "expectedOutput": "Số đầu sách khác nhau: 4\nDanh sách mã sách: ['S01', 'S02', 'S03', 'S04']",
+        "isHidden": false
+      },
+      {
+        "input": "PY01 PY01 PY02",
+        "expectedOutput": "Số đầu sách khác nhau: 2\nDanh sách mã sách: ['PY01', 'PY02']",
+        "isHidden": false
+      },
+      {
+        "input": "A1 B2 C3 A1 C3",
+        "expectedOutput": "Số đầu sách khác nhau: 3\nDanh sách mã sách: ['A1', 'B2', 'C3']",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_20_5",
-    lessonId: "bai_20",
-    glyph: "◇",
-    title: "Bài 20.5: Tính giai thừa n! bằng vòng lặp for",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập vòng lặp for - Bài 20)\nNhập vào một số nguyên dương $n$ ($1 \\le n \\le 20$). Sử dụng vòng lặp `for` để tính và in ra giá trị giai thừa của $n$:\n$$n! = 1 \\times 2 \\times 3 \\times \\dots \\times n$$\nQuy ước: $0! = 1$, $1! = 1$.\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $n$.\n\n### Kết quả ra (Output)\n- Giá trị $n!$.",
-    starterCode: "# Bài 20.5: Tính giai thừa n! bằng vòng lặp for\n",
-    testCases: [
-          {
-                "input": "5",
-                "expectedOutput": "120",
-                "isHidden": false
-          },
-          {
-                "input": "1",
-                "expectedOutput": "1",
-                "isHidden": false
-          },
-          {
-                "input": "7",
-                "expectedOutput": "5040",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "3628800",
-                "isHidden": true
-          },
-          {
-                "input": "2",
-                "expectedOutput": "2",
-                "isHidden": true
-          },
-          {
-                "input": "3",
-                "expectedOutput": "6",
-                "isHidden": true
-          },
-          {
-                "input": "6",
-                "expectedOutput": "720",
-                "isHidden": true
-          }
+    "id": "asgn_24_1",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 24.1: Kiểm tra độ mạnh mật khẩu tài khoản cổng thông tin học sinh (Luyện tập Bài 24)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (An toàn thông tin - Bài 24 SGK Tin học 10)\nKhi học sinh đặt mật khẩu cho tài khoản học tập trực tuyến, hệ thống yêu cầu mật khẩu `mat_khau` phải có độ dài từ `8` kí tự trở lên và bắt buộc phải chứa kí tự `@` hoặc `#`. Hãy viết chương trình kiểm tra xem mật khẩu nhập vào có hợp lệ hay không.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nĐộ dài: 12\nMật khẩu hợp lệ\n```\n\n*Sử dụng hàm `len(mat_khau) >= 8` và toán tử `in` (`'@' in mat_khau or '#' in mat_khau`).*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu kí tự `mat_khau`.\n\n### Kết quả ra (Output)\nIn ra độ dài mật khẩu ở dòng 1, và dòng 2 in `Mật khẩu hợp lệ` hoặc `Mật khẩu chưa đạt yêu cầu`.",
+    "starterCode": "# Bài 24.1: Kiểm tra độ mạnh mật khẩu tài khoản cổng thông tin học sinh\n",
+    "testCases": [
+      {
+        "input": "HocSinh@2026",
+        "expectedOutput": "Độ dài: 12\nMật khẩu hợp lệ",
+        "isHidden": false
+      },
+      {
+        "input": "Abc@12",
+        "expectedOutput": "Độ dài: 6\nMật khẩu chưa đạt yêu cầu",
+        "isHidden": false
+      },
+      {
+        "input": "MatKhau12345",
+        "expectedOutput": "Độ dài: 12\nMật khẩu chưa đạt yêu cầu",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_20_6",
-    lessonId: "bai_20",
-    glyph: "◆",
-    title: "Bài 20.6: In tam giác vuông cân bằng dấu *",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vận dụng vòng lặp for - Bài 20)\nNhập vào số nguyên dương $n$ ($1 \\le n \\le 15$). Sử dụng vòng lặp `for` để in ra màn hình một tam giác vuông cân gồm $n$ dòng bằng dấu sao `*`:\n- Dòng 1 có 1 dấu `*`\n- Dòng 2 có 2 dấu `*`\n- ...\n- Dòng $n$ có $n$ dấu `*`\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $n$.\n\n### Kết quả ra (Output)\n- Hình tam giác vuông cân theo yêu cầu.",
-    starterCode: "# Bài 20.6: In tam giác vuông cân bằng dấu *\n",
-    testCases: [
-          {
-                "input": "3",
-                "expectedOutput": "*\n**\n***",
-                "isHidden": false
-          },
-          {
-                "input": "1",
-                "expectedOutput": "*",
-                "isHidden": false
-          },
-          {
-                "input": "4",
-                "expectedOutput": "*\n**\n***\n****",
-                "isHidden": true
-          },
-          {
-                "input": "5",
-                "expectedOutput": "*\n**\n***\n****\n*****",
-                "isHidden": true
-          },
-          {
-                "input": "2",
-                "expectedOutput": "*\n**",
-                "isHidden": true
-          },
-          {
-                "input": "6",
-                "expectedOutput": "*\n**\n***\n****\n*****\n******",
-                "isHidden": true
-          }
+    "id": "asgn_24_2",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 24.2: Đếm số kí tự chữ số trong mã vận đơn bưu phẩm (Luyện tập Bài 24)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Logistics & Mã vạch - Bài 24 SGK Tin học 10)\nMột mã vận đơn bưu phẩm bao gồm cả chữ cái và chữ số (ví dụ: `VN2026HCM89`). Hãy duyệt từng kí tự trong xâu mã vận đơn và đếm xem có bao nhiêu kí tự là chữ số (nằm trong xâu `'0123456789'`).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố lượng chữ số trong mã: 6\n```\n\n*Duyệt `for ch in ma_van_don:`: nếu `ch in '0123456789':` thì tăng biến đếm.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu `ma_van_don`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Số lượng chữ số trong mã: <so_luong>`.",
+    "starterCode": "# Bài 24.2: Đếm số kí tự chữ số trong mã vận đơn bưu phẩm\n",
+    "testCases": [
+      {
+        "input": "VN2026HCM89",
+        "expectedOutput": "Số lượng chữ số trong mã: 6",
+        "isHidden": false
+      },
+      {
+        "input": "FAST12345678",
+        "expectedOutput": "Số lượng chữ số trong mã: 8",
+        "isHidden": false
+      },
+      {
+        "input": "EXPRESSVN",
+        "expectedOutput": "Số lượng chữ số trong mã: 0",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_21_3",
-    lessonId: "bai_21",
-    glyph: "◇",
-    title: "Bài 21.3: Tính tổng các chữ số của số nguyên N",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Luyện tập vòng lặp while - Bài 21)\nNhập vào số nguyên dương $N$ ($1 \\le N \\le 10^9$). Sử dụng vòng lặp `while` kết hợp phép chia lấy phần dư `% 10` và chia lấy phần nguyên `// 10` để tách từng chữ số và tính tổng các chữ số của $N$.\n\nVí dụ:\n- $N = 1234 \\rightarrow 1 + 2 + 3 + 4 = 10$\n- $N = 905 \\rightarrow 9 + 0 + 5 = 14$\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$.\n\n### Kết quả ra (Output)\n- Tổng các chữ số của số $N$.",
-    starterCode: "# Bài 21.3: Tính tổng các chữ số của N bằng vòng lặp while\n",
-    testCases: [
-          {
-                "input": "1234",
-                "expectedOutput": "10",
-                "isHidden": false
-          },
-          {
-                "input": "905",
-                "expectedOutput": "14",
-                "isHidden": false
-          },
-          {
-                "input": "999999",
-                "expectedOutput": "54",
-                "isHidden": true
-          },
-          {
-                "input": "7",
-                "expectedOutput": "7",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "1000",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "83726",
-                "expectedOutput": "26",
-                "isHidden": true
-          }
+    "id": "asgn_24_3",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 24.3: Kiểm tra mã tem chống hàng giả đối xứng (Palindrome) (Luyện tập Bài 24)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Kiểm định chất lượng sản phẩm - Bài 24 SGK Tin học 10)\nMột nhà sản xuất thiết kế mã tem xác thực đặc biệt có tính chất đối xứng: đọc từ trái sang phải hay từ phải sang trái đều giống hệt nhau (ví dụ: `AB121BA`). Hãy viết chương trình kiểm tra xem chuỗi `ma_tem` nhập vào có phải là xâu đối xứng hay không.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTem xác thực hợp lệ (Đối xứng)\n```\n\n*Có thể kiểm tra bằng cách đảo ngược xâu `ma_tem[::-1] == ma_tem` hoặc duyệt chỉ số.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu kí tự `ma_tem`.\n\n### Kết quả ra (Output)\nIn ra `Tem xác thực hợp lệ (Đối xứng)` nếu đối xứng, ngược lại in `Tem không hợp lệ`.",
+    "starterCode": "# Bài 24.3: Kiểm tra mã tem chống hàng giả đối xứng (Palindrome)\n",
+    "testCases": [
+      {
+        "input": "AB121BA",
+        "expectedOutput": "Tem xác thực hợp lệ (Đối xứng)",
+        "isHidden": false
+      },
+      {
+        "input": "RADAR2026",
+        "expectedOutput": "Tem không hợp lệ",
+        "isHidden": false
+      },
+      {
+        "input": "9876789",
+        "expectedOutput": "Tem xác thực hợp lệ (Đối xứng)",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_21_4",
-    lessonId: "bai_21",
-    glyph: "◆",
-    title: "Bài 21.4: Bài toán gửi tiết kiệm ngân hàng lãi kép",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Vận dụng vòng lặp while - Bài 21)\nBác An gửi vào ngân hàng số tiền vốn ban đầu là $A$ triệu đồng với lãi suất $r\\%$/năm theo hình thức lãi kép (tiền lãi hàng năm được cộng gộp vào vốn để tính lãi cho năm sau).\nHỏi sau ít nhất bao nhiêu năm thì số tiền tích lũy trong tài khoản của bác An đạt tối thiểu $B$ triệu đồng?\n\n### Dữ liệu vào (Input)\n- Dòng 1: Số tiền ban đầu $A$ (triệu đồng, số thực).\n- Dòng 2: Lãi suất $r$ (%/năm, số thực).\n- Dòng 3: Số tiền mục tiêu $B$ (triệu đồng, số thực, $B \\ge A$).\n\n### Kết quả ra (Output)\n- Một số nguyên duy nhất là số năm cần thiết.",
-    starterCode: "# Bài 21.4: Tính số năm gửi tiết kiệm lãi kép bằng vòng lặp while\n",
-    testCases: [
-          {
-                "input": "100\n6.5\n200",
-                "expectedOutput": "12",
-                "isHidden": false
-          },
-          {
-                "input": "50\n8.0\n100",
-                "expectedOutput": "10",
-                "isHidden": false
-          },
-          {
-                "input": "10\n10.0\n10",
-                "expectedOutput": "0",
-                "isHidden": true
-          },
-          {
-                "input": "20\n7.5\n50",
-                "expectedOutput": "13",
-                "isHidden": true
-          },
-          {
-                "input": "50\n5.0\n100",
-                "expectedOutput": "15",
-                "isHidden": true
-          },
-          {
-                "input": "100\n10.0\n300",
-                "expectedOutput": "12",
-                "isHidden": true
-          }
+    "id": "asgn_24_4",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 24.4: Tính cước phí gửi tin nhắn SMS thông báo phụ huynh (Luyện tập Bài 24)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Viễn thông & Nhà trường - Bài 24 SGK Tin học 10)\nHệ thống sổ liên lạc điện tử gửi tin nhắn SMS không dấu tới phụ huynh. Quy định của nhà mạng: mỗi bản tin chuẩn tối đa `160` kí tự có giá `500` VNĐ; nếu nội dung dài hơn 160 kí tự thì tính là 2 bản tin (`1000` VNĐ). Hãy nhập nội dung tin nhắn và in ra số kí tự cùng cước phí.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố kí tự: 49\nCước phí: 500 vnđ\n```\n\n*Sử dụng `len(tin_nhan)` để lấy số kí tự và rẽ nhánh theo mốc 160.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu nội dung tin nhắn.\n\n### Kết quả ra (Output)\nDòng 1: `Số kí tự: <do_dai>`\nDòng 2: `Cước phí: <cuoc_phi> vnđ`.",
+    "starterCode": "# Bài 24.4: Tính cước phí gửi tin nhắn SMS thông báo phụ huynh\n",
+    "testCases": [
+      {
+        "input": "Thong bao: Ngay mai lop 10A1 nghi tiet sinh hoat.",
+        "expectedOutput": "Số kí tự: 49\nCước phí: 500 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "expectedOutput": "Số kí tự: 160\nCước phí: 500 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "expectedOutput": "Số kí tự: 175\nCước phí: 1000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_21_5",
-    lessonId: "bai_21",
-    glyph: "▣",
-    title: "Bài 21.5: Đảo ngược các chữ số của số nguyên dương N",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Luyện tập thuật toán số học - Bài 21)\nNhập vào một số nguyên dương $N$ ($1 \\le N \\le 10^9$). Sử dụng vòng lặp `while` và các phép toán số học `% 10`, `// 10` để tạo ra số nguyên đảo ngược của $N$ và in ra màn hình.\nLưu ý: Các chữ số 0 ở cuối số $N$ khi đảo ngược sẽ trở thành các chữ số vô nghĩa ở đầu và bị triệt tiêu khi coi là số nguyên (Ví dụ: $1200 \\rightarrow 21$).\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$.\n\n### Kết quả ra (Output)\n- Số nguyên sau khi đảo ngược các chữ số.",
-    starterCode: "# Bài 21.5: Đảo ngược số nguyên dương N bằng vòng lặp while\n",
-    testCases: [
-          {
-                "input": "12345",
-                "expectedOutput": "54321",
-                "isHidden": false
-          },
-          {
-                "input": "1200",
-                "expectedOutput": "21",
-                "isHidden": false
-          },
-          {
-                "input": "7",
-                "expectedOutput": "7",
-                "isHidden": true
-          },
-          {
-                "input": "9000",
-                "expectedOutput": "9",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "105",
-                "expectedOutput": "501",
-                "isHidden": true
-          },
-          {
-                "input": "987654321",
-                "expectedOutput": "123456789",
-                "isHidden": true
-          }
+    "id": "asgn_24_5",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 24.5: Trích xuất thông tin khóa học và lớp từ mã định danh học sinh (Luyện tập Bài 24)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản lý hồ sơ giáo dục - Bài 24 SGK Tin học 10)\nMã định danh học sinh của trường có độ dài cố định 8 kí tự theo cấu trúc `K<2 kí tự khóa><3 kí tự lớp><2 kí tự số thứ tự>`, ví dụ `K2610A05` (Khóa `26`, Lớp `10A`, Số thứ tự `05`). Hãy dùng chỉ số và phép cắt xâu để tách và hiển thị thông tin chi tiết.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nKhóa: 26\nLớp: 10A\nSố thứ tự: 05\n```\n\n*Gợi ý: `ma[1:3]` là khóa, `ma[3:6]` là lớp, `ma[6:]` là số thứ tự.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu mã học sinh dài 8 kí tự.\n\n### Kết quả ra (Output)\nIn ra 3 dòng gồm Khóa, Lớp và Số thứ tự.",
+    "starterCode": "# Bài 24.5: Trích xuất thông tin khóa học và lớp từ mã định danh học sinh\n",
+    "testCases": [
+      {
+        "input": "K2610A05",
+        "expectedOutput": "Khóa: 26\nLớp: 10A\nSố thứ tự: 05",
+        "isHidden": false
+      },
+      {
+        "input": "K2511B19",
+        "expectedOutput": "Khóa: 25\nLớp: 11B\nSố thứ tự: 19",
+        "isHidden": false
+      },
+      {
+        "input": "K2412T01",
+        "expectedOutput": "Khóa: 24\nLớp: 12T\nSố thứ tự: 01",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_21_6",
-    lessonId: "bai_21",
-    glyph: "●",
-    title: "Bài 21.6: Tìm số lớn nhất trong dãy số kết thúc bằng số 0",
-    difficulty: "Beginner",
-    description: "### Đề bài (Vòng lặp while với điều kiện dừng - Bài 21)\nNhập liên tục các số nguyên từ bàn phím, mỗi số trên một dòng riêng biệt, cho đến khi gặp số `0` thì dừng nhập (số `0` chỉ là dấu hiệu kết thúc, không nằm trong dãy cần xét).\nHãy tìm và in ra giá trị lớn nhất trong các số đã nhập.\n\n### Dữ liệu vào (Input)\n- Dãy các số nguyên, mỗi số trên một dòng, kết thúc bởi dòng chứa số 0 (Dãy đảm bảo có ít nhất 1 số trước số 0).\n\n### Kết quả ra (Output)\n- Một số nguyên là giá trị lớn nhất trong dãy.",
-    starterCode: "# Bài 21.6: Tìm số lớn nhất trong dãy số kết thúc bằng 0\n",
-    testCases: [
-          {
-                "input": "5\n12\n8\n3\n0",
-                "expectedOutput": "12",
-                "isHidden": false
-          },
-          {
-                "input": "-5\n-2\n-8\n0",
-                "expectedOutput": "-2",
-                "isHidden": false
-          },
-          {
-                "input": "100\n0",
-                "expectedOutput": "100",
-                "isHidden": true
-          },
-          {
-                "input": "1\n5\n9\n7\n0",
-                "expectedOutput": "9",
-                "isHidden": true
-          },
-          {
-                "input": "10\n20\n30\n0",
-                "expectedOutput": "30",
-                "isHidden": true
-          },
-          {
-                "input": "-10\n-20\n-30\n0",
-                "expectedOutput": "-10",
-                "isHidden": true
-          },
-          {
-                "input": "5\n5\n5\n0",
-                "expectedOutput": "5",
-                "isHidden": true
-          }
+    "id": "asgn_25_1",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 25.1: Chuẩn hóa khoảng trắng trong họ và tên học sinh đăng ký dự thi (Luyện tập Bài 25)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Cổng dịch vụ công giáo dục - Bài 25 SGK Tin học 10)\nKhi điền biểu mẫu trực tuyến, nhiều học sinh gõ thừa dấu cách ở đầu, cuối hoặc giữa các từ trong họ tên (ví dụ: `  Nguyen   Van   An  `). Hãy sử dụng lệnh `split()` kết hợp `' '.join(...)` để chuẩn hóa họ tên (mỗi từ cách nhau đúng 1 dấu cách) và đếm số từ trong họ tên.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nHọ tên chuẩn hóa: Nguyen Van An\nSố từ: 3\n```\n\n*Sử dụng `cac_tu = s.split()` và `' '.join(cac_tu)`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu họ tên chưa chuẩn hóa.\n\n### Kết quả ra (Output)\nDòng 1: `Họ tên chuẩn hóa: <ho_ten>`\nDòng 2: `Số từ: <so_tu>`.",
+    "starterCode": "# Bài 25.1: Chuẩn hóa khoảng trắng trong họ và tên học sinh đăng ký dự thi\n",
+    "testCases": [
+      {
+        "input": "  Nguyen   Van   An  ",
+        "expectedOutput": "Họ tên chuẩn hóa: Nguyen Van An\nSố từ: 3",
+        "isHidden": false
+      },
+      {
+        "input": "Tran    Thi  Bich   Ngoc",
+        "expectedOutput": "Họ tên chuẩn hóa: Tran Thi Bich Ngoc\nSố từ: 4",
+        "isHidden": false
+      },
+      {
+        "input": "   Le   Minh   ",
+        "expectedOutput": "Họ tên chuẩn hóa: Le Minh\nSố từ: 2",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_22_2",
-    lessonId: "bai_22_23",
-    glyph: "◇",
-    title: "Bài 22.2: Phân loại danh sách thành số chẵn và số lẻ",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập Danh sách - Bài 22)\nNhập vào một danh sách các số nguyên trên một dòng, cách nhau bởi dấu cách.\nHãy duyệt danh sách và tách thành 2 danh sách con:\n- Dòng 1: In ra các số chẵn (cách nhau bởi dấu cách). Nếu không có số chẵn nào, in ra `RONG`.\n- Dòng 2: In ra các số lẻ (cách nhau bởi dấu cách). Nếu không có số lẻ nào, in ra `RONG`.\n\n### Dữ liệu vào (Input)\n- Dòng duy nhất chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Đúng 2 dòng theo định dạng mô tả trên.",
-    starterCode: "# Bài 22.2: Phân loại danh sách số chẵn và số lẻ\n",
-    testCases: [
-          {
-                "input": "1 2 3 4 5 6",
-                "expectedOutput": "2 4 6\n1 3 5",
-                "isHidden": false
-          },
-          {
-                "input": "2 4 8",
-                "expectedOutput": "2 4 8\nRONG",
-                "isHidden": false
-          },
-          {
-                "input": "7 9 11",
-                "expectedOutput": "RONG\n7 9 11",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "10\nRONG",
-                "isHidden": true
-          },
-          {
-                "input": "1 3 5 7",
-                "expectedOutput": "RONG\n1 3 5 7",
-                "isHidden": true
-          },
-          {
-                "input": "2 4 6 8",
-                "expectedOutput": "2 4 6 8\nRONG",
-                "isHidden": true
-          },
-          {
-                "input": "0 1 2 3",
-                "expectedOutput": "0 2\n1 3",
-                "isHidden": true
-          }
+    "id": "asgn_25_2",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 25.2: Tạo đường dẫn URL thân thiện (Slug) cho bài viết câu lạc bộ (Luyện tập Bài 25)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Phát triển Web & Blog - Bài 25 SGK Tin học 10)\nWebsite câu lạc bộ Tin học cần chuyển tiêu đề bài viết tiếng Việt không dấu (chỉ gồm chữ thường và khoảng trắng) thành đường dẫn URL bằng cách nối các từ bởi dấu gạch ngang `-` (ví dụ: `huong dan hoc python` thành `huong-dan-hoc-python`). Hãy dùng `split()` và `'-'.join(...)` để thực hiện.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nURL: huong-dan-hoc-python\n```\n\n*Sử dụng `'-'.join(tieu_de.split())`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu tiêu đề bài viết.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `URL: <slug>`.",
+    "starterCode": "# Bài 25.2: Tạo đường dẫn URL thân thiện (Slug) cho bài viết câu lạc bộ\n",
+    "testCases": [
+      {
+        "input": "huong dan hoc python",
+        "expectedOutput": "URL: huong-dan-hoc-python",
+        "isHidden": false
+      },
+      {
+        "input": "cuoc   thi  lap  trinh  tre",
+        "expectedOutput": "URL: cuoc-thi-lap-trinh-tre",
+        "isHidden": false
+      },
+      {
+        "input": "tin hoc lop 10",
+        "expectedOutput": "URL: tin-hoc-lop-10",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_22_3",
-    lessonId: "bai_22_23",
-    glyph: "◆",
-    title: "Bài 22.3: Tìm phần tử lớn thứ nhì trong danh sách",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Thao tác trên Danh sách - Bài 22)\nCho một danh sách các số nguyên trên một dòng cách nhau bởi dấu cách.\nHãy tìm và in ra phần tử có giá trị **lớn thứ nhì (nghiêm ngặt khác giá trị lớn nhất)** trong danh sách.\nNếu tất cả các phần tử trong danh sách đều có giá trị bằng nhau (không tồn tại phần tử lớn thứ nhì), hãy in ra `KHONG CO`.\n\nVí dụ:\n- `5 1 9 3 9 7` $\\rightarrow$ Max là 9, lớn thứ nhì là 7.\n- `3 3 3` $\\rightarrow$ In `KHONG CO`.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Giá trị lớn thứ nhì hoặc chuỗi `KHONG CO`.",
-    starterCode: "# Bài 22.3: Tìm phần tử lớn thứ nhì trong danh sách\n",
-    testCases: [
-          {
-                "input": "5 1 9 3 9 7",
-                "expectedOutput": "7",
-                "isHidden": false
-          },
-          {
-                "input": "3 3 3",
-                "expectedOutput": "KHONG CO",
-                "isHidden": false
-          },
-          {
-                "input": "-5 -1 -3 -1 -2",
-                "expectedOutput": "-2",
-                "isHidden": true
-          },
-          {
-                "input": "10 20",
-                "expectedOutput": "10",
-                "isHidden": true
-          },
-          {
-                "input": "1 2",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "10 5 10 3",
-                "expectedOutput": "5",
-                "isHidden": true
-          },
-          {
-                "input": "-10 -20 -30",
-                "expectedOutput": "-20",
-                "isHidden": true
-          }
+    "id": "asgn_25_3",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 25.3: Tìm vị trí từ khóa lỗi trong nhật ký máy chủ (Server Log) (Luyện tập Bài 25)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (An ninh mạng & Vận hành - Bài 25 SGK Tin học 10)\nQuản trị viên hệ thống cần kiểm tra một dòng nhật ký máy chủ `log_line` để tìm vị trí xuất hiện đầu tiên của từ khóa `tu_khoa` (ví dụ: `ERROR` hoặc `WARNING`). Hãy sử dụng phương thức `find()` của xâu kí tự để in ra vị trí tìm thấy (hoặc `-1` nếu không xuất hiện).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nVị trí xuất hiện: 12\n```\n\n*Sử dụng `log_line.find(tu_khoa)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Xâu `log_line`.\nDòng 2: Xâu `tu_khoa` cần tìm.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Vị trí xuất hiện: <vi_tri>`.",
+    "starterCode": "# Bài 25.3: Tìm vị trí từ khóa lỗi trong nhật ký máy chủ (Server Log)\n",
+    "testCases": [
+      {
+        "input": "2026-11-15 [ERROR] Database connection timeout\nERROR",
+        "expectedOutput": "Vị trí xuất hiện: 12",
+        "isHidden": false
+      },
+      {
+        "input": "2026-11-15 [INFO] User login successful\nERROR",
+        "expectedOutput": "Vị trí xuất hiện: -1",
+        "isHidden": false
+      },
+      {
+        "input": "WARNING: Disk usage above 90 percent\nWARNING",
+        "expectedOutput": "Vị trí xuất hiện: 0",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_23_2",
-    lessonId: "bai_22_23",
-    glyph: "▣",
-    title: "Bài 23.2: Thống kê điểm thi môn Tin học của tổ",
-    difficulty: "Beginner",
-    description: "### Đề bài (Thực hành với Danh sách - Bài 23)\nNhập vào danh sách điểm thi môn Tin học của các học sinh trong một tổ trên một dòng (các số thực từ 0.0 đến 10.0, cách nhau bởi dấu cách).\nHãy thực hiện các thống kê sau:\n- Dòng 1: In điểm trung bình của cả tổ (làm tròn đến 1 chữ số thập phân).\n- Dòng 2: In số lượng học sinh đạt điểm giỏi (điểm $\\ge 8.0$).\n\n### Dữ liệu vào (Input)\n- Một dòng duy nhất chứa danh sách điểm của các học sinh cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Dòng 1: Điểm trung bình làm tròn 1 chữ số thập phân.\n- Dòng 2: Số nguyên là số học sinh đạt điểm giỏi.",
-    starterCode: "# Bài 23.2: Thống kê điểm thi môn Tin học của tổ\n",
-    testCases: [
-          {
-                "input": "8.5 7.0 9.0 6.5 8.0",
-                "expectedOutput": "7.8\n3",
-                "isHidden": false
-          },
-          {
-                "input": "10.0 10.0",
-                "expectedOutput": "10.0\n2",
-                "isHidden": false
-          },
-          {
-                "input": "5.0 6.0 7.0",
-                "expectedOutput": "6.0\n0",
-                "isHidden": true
-          },
-          {
-                "input": "8.0 8.0 8.0",
-                "expectedOutput": "8.0\n3",
-                "isHidden": true
-          },
-          {
-                "input": "7.0 7.0 7.0",
-                "expectedOutput": "7.0\n0",
-                "isHidden": true
-          },
-          {
-                "input": "9.5 8.5 6.0 7.5",
-                "expectedOutput": "7.9\n2",
-                "isHidden": true
-          },
-          {
-                "input": "1.0 2.0 3.0",
-                "expectedOutput": "2.0\n0",
-                "isHidden": true
-          }
+    "id": "asgn_25_4",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 25.4: Tách thông tin sản phẩm từ dòng dữ liệu CSV siêu thị (Luyện tập Bài 25)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Xử lý dữ liệu bán lẻ - Bài 25 SGK Tin học 10)\nHệ thống thu ngân xuất dữ liệu sản phẩm dưới dạng một chuỗi ngăn cách bởi dấu phẩy `,` theo cấu trúc: `<Mã SP>,<Tên SP>,<Giá bán>` (ví dụ: `SP01,Sua tuoi Vinamilk,32000`). Hãy dùng lệnh `split(',')` để tách thông tin và hiển thị từng mục.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nMã sản phẩm: SP01\nTên sản phẩm: Sua tuoi Vinamilk\nGiá bán: 32000 vnđ\n```\n\n*Gọi `thong_tin = dong_csv.split(',')` để lấy danh sách 3 phần tử.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa xâu dữ liệu CSV gồm 3 trường ngăn cách bởi dấu phẩy `,`.\n\n### Kết quả ra (Output)\nIn ra 3 dòng: Mã sản phẩm, Tên sản phẩm và Giá bán.",
+    "starterCode": "# Bài 25.4: Tách thông tin sản phẩm từ dòng dữ liệu CSV siêu thị\n",
+    "testCases": [
+      {
+        "input": "SP01,Sua tuoi Vinamilk,32000",
+        "expectedOutput": "Mã sản phẩm: SP01\nTên sản phẩm: Sua tuoi Vinamilk\nGiá bán: 32000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "BK10,Sach Tin hoc 10,25000",
+        "expectedOutput": "Mã sản phẩm: BK10\nTên sản phẩm: Sach Tin hoc 10\nGiá bán: 25000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "PEN05,But bi Thien Long,5000",
+        "expectedOutput": "Mã sản phẩm: PEN05\nTên sản phẩm: But bi Thien Long\nGiá bán: 5000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_23_3",
-    lessonId: "bai_22_23",
-    glyph: "●",
-    title: "Bài 23.3: Loại bỏ các phần tử trùng lặp trong danh sách",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Xử lý mảng nâng cao - Bài 23)\nNhập một danh sách các số nguyên trên một dòng cách nhau bởi dấu cách.\nHãy loại bỏ tất cả các phần tử bị trùng lặp, chỉ giữ lại phần tử xuất hiện đầu tiên theo đúng thứ tự ban đầu và in ra danh sách mới trên 1 dòng, các phần tử cách nhau bởi dấu cách.\n\nVí dụ: `1 3 2 3 4 1 5` $\\rightarrow$ `1 3 2 4 5`\n\n### Dữ liệu vào (Input)\n- Một dòng chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Dãy số sau khi đã loại bỏ các phần tử trùng lặp, cách nhau bởi dấu cách.",
-    starterCode: "# Bài 23.3: Loại bỏ các phần tử trùng lặp trong danh sách\n",
-    testCases: [
-          {
-                "input": "1 3 2 3 4 1 5",
-                "expectedOutput": "1 3 2 4 5",
-                "isHidden": false
-          },
-          {
-                "input": "5 5 5 5",
-                "expectedOutput": "5",
-                "isHidden": false
-          },
-          {
-                "input": "10 20 30",
-                "expectedOutput": "10 20 30",
-                "isHidden": true
-          },
-          {
-                "input": "4 2 4 1 2 3",
-                "expectedOutput": "4 2 1 3",
-                "isHidden": true
-          },
-          {
-                "input": "7 7 7 7",
-                "expectedOutput": "7",
-                "isHidden": true
-          },
-          {
-                "input": "1 2 3 4",
-                "expectedOutput": "1 2 3 4",
-                "isHidden": true
-          },
-          {
-                "input": "9 1 9 2 9 3",
-                "expectedOutput": "9 1 2 3",
-                "isHidden": true
-          }
+    "id": "asgn_25_5",
+    "lessonId": "bai_24_25",
+    "glyph": "●",
+    "title": "Bài 25.5: Tách tên tài khoản và tên miền từ địa chỉ Email học sinh (Luyện tập Bài 25)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản trị tài khoản trường học - Bài 25 SGK Tin học 10)\nMỗi học sinh được cấp một địa chỉ email có dạng `<ten_tai_khoan>@<ten_mien>` (ví dụ: `an.nguyen10a1@cococode.site`). Hãy sử dụng `find('@')` hoặc `split('@')` để tách riêng tên tài khoản và tên miền.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTài khoản: an.nguyen10a1\nTên miền: cococode.site\n```\n\n*Có thể dùng `parts = email.split('@')`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa địa chỉ email hợp lệ.\n\n### Kết quả ra (Output)\nDòng 1: `Tài khoản: <ten_tai_khoan>`\nDòng 2: `Tên miền: <ten_mien>`.",
+    "starterCode": "# Bài 25.5: Tách tên tài khoản và tên miền từ địa chỉ Email học sinh\n",
+    "testCases": [
+      {
+        "input": "an.nguyen10a1@cococode.site",
+        "expectedOutput": "Tài khoản: an.nguyen10a1\nTên miền: cococode.site",
+        "isHidden": false
+      },
+      {
+        "input": "khoa.le@edu.vn",
+        "expectedOutput": "Tài khoản: khoa.le\nTên miền: edu.vn",
+        "isHidden": false
+      },
+      {
+        "input": "admin@trychroma.com",
+        "expectedOutput": "Tài khoản: admin\nTên miền: trychroma.com",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_24_2",
-    lessonId: "bai_24_25",
-    glyph: "◇",
-    title: "Bài 24.2: Đếm số lượng từ trong câu văn bản",
-    difficulty: "Beginner",
-    description: "### Đề bài (Luyện tập thao tác xâu - Bài 24)\nNhập vào một câu văn bản $S$ có thể chứa nhiều khoảng trắng thừa ở đầu câu, cuối câu và giữa các từ liền nhau.\nHãy sử dụng phương thức tách xâu `split()` để đếm và in ra số lượng từ thực tế có trong câu văn bản đó.\n\nVí dụ: `   Lap trinh    Python rat thu vi   ` $\\rightarrow$ Có 6 từ.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa xâu ký tự $S$.\n\n### Kết quả ra (Output)\n- Một số nguyên duy nhất là số lượng từ trong câu.",
-    starterCode: "# Bài 24.2: Đếm số lượng từ trong câu văn bản\n",
-    testCases: [
-          {
-                "input": "Chuc mung nam moi",
-                "expectedOutput": "4",
-                "isHidden": false
-          },
-          {
-                "input": "   Lap trinh    Python rat thu vi   ",
-                "expectedOutput": "6",
-                "isHidden": false
-          },
-          {
-                "input": "Python",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "  hoc   tin   hoc  10  ",
-                "expectedOutput": "4",
-                "isHidden": true
-          },
-          {
-                "input": "A",
-                "expectedOutput": "1",
-                "isHidden": true
-          },
-          {
-                "input": "Mot hai ba bon nam",
-                "expectedOutput": "5",
-                "isHidden": true
-          },
-          {
-                "input": "    Xin   chao    Viet   Nam    ",
-                "expectedOutput": "4",
-                "isHidden": true
-          }
+    "id": "asgn_26_1",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 26.1: Xây dựng hàm tính cước taxi công nghệ theo số km (Luyện tập Bài 26)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Ứng dụng gọi xe - Bài 26 SGK Tin học 10)\nHãy định nghĩa hàm `tinh_cuoc_taxi(so_km)` trả về số tiền cước taxi (số nguyên) theo quy tắc:\n- Giá mở cửa cho `1` km đầu tiên là `15000` VNĐ.\n- Mỗi km tiếp theo (từ km thứ 2 trở đi) tính giá `12000` VNĐ/km.\nSau đó đọc `so_km` từ bàn phím, gọi hàm và in kết quả.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nCước phí taxi: 63000 vnđ\n```\n\n*Định nghĩa `def tinh_cuoc_taxi(so_km):` và sử dụng `return 15000 + (so_km - 1) * 12000`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên dương `so_km`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Cước phí taxi: <so_tien> vnđ`.",
+    "starterCode": "# Bài 26.1: Xây dựng hàm tính cước taxi công nghệ theo số km\ndef tinh_cuoc_taxi(so_km):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "5",
+        "expectedOutput": "Cước phí taxi: 63000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "1",
+        "expectedOutput": "Cước phí taxi: 15000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "10",
+        "expectedOutput": "Cước phí taxi: 123000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_24_3",
-    lessonId: "bai_24_25",
-    glyph: "◆",
-    title: "Bài 24.3: Đếm số lượng nguyên âm tiếng Anh trong xâu",
-    difficulty: "Beginner",
-    description: "### Đề bài (Duyệt ký tự trong xâu - Bài 24)\nNhập vào một chuỗi ký tự tiếng Anh không dấu.\nHãy đếm tổng số lượng các chữ cái nguyên âm (`a, e, i, o, u`, không phân biệt chữ hoa hay chữ thường) xuất hiện trong chuỗi.\n\nVí dụ: `Hello World` có 3 nguyên âm là `e`, `o`, `o`.\n\n### Dữ liệu vào (Input)\n- Một dòng chứa chuỗi ký tự tiếng Anh.\n\n### Kết quả ra (Output)\n- Một số nguyên là tổng số lượng nguyên âm tìm thấy.",
-    starterCode: "# Bài 24.3: Đếm số lượng nguyên âm tiếng Anh trong xâu\n",
-    testCases: [
-          {
-                "input": "Hello World",
-                "expectedOutput": "3",
-                "isHidden": false
-          },
-          {
-                "input": "PYTHON",
-                "expectedOutput": "1",
-                "isHidden": false
-          },
-          {
-                "input": "rhythm",
-                "expectedOutput": "0",
-                "isHidden": true
-          },
-          {
-                "input": "Education and Training",
-                "expectedOutput": "9",
-                "isHidden": true
-          },
-          {
-                "input": "bcdfg",
-                "expectedOutput": "0",
-                "isHidden": true
-          },
-          {
-                "input": "AEIOUaeiou",
-                "expectedOutput": "10",
-                "isHidden": true
-          },
-          {
-                "input": "programming is fun",
-                "expectedOutput": "5",
-                "isHidden": true
-          }
+    "id": "asgn_26_2",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 26.2: Xây dựng hàm chuyển đổi nhiệt độ Celsius sang Fahrenheit (Luyện tập Bài 26)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Khoa học tự nhiên - Bài 26 SGK Tin học 10)\nTrong phòng thí nghiệm Vật lý, học sinh cần đổi nhiệt độ từ thang độ C (`do_c`) sang độ F (`do_f`). Hãy viết hàm `doi_sang_f(do_c)` trả về giá trị `do_c * 1.8 + 32` (làm tròn 1 chữ số thập phân), sau đó nhập nhiệt độ C và gọi hàm để in kết quả.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\n25.0 độ C = 77.0 độ F\n```\n\n*Sử dụng `return round(do_c * 1.8 + 32, 1)`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số thực `do_c`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `<do_c> độ C = <do_f> độ F`.",
+    "starterCode": "# Bài 26.2: Xây dựng hàm chuyển đổi nhiệt độ Celsius sang Fahrenheit\ndef doi_sang_f(do_c):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "25.0",
+        "expectedOutput": "25.0 độ C = 77.0 độ F",
+        "isHidden": false
+      },
+      {
+        "input": "0.0",
+        "expectedOutput": "0.0 độ C = 32.0 độ F",
+        "isHidden": false
+      },
+      {
+        "input": "37.0",
+        "expectedOutput": "37.0 độ C = 98.6 độ F",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_25_2",
-    lessonId: "bai_24_25",
-    glyph: "▣",
-    title: "Bài 25.2: Kiểm tra xâu đối xứng (Palindrome)",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Xử lý xâu ký tự nâng cao - Bài 25)\nMột xâu ký tự được gọi là đối xứng (Palindrome) nếu đọc từ trái sang phải hay từ phải sang trái đều giống nhau (Ví dụ: `madam`, `racecar`, `12321`).\nNhập vào một xâu ký tự không chứa khoảng trắng. Hãy kiểm tra:\n- Nếu là xâu đối xứng: in ra `DUNG`\n- Nếu không phải: in ra `SAI`\n\n### Dữ liệu vào (Input)\n- Một dòng chứa một xâu ký tự liền nhau không chứa dấu cách.\n\n### Kết quả ra (Output)\n- In `DUNG` hoặc `SAI`.",
-    starterCode: "# Bài 25.2: Kiểm tra xâu đối xứng (Palindrome)\n",
-    testCases: [
-          {
-                "input": "madam",
-                "expectedOutput": "DUNG",
-                "isHidden": false
-          },
-          {
-                "input": "python",
-                "expectedOutput": "SAI",
-                "isHidden": false
-          },
-          {
-                "input": "12321",
-                "expectedOutput": "DUNG",
-                "isHidden": true
-          },
-          {
-                "input": "abccba",
-                "expectedOutput": "DUNG",
-                "isHidden": true
-          },
-          {
-                "input": "a",
-                "expectedOutput": "DUNG",
-                "isHidden": true
-          },
-          {
-                "input": "noon",
-                "expectedOutput": "DUNG",
-                "isHidden": true
-          },
-          {
-                "input": "radar",
-                "expectedOutput": "DUNG",
-                "isHidden": true
-          }
+    "id": "asgn_26_3",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 26.3: Xây dựng hàm kiểm tra năm nhuận để lập lịch bảo trì (Luyện tập Bài 26)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản lý bảo trì kỹ thuật - Bài 26 SGK Tin học 10)\nMột năm là năm nhuận nếu chia hết cho 400, hoặc chia hết cho 4 nhưng không chia hết cho 100. Hãy viết hàm `la_nam_nhuan(nam)` trả về `True` nếu `nam` là năm nhuận và `False` nếu ngược lại. Nhập một năm từ bàn phím, gọi hàm và in thông báo số ngày của tháng 2 năm đó.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nNăm 2024: Tháng 2 có 29 ngày\n```\n\n*Điều kiện năm nhuận: `(nam % 400 == 0) or (nam % 4 == 0 and nam % 100 != 0)`.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên dương `nam`.\n\n### Kết quả ra (Output)\nIn ra `Năm <nam>: Tháng 2 có 29 ngày` nếu là năm nhuận, ngược lại in `Năm <nam>: Tháng 2 có 28 ngày`.",
+    "starterCode": "# Bài 26.3: Xây dựng hàm kiểm tra năm nhuận để lập lịch bảo trì\ndef la_nam_nhuan(nam):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "2024",
+        "expectedOutput": "Năm 2024: Tháng 2 có 29 ngày",
+        "isHidden": false
+      },
+      {
+        "input": "2026",
+        "expectedOutput": "Năm 2026: Tháng 2 có 28 ngày",
+        "isHidden": false
+      },
+      {
+        "input": "2000",
+        "expectedOutput": "Năm 2000: Tháng 2 có 29 ngày",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_25_3",
-    lessonId: "bai_24_25",
-    glyph: "●",
-    title: "Bài 25.3: Chuẩn hóa và viết hoa chữ cái đầu mỗi từ",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Chuẩn hóa xâu ký tự - Bài 25)\nNhập vào một chuỗi họ tên hoặc tiêu đề có khoảng trắng thừa lộn xộn và chữ hoa thường không đồng nhất.\nHãy viết chương trình chuẩn hóa xâu sao cho:\n1. Loại bỏ các khoảng trắng thừa ở đầu, cuối và giữa các từ (giữa 2 từ bất kỳ chỉ chừa đúng 1 dấu cách).\n2. Viết hoa chữ cái đầu tiên của mỗi từ và chuyển các chữ cái còn lại trong từ đó thành chữ thường (Title Case).\n\nVí dụ: `  nguyen   duc   trung ` $\\rightarrow$ `Nguyen Duc Trung`\n\n### Dữ liệu vào (Input)\n- Một dòng chứa chuỗi ký tự bất kỳ.\n\n### Kết quả ra (Output)\n- Chuỗi ký tự sau khi đã được chuẩn hóa.",
-    starterCode: "# Bài 25.3: Chuẩn hóa và viết hoa chữ cái đầu mỗi từ\n",
-    testCases: [
-          {
-                "input": "  nguyen   duc   trung ",
-                "expectedOutput": "Nguyen Duc Trung",
-                "isHidden": false
-          },
-          {
-                "input": "tin HOC 10",
-                "expectedOutput": "Tin Hoc 10",
-                "isHidden": false
-          },
-          {
-                "input": "ha noi",
-                "expectedOutput": "Ha Noi",
-                "isHidden": true
-          },
-          {
-                "input": "   cOcOcOdE   pYtHoN   ",
-                "expectedOutput": "Cococode Python",
-                "isHidden": true
-          },
-          {
-                "input": "VIET NAM",
-                "expectedOutput": "Viet Nam",
-                "isHidden": true
-          },
-          {
-                "input": "hOc SINH gIOI",
-                "expectedOutput": "Hoc Sinh Gioi",
-                "isHidden": true
-          },
-          {
-                "input": "   kIEM   tRA   ",
-                "expectedOutput": "Kiem Tra",
-                "isHidden": true
-          }
+    "id": "asgn_26_4",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 26.4: Xây dựng hàm tính diện tích và chu vi sân cầu lông (Luyện tập Bài 26)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Thiết kế công trình thể thao - Bài 26 SGK Tin học 10)\nHãy định nghĩa hàm `thong_so_san(dai, rong)` nhận vào chiều dài và chiều rộng của sân cầu lông (số thực), trả về đồng thời diện tích và chu vi của sân. Nhập chiều dài và chiều rộng từ bàn phím, gọi hàm và in kết quả.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nDiện tích sân: 81.74 m2\nChu vi sân: 39.0 m\n```\n\n*Làm tròn diện tích và chu vi đến 2 chữ số thập phân bằng `round(..., 2)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực `dai`.\nDòng 2: Số thực `rong`.\n\n### Kết quả ra (Output)\nDòng 1: `Diện tích sân: <dien_tich> m2`\nDòng 2: `Chu vi sân: <chu_vi> m`.",
+    "starterCode": "# Bài 26.4: Xây dựng hàm tính diện tích và chu vi sân cầu lông\ndef thong_so_san(dai, rong):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "13.4\n6.1",
+        "expectedOutput": "Diện tích sân: 81.74 m2\nChu vi sân: 39.0 m",
+        "isHidden": false
+      },
+      {
+        "input": "15.0\n8.0",
+        "expectedOutput": "Diện tích sân: 120.0 m2\nChu vi sân: 46.0 m",
+        "isHidden": false
+      },
+      {
+        "input": "12.5\n5.5",
+        "expectedOutput": "Diện tích sân: 68.75 m2\nChu vi sân: 36.0 m",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_26_2",
-    lessonId: "bai_26_28",
-    glyph: "◇",
-    title: "Bài 26.2: Viết hàm kiểm tra số nguyên tố và in danh sách",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Định nghĩa hàm trong Python - Bài 26)\nViết một hàm `is_prime(n)` nhận vào số nguyên dương $n$ và trả về `True` nếu $n$ là số nguyên tố, ngược lại trả về `False`.\nSử dụng hàm vừa định nghĩa, viết chương trình chính nhận vào số nguyên $N$ ($N \\ge 2$) từ bàn phím và in ra tất cả các số nguyên tố $\\le N$ trên một dòng, cách nhau bởi dấu cách.\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$ ($N \\ge 2$).\n\n### Kết quả ra (Output)\n- Dãy các số nguyên tố nhỏ hơn hoặc bằng $N$ trên một dòng, cách nhau bởi dấu cách.",
-    starterCode: "# Bài 26.2: Viết hàm kiểm tra số nguyên tố và liệt kê\n",
-    testCases: [
-          {
-                "input": "10",
-                "expectedOutput": "2 3 5 7",
-                "isHidden": false
-          },
-          {
-                "input": "20",
-                "expectedOutput": "2 3 5 7 11 13 17 19",
-                "isHidden": false
-          },
-          {
-                "input": "2",
-                "expectedOutput": "2",
-                "isHidden": true
-          },
-          {
-                "input": "30",
-                "expectedOutput": "2 3 5 7 11 13 17 19 23 29",
-                "isHidden": true
-          },
-          {
-                "input": "5",
-                "expectedOutput": "2 3 5",
-                "isHidden": true
-          },
-          {
-                "input": "15",
-                "expectedOutput": "2 3 5 7 11 13",
-                "isHidden": true
-          },
-          {
-                "input": "50",
-                "expectedOutput": "2 3 5 7 11 13 17 19 23 29 31 37 41 43 47",
-                "isHidden": true
-          }
+    "id": "asgn_26_5",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 26.5: Xây dựng hàm đánh giá mức tiêu hao nhiên liệu xe máy (Luyện tập Bài 26)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Phương tiện & Tiết kiệm năng lượng - Bài 26 SGK Tin học 10)\nHãy viết hàm `tinh_muc_tieu_hao(so_lit, quang_duong)` để tính số lít xăng tiêu thụ trung bình trên `100` km theo công thức `(so_lit / quang_duong) * 100` (làm tròn 2 chữ số thập phân). Nếu mức tiêu hao `<= 2.0` lít/100km thì đánh giá là `Tiết kiệm nhiên liệu`, ngược lại là `Mức tiêu hao cao`.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nMức tiêu hao: 1.8 lít/100km\nĐánh giá: Tiết kiệm nhiên liệu\n```\n\n*Gọi hàm `tinh_muc_tieu_hao(so_lit, quang_duong)` để lấy kết quả và so sánh với `2.0`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực `so_lit` xăng đã dùng.\nDòng 2: Số thực `quang_duong` (km) đã đi.\n\n### Kết quả ra (Output)\nDòng 1: `Mức tiêu hao: <muc> lít/100km`\nDòng 2: `Đánh giá: <ket_luan>`.",
+    "starterCode": "# Bài 26.5: Xây dựng hàm đánh giá mức tiêu hao nhiên liệu xe máy\ndef tinh_muc_tieu_hao(so_lit, quang_duong):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "3.6\n200",
+        "expectedOutput": "Mức tiêu hao: 1.8 lít/100km\nĐánh giá: Tiết kiệm nhiên liệu",
+        "isHidden": false
+      },
+      {
+        "input": "5.0\n200",
+        "expectedOutput": "Mức tiêu hao: 2.5 lít/100km\nĐánh giá: Mức tiêu hao cao",
+        "isHidden": false
+      },
+      {
+        "input": "3.0\n150",
+        "expectedOutput": "Mức tiêu hao: 2.0 lít/100km\nĐánh giá: Tiết kiệm nhiên liệu",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_27_3",
-    lessonId: "bai_26_28",
-    glyph: "◆",
-    title: "Bài 27.3: Viết hàm tính chỉ số khối cơ thể BMI",
-    difficulty: "Beginner",
-    description: "### Đề bài (Hàm có tham số và trả về giá trị - Bài 27)\nChỉ số khối cơ thể (Body Mass Index - BMI) được tính theo công thức:\n$$BMI = \\frac{\\text{Cân nặng (kg)}}{\\text{Chiều cao (m)}^2}$$\n\nHãy viết hàm `tinh_bmi(can_nang, chieu_cao)` nhận vào cân nặng (kg) và chiều cao (m), trả về giá trị BMI đã được làm tròn đến 1 chữ số thập phân.\nChương trình nhập vào từ bàn phím:\n- Dòng 1: Cân nặng (kg, số thực)\n- Dòng 2: Chiều cao (m, số thực)\n\nDựa vào chỉ số BMI, in ra kết quả theo định dạng: `BMI=<giá trị> | <đánh giá>`\nTrong đó đánh giá thể trạng được quy định như sau:\n- $BMI < 18.5$: `GAY`\n- $18.5 \\le BMI < 23.0$: `BINH THUONG`\n- $BMI \\ge 23.0$: `THUA CAN`\n\n### Dữ liệu vào (Input)\n- Dòng 1: Số thực là cân nặng (kg).\n- Dòng 2: Số thực là chiều cao (m).\n\n### Kết quả ra (Output)\n- Một dòng định dạng: `BMI=<giá trị> | <đánh giá>`",
-    starterCode: "# Bài 27.3: Hàm tính chỉ số khối cơ thể BMI\n",
-    testCases: [
-          {
-                "input": "50\n1.65",
-                "expectedOutput": "BMI=18.4 | GAY",
-                "isHidden": false
-          },
-          {
-                "input": "60\n1.70",
-                "expectedOutput": "BMI=20.8 | BINH THUONG",
-                "isHidden": false
-          },
-          {
-                "input": "75\n1.68",
-                "expectedOutput": "BMI=26.6 | THUA CAN",
-                "isHidden": true
-          },
-          {
-                "input": "65\n1.65",
-                "expectedOutput": "BMI=23.9 | THUA CAN",
-                "isHidden": true
-          },
-          {
-                "input": "45\n1.60",
-                "expectedOutput": "BMI=17.6 | GAY",
-                "isHidden": true
-          },
-          {
-                "input": "55\n1.55",
-                "expectedOutput": "BMI=22.9 | BINH THUONG",
-                "isHidden": true
-          },
-          {
-                "input": "80\n1.75",
-                "expectedOutput": "BMI=26.1 | THUA CAN",
-                "isHidden": true
-          }
+    "id": "asgn_27_1",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 27.1: Hàm tính giá thanh toán sản phẩm với tham số giảm giá và thuế VAT (Luyện tập Bài 27)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Phần mềm bán hàng POS - Bài 27 SGK Tin học 10)\nHãy viết hàm `tinh_gia_cuoi(gia_goc, phan_tram_giam, thue_vat)` nhận vào 3 tham số: giá gốc (số nguyên), phần trăm giảm giá (số nguyên, ví dụ 10 nghĩa là 10%) và phần trăm thuế VAT (số nguyên, ví dụ 8 nghĩa là 8%). Giá sau giảm là `gia_goc * (100 - phan_tram_giam) / 100`, sau đó cộng thêm thuế VAT tính trên giá sau giảm. Hàm trả về số tiền cuối cùng đã làm tròn thành số nguyên `int(round(...))`.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nGiá thanh toán cuối cùng: 486000 vnđ\n```\n\n*Công thức: `gia_sau_giam = gia_goc * (100 - phan_tram_giam) / 100`, `gia_cuoi = round(gia_sau_giam * (100 + thue_vat) / 100)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `gia_goc`.\nDòng 2: Số nguyên `phan_tram_giam`.\nDòng 3: Số nguyên `thue_vat`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Giá thanh toán cuối cùng: <gia_cuoi> vnđ`.",
+    "starterCode": "# Bài 27.1: Hàm tính giá thanh toán sản phẩm với tham số giảm giá và thuế VAT\ndef tinh_gia_cuoi(gia_goc, phan_tram_giam, thue_vat):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "500000\n10\n8",
+        "expectedOutput": "Giá thanh toán cuối cùng: 486000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "1000000\n20\n10",
+        "expectedOutput": "Giá thanh toán cuối cùng: 880000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "200000\n0\n8",
+        "expectedOutput": "Giá thanh toán cuối cùng: 216000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_28_1",
-    lessonId: "bai_26_28",
-    glyph: "▣",
-    title: "Bài 28.1: Hàm tính tổng và tích các phần tử trong danh sách",
-    difficulty: "Beginner",
-    description: "### Đề bài (Phạm vi của biến và giá trị trả về của hàm - Bài 28)\nViết hàm `tinh_tong_tich(ds)` nhận vào một danh sách các số nguyên và trả về đồng thời hai giá trị: tổng và tích của tất cả các phần tử trong danh sách đó.\nChương trình nhận vào một danh sách các số nguyên trên một dòng cách nhau bởi dấu cách.\nGọi hàm và in kết quả ra màn hình theo định dạng mẫu: `TONG=<tong> | TICH=<tich>`.\n\n### Dữ liệu vào (Input)\n- Một dòng duy nhất chứa các số nguyên cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\n- Một dòng theo cú pháp: `TONG=<tong> | TICH=<tich>`",
-    starterCode: "# Bài 28.1: Hàm tính tổng và tích của danh sách số\n",
-    testCases: [
-          {
-                "input": "1 2 3 4",
-                "expectedOutput": "TONG=10 | TICH=24",
-                "isHidden": false
-          },
-          {
-                "input": "5 10",
-                "expectedOutput": "TONG=15 | TICH=50",
-                "isHidden": false
-          },
-          {
-                "input": "7",
-                "expectedOutput": "TONG=7 | TICH=7",
-                "isHidden": true
-          },
-          {
-                "input": "2 2 2 2",
-                "expectedOutput": "TONG=8 | TICH=16",
-                "isHidden": true
-          },
-          {
-                "input": "10 20 30",
-                "expectedOutput": "TONG=60 | TICH=6000",
-                "isHidden": true
-          },
-          {
-                "input": "3 3 3",
-                "expectedOutput": "TONG=9 | TICH=27",
-                "isHidden": true
-          },
-          {
-                "input": "5 -2 4",
-                "expectedOutput": "TONG=7 | TICH=-40",
-                "isHidden": true
-          }
+    "id": "asgn_27_2",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 27.2: Hàm tính tiền lương làm thêm giờ của nhân viên quán cà phê (Luyện tập Bài 27)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản lý nhân sự - Bài 27 SGK Tin học 10)\nHãy viết hàm `tinh_luong(so_gio, luong_moi_gio, thuong)` nhận vào 3 tham số: số giờ làm việc, mức lương 1 giờ và tiền thưởng chuyên cần. Nếu `so_gio > 40`, những giờ vượt quá 40 được tính hệ số `1.5` lần mức lương 1 giờ. Hàm trả về tổng lương (ép kiểu `int`).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng lương nhận được: 1525000 vnđ\n```\n\n*Với `so_gio = 45`: `40 * 30000 + 5 * 30000 * 1.5 + 100000 = 1525000`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `so_gio`.\nDòng 2: Số nguyên `luong_moi_gio`.\nDòng 3: Số nguyên `thuong`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Tổng lương nhận được: <tong_luong> vnđ`.",
+    "starterCode": "# Bài 27.2: Hàm tính tiền lương làm thêm giờ của nhân viên quán cà phê\ndef tinh_luong(so_gio, luong_moi_gio, thuong):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "45\n30000\n100000",
+        "expectedOutput": "Tổng lương nhận được: 1525000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "35\n25000\n50000",
+        "expectedOutput": "Tổng lương nhận được: 925000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "50\n40000\n200000",
+        "expectedOutput": "Tổng lương nhận được: 2400000 vnđ",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_30_1",
-    lessonId: "bai_29_31",
-    glyph: "◇",
-    title: "Bài 30.1: Tìm các số hoàn hảo nhỏ hơn hoặc bằng N",
-    difficulty: "Intermediate",
-    description: "### Đề bài (Gỡ lỗi và hoàn thiện thuật toán - Bài 30)\nSố hoàn hảo (Perfect Number) là số nguyên dương bằng tổng tất cả các ước số thực sự của nó (tức các ước nhỏ hơn chính nó). Ví dụ: $6 = 1 + 2 + 3$, $28 = 1 + 2 + 4 + 7 + 14$.\nHãy viết chương trình nhập vào một số nguyên dương $N$ ($1 \\le N \\le 1000$).\nTìm và in ra tất cả các số hoàn hảo nhỏ hơn hoặc bằng $N$ trên một dòng, cách nhau bởi dấu cách. Nếu trong phạm vi không có số hoàn hảo nào, in ra `KHONG CO`.\n\n### Dữ liệu vào (Input)\n- Một số nguyên dương $N$.\n\n### Kết quả ra (Output)\n- Các số hoàn hảo cách nhau bởi dấu cách hoặc `KHONG CO`.",
-    starterCode: "# Bài 30.1: Tìm các số hoàn hảo nhỏ hơn hoặc bằng N\n",
-    testCases: [
-          {
-                "input": "30",
-                "expectedOutput": "6 28",
-                "isHidden": false
-          },
-          {
-                "input": "5",
-                "expectedOutput": "KHONG CO",
-                "isHidden": false
-          },
-          {
-                "input": "500",
-                "expectedOutput": "6 28 496",
-                "isHidden": true
-          },
-          {
-                "input": "1",
-                "expectedOutput": "KHONG CO",
-                "isHidden": true
-          },
-          {
-                "input": "10",
-                "expectedOutput": "6",
-                "isHidden": true
-          },
-          {
-                "input": "100",
-                "expectedOutput": "6 28",
-                "isHidden": true
-          },
-          {
-                "input": "1000",
-                "expectedOutput": "6 28 496",
-                "isHidden": true
-          }
+    "id": "asgn_27_3",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 27.3: Hàm đếm số học sinh đạt điểm chuẩn từ danh sách tham số (Luyện tập Bài 27)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Thống kê giáo dục - Bài 27 SGK Tin học 10)\nHãy định nghĩa hàm `dem_dat_chuan(ds_diem, diem_chuan)` nhận vào một danh sách điểm số thực `ds_diem` và một số thực `diem_chuan`. Hàm trả về số lượng phần tử trong `ds_diem` lớn hơn hoặc bằng `diem_chuan`.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố học sinh đạt chuẩn: 3\n```\n\n*Truyền danh sách `ds_diem` và `diem_chuan` làm đối số khi gọi hàm.*\n\n### Dữ liệu vào (Input)\nDòng 1: Các số thực trong danh sách điểm cách nhau bởi dấu cách.\nDòng 2: Số thực `diem_chuan`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Số học sinh đạt chuẩn: <so_luong>`.",
+    "starterCode": "# Bài 27.3: Hàm đếm số học sinh đạt điểm chuẩn từ danh sách tham số\ndef dem_dat_chuan(ds_diem, diem_chuan):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "7.5 8.0 6.5 9.0 8.5\n8.0",
+        "expectedOutput": "Số học sinh đạt chuẩn: 3",
+        "isHidden": false
+      },
+      {
+        "input": "5.0 6.0 7.0 8.0\n9.0",
+        "expectedOutput": "Số học sinh đạt chuẩn: 0",
+        "isHidden": false
+      },
+      {
+        "input": "8.5 9.0 9.5 10.0\n8.5",
+        "expectedOutput": "Số học sinh đạt chuẩn: 4",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
   {
-    id: "asgn_31_4",
-    lessonId: "bai_29_31",
-    glyph: "◆",
-    title: "Bài 31.4: Thuật toán Tìm kiếm nhị phân (Binary Search)",
-    difficulty: "Advanced",
-    description: "### Đề bài (Thuật toán tìm kiếm nhị phân - Bài 31)\nCho một danh sách các số nguyên đã được sắp xếp tăng dần và một số nguyên $x$ cần tìm kiếm.\nHãy áp dụng thuật toán **Tìm kiếm nhị phân (Binary Search)** để xác định vị trí (chỉ số index bắt đầu từ 0) của phần tử $x$ trong danh sách.\n- Nếu tìm thấy phần tử $x$, in ra chỉ số index của $x$.\n- Nếu không tìm thấy, in ra `-1`.\n\n### Dữ liệu vào (Input)\n- Dòng 1: Danh sách các số nguyên đã sắp xếp tăng dần, cách nhau bởi dấu cách.\n- Dòng 2: Số nguyên $x$ cần tìm.\n\n### Kết quả ra (Output)\n- Chỉ số index của $x$ trong danh sách hoặc `-1`.",
-    starterCode: "# Bài 31.4: Thuật toán Tìm kiếm nhị phân (Binary Search)\n",
-    testCases: [
-          {
-                "input": "1 3 5 7 9 11 13\n7",
-                "expectedOutput": "3",
-                "isHidden": false
-          },
-          {
-                "input": "2 4 6 8 10\n5",
-                "expectedOutput": "-1",
-                "isHidden": false
-          },
-          {
-                "input": "10 20 30 40 50\n10",
-                "expectedOutput": "0",
-                "isHidden": true
-          },
-          {
-                "input": "10 20 30 40 50\n50",
-                "expectedOutput": "4",
-                "isHidden": true
-          },
-          {
-                "input": "10 20 30 40 50\n25",
-                "expectedOutput": "-1",
-                "isHidden": true
-          },
-          {
-                "input": "5\n5",
-                "expectedOutput": "0",
-                "isHidden": true
-          },
-          {
-                "input": "5\n10",
-                "expectedOutput": "-1",
-                "isHidden": true
-          }
+    "id": "asgn_27_4",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 27.4: Hàm tính điểm trung bình môn Tin học theo trọng số (Luyện tập Bài 27)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Sổ điểm điện tử - Bài 27 SGK Tin học 10)\nĐiểm trung bình môn Tin học được tính từ 3 đầu điểm: điểm thường xuyên `tx` (hệ số 1), điểm giữa kì `gk` (hệ số 2) và điểm cuối kì `ck` (hệ số 3). Hãy viết hàm `tinh_tb_mon(tx, gk, ck)` trả về điểm trung bình làm tròn 2 chữ số thập phân.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nĐiểm trung bình môn Tin học: 8.67\n```\n\n*Công thức: `round((tx + gk * 2 + ck * 3) / 6, 2)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực `tx`.\nDòng 2: Số thực `gk`.\nDòng 3: Số thực `ck`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Điểm trung bình môn Tin học: <dtb>`.",
+    "starterCode": "# Bài 27.4: Hàm tính điểm trung bình môn Tin học theo trọng số\ndef tinh_tb_mon(tx, gk, ck):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "8.0\n8.5\n9.0",
+        "expectedOutput": "Điểm trung bình môn Tin học: 8.67",
+        "isHidden": false
+      },
+      {
+        "input": "9.0\n9.0\n9.0",
+        "expectedOutput": "Điểm trung bình môn Tin học: 9.0",
+        "isHidden": false
+      },
+      {
+        "input": "7.0\n8.0\n8.5",
+        "expectedOutput": "Điểm trung bình môn Tin học: 8.08",
+        "isHidden": true
+      }
     ],
-    createdBy: "usr_instructor_01",
-    createdAt: "2026-11-14T15:00:00.000Z",
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
   },
+  {
+    "id": "asgn_27_5",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 27.5: Hàm tính tổng tiền lãi kép tiết kiệm dài hạn (Luyện tập Bài 27)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Đầu tư & Tài chính - Bài 27 SGK Tin học 10)\nHãy viết hàm `tinh_lai_kep(von_goc, lai_suat_nam, so_nam)` để tính tổng số tiền cả gốc lẫn lãi sau `so_nam` gửi ngân hàng theo công thức lãi kép: `tong = von_goc * ((1 + lai_suat_nam / 100) ** so_nam)`. Hàm trả về giá trị làm tròn đến hàng đơn vị (`round(tong)`).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng tiền sau 3 năm: 11910160 vnđ\n```\n\n*Sử dụng `round(von_goc * ((1 + lai_suat_nam / 100) ** so_nam))`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `von_goc`.\nDòng 2: Số thực `lai_suat_nam` (%).\nDòng 3: Số nguyên `so_nam`.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Tổng tiền sau <so_nam> năm: <tong_tien> vnđ`.",
+    "starterCode": "# Bài 27.5: Hàm tính tổng tiền lãi kép tiết kiệm dài hạn\ndef tinh_lai_kep(von_goc, lai_suat_nam, so_nam):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "10000000\n6.0\n3",
+        "expectedOutput": "Tổng tiền sau 3 năm: 11910160 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "20000000\n5.0\n2",
+        "expectedOutput": "Tổng tiền sau 2 năm: 22050000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "5000000\n10.0\n2",
+        "expectedOutput": "Tổng tiền sau 2 năm: 6050000 vnđ",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_28_1",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 28.1: Quản lý số dư quỹ lớp bằng biến toàn cục (global) (Luyện tập Bài 28)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Quản lý tài chính lớp học - Bài 28 SGK Tin học 10)\nThủ quỹ lớp 10A quản lý số dư quỹ lớp trong biến toàn cục `quy_lop`. Hãy viết hàm `cap_nhat_quy(thu, chi)` sử dụng từ khóa `global quy_lop` để cộng thêm khoản `thu`, trừ đi khoản `chi`, đồng thời tính biến cục bộ `chenh_lech = thu - chi`. In ra biến động trong tháng và số dư quỹ lớp cuối cùng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nChênh lệch trong tháng: 200000 vnđ\nSố dư quỹ lớp hiện tại: 1200000 vnđ\n```\n\n*Khai báo `global quy_lop` bên trong hàm `cap_nhat_quy`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `quy_lop` ban đầu.\nDòng 2: Số nguyên `thu` trong tháng.\nDòng 3: Số nguyên `chi` trong tháng.\n\n### Kết quả ra (Output)\nDòng 1: `Chênh lệch trong tháng: <chenh_lech> vnđ`\nDòng 2: `Số dư quỹ lớp hiện tại: <quy_lop> vnđ`.",
+    "starterCode": "# Bài 28.1: Quản lý số dư quỹ lớp bằng biến toàn cục (global)\n\ndef cap_nhat_quy(thu, chi):\n    # Sử dụng từ khóa global để cập nhật quy_lop\n    pass\n\n# Hãy viết các câu lệnh nhập quy_lop, thu, chi và gọi hàm bên dưới:\n",
+    "testCases": [
+      {
+        "input": "1000000\n500000\n300000",
+        "expectedOutput": "Chênh lệch trong tháng: 200000 vnđ\nSố dư quỹ lớp hiện tại: 1200000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "2000000\n200000\n600000",
+        "expectedOutput": "Chênh lệch trong tháng: -400000 vnđ\nSố dư quỹ lớp hiện tại: 1600000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "500000\n300000\n300000",
+        "expectedOutput": "Chênh lệch trong tháng: 0 vnđ\nSố dư quỹ lớp hiện tại: 500000 vnđ",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_28_2",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 28.2: Bộ đếm tổng lượt bạn đọc vào thư viện qua hai cổng (Luyện tập Bài 28)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Thư viện thông minh - Bài 28 SGK Tin học 10)\nThư viện trường đặt biến toàn cục `tong_luot_khach = 0` để theo dõi tổng số lượt học sinh ra vào từ hai cổng A và B. Hãy viết hàm `ghi_nhan_cong(so_luot)` dùng từ khóa `global tong_luot_khach` để cộng dồn số lượt khách của từng cổng vào tổng chung, sau đó gọi hàm cho cổng A và cổng B.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSau cổng A: 120 lượt\nSau cổng B: 205 lượt\nTổng lượt bạn đọc: 205 lượt\n```\n\n*Sử dụng `global tong_luot_khach` để biến toàn cục được lưu giữ qua nhiều lần gọi hàm.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên lượt khách qua cổng A.\nDòng 2: Số nguyên lượt khách qua cổng B.\n\n### Kết quả ra (Output)\nIn ra 3 dòng: Sau khi cộng cổng A, Sau khi cộng cổng B và Tổng cộng cả hai cổng.",
+    "starterCode": "# Bài 28.2: Bộ đếm tổng lượt bạn đọc vào thư viện qua hai cổng\ntong_luot_khach = 0\n\ndef ghi_nhan_cong(so_luot):\n    # Viết thân hàm tại đây\n    pass\n",
+    "testCases": [
+      {
+        "input": "120\n85",
+        "expectedOutput": "Sau cổng A: 120 lượt\nSau cổng B: 205 lượt\nTổng lượt bạn đọc: 205 lượt",
+        "isHidden": false
+      },
+      {
+        "input": "50\n70",
+        "expectedOutput": "Sau cổng A: 50 lượt\nSau cổng B: 120 lượt\nTổng lượt bạn đọc: 120 lượt",
+        "isHidden": false
+      },
+      {
+        "input": "200\n150",
+        "expectedOutput": "Sau cổng A: 200 lượt\nSau cổng B: 350 lượt\nTổng lượt bạn đọc: 350 lượt",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_28_3",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 28.3: Quản lý dung lượng lưu trữ đám mây khi tải tệp lên (Luyện tập Bài 28)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Lưu trữ đám mây - Bài 28 SGK Tin học 10)\nTài khoản đám mây của nhóm dự án có tổng dung lượng trống ban đầu lưu ở biến toàn cục `dung_luong_trong` (MB). Hãy viết hàm `tai_tep_len(kich_thuoc)` sử dụng `global dung_luong_trong`: nếu `kich_thuoc <= dung_luong_trong` thì trừ `kich_thuoc` khỏi `dung_luong_trong` và trả về `'Tải lên thành công'`, ngược lại không trừ và trả về `'Không đủ dung lượng'`.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTệp 1: Tải lên thành công\nTệp 2: Không đủ dung lượng\nDung lượng trống còn lại: 200 MB\n```\n\n*Chỉ cập nhật biến toàn cục `dung_luong_trong` khi đủ dung lượng.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `dung_luong_trong` ban đầu (MB).\nDòng 2: Số nguyên kích thước tệp thứ nhất.\nDòng 3: Số nguyên kích thước tệp thứ hai.\n\n### Kết quả ra (Output)\nDòng 1: Kết quả tải tệp 1.\nDòng 2: Kết quả tải tệp 2.\nDòng 3: `Dung lượng trống còn lại: <dung_luong_trong> MB`.",
+    "starterCode": "# Bài 28.3: Quản lý dung lượng lưu trữ đám mây khi tải tệp lên\n\ndef tai_tep_len(kich_thuoc):\n    # Viết thân hàm tại đây\n    pass\n\n# Hãy viết các câu lệnh nhập dung lượng và gọi hàm bên dưới:\n",
+    "testCases": [
+      {
+        "input": "500\n300\n250",
+        "expectedOutput": "Tệp 1: Tải lên thành công\nTệp 2: Không đủ dung lượng\nDung lượng trống còn lại: 200 MB",
+        "isHidden": false
+      },
+      {
+        "input": "1000\n400\n500",
+        "expectedOutput": "Tệp 1: Tải lên thành công\nTệp 2: Tải lên thành công\nDung lượng trống còn lại: 100 MB",
+        "isHidden": false
+      },
+      {
+        "input": "200\n250\n150",
+        "expectedOutput": "Tệp 1: Không đủ dung lượng\nTệp 2: Tải lên thành công\nDung lượng trống còn lại: 50 MB",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_28_4",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 28.4: Phân biệt tỷ giá mặc định toàn cục và tỷ giá ưu đãi cục bộ (Luyện tập Bài 28)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Tài chính ngân hàng - Bài 28 SGK Tin học 10)\nNgân hàng niêm yết tỷ giá chuẩn ở biến toàn cục `ty_gia = 25000`. Tuy nhiên, đối với khách hàng học sinh đổi tiền du học trong hàm `doi_tien_uu_dai(so_usd)`, ngân hàng tạo một biến cục bộ trùng tên `ty_gia = 24800` để tính số tiền VNĐ ưu đãi mà không làm thay đổi tỷ giá niêm yết toàn cục. Hãy viết chương trình minh họa sự khác biệt giữa biến cục bộ trong hàm và biến toàn cục ngoài hàm.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTiền đổi theo tỷ giá ưu đãi (cục bộ): 2480000 vnđ\nTỷ giá niêm yết (toàn cục) vẫn là: 25000 vnđ\n```\n\n*Trong hàm `doi_tien_uu_dai`, gán `ty_gia = 24800` (không dùng `global`) để thấy biến toàn cục bên ngoài không bị thay đổi.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `so_usd` cần đổi.\n\n### Kết quả ra (Output)\nDòng 1: `Tiền đổi theo tỷ giá ưu đãi (cục bộ): <tien_uu_dai> vnđ`\nDòng 2: `Tỷ giá niêm yết (toàn cục) vẫn là: 25000 vnđ`.",
+    "starterCode": "# Bài 28.4: Phân biệt tỷ giá mặc định toàn cục và tỷ giá ưu đãi cục bộ\nty_gia = 25000\n\ndef doi_tien_uu_dai(so_usd):\n    # Khởi tạo biến cục bộ ty_gia = 24800\n    pass\n",
+    "testCases": [
+      {
+        "input": "100",
+        "expectedOutput": "Tiền đổi theo tỷ giá ưu đãi (cục bộ): 2480000 vnđ\nTỷ giá niêm yết (toàn cục) vẫn là: 25000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "50",
+        "expectedOutput": "Tiền đổi theo tỷ giá ưu đãi (cục bộ): 1240000 vnđ\nTỷ giá niêm yết (toàn cục) vẫn là: 25000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "200",
+        "expectedOutput": "Tiền đổi theo tỷ giá ưu đãi (cục bộ): 4960000 vnđ\nTỷ giá niêm yết (toàn cục) vẫn là: 25000 vnđ",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_28_5",
+    "lessonId": "bai_26_28",
+    "glyph": "●",
+    "title": "Bài 28.5: Theo dõi số lượng vé hội thảo STEM còn lại sau các đợt đăng ký (Luyện tập Bài 28)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Tổ chức sự kiện - Bài 28 SGK Tin học 10)\nHội thảo STEM toàn trường có tổng số ghế lưu trong biến toàn cục `so_ve_con_lai`. Mỗi lớp đăng ký một số lượng vé thông qua hàm `dang_ky_ve(so_luong)`. Hàm sử dụng `global so_ve_con_lai` để trừ số vé đã đặt (giả sử số vé đặt luôn hợp lệ). Hãy xử lý 3 đợt đăng ký liên tiếp và in số vé còn lại.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nSố vé hội thảo còn lại: 65 vé\n```\n\n*Gọi hàm `dang_ky_ve` 3 lần liên tiếp để cập nhật biến toàn cục.*\n\n### Dữ liệu vào (Input)\nDòng 1: Tổng số vé ban đầu.\nDòng 2, 3, 4: Số vé đăng ký của 3 lớp.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Số vé hội thảo còn lại: <so_ve_con_lai> vé`.",
+    "starterCode": "# Bài 28.5: Theo dõi số lượng vé hội thảo STEM còn lại sau các đợt đăng ký\n\ndef dang_ky_ve(so_luong):\n    # Viết thân hàm tại đây\n    pass\n\n# Hãy viết các câu lệnh nhập số vé và gọi hàm bên dưới:\n",
+    "testCases": [
+      {
+        "input": "200\n45\n50\n40",
+        "expectedOutput": "Số vé hội thảo còn lại: 65 vé",
+        "isHidden": false
+      },
+      {
+        "input": "150\n30\n35\n40",
+        "expectedOutput": "Số vé hội thảo còn lại: 45 vé",
+        "isHidden": false
+      },
+      {
+        "input": "300\n100\n80\n90",
+        "expectedOutput": "Số vé hội thảo còn lại: 30 vé",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_30_1",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 30.1: Gỡ lỗi chia cho 0 (ZeroDivisionError) khi tính vận tốc trung bình (Luyện tập Bài 30)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Kiểm thử phần mềm giao thông - Bài 30 SGK Tin học 10)\nMột đoạn chương trình tính vận tốc trung bình `v = s / t` bị lỗi ngoại lệ `ZeroDivisionError` khi thời gian `t = 0`. Hãy sửa lỗi và hoàn thiện chương trình: nếu `t <= 0` thì in `Dữ liệu thời gian không hợp lệ`, ngược lại in `Vận tốc trung bình: <v> km/h` (làm tròn 1 chữ số thập phân).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nVận tốc trung bình: 45.0 km/h\n```\n\n*Luôn kiểm tra điều kiện mẫu số `t <= 0` trước khi thực hiện phép chia.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số thực quãng đường `s` (km).\nDòng 2: Số thực thời gian `t` (giờ).\n\n### Kết quả ra (Output)\nIn ra vận tốc trung bình hoặc thông báo lỗi nếu `t <= 0`.",
+    "starterCode": "# Bài 30.1: Gỡ lỗi chia cho 0 khi tính vận tốc trung bình\n# Hãy viết chương trình nhập s, t và xử lý trường hợp t = 0:\n",
+    "testCases": [
+      {
+        "input": "90\n2",
+        "expectedOutput": "Vận tốc trung bình: 45.0 km/h",
+        "isHidden": false
+      },
+      {
+        "input": "50\n0",
+        "expectedOutput": "Dữ liệu thời gian không hợp lệ",
+        "isHidden": false
+      },
+      {
+        "input": "100\n2.5",
+        "expectedOutput": "Vận tốc trung bình: 40.0 km/h",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_30_2",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 30.2: Gỡ lỗi ngữ nghĩa (Semantic Error) trong công thức tính trung bình cộng (Luyện tập Bài 30)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Kiểm thử phần mềm giáo dục - Bài 30 SGK Tin học 10)\nMột học sinh viết hàm tính điểm trung bình của 3 môn Toán, Lý, Hóa như sau: `dtb = toan + ly + hoa / 3`. Do thiếu dấu ngoặc đơn nên phép chia `hoa / 3` thực hiện trước, dẫn đến kết quả sai (lỗi ngữ nghĩa). Hãy sửa lại công thức đúng và in điểm trung bình làm tròn 2 chữ số thập phân.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nĐiểm trung bình chuẩn: 8.0\n```\n\n*Bổ sung ngoặc đơn: `round((toan + ly + hoa) / 3, 2)`.*\n\n### Dữ liệu vào (Input)\nBa dòng lần lượt chứa điểm Toán, Lý, Hóa (số thực).\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Điểm trung bình chuẩn: <dtb>`.",
+    "starterCode": "# Bài 30.2: Gỡ lỗi ngữ nghĩa trong công thức tính trung bình cộng\n# Hãy sửa lỗi thiếu ngoặc đơn trong biểu thức dưới đây:\n",
+    "testCases": [
+      {
+        "input": "8.0\n7.0\n9.0",
+        "expectedOutput": "Điểm trung bình chuẩn: 8.0",
+        "isHidden": false
+      },
+      {
+        "input": "9.0\n8.5\n8.0",
+        "expectedOutput": "Điểm trung bình chuẩn: 8.5",
+        "isHidden": false
+      },
+      {
+        "input": "6.5\n7.5\n8.0",
+        "expectedOutput": "Điểm trung bình chuẩn: 7.33",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_30_3",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 30.3: Gỡ lỗi tìm giá trị lớn nhất khi danh sách chứa toàn số âm (Luyện tập Bài 30)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Kiểm thử dữ liệu khí tượng - Bài 30 SGK Tin học 10)\nKhi tìm nhiệt độ cao nhất tại vùng núi mùa đông (nhiệt độ có thể đều là số âm), một lập trình viên khởi tạo `max_temp = 0` nên chương trình trả về sai kết quả là `0` khi mọi phần tử đều âm. Hãy sửa lỗi bằng cách khởi tạo `max_temp = ds[0]` và in ra nhiệt độ cao nhất đúng.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nNhiệt độ cao nhất: -2 độ C\n```\n\n*Khởi tạo `max_temp = ds[0]` thay vì `0` để xử lý đúng cả bộ test số âm.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa các số nguyên là nhiệt độ các ngày, cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nIn ra 1 dòng: `Nhiệt độ cao nhất: <max_temp> độ C`.",
+    "starterCode": "# Bài 30.3: Gỡ lỗi tìm giá trị lớn nhất khi danh sách chứa toàn số âm\n",
+    "testCases": [
+      {
+        "input": "-5 -2 -8 -4",
+        "expectedOutput": "Nhiệt độ cao nhất: -2 độ C",
+        "isHidden": false
+      },
+      {
+        "input": "-10 -15 -3 -7",
+        "expectedOutput": "Nhiệt độ cao nhất: -3 độ C",
+        "isHidden": false
+      },
+      {
+        "input": "12 18 15 10",
+        "expectedOutput": "Nhiệt độ cao nhất: 18 độ C",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_30_4",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 30.4: Gỡ lỗi vượt quá chỉ số danh sách (IndexError) khi truy vấn phần tử (Luyện tập Bài 30)",
+    "difficulty": "Beginner",
+    "description": "### Đề bài (Kiểm thử phần mềm kho vận - Bài 30 SGK Tin học 10)\nHệ thống tra cứu kệ hàng nhận vào danh sách mã kệ và một vị trí `vi_tri` (số nguyên). Để tránh lỗi `IndexError: list index out of range` khi người dùng nhập vị trí nằm ngoài phạm vi từ `0` đến `len(ds) - 1`, hãy kiểm tra tính hợp lệ của `vi_tri` trước khi truy cập.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nMã kệ tại vị trí 1: KE_B\n```\n\n*Kiểm tra điều kiện biên `0 <= vi_tri < len(ds)`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Các mã kệ hàng cách nhau bởi dấu cách.\nDòng 2: Số nguyên `vi_tri` cần tra cứu.\n\n### Kết quả ra (Output)\nNếu `0 <= vi_tri < len(ds)` thì in `Mã kệ tại vị trí <vi_tri>: <ma_ke>`, ngược lại in `Vị trí tra cứu vượt ngoài phạm vi danh sách`.",
+    "starterCode": "# Bài 30.4: Gỡ lỗi vượt quá chỉ số danh sách (IndexError) khi truy vấn phần tử\n",
+    "testCases": [
+      {
+        "input": "KE_A KE_B KE_C\n1",
+        "expectedOutput": "Mã kệ tại vị trí 1: KE_B",
+        "isHidden": false
+      },
+      {
+        "input": "KE_A KE_B KE_C\n5",
+        "expectedOutput": "Vị trí tra cứu vượt ngoài phạm vi danh sách",
+        "isHidden": false
+      },
+      {
+        "input": "KE_A KE_B KE_C\n-1",
+        "expectedOutput": "Vị trí tra cứu vượt ngoài phạm vi danh sách",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_30_5",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 30.5: Kiểm thử biên và sửa lỗi thiếu dấu bằng trong phân loại chiết khấu (Luyện tập Bài 30)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Kiểm thử phần mềm bán lẻ - Bài 30 SGK Tin học 10)\nCửa hàng quy định: đơn hàng từ `500000` VNĐ trở lên được giảm `10%`, từ `200000` VNĐ đến dưới `500000` VNĐ được giảm `5%`, dưới `200000` VNĐ không giảm. Chương trình cũ dùng nhầm toán tử `>` thay vì `>=` nên khách mua đúng mốc `500000` hoặc `200000` bị tính thiếu chiết khấu. Hãy viết chương trình xử lý đúng các giá trị biên.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTiền giảm: 50000 vnđ\nPhải trả: 450000 vnđ\n```\n\n*Sử dụng `>= 500000` và `>= 200000` để vượt qua các bộ test biên.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa số nguyên `tong_don` (VNĐ).\n\n### Kết quả ra (Output)\nIn ra số tiền được giảm và số tiền phải trả (ép kiểu `int`).",
+    "starterCode": "# Bài 30.5: Kiểm thử biên và sửa lỗi thiếu dấu bằng trong phân loại chiết khấu\n",
+    "testCases": [
+      {
+        "input": "500000",
+        "expectedOutput": "Tiền giảm: 50000 vnđ\nPhải trả: 450000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "200000",
+        "expectedOutput": "Tiền giảm: 10000 vnđ\nPhải trả: 190000 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "150000",
+        "expectedOutput": "Tiền giảm: 0 vnđ\nPhải trả: 150000 vnđ",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_31_1",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 31.1: Hệ thống tổng hợp bảng điểm và xếp loại học lực cuối năm (Luyện tập Bài 31)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Quản lý giáo dục toàn diện - Bài 31 SGK Tin học 10)\nHãy viết chương trình hoàn chỉnh thực hiện: nhập họ tên học sinh (chưa chuẩn hóa khoảng trắng) và danh sách điểm các môn học trên một dòng. Chương trình chuẩn hóa họ tên, tính điểm trung bình các môn (làm tròn 2 chữ số thập phân) và xếp loại:\n- `Giỏi` nếu điểm trung bình `>= 8.0`\n- `Khá` nếu `6.5 <= dtb < 8.0`\n- `Đạt` nếu `5.0 <= dtb < 6.5`\n- `Chưa đạt` nếu `dtb < 5.0`.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nHọc sinh: Pham Minh Tuan\nĐiểm trung bình: 8.2\nXếp loại: Giỏi\n```\n\n*Kết hợp xử lý xâu (`split`, `join`), danh sách, vòng lặp và rẽ nhánh.*\n\n### Dữ liệu vào (Input)\nDòng 1: Xâu họ và tên học sinh.\nDòng 2: Các số thực là điểm các môn học, cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nIn ra 3 dòng: Họ tên chuẩn hóa, Điểm trung bình và Xếp loại.",
+    "starterCode": "# Bài 31.1: Hệ thống tổng hợp bảng điểm và xếp loại học lực cuối năm\n",
+    "testCases": [
+      {
+        "input": "  Pham   Minh   Tuan  \n8.5 8.0 9.0 7.5 8.0",
+        "expectedOutput": "Học sinh: Pham Minh Tuan\nĐiểm trung bình: 8.2\nXếp loại: Giỏi",
+        "isHidden": false
+      },
+      {
+        "input": "Le   Thu   Thao\n7.0 6.5 7.5 7.0",
+        "expectedOutput": "Học sinh: Le Thu Thao\nĐiểm trung bình: 7.0\nXếp loại: Khá",
+        "isHidden": false
+      },
+      {
+        "input": "Nguyen  An\n5.0 6.0 5.5",
+        "expectedOutput": "Học sinh: Nguyen An\nĐiểm trung bình: 5.5\nXếp loại: Đạt",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_31_2",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 31.2: Trình phân tích chi tiêu cá nhân trong tuần và cảnh báo ngân sách (Luyện tập Bài 31)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Quản lý tài chính cá nhân - Bài 31 SGK Tin học 10)\nBạn Lan đặt hạn mức ngân sách chi tiêu trong tuần là `ngan_sach` (nghìn đồng) và ghi lại số tiền chi tiêu của 7 ngày trong tuần. Hãy viết chương trình tính tổng chi tiêu cả tuần, đếm số ngày chi tiêu vượt quá `100` nghìn đồng và kiểm tra xem tổng chi tiêu có nằm trong ngân sách (`<= ngan_sach`) hay vượt ngân sách.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng chi tiêu: 490 nghìn đồng\nSố ngày chi trên 100 nghìn: 2\nTrạng thái: Trong ngân sách\n```\n\n*Vận dụng tổng hợp danh sách, vòng lặp `for` và câu lệnh `if - else`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `ngan_sach` (nghìn đồng).\nDòng 2: 7 số nguyên là chi tiêu của 7 ngày trong tuần, cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nDòng 1: `Tổng chi tiêu: <tong> nghìn đồng`\nDòng 2: `Số ngày chi trên 100 nghìn: <so_ngay>`\nDòng 3: `Trạng thái: Trong ngân sách` hoặc `Trạng thái: Vượt ngân sách`.",
+    "starterCode": "# Bài 31.2: Trình phân tích chi tiêu cá nhân trong tuần và cảnh báo ngân sách\n",
+    "testCases": [
+      {
+        "input": "500\n50 120 60 40 150 30 40",
+        "expectedOutput": "Tổng chi tiêu: 490 nghìn đồng\nSố ngày chi trên 100 nghìn: 2\nTrạng thái: Trong ngân sách",
+        "isHidden": false
+      },
+      {
+        "input": "400\n80 110 90 50 120 40 30",
+        "expectedOutput": "Tổng chi tiêu: 520 nghìn đồng\nSố ngày chi trên 100 nghìn: 2\nTrạng thái: Vượt ngân sách",
+        "isHidden": false
+      },
+      {
+        "input": "600\n60 70 80 90 50 60 70",
+        "expectedOutput": "Tổng chi tiêu: 480 nghìn đồng\nSố ngày chi trên 100 nghìn: 0\nTrạng thái: Trong ngân sách",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_31_3",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 31.3: Chương trình kiểm kê kho sách giáo khoa và lập danh sách cần nhập thêm (Luyện tập Bài 31)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Quản lý kho nhà sách - Bài 31 SGK Tin học 10)\nNhà sách kiểm kê `n` đầu sách giáo khoa. Mỗi đầu sách được nhập trên một dòng theo định dạng `<Mã sách>:<Số lượng tồn>` (ví dụ: `TIN10:12`). Những đầu sách có số lượng tồn kho dưới `20` quyển cần được đưa vào danh sách nhập thêm hàng. Hãy viết chương trình tính tổng số sách hiện có và in danh sách các mã sách cần nhập thêm.\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTổng số sách tồn kho: 62\nCần nhập thêm: ['TIN10', 'ANH10']\n```\n\n*Dùng `split(':')` để tách mã sách và số lượng tồn (chuyển số lượng sang `int`).*\n\n### Dữ liệu vào (Input)\nDòng đầu chứa số nguyên dương `n`.\n`n` dòng tiếp theo, mỗi dòng chứa chuỗi `<Mã sách>:<Số lượng tồn>`.\n\n### Kết quả ra (Output)\nDòng 1: `Tổng số sách tồn kho: <tong_ton>`\nDòng 2: `Cần nhập thêm: <danh_sach_ma>`.",
+    "starterCode": "# Bài 31.3: Chương trình kiểm kê kho sách giáo khoa và lập danh sách cần nhập thêm\n",
+    "testCases": [
+      {
+        "input": "3\nTIN10:12\nTOAN10:35\nANH10:15",
+        "expectedOutput": "Tổng số sách tồn kho: 62\nCần nhập thêm: ['TIN10', 'ANH10']",
+        "isHidden": false
+      },
+      {
+        "input": "4\nVAN10:25\nLY10:10\nHOA10:8\nSINH10:40",
+        "expectedOutput": "Tổng số sách tồn kho: 83\nCần nhập thêm: ['LY10', 'HOA10']",
+        "isHidden": false
+      },
+      {
+        "input": "2\nSU10:30\nDIA10:22",
+        "expectedOutput": "Tổng số sách tồn kho: 52\nCần nhập thêm: []",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_31_4",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 31.4: Hệ thống tính hóa đơn tiền nước sinh hoạt và phí bảo vệ môi trường (Luyện tập Bài 31)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Dịch vụ đô thị thông minh - Bài 31 SGK Tin học 10)\nViết chương trình tính hóa đơn tiền nước cho hộ gia đình dựa trên chỉ số đồng hồ nước tháng trước `chi_so_cu` và tháng này `chi_so_moi` (m3):\n- Khối lượng tiêu thụ `m3 = chi_so_moi - chi_so_cu`.\n- Đơn giá: `10` m3 đầu tiên giá `7000` VNĐ/m3; phần vượt quá `10` m3 giá `9000` VNĐ/m3.\n- Phí bảo vệ môi trường bằng `10%` tiền nước.\nHãy viết hàm tính tiền và in hóa đơn chi tiết (các số tiền làm tròn thành số nguyên `int`).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nTiêu thụ: 15 m3\nTiền nước: 115000 vnđ\nPhí môi trường: 11500 vnđ\nTổng thanh toán: 126500 vnđ\n```\n\n*Với 15 m3: Tiền nước = `10 * 7000 + 5 * 9000 = 115000`; Phí MT = `11500`; Tổng = `126500`.*\n\n### Dữ liệu vào (Input)\nDòng 1: Số nguyên `chi_so_cu`.\nDòng 2: Số nguyên `chi_so_moi`.\n\n### Kết quả ra (Output)\nIn ra 4 dòng: Lượng nước tiêu thụ, Tiền nước, Phí môi trường và Tổng cộng.",
+    "starterCode": "# Bài 31.4: Hệ thống tính hóa đơn tiền nước sinh hoạt và phí bảo vệ môi trường\n",
+    "testCases": [
+      {
+        "input": "120\n135",
+        "expectedOutput": "Tiêu thụ: 15 m3\nTiền nước: 115000 vnđ\nPhí môi trường: 11500 vnđ\nTổng thanh toán: 126500 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "50\n58",
+        "expectedOutput": "Tiêu thụ: 8 m3\nTiền nước: 56000 vnđ\nPhí môi trường: 5600 vnđ\nTổng thanh toán: 61600 vnđ",
+        "isHidden": false
+      },
+      {
+        "input": "200\n220",
+        "expectedOutput": "Tiêu thụ: 20 m3\nTiền nước: 160000 vnđ\nPhí môi trường: 16000 vnđ\nTổng thanh toán: 176000 vnđ",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  },
+  {
+    "id": "asgn_31_5",
+    "lessonId": "bai_29_31",
+    "glyph": "●",
+    "title": "Bài 31.5: Thống kê kết quả bình chọn dự án khởi nghiệp STEM của học sinh (Luyện tập Bài 31)",
+    "difficulty": "Intermediate",
+    "description": "### Đề bài (Cuộc thi khởi nghiệp STEM - Bài 31 SGK Tin học 10)\nTrong ngày hội STEM, ban tổ chức thu thập chuỗi phiếu bình chọn cho 3 dự án mang mã `A`, `B`, `C` (các phiếu cách nhau bởi dấu cách, ví dụ: `A B A C A B`). Hãy viết chương trình đếm số phiếu của từng dự án và tìm mã dự án chiến thắng (giả sử luôn có duy nhất 1 dự án cao phiếu nhất).\n\nVí dụ minh họa kết quả hiển thị trên màn hình:\n```text\nDự án A: 3 phiếu\nDự án B: 2 phiếu\nDự án C: 1 phiếu\nDự án chiến thắng: A\n```\n\n*Duyệt danh sách phiếu để đếm số lượng từng loại và so sánh tìm giá trị lớn nhất.*\n\n### Dữ liệu vào (Input)\nMột dòng chứa danh sách các mã phiếu bầu (`A`, `B` hoặc `C`) cách nhau bởi dấu cách.\n\n### Kết quả ra (Output)\nDòng 1: `Dự án A: <so_phieu_A> phiếu`\nDòng 2: `Dự án B: <so_phieu_B> phiếu`\nDòng 3: `Dự án C: <so_phieu_C> phiếu`\nDòng 4: `Dự án chiến thắng: <ma_thang>`.",
+    "starterCode": "# Bài 31.5: Thống kê kết quả bình chọn dự án khởi nghiệp STEM của học sinh\n",
+    "testCases": [
+      {
+        "input": "A B A C A B",
+        "expectedOutput": "Dự án A: 3 phiếu\nDự án B: 2 phiếu\nDự án C: 1 phiếu\nDự án chiến thắng: A",
+        "isHidden": false
+      },
+      {
+        "input": "B B C A B C B",
+        "expectedOutput": "Dự án A: 1 phiếu\nDự án B: 4 phiếu\nDự án C: 2 phiếu\nDự án chiến thắng: B",
+        "isHidden": false
+      },
+      {
+        "input": "C A C B C C",
+        "expectedOutput": "Dự án A: 1 phiếu\nDự án B: 1 phiếu\nDự án C: 4 phiếu\nDự án chiến thắng: C",
+        "isHidden": true
+      }
+    ],
+    "createdBy": "usr_instructor_01",
+    "createdAt": "2026-11-15T08:00:00.000Z"
+  }
 ];
-
-export function localizeAssignment(
-  asgn: Assignment,
-  _lang: LanguageMode
-): Assignment {
-  return asgn;
-}
-
-export function localizeDifficulty(
-  diff: DifficultyLevel,
-  lang: LanguageMode
-): string {
-  if (lang === "en") return diff;
-  if (diff === "Beginner") return "Cơ bản";
-  if (diff === "Intermediate") return "Trung bình";
-  return "Nâng cao";
-}
 
 export function sortAssignmentsByCurriculum(list: Assignment[]): Assignment[] {
   const lessonOrder = [
@@ -2570,47 +2206,37 @@ export function sortAssignmentsByCurriculum(list: Assignment[]): Assignment[] {
   });
 }
 
+export function localizeAssignment(
+  asgn: Assignment,
+  _lang: LanguageMode
+): Assignment {
+  return asgn;
+}
+
+export function localizeDifficulty(
+  diff: DifficultyLevel,
+  lang: LanguageMode
+): string {
+  if (lang === "en") return diff;
+  if (diff === "Beginner") return "Cơ bản";
+  if (diff === "Intermediate") return "Trung bình";
+  if (diff === "Advanced") return "Nâng cao";
+  return diff;
+}
+
 export const INITIAL_SUBMISSIONS: Submission[] = [
   {
-    id: "usr_student_01_asgn_16_1",
-    userId: "usr_student_01",
+    id: "usr_an10a7_asgn_16_1",
+    userId: "usr_an10a7",
     userDisplayName: "Nguyễn Minh An",
     userClassName: "10A7",
-    userEmail: "nguyenminhan.10a7@python.edu.vn",
+    userEmail: "an10a7@python.edu.vn",
     assignmentId: "asgn_16_1",
-    code: `# Bài 16.1: In hình chữ nhật rỗng kích thước w x 4 bằng dấu *\nw = int(input())\n\ndong_dac = "*" * w\ndong_rong = "*" + " " * (w - 2) + "*"\n\nprint(dong_dac)\nprint(dong_rong)\nprint(dong_rong)\nprint(dong_dac)\n`,
+    code: `# Bài 16.1: Tính tiền lãi gửi tiết kiệm ngân hàng của bạn An\nso_tien = int(input())\ntien_lai = so_tien * 0.008\nprint("Tên người gửi: An")\nprint(f"Số tiền gửi: {so_tien} vnđ")\nprint("Lãi suất/tháng: 0.8%")\nprint(f"Tiền lãi: {tien_lai}")\n`,
     status: "passed",
-    lastExecutedOutput: "************\n*          *\n*          *\n************",
+    lastExecutedOutput: "Tên người gửi: An\nSố tiền gửi: 5000000 vnđ\nLãi suất/tháng: 0.8%\nTiền lãi: 40000.0",
     passedCount: 3,
     totalCount: 3,
-    updatedAt: "2026-11-14T08:15:00.000Z",
-  },
-  {
-    id: "usr_student_01_asgn_17_2",
-    userId: "usr_student_01",
-    userDisplayName: "Nguyễn Minh An",
-    userClassName: "10A7",
-    userEmail: "nguyenminhan.10a7@python.edu.vn",
-    assignmentId: "asgn_17_2",
-    code: `# Bài 17.2: Đổi số giây sang Ngày, Giờ, Phút, Giây\nss = int(input())\n\nngay = ss // 86400\ncon_lai = ss % 86400\n\ngio = con_lai // 3600\ncon_lai = con_lai % 3600\n\nphut = con_lai // 60\ngiay = con_lai % 60\n\nprint(f"{ngay} ngay {gio} gio {phut} phut {giay} giay")\n`,
-    status: "passed",
-    lastExecutedOutput: "7 ngay 22 gio 8 phut 20 giay",
-    passedCount: 3,
-    totalCount: 3,
-    updatedAt: "2026-11-14T08:25:00.000Z",
-  },
-  {
-    id: "usr_student_02_asgn_19_2",
-    userId: "usr_student_02",
-    userDisplayName: "Trần Gia Bảo",
-    userClassName: "10A12",
-    userEmail: "trangiabao.10a12@python.edu.vn",
-    assignmentId: "asgn_19_2",
-    code: `# Bài 19.2: Kiểm tra năm nhuận\nn = int(input())\n\nif (n % 400 == 0) or (n % 4 == 0 and n % 100 != 0):\n    print("NAM NHUAN")\nelse:\n    print("KHONG NHUAN")\n`,
-    status: "passed",
-    lastExecutedOutput: "NAM NHUAN",
-    passedCount: 4,
-    totalCount: 4,
-    updatedAt: "2026-11-14T08:32:00.000Z",
-  },
+    updatedAt: "2026-11-15T08:15:00.000Z",
+  }
 ];

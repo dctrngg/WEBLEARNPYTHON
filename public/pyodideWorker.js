@@ -178,6 +178,96 @@ except BaseException as exc:
   activeSession = null;
 }
 
+function normalizeOutputForMatching(str) {
+  return String(str ?? "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim();
+}
+
+function cleanLineForMatching(line) {
+  return line
+    .trim()
+    .replace(/[ \t]+/g, " ")
+    .replace(/\s*:\s*/g, ": ")
+    .replace(/\s*,\s*/g, ", ")
+    .replace(/["']/g, '"');
+}
+
+function isTokenEqual(eTok, aTok) {
+  if (eTok.toLowerCase() === aTok.toLowerCase()) return true;
+
+  // Numeric equivalence with optional unit support (e.g. 150.0kWh vs 150kWh, 40000.0 vs 40000)
+  const eNum = Number(eTok.replace(/[^0-9.-]/g, ""));
+  const aNum = Number(aTok.replace(/[^0-9.-]/g, ""));
+  if (!isNaN(eNum) && !isNaN(aNum) && Math.abs(eNum - aNum) < 1e-4) {
+    const eUnit = eTok.replace(/[0-9.-]/g, "").toLowerCase();
+    const aUnit = aTok.replace(/[0-9.-]/g, "").toLowerCase();
+    if (eUnit === aUnit) return true;
+  }
+  return false;
+}
+
+function isSingleLineMatch(expLine, actLine) {
+  if (expLine === actLine) return true;
+  if (expLine.toLowerCase() === actLine.toLowerCase()) return true;
+
+  const expTokens = expLine.split(" ").filter(Boolean);
+  const actTokens = actLine.split(" ").filter(Boolean);
+
+  if (expTokens.length === actTokens.length) {
+    return expTokens.every((eTok, i) => isTokenEqual(eTok, actTokens[i]));
+  }
+
+  return false;
+}
+
+/**
+ * Smart / Lenient Output Matcher for High School Python Pedagogy:
+ * - Tolerates extra/missing spaces (e.g. after colons or commas)
+ * - Tolerates case mismatch (e.g. vnđ vs VNĐ, kWh vs KWH)
+ * - Tolerates numeric equivalence (e.g. 450000 vs 450000.0)
+ * - Tolerates leaked input() prompts (e.g. input("Nhap n: "))
+ */
+function isOutputMatch(expectedRaw, actualRaw) {
+  if (expectedRaw === actualRaw) return true;
+
+  const expected = normalizeOutputForMatching(expectedRaw);
+  const actual = normalizeOutputForMatching(actualRaw);
+  if (expected === actual) return true;
+
+  const expLines = expected.split("\n").map(cleanLineForMatching).filter((l) => l.length > 0);
+  let actLines = actual.split("\n").map(cleanLineForMatching).filter((l) => l.length > 0);
+
+  // 1. Clean line string match (exact or case-insensitive)
+  if (expLines.join("\n") === actLines.join("\n")) return true;
+  if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
+
+  // 2. Input prompt leak stripping
+  if (actLines.length > 0 && expLines.length > 0) {
+    const promptRegex = /^(.*?(?:nhập|nhap|enter|input|cho|hãy|hay|prompt).*?[:\?]\s*)/i;
+    if (promptRegex.test(actLines[0])) {
+      actLines[0] = cleanLineForMatching(actLines[0].replace(promptRegex, ""));
+      actLines = actLines.filter((l) => l.length > 0);
+      if (expLines.join("\n").toLowerCase() === actLines.join("\n").toLowerCase()) return true;
+    }
+  }
+
+  // 3. Line-by-line token & numeric comparison
+  if (expLines.length === actLines.length && expLines.length > 0) {
+    let allLinesMatch = true;
+    for (let i = 0; i < expLines.length; i++) {
+      if (!isSingleLineMatch(expLines[i], actLines[i])) {
+        allLinesMatch = false;
+        break;
+      }
+    }
+    if (allLinesMatch) return true;
+  }
+
+  return false;
+}
+
 async function runAutomatedTests(code, testCases) {
   if (!pyodide) {
     await initRuntime();
@@ -251,7 +341,7 @@ except BaseException as exc:
     const actualOutput = stdoutLines.join("\n").trim();
     const expectedOutput = String(tc.expectedOutput || "").trim();
     const stderr = stderrLines.join("\n").trim();
-    const passed = stderr === "" && actualOutput === expectedOutput;
+    const passed = stderr === "" && isOutputMatch(expectedOutput, actualOutput);
 
     results.push({
       index: i + 1,

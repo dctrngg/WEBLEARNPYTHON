@@ -21,8 +21,8 @@ import {
 } from "./seedData";
 
 const LS_USERS_KEY = "chroma_py_users_v9";
-const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v9";
-const LS_SUBMISSIONS_KEY = "chroma_py_submissions_v9";
+const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v11";
+const LS_SUBMISSIONS_KEY = "chroma_py_submissions_v11";
 const LS_ASSIGNMENTS_CACHED_AT_KEY = "chroma_py_asgn_cache_time";
 const ASSIGNMENTS_CACHE_TTL_MS = 15 * 60 * 1000; // 15 phút cache trình duyệt để tối ưu lượt đọc Firestore
 
