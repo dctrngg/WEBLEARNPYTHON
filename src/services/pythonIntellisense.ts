@@ -502,7 +502,7 @@ interface ExtractedStudentSymbol {
 }
 
 /**
- * Scans the student's Python code in real time to extract variables (e.g. a=10, b=5, tong=...),
+ * Scans the student's Python code in real time to extract variables (e.g. so_gio, so_dien, tong=...),
  * loop variables (for i in ...), and user-defined functions (def tinh_tong(a, b):)
  */
 function extractStudentSymbols(
@@ -512,14 +512,15 @@ function extractStudentSymbols(
   const lines = code.split(/\r?\n/);
   const symbolsMap = new Map<string, ExtractedStudentSymbol>();
 
+  // Pass 1: Parse structured lines (assignments, loops, function definitions)
   lines.forEach((rawLine, index) => {
     const lineNum = index + 1;
     const line = rawLine.replace(/#.*$/, "").trim();
     if (!line) return;
 
-    // 1. Match variable assignments: e.g. "a = 10", "a, b = 10, 20"
+    // 1. Match variable assignments: e.g. "so_gio = ...", "a, b = 10, 20", "tong += x"
     const assignMatch = line.match(
-      /^([a-zA-Z_][a-zA-Z0-9_]*(?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_]*)*)\s*(?::[^=]+)?=\s*(.+)$/
+      /^([a-zA-Z_][a-zA-Z0-9_]*(?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_]*)*)\s*(?::[^=]+)?(?:\+|-|\*|\/|\/\/|%|&|\||\^)?=\s*(.+)$/
     );
     if (assignMatch && !line.startsWith("if ") && !line.startsWith("while ")) {
       const lhsVars = assignMatch[1].split(",").map((s) => s.trim());
@@ -602,6 +603,29 @@ function extractStudentSymbols(
     }
   });
 
+  // Pass 2: Identifier scanner — scan all words in student code to ensure any created variable
+  // is never missed, even if code is intermediate or syntax is incomplete
+  const identRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\b/g;
+  let m;
+  while ((m = identRegex.exec(code)) !== null) {
+    const ident = m[1];
+    if (
+      ident.length >= 2 &&
+      !PYTHON_RESERVED_WORDS.has(ident) &&
+      !symbolsMap.has(ident)
+    ) {
+      const isBuiltin = PYTHON_KNOWLEDGE_BASE.some((kb) => kb.label === ident);
+      if (!isBuiltin) {
+        symbolsMap.set(ident, {
+          name: ident,
+          kind: "variable",
+          line: 1,
+          preview: `Biến ${ident}`,
+        });
+      }
+    }
+  }
+
   return Array.from(symbolsMap.values());
 }
 
@@ -613,11 +637,11 @@ export function registerPythonIntellisense(
   intellisenseDisposable = [];
 
   // 1. Completion Item Provider
-  // Only trigger automatically on "." (never on Space, so Spacebar works 100% smoothly!)
+  // Triggers on word typing as well as ".", "(", ",", "{" (so typing inside print(...) immediately triggers)
   const completionProvider = monaco.languages.registerCompletionItemProvider(
     "python",
     {
-      triggerCharacters: ["."],
+      triggerCharacters: [".", "(", ",", "{"],
       provideCompletionItems: (model: any, position: any) => {
         const word = model.getWordUntilPosition(position);
         const lineContent: string = model.getLineContent(position.lineNumber);
@@ -634,6 +658,7 @@ export function registerPythonIntellisense(
         const suggestions: any[] = [];
 
         // A. Extract Student's Own Variables & Functions from Current Code
+        // Focus strictly on student variables so typing "so" immediately autocompletes "so_gio", "so_dien", "so_tien"
         if (!isDotAccess) {
           const fullCode: string = model.getValue();
           const studentSymbols = extractStudentSymbols(
@@ -648,13 +673,20 @@ export function registerPythonIntellisense(
                   ? `Hàm của bạn (Dòng ${sym.line})`
                   : `Your function (Line ${sym.line})`
                 : lang === "vi"
-                ? `Biến của bạn (${sym.preview})`
+                ? `Biến đã tạo (${sym.preview})`
                 : `Your variable (${sym.preview})`;
 
             suggestions.push({
               label: {
                 label: sym.name,
-                description: labelDesc,
+                description:
+                  sym.kind === "function"
+                    ? lang === "vi"
+                      ? "Hàm"
+                      : "Function"
+                    : lang === "vi"
+                    ? "Biến"
+                    : "Variable",
               },
               kind:
                 sym.kind === "function"
@@ -664,8 +696,8 @@ export function registerPythonIntellisense(
               documentation: {
                 value: `**\`${sym.preview}\`**\n\n${
                   lang === "vi"
-                    ? `Được khai báo tại dòng ${sym.line} trong bài làm của bạn.`
-                    : `Defined at line ${sym.line} in your code.`
+                    ? `Biến đã khai báo trong bài làm của bạn (Dòng ${sym.line}).`
+                    : `Variable defined in your code (Line ${sym.line}).`
                 }`,
               },
               insertText:
@@ -675,61 +707,12 @@ export function registerPythonIntellisense(
                   ? monaco.languages.CompletionItemInsertTextRule
                       .InsertAsSnippet
                   : undefined,
-              // Highest priority so student's variables (a, b, ...) appear AT THE VERY TOP!
-              sortText: `00_1_${sym.name}`,
+              filterText: sym.name,
+              // Highest priority ("00_...") so student variables appear at the VERY TOP of autocomplete!
+              sortText: `00_${sym.name}`,
               range,
             });
           });
-
-          // B. Smart Expression Suggestions when student has >= 2 variables (e.g. a, b -> a + b)
-          const studentVars = studentSymbols.filter(
-            (s) => s.kind === "variable" || s.kind === "parameter"
-          );
-          const isRightOfAssignmentOrPrint =
-            linePrefix.includes("=") || linePrefix.includes("print(");
-
-          if (studentVars.length >= 2 && isRightOfAssignmentOrPrint) {
-            const v1 = studentVars[0].name;
-            const v2 = studentVars[1].name;
-            const mathOps = [
-              {
-                op: "+",
-                vi: `Cộng 2 biến ${v1} và ${v2}`,
-                en: `Add ${v1} and ${v2}`,
-              },
-              {
-                op: "-",
-                vi: `Trừ 2 biến ${v1} và ${v2}`,
-                en: `Subtract ${v2} from ${v1}`,
-              },
-              {
-                op: "*",
-                vi: `Nhân 2 biến ${v1} và ${v2}`,
-                en: `Multiply ${v1} and ${v2}`,
-              },
-              {
-                op: "/",
-                vi: `Chia 2 biến ${v1} và ${v2}`,
-                en: `Divide ${v1} by ${v2}`,
-              },
-            ];
-
-            mathOps.forEach((m, idx) => {
-              const expr = `${v1} ${m.op} ${v2}`;
-              suggestions.push({
-                label: {
-                  label: expr,
-                  description: lang === "vi" ? m.vi : m.en,
-                },
-                kind: monaco.languages.CompletionItemKind.Snippet,
-                detail: lang === "vi" ? `Biểu thức: ${m.vi}` : m.en,
-                insertText: expr,
-                filterText: `${v1} ${v1}${m.op}${v2} ${expr}`,
-                sortText: `00_0_${idx}_${expr}`,
-                range,
-              });
-            });
-          }
         }
 
         // C. Built-in Python Functions, Keywords, Snippets (and Methods only after '.')

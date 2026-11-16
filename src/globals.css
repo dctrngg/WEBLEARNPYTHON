@@ -187,3 +187,74 @@
   background-image: radial-gradient(circle, currentColor 0.75px, transparent 0.75px);
   background-size: 4px 4px;
 }
+
+/* ==========================================================================
+   MONACO EDITOR AUTOCOMPLETE SUGGEST WIDGET HIGH-CONTRAST THEME
+   Guarantees crisp readability in both Light and Dark themes
+   ========================================================================== */
+.monaco-editor .suggest-widget {
+  border-radius: 4px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Light Theme Suggest Widget Styling */
+:root:not(.dark) .monaco-editor .suggest-widget {
+  background-color: #ffffff !important;
+  border: 1px solid #d4d4d8 !important;
+  color: #09090b !important;
+}
+
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row {
+  color: #18181b !important;
+}
+
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row .label-name {
+  color: #09090b !important;
+  font-weight: 600 !important;
+}
+
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row .label-description,
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row .type-label {
+  color: #4b5563 !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+}
+
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row .highlight {
+  color: #ea580c !important;
+  font-weight: 700 !important;
+}
+
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row.focused,
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row.selected {
+  background-color: #e2e8f0 !important;
+  color: #09090b !important;
+}
+
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row.focused .label-name,
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row.selected .label-name {
+  color: #000000 !important;
+}
+
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row.focused .label-description,
+:root:not(.dark) .monaco-editor .suggest-widget .monaco-list-row.selected .label-description {
+  color: #1f2937 !important;
+}
+
+/* Dark Theme Suggest Widget Styling */
+.dark .monaco-editor .suggest-widget {
+  background-color: #111111 !important;
+  border: 1px solid #3f3f46 !important;
+  color: #fafafa !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark .monaco-editor .suggest-widget .monaco-list-row.focused,
+.dark .monaco-editor .suggest-widget .monaco-list-row.selected {
+  background-color: #27272a !important;
+  color: #ffffff !important;
+}
+
+.dark .monaco-editor .suggest-widget .monaco-list-row .label-description {
+  color: #a1a1aa !important;
+}

@@ -716,8 +716,15 @@ export const StudentWorkspacePage: React.FC = () => {
         "editorIndentGuide.activeBackground1": "#3F3F46",
         "editorSuggestWidget.background": "#111111",
         "editorSuggestWidget.border": "#3F3F46",
+        "editorSuggestWidget.foreground": "#FAFAFA",
+        "editorSuggestWidget.selectedForeground": "#FFFFFF",
         "editorSuggestWidget.selectedBackground": "#27272A",
         "editorSuggestWidget.highlightForeground": "#FF6433",
+        "editorSuggestWidget.focusHighlightForeground": "#FF6433",
+        "list.hoverBackground": "#1E1E22",
+        "list.hoverForeground": "#FAFAFA",
+        "list.focusBackground": "#27272A",
+        "list.focusForeground": "#FFFFFF",
       },
     });
 
@@ -735,7 +742,7 @@ export const StudentWorkspacePage: React.FC = () => {
       colors: {
         "editor.background": "#FFFFFF",
         "editor.foreground": "#09090B",
-        "editorLineNumber.foreground": "#A1A1AA",
+        "editorLineNumber.foreground": "#71717A",
         "editorLineNumber.activeForeground": "#FF5722",
         "editorCursor.foreground": "#FF5722",
         "editor.selectionBackground": "#FF572220",
@@ -743,9 +750,16 @@ export const StudentWorkspacePage: React.FC = () => {
         "editorIndentGuide.background1": "#E4E4E7",
         "editorIndentGuide.activeBackground1": "#D4D4D8",
         "editorSuggestWidget.background": "#FFFFFF",
-        "editorSuggestWidget.border": "#E4E4E7",
-        "editorSuggestWidget.selectedBackground": "#F4F4F5",
-        "editorSuggestWidget.highlightForeground": "#FF5722",
+        "editorSuggestWidget.border": "#D4D4D8",
+        "editorSuggestWidget.foreground": "#09090B",
+        "editorSuggestWidget.selectedForeground": "#09090B",
+        "editorSuggestWidget.selectedBackground": "#E4E4E7",
+        "editorSuggestWidget.highlightForeground": "#EA580C",
+        "editorSuggestWidget.focusHighlightForeground": "#EA580C",
+        "list.hoverBackground": "#F4F4F5",
+        "list.hoverForeground": "#09090B",
+        "list.focusBackground": "#E4E4E7",
+        "list.focusForeground": "#09090B",
       },
     });
 
@@ -1453,9 +1467,9 @@ export const StudentWorkspacePage: React.FC = () => {
                       quickSuggestions: {
                         other: true,
                         comments: false,
-                        strings: false,
+                        strings: true,
                       },
-                      quickSuggestionsDelay: 20,
+                      quickSuggestionsDelay: 10,
                       suggestOnTriggerCharacters: true,
                       acceptSuggestionOnCommitCharacter: false,
                       acceptSuggestionOnEnter: "on",
@@ -1473,6 +1487,8 @@ export const StudentWorkspacePage: React.FC = () => {
                         showVariables: true,
                         preview: false,
                         filterGraceful: true,
+                        localityBonus: true,
+                        shareSuggestSelections: true,
                       },
                     }}
                   />
