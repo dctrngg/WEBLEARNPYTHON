@@ -99,7 +99,7 @@ export const StudentWorkspacePage: React.FC = () => {
   const [stdinValue, setStdinValue] = useState<string>("");
   const [isGrading, setIsGrading] = useState<boolean>(false);
   const [leftSectionMode, setLeftSectionMode] = useState<"SPLIT" | "PROBLEM">(
-    "SPLIT"
+    "PROBLEM"
   );
   const [cheatSheetOpen, setCheatSheetOpen] = useState<boolean>(false);
   const [isLeftPaneOpen, setIsLeftPaneOpen] = useState<boolean>(() => {
@@ -608,6 +608,7 @@ export const StudentWorkspacePage: React.FC = () => {
   const handleSelectAssignment = (asgn: Assignment) => {
     setSelectedAssignment(asgn);
     navigate(`/workspace/${asgn.id}`, { replace: true });
+    setLeftSectionMode("PROBLEM");
   };
 
   const handleRunCode = () => {
@@ -901,7 +902,7 @@ export const StudentWorkspacePage: React.FC = () => {
           {isLeftPaneOpen && (
             <>
               <Panel
-                defaultSize={32}
+                defaultSize={50}
                 minSize={20}
                 className="bg-surface flex flex-col h-full min-w-0"
               >
@@ -1255,7 +1256,7 @@ export const StudentWorkspacePage: React.FC = () => {
       )}
 
       {/* CENTER + RIGHT/BOTTOM PANES: Monaco Editor & Interactive Terminal */}
-      <Panel defaultSize={isLeftPaneOpen ? 68 : 100} minSize={30} className="min-w-0">
+      <Panel defaultSize={isLeftPaneOpen ? 50 : 100} minSize={25} className="min-w-0">
         <PanelGroup direction="vertical" className="h-full w-full">
               {/* CENTER PANE: Monaco Code Editor */}
               <Panel
