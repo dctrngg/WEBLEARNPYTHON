@@ -86,9 +86,6 @@ export const StudentWorkspacePage: React.FC = () => {
     "ALL" | DifficultyLevel
   >("ALL");
   const [lessonFilter, setLessonFilter] = useState<string>("ALL");
-  const [leftContentTab, setLeftContentTab] = useState<"PROBLEM" | "THEORY">(
-    "PROBLEM"
-  );
   const [code, setCode] = useState<string>("");
   const [submissionStatus, setSubmissionStatus] =
     useState<SubmissionStatus>("in_progress");
@@ -850,10 +847,6 @@ export const StudentWorkspacePage: React.FC = () => {
     return matchesDiff && matchesLesson;
   });
 
-  const activeLessonForSelected = PYTHON_CURRICULUM_LESSONS.find(
-    (l) => l.id === selectedAssignment?.lessonId
-  );
-
   const completedCount = assignments.filter(
     (a) => userSubmissionsMap[a.id]?.status === "passed"
   ).length;
@@ -1067,34 +1060,7 @@ export const StudentWorkspacePage: React.FC = () => {
               </div>
             )}
 
-            {/* Toggle Tabs: [📝 ĐỀ BÀI TẬP] vs [📚 LÝ THUYẾT BÀI HỌC] */}
-            <div className="grid grid-cols-2 bg-grid gap-[1px] border-b border-grid font-mono text-xs shrink-0">
-              <button
-                onClick={() => setLeftContentTab("PROBLEM")}
-                className={`py-2 px-3 text-center font-semibold transition-colors ${
-                  leftContentTab === "PROBLEM"
-                    ? "bg-surface text-brand border-b-2 border-b-brand"
-                    : "bg-subtle text-secondary hover:text-primary"
-                }`}
-              >
-                📝 {t("ĐỀ BÀI TẬP", "PROBLEM")}
-              </button>
-              <button
-                onClick={() => setLeftContentTab("THEORY")}
-                className={`py-2 px-3 text-center font-semibold transition-colors ${
-                  leftContentTab === "THEORY"
-                    ? "bg-surface text-brand border-b-2 border-b-brand"
-                    : "bg-subtle text-secondary hover:text-primary"
-                }`}
-              >
-                📚{" "}
-                {activeLessonForSelected
-                  ? `${t("LÝ THUYẾT", "THEORY")} (${activeLessonForSelected.code})`
-                  : t("LÝ THUYẾT BÀI HỌC", "LESSON THEORY")}
-              </button>
-            </div>
-
-            {/* Problem Description OR Lesson Theory */}
+            {/* Problem Description */}
             <div
               className={`flex-1 overflow-y-auto p-5 space-y-5 ${
                 antiPasteEnabled ? "select-none" : ""
@@ -1119,45 +1085,7 @@ export const StudentWorkspacePage: React.FC = () => {
                 }
               }}
             >
-              {leftContentTab === "THEORY" && activeLessonForSelected ? (
-                <div className="space-y-4">
-                  <div className="border-b border-grid pb-3">
-                    <div className="flex items-center justify-between gap-2 font-mono text-xs mb-1">
-                      <span className="px-2 py-0.5 bg-brand text-white font-semibold">
-                        {activeLessonForSelected.code}
-                      </span>
-                      <button
-                        onClick={() => navigate("/")}
-                        className="text-brand hover:underline"
-                      >
-                        [📖 {t("Xem toàn bộ lộ trình", "Full Curriculum")}]
-                      </button>
-                    </div>
-                    <h2 className="text-base font-bold text-primary mt-1">
-                      {lang === "vi"
-                        ? activeLessonForSelected.titleVi
-                        : activeLessonForSelected.titleEn}
-                    </h2>
-                  </div>
-
-                  <MarkdownRenderer
-                    content={
-                      lang === "vi"
-                        ? activeLessonForSelected.theoryMarkdownVi
-                        : activeLessonForSelected.theoryMarkdownEn
-                    }
-                  />
-
-                  <div className="border border-grid bg-subtle p-3 font-mono text-xs">
-                    <div className="text-[11px] text-brand font-semibold mb-1.5">
-                      💻 {t("VÍ DỤ MẪU TRONG BÀI HỌC:", "LESSON CODE EXAMPLE:")}
-                    </div>
-                    <pre className="bg-surface text-primary border border-grid p-3 overflow-x-auto whitespace-pre">
-                      {activeLessonForSelected.sampleCode}
-                    </pre>
-                  </div>
-                </div>
-              ) : localizedSelected ? (
+              {localizedSelected ? (
                 <>
                   <div className="border-b border-grid pb-4">
                     <div className="flex items-center justify-between gap-2 mb-2">

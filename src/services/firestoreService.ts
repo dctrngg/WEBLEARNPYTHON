@@ -21,21 +21,56 @@ import {
 } from "./seedData";
 
 const LS_USERS_KEY = "chroma_py_users_v9";
-const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v11";
+const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v14_145";
 const LS_SUBMISSIONS_KEY = "chroma_py_submissions_v11";
-const LS_ASSIGNMENTS_CACHED_AT_KEY = "chroma_py_asgn_cache_time";
+const LS_ASSIGNMENTS_CACHED_AT_KEY = "chroma_py_asgn_cache_time_v14";
 const ASSIGNMENTS_CACHE_TTL_MS = 15 * 60 * 1000; // 15 phút cache trình duyệt để tối ưu lượt đọc Firestore
 
 function ensureLocalSeed() {
+  // Dọn dẹp cache cũ nếu có
+  [
+    "chroma_py_assignments_v10",
+    "chroma_py_assignments_v11",
+    "chroma_py_assignments_v12",
+    "chroma_py_assignments_v13",
+    "chroma_py_asgn_cache_time",
+  ].forEach((k) => {
+    try {
+      localStorage.removeItem(k);
+    } catch {}
+  });
+
   if (!localStorage.getItem(LS_USERS_KEY)) {
     localStorage.setItem(LS_USERS_KEY, JSON.stringify(INITIAL_USERS));
   }
-  if (!localStorage.getItem(LS_ASSIGNMENTS_KEY)) {
+
+  const storedAsgns = localStorage.getItem(LS_ASSIGNMENTS_KEY);
+  if (!storedAsgns) {
     localStorage.setItem(
       LS_ASSIGNMENTS_KEY,
       JSON.stringify(INITIAL_ASSIGNMENTS)
     );
+  } else {
+    try {
+      const parsed = JSON.parse(storedAsgns);
+      if (!Array.isArray(parsed) || parsed.length < INITIAL_ASSIGNMENTS.length) {
+        // Tự động bổ sung các bài tập mới nếu cache chưa đủ
+        const existingIds = new Set((parsed || []).map((a: any) => a.id));
+        const missing = INITIAL_ASSIGNMENTS.filter((a) => !existingIds.has(a.id));
+        const merged = [...(parsed || []), ...missing];
+        localStorage.setItem(
+          LS_ASSIGNMENTS_KEY,
+          JSON.stringify(sortAssignmentsByCurriculum(merged))
+        );
+      }
+    } catch {
+      localStorage.setItem(
+        LS_ASSIGNMENTS_KEY,
+        JSON.stringify(INITIAL_ASSIGNMENTS)
+      );
+    }
   }
+
   if (!localStorage.getItem(LS_SUBMISSIONS_KEY)) {
     localStorage.setItem(
       LS_SUBMISSIONS_KEY,
@@ -187,7 +222,7 @@ export async function getAssignments(forceRefresh: boolean = false): Promise<Ass
         const cachedAt = parseInt(cachedAtStr, 10);
         if (Date.now() - cachedAt < ASSIGNMENTS_CACHE_TTL_MS) {
           const parsed = JSON.parse(cachedData);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed) && parsed.length >= INITIAL_ASSIGNMENTS.length) {
             return sortAssignmentsByCurriculum(parsed);
           }
         }
@@ -204,7 +239,34 @@ export async function getAssignments(forceRefresh: boolean = false): Promise<Ass
           ...(d.data() as Assignment),
           id: d.id,
         }));
-        const sorted = sortAssignmentsByCurriculum(rawList);
+
+        // Tự động bổ sung các bài tập mới từ mã nguồn nếu Cloud Firestore chưa có
+        const existingIds = new Set(rawList.map((a) => a.id));
+        const missingAssignments = INITIAL_ASSIGNMENTS.filter(
+          (a) => !existingIds.has(a.id)
+        );
+
+        let combined = rawList;
+        if (missingAssignments.length > 0) {
+          combined = [...rawList, ...missingAssignments];
+          // Tự động đồng bộ các bài tập mới này lên Cloud Firestore trong nền
+          (async () => {
+            try {
+              const batch = writeBatch(db);
+              for (const asgn of missingAssignments) {
+                batch.set(doc(db, "assignments", asgn.id), asgn, { merge: true });
+              }
+              await batch.commit();
+              console.log(
+                `[Firestore] Đã tự động đồng bộ ${missingAssignments.length} bài tập mới lên Cloud Firestore.`
+              );
+            } catch (syncErr) {
+              console.warn("[Firestore] Lỗi tự động đồng bộ bài tập mới lên Cloud:", syncErr);
+            }
+          })();
+        }
+
+        const sorted = sortAssignmentsByCurriculum(combined);
         localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
         localStorage.setItem(LS_ASSIGNMENTS_CACHED_AT_KEY, Date.now().toString());
         return sorted;
@@ -224,7 +286,13 @@ export async function getAssignments(forceRefresh: boolean = false): Promise<Ass
   const list: Assignment[] = JSON.parse(
     localStorage.getItem(LS_ASSIGNMENTS_KEY) || "[]"
   );
-  return sortAssignmentsByCurriculum(list);
+  const existingIds = new Set((list || []).map((a) => a.id));
+  const missingAssignments = INITIAL_ASSIGNMENTS.filter(
+    (a) => !existingIds.has(a.id)
+  );
+  const combined =
+    missingAssignments.length > 0 ? [...(list || []), ...missingAssignments] : list;
+  return sortAssignmentsByCurriculum(combined);
 }
 
 export async function syncAssignmentsFromCloud(): Promise<{
@@ -242,12 +310,24 @@ export async function syncAssignmentsFromCloud(): Promise<{
 
   try {
     const snap = await getDocs(collection(db, "assignments"));
-    const list = snap.docs.map((d) => ({
+    const rawList = snap.docs.map((d) => ({
       ...(d.data() as Assignment),
       id: d.id,
     }));
-    const sorted = sortAssignmentsByCurriculum(list);
+    const existingIds = new Set(rawList.map((a) => a.id));
+    const missingAssignments = INITIAL_ASSIGNMENTS.filter(
+      (a) => !existingIds.has(a.id)
+    );
+    const combined =
+      missingAssignments.length > 0
+        ? [...rawList, ...missingAssignments]
+        : rawList;
+    const sorted = sortAssignmentsByCurriculum(combined);
     localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
+    localStorage.setItem(
+      LS_ASSIGNMENTS_CACHED_AT_KEY,
+      Date.now().toString()
+    );
     return {
       success: true,
       count: sorted.length,
