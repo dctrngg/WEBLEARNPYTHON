@@ -8,6 +8,13 @@ import {
   TraceExecutionResult,
 } from "../types/ide";
 
+/** Thời gian tối đa cho MỖI test case (tính từ lúc test đó bắt đầu chạy). */
+const PER_TEST_TIMEOUT_MS = 5000;
+/** Thời gian chờ tối đa để nạp runtime trước test đầu tiên (mạng chậm khi tải Pyodide). */
+const RUNTIME_BOOT_TIMEOUT_MS = 60000;
+const TRACE_TIMEOUT_MS = 10000;
+const READY_MESSAGE = "RUNTIME READY // CPYTHON 3.12 WASM";
+
 function nowStamp(): string {
   const d = new Date();
   return d.toTimeString().split(" ")[0];
@@ -18,6 +25,13 @@ export function usePyodide() {
   const testResolverRef = useRef<((results: TestCaseResult[]) => void) | null>(
     null
   );
+  /** Các hook sự kiện của phiên chấm bài đang chạy (để đặt lại đồng hồ theo từng test). */
+  const testSessionRef = useRef<{
+    onStarted: (index: number) => void;
+    onProgress: (result: TestCaseResult) => void;
+    /** Người dùng bấm DỪNG: huỷ cả lượt chấm, trả về mảng rỗng. */
+    cancel: () => void;
+  } | null>(null);
   const traceResolverRef = useRef<
     ((result: TraceExecutionResult) => void) | null
   >(null);
@@ -114,7 +128,7 @@ export function usePyodide() {
         case "EXECUTION_COMPLETE": {
           setInputPrompt(null);
           setEngineState("ready");
-          setStatusMessage("RUNTIME READY // CPYTHON 3.12 WASM");
+          setStatusMessage(READY_MESSAGE);
           if (data.exitCode === 0) {
             appendLog(
               "success",
@@ -129,11 +143,23 @@ export function usePyodide() {
           break;
         }
 
+        case "TEST_STARTED": {
+          testSessionRef.current?.onStarted(data.index);
+          setStatusMessage(`ĐANG CHẤM TEST ${data.index}/${data.total}...`);
+          break;
+        }
+
+        case "TEST_PROGRESS": {
+          if (data.result) testSessionRef.current?.onProgress(data.result);
+          break;
+        }
+
         case "TEST_RESULTS": {
           const results: TestCaseResult[] = data.results || [];
           setTestResults(results);
           setEngineState("ready");
-          setStatusMessage("RUNTIME READY // CPYTHON 3.12 WASM");
+          setStatusMessage(READY_MESSAGE);
+          testSessionRef.current = null;
           if (testResolverRef.current) {
             testResolverRef.current(results);
             testResolverRef.current = null;
@@ -149,7 +175,7 @@ export function usePyodide() {
             limitReached: false,
           };
           setEngineState("ready");
-          setStatusMessage("RUNTIME READY // CPYTHON 3.12 WASM");
+          setStatusMessage(READY_MESSAGE);
           if (traceResolverRef.current) {
             traceResolverRef.current(res);
             traceResolverRef.current = null;
@@ -213,77 +239,188 @@ export function usePyodide() {
     [appendLog]
   );
 
+  /** Huỷ worker đang chạy và tạo lại worker mới. `reason` = thông báo hiển thị trong console. */
+  const killWorker = useCallback(
+    (reason: string) => {
+      if (workerRef.current) {
+        workerRef.current.terminate();
+        workerRef.current = null;
+      }
+      setInputPrompt(null);
+      const session = testSessionRef.current;
+      testSessionRef.current = null;
+      if (session) {
+        session.cancel();
+      } else if (testResolverRef.current) {
+        const resolve = testResolverRef.current;
+        testResolverRef.current = null;
+        resolve([]);
+      }
+      if (traceResolverRef.current) {
+        const resolve = traceResolverRef.current;
+        traceResolverRef.current = null;
+        resolve({
+          steps: [],
+          error: "Execution terminated",
+          totalStdout: "",
+          limitReached: false,
+        });
+      }
+      appendLog("stderr", reason);
+      spawnWorker();
+    },
+    [appendLog, spawnWorker]
+  );
+
   const stopExecution = useCallback(() => {
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null;
-    }
-    setInputPrompt(null);
-    if (testResolverRef.current) {
-      testResolverRef.current([]);
-      testResolverRef.current = null;
-    }
-    if (traceResolverRef.current) {
-      traceResolverRef.current({
-        steps: [],
-        error: "Execution terminated",
-        totalStdout: "",
-        limitReached: false,
-      });
-      traceResolverRef.current = null;
-    }
-    appendLog(
-      "stderr",
+    killWorker(
       "[■] SIGKILL // Execution terminated by user. Respawning isolated Pyodide Web Worker..."
     );
-    spawnWorker();
-  }, [appendLog, spawnWorker]);
+  }, [killWorker]);
 
   const runTests = useCallback(
     (code: string, testCases: TestCase[]): Promise<TestCaseResult[]> => {
       if (!workerRef.current) {
         spawnWorker();
       }
+      // Huỷ phiên chấm cũ (nếu còn) để không bị ghi đè resolver
+      if (testSessionRef.current) {
+        const prev = testSessionRef.current;
+        testSessionRef.current = null;
+        prev.cancel();
+      }
       setInputPrompt(null);
       setEngineState("running");
       setStatusMessage("RUNNING AUTOMATED GRADING SUITE...");
 
+      if (testCases.length === 0) {
+        setTestResults([]);
+        setEngineState("ready");
+        setStatusMessage(READY_MESSAGE);
+        return Promise.resolve([]);
+      }
+
       return new Promise((resolve) => {
-        // Safety timeout of 12 seconds for infinite loops during test grading
-        const timer = setTimeout(() => {
-          if (testResolverRef.current) {
-            const timeoutResults: TestCaseResult[] = testCases.map(
-              (tc, idx) => ({
+        const completed = new Map<number, TestCaseResult>();
+        let currentIndex = 0;
+        let timer: ReturnType<typeof setTimeout> | null = null;
+
+        const arm = (ms: number) => {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(onTimeout, ms);
+        };
+
+        const collect = (): TestCaseResult[] =>
+          testCases.map(
+            (tc, idx) =>
+              completed.get(idx + 1) || {
                 index: idx + 1,
                 input: tc.input,
                 expectedOutput: tc.expectedOutput,
                 actualOutput: "",
-                stderr: "TimeoutError: Execution exceeded 12,000ms limit (Infinite loop detected).",
+                stderr: "RuntimeError: Không nhận được kết quả cho test này.",
                 passed: false,
                 isHidden: tc.isHidden,
-                durationMs: 12000,
-              })
-            );
-            setTestResults(timeoutResults);
-            testResolverRef.current = null;
-            stopExecution();
-            resolve(timeoutResults);
-          }
-        }, 12000);
+                durationMs: 0,
+              }
+          );
 
-        testResolverRef.current = (results) => {
-          clearTimeout(timer);
+        const finish = () => {
+          if (timer) clearTimeout(timer);
+          if (testResolverRef.current === finish) testResolverRef.current = null;
+          testSessionRef.current = null;
+          const results = collect();
+          setTestResults(results);
+          setEngineState("ready");
+          setStatusMessage(READY_MESSAGE);
           resolve(results);
         };
 
-        workerRef.current?.postMessage({
-          type: "RUN_TESTS",
-          code,
-          testCases,
-        });
+        /** Gửi các test từ vị trí `fromIdx` (0-based) tới worker hiện tại. */
+        const dispatch = (fromIdx: number) => {
+          arm(RUNTIME_BOOT_TIMEOUT_MS);
+          workerRef.current?.postMessage({
+            type: "RUN_TESTS",
+            code,
+            testCases: testCases.slice(fromIdx),
+            indexOffset: fromIdx,
+          });
+        };
+
+        // Quá thời gian: chỉ đánh trượt test đang treo, khởi động lại worker
+        // rồi tiếp tục chấm các test còn lại (không bỏ qua test ẩn).
+        const onTimeout = () => {
+          if (testResolverRef.current !== finish) return;
+          if (currentIndex === 0) {
+            // Runtime không khởi động được (mạng chậm / CDN lỗi)
+            testCases.forEach((tc, idx) => {
+              completed.set(idx + 1, {
+                index: idx + 1,
+                input: tc.input,
+                expectedOutput: tc.expectedOutput,
+                actualOutput: "",
+                stderr: "RuntimeError: Không nạp được Python runtime (kiểm tra kết nối mạng).",
+                passed: false,
+                isHidden: tc.isHidden,
+                durationMs: 0,
+              });
+            });
+            workerRef.current?.terminate();
+            workerRef.current = null;
+            spawnWorker();
+            finish();
+            return;
+          }
+
+          const tc = testCases[currentIndex - 1];
+          completed.set(currentIndex, {
+            index: currentIndex,
+            input: tc.input,
+            expectedOutput: tc.expectedOutput,
+            actualOutput: "",
+            stderr: `TimeoutError: Test vượt quá ${PER_TEST_TIMEOUT_MS / 1000}s — có thể do vòng lặp vô hạn hoặc thiếu dữ liệu vào.`,
+            passed: false,
+            isHidden: tc.isHidden,
+            durationMs: PER_TEST_TIMEOUT_MS,
+          });
+          appendLog(
+            "stderr",
+            `✕ Test #${currentIndex} quá thời gian ${PER_TEST_TIMEOUT_MS / 1000}s — đã dừng và khởi động lại runtime.`
+          );
+
+          workerRef.current?.terminate();
+          workerRef.current = null;
+          spawnWorker();
+
+          const nextIdx = currentIndex; // 0-based vị trí test kế tiếp
+          currentIndex = 0;
+          if (nextIdx >= testCases.length) {
+            finish();
+          } else {
+            dispatch(nextIdx);
+          }
+        };
+
+        testResolverRef.current = finish;
+        testSessionRef.current = {
+          onStarted: (index) => {
+            currentIndex = index;
+            arm(PER_TEST_TIMEOUT_MS);
+          },
+          onProgress: (result) => {
+            completed.set(result.index, result);
+          },
+          cancel: () => {
+            if (timer) clearTimeout(timer);
+            if (testResolverRef.current === finish) testResolverRef.current = null;
+            setTestResults(null);
+            resolve([]);
+          },
+        };
+        dispatch(0);
       });
     },
-    [spawnWorker, stopExecution]
+    [spawnWorker, appendLog, setTestResults]
   );
 
   const traceCode = useCallback(
@@ -299,7 +436,7 @@ export function usePyodide() {
         const timer = setTimeout(() => {
           if (traceResolverRef.current) {
             traceResolverRef.current = null;
-            stopExecution();
+            killWorker("✕ Chạy từng bước quá thời gian. Đã dừng và khởi động lại runtime.");
             resolve({
               steps: [],
               error:
@@ -308,7 +445,7 @@ export function usePyodide() {
               limitReached: false,
             });
           }
-        }, 10000);
+        }, TRACE_TIMEOUT_MS);
 
         traceResolverRef.current = (result) => {
           clearTimeout(timer);
@@ -322,7 +459,7 @@ export function usePyodide() {
         });
       });
     },
-    [spawnWorker, stopExecution]
+    [spawnWorker, killWorker]
   );
 
   const clearConsole = useCallback(() => {

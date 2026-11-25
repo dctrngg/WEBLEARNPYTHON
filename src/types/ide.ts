@@ -6,7 +6,10 @@ export interface UserProfile {
   email: string;
   displayName: string;
   className?: string; // e.g. "10A7", "10A12"
+  /** @deprecated Mật khẩu dạng rõ (dữ liệu cũ) — tự động chuyển sang passwordHash khi đăng nhập */
   password?: string;
+  /** SHA-256(salt + mật khẩu), dạng hex */
+  passwordHash?: string;
   role: UserRole;
   createdAt: string;
 }
@@ -30,6 +33,9 @@ export interface Assignment {
   testCases: TestCase[];
   createdBy: string;
   createdAt: string;
+  /** Xoá mềm: bài đã bị giáo viên xoá, giữ lại để không bị seed khôi phục */
+  deleted?: boolean;
+  deletedAt?: string;
 }
 
 export type SubmissionStatus = "in_progress" | "passed" | "failed";

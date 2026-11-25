@@ -55,7 +55,7 @@ export const StatusGlyph: React.FC<StatusGlyphProps> = ({
         {meta.glyph}
       </span>
       {showLabel ? (
-        <span className="text-mono-xs uppercase">{meta.label}</span>
+        <span className="text-mono-xs">{meta.label}</span>
       ) : (
         <span className="sr-only">{meta.label}</span>
       )}

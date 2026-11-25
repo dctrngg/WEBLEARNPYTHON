@@ -242,7 +242,7 @@ export const ProjectorPage: React.FC = () => {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <span className="text-brand font-bold text-sm">⏱</span>
-              <span className="font-bold text-xs text-primary uppercase tracking-wide">
+              <span className="font-bold text-xs text-primary tracking-wide">
                 ĐỒNG HỒ ĐẾM NGƯỢC THỜI GIAN THỰC HÀNH
               </span>
             </div>
@@ -329,7 +329,7 @@ export const ProjectorPage: React.FC = () => {
         {/* Live Class KPI Cards (7 cols) */}
         <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="border border-grid bg-surface p-3 flex flex-col justify-between">
-            <span className="text-[11px] text-secondary font-semibold uppercase">
+            <span className="text-[11px] text-secondary font-semibold">
               HỌC SINH THAM GIA
             </span>
             <div className="text-3xl font-extrabold text-primary mt-1">
@@ -339,7 +339,7 @@ export const ProjectorPage: React.FC = () => {
           </div>
 
           <div className="border border-grid bg-surface p-3 flex flex-col justify-between">
-            <span className="text-[11px] text-secondary font-semibold uppercase">
+            <span className="text-[11px] text-secondary font-semibold">
               LƯỢT NỘP BÀI
             </span>
             <div className="text-3xl font-extrabold text-brand mt-1">
@@ -349,7 +349,7 @@ export const ProjectorPage: React.FC = () => {
           </div>
 
           <div className="border border-grid bg-surface p-3 flex flex-col justify-between">
-            <span className="text-[11px] text-secondary font-semibold uppercase">
+            <span className="text-[11px] text-secondary font-semibold">
               BÀI ĐẠT (PASSED)
             </span>
             <div className="text-3xl font-extrabold text-emerald-500 mt-1">
@@ -359,7 +359,7 @@ export const ProjectorPage: React.FC = () => {
           </div>
 
           <div className="border border-grid bg-surface p-3 flex flex-col justify-between">
-            <span className="text-[11px] text-secondary font-semibold uppercase">
+            <span className="text-[11px] text-secondary font-semibold">
               TỶ LỆ ĐẠT CHUẨN
             </span>
             <div className="text-3xl font-extrabold text-primary mt-1">
@@ -377,7 +377,7 @@ export const ProjectorPage: React.FC = () => {
           <div className="h-11 px-4 border-b border-grid bg-subtle flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <span className="text-brand font-bold">⚡</span>
-              <h2 className="font-bold text-xs sm:text-sm text-primary uppercase">
+              <h2 className="font-bold text-xs sm:text-sm text-primary">
                 DÒNG HOẠT ĐỘNG NỘP BÀI THỜI GIAN THỰC (LIVE STREAM)
               </h2>
             </div>
@@ -487,7 +487,7 @@ export const ProjectorPage: React.FC = () => {
           <div className="h-11 px-4 border-b border-grid bg-subtle flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <span className="text-amber-500 font-bold">🏆</span>
-              <h2 className="font-bold text-xs sm:text-sm text-primary uppercase">
+              <h2 className="font-bold text-xs sm:text-sm text-primary">
                 BẢNG VÀNG VINH DANH TIẾT HỌC (LEADERBOARD)
               </h2>
             </div>

@@ -10,9 +10,12 @@ import {
   orderBy,
   writeBatch,
   onSnapshot,
+  updateDoc,
+  deleteField,
 } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../firebase/config";
 import { Assignment, Submission, UserProfile } from "../types/ide";
+import { hashPassword } from "./passwordHash";
 import {
   INITIAL_ASSIGNMENTS,
   INITIAL_SUBMISSIONS,
@@ -25,6 +28,40 @@ const LS_ASSIGNMENTS_KEY = "chroma_py_assignments_v14_145";
 const LS_SUBMISSIONS_KEY = "chroma_py_submissions_v11";
 const LS_ASSIGNMENTS_CACHED_AT_KEY = "chroma_py_asgn_cache_time_v14";
 const ASSIGNMENTS_CACHE_TTL_MS = 15 * 60 * 1000; // 15 phút cache trình duyệt để tối ưu lượt đọc Firestore
+
+/**
+ * Firestore từ chối mọi trường có giá trị `undefined` (lỗi invalid-argument),
+ * khiến cả lần ghi thất bại và chỉ còn lưu được ở localStorage.
+ * Loại bỏ các trường undefined trước khi ghi để đồng bộ đám mây luôn thành công.
+ */
+function stripUndefined<T extends object>(obj: T): T {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v !== undefined) out[k] = v;
+  }
+  return out as T;
+}
+
+/** Bài tập đã bị giáo viên xoá được giữ lại dạng "bia mộ" (deleted: true)
+ * để bộ đồng bộ không tự động khôi phục lại bài mẫu từ mã nguồn. */
+const isActiveAssignment = (a: Assignment) => !a.deleted;
+
+function readLocalList<T>(key: string): T[] {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeLocalList<T>(key: string, list: T[]) {
+  try {
+    localStorage.setItem(key, JSON.stringify(list));
+  } catch (err) {
+    console.warn("[LocalStore] Không thể ghi localStorage:", err);
+  }
+}
 
 function ensureLocalSeed() {
   // Dọn dẹp cache cũ nếu có
@@ -46,28 +83,13 @@ function ensureLocalSeed() {
 
   const storedAsgns = localStorage.getItem(LS_ASSIGNMENTS_KEY);
   if (!storedAsgns) {
-    localStorage.setItem(
-      LS_ASSIGNMENTS_KEY,
-      JSON.stringify(INITIAL_ASSIGNMENTS)
-    );
+    writeLocalList(LS_ASSIGNMENTS_KEY, INITIAL_ASSIGNMENTS);
   } else {
-    try {
-      const parsed = JSON.parse(storedAsgns);
-      if (!Array.isArray(parsed) || parsed.length < INITIAL_ASSIGNMENTS.length) {
-        // Tự động bổ sung các bài tập mới nếu cache chưa đủ
-        const existingIds = new Set((parsed || []).map((a: any) => a.id));
-        const missing = INITIAL_ASSIGNMENTS.filter((a) => !existingIds.has(a.id));
-        const merged = [...(parsed || []), ...missing];
-        localStorage.setItem(
-          LS_ASSIGNMENTS_KEY,
-          JSON.stringify(sortAssignmentsByCurriculum(merged))
-        );
-      }
-    } catch {
-      localStorage.setItem(
-        LS_ASSIGNMENTS_KEY,
-        JSON.stringify(INITIAL_ASSIGNMENTS)
-      );
+    const parsed = readLocalList<Assignment>(LS_ASSIGNMENTS_KEY);
+    const existingIds = new Set(parsed.map((a) => a.id));
+    const missing = INITIAL_ASSIGNMENTS.filter((a) => !existingIds.has(a.id));
+    if (missing.length > 0) {
+      writeLocalList(LS_ASSIGNMENTS_KEY, [...parsed, ...missing]);
     }
   }
 
@@ -101,11 +123,18 @@ export async function seedCloudFirestoreData(): Promise<{
     const batch = writeBatch(db);
 
     for (const user of INITIAL_USERS) {
-      batch.set(doc(db, "users", user.uid), user, { merge: true });
+      // Không ghi đè tài khoản đã tồn tại (tránh reset mật khẩu giáo viên đã đổi)
+      const existing = await getDoc(doc(db, "users", user.uid));
+      if (existing.exists()) continue;
+      // Không bao giờ đẩy mật khẩu dạng rõ lên Cloud — chỉ lưu bản băm
+      const { password, ...rest } = user;
+      const passwordHash = password ? await hashPassword(user.uid, password) : undefined;
+      batch.set(doc(db, "users", user.uid), stripUndefined({ ...rest, passwordHash }), { merge: true });
     }
 
     for (const asgn of INITIAL_ASSIGNMENTS) {
-      batch.set(doc(db, "assignments", asgn.id), asgn, { merge: true });
+      // deleted: false — khôi phục cả các bài mẫu đã bị xoá mềm
+      batch.set(doc(db, "assignments", asgn.id), { ...asgn, deleted: false }, { merge: true });
     }
 
     for (const sub of INITIAL_SUBMISSIONS) {
@@ -151,7 +180,7 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
 export async function upsertUserProfile(profile: UserProfile): Promise<void> {
   if (isFirebaseConfigured && db) {
     try {
-      await setDoc(doc(db, "users", profile.uid), profile, { merge: true });
+      await setDoc(doc(db, "users", profile.uid), stripUndefined(profile), { merge: true });
     } catch (err) {
       console.warn("[Firestore] Fallback to local user save:", err);
     }
@@ -162,12 +191,40 @@ export async function upsertUserProfile(profile: UserProfile): Promise<void> {
     localStorage.getItem(LS_USERS_KEY) || "[]"
   );
   const idx = users.findIndex((u) => u.uid === profile.uid);
+  // Hợp nhất như `merge: true` để không làm mất passwordHash khi lưu hồ sơ phiên
   if (idx >= 0) {
-    users[idx] = profile;
+    users[idx] = { ...users[idx], ...stripUndefined(profile) };
   } else {
-    users.push(profile);
+    users.push(stripUndefined(profile));
   }
-  localStorage.setItem(LS_USERS_KEY, JSON.stringify(users));
+  writeLocalList(LS_USERS_KEY, users);
+}
+
+/**
+ * Ghi mật khẩu đã băm và xoá hẳn trường mật khẩu dạng rõ (nếu có) của tài khoản.
+ */
+export async function setUserPasswordHash(
+  uid: string,
+  passwordHash: string
+): Promise<void> {
+  if (isFirebaseConfigured && db) {
+    try {
+      await updateDoc(doc(db, "users", uid), {
+        passwordHash,
+        password: deleteField(),
+      });
+    } catch (err) {
+      console.warn("[Firestore] Fallback to local password update:", err);
+    }
+  }
+  ensureLocalSeed();
+  const users = readLocalList<UserProfile>(LS_USERS_KEY);
+  const idx = users.findIndex((u) => u.uid === uid);
+  if (idx >= 0) {
+    const { password: _legacy, ...rest } = users[idx];
+    users[idx] = { ...rest, passwordHash };
+    writeLocalList(LS_USERS_KEY, users);
+  }
 }
 
 export async function deleteUserById(uid: string): Promise<void> {
@@ -185,6 +242,32 @@ export async function deleteUserById(uid: string): Promise<void> {
   );
   const filtered = users.filter((u) => u.uid !== uid);
   localStorage.setItem(LS_USERS_KEY, JSON.stringify(filtered));
+}
+
+/**
+ * Tìm tài khoản theo username bằng truy vấn có điều kiện —
+ * không tải toàn bộ danh sách người dùng về trình duyệt khi đăng nhập.
+ */
+export async function findUserByUsername(
+  username: string
+): Promise<UserProfile | null> {
+  if (isFirebaseConfigured && db) {
+    try {
+      const snap = await getDocs(
+        query(collection(db, "users"), where("username", "==", username))
+      );
+      if (!snap.empty) return snap.docs[0].data() as UserProfile;
+      return null;
+    } catch (err) {
+      console.warn("[Firestore] Fallback to local username lookup:", err);
+    }
+  }
+  ensureLocalSeed();
+  return (
+    readLocalList<UserProfile>(LS_USERS_KEY).find(
+      (u) => (u.username || "").toLowerCase() === username
+    ) || null
+  );
 }
 
 export async function getAllUsers(): Promise<UserProfile[]> {
@@ -210,24 +293,36 @@ export async function getAllUsers(): Promise<UserProfile[]> {
 
 // --- ASSIGNMENTS COLLECTION (docId = auto-generated or custom slug) ---
 
+/**
+ * Hợp nhất danh sách bài từ nguồn (Firestore/localStorage) với bài mẫu trong mã nguồn.
+ * Bài mẫu chỉ được bổ sung khi CHƯA từng tồn tại (kể cả dạng bia mộ đã xoá).
+ */
+function mergeWithSeed(list: Assignment[]): {
+  all: Assignment[];
+  missing: Assignment[];
+} {
+  const existingIds = new Set(list.map((a) => a.id));
+  const missing = INITIAL_ASSIGNMENTS.filter((a) => !existingIds.has(a.id));
+  return { all: missing.length > 0 ? [...list, ...missing] : list, missing };
+}
+
+function activeSorted(list: Assignment[]): Assignment[] {
+  return sortAssignmentsByCurriculum(list.filter(isActiveAssignment));
+}
+
 export async function getAssignments(forceRefresh: boolean = false): Promise<Assignment[]> {
   ensureLocalSeed();
 
-  // 1. Kiểm tra cache cục bộ (TTL: 15 phút) để tiết kiệm 100% lượt đọc Firestore cho học sinh
+  // 1. Cache cục bộ (TTL: 15 phút) để tiết kiệm lượt đọc Firestore cho học sinh
   if (!forceRefresh) {
-    try {
-      const cachedAtStr = localStorage.getItem(LS_ASSIGNMENTS_CACHED_AT_KEY);
-      const cachedData = localStorage.getItem(LS_ASSIGNMENTS_KEY);
-      if (cachedAtStr && cachedData) {
-        const cachedAt = parseInt(cachedAtStr, 10);
-        if (Date.now() - cachedAt < ASSIGNMENTS_CACHE_TTL_MS) {
-          const parsed = JSON.parse(cachedData);
-          if (Array.isArray(parsed) && parsed.length >= INITIAL_ASSIGNMENTS.length) {
-            return sortAssignmentsByCurriculum(parsed);
-          }
-        }
-      }
-    } catch {}
+    const cachedAt = parseInt(
+      localStorage.getItem(LS_ASSIGNMENTS_CACHED_AT_KEY) || "0",
+      10
+    );
+    if (cachedAt && Date.now() - cachedAt < ASSIGNMENTS_CACHE_TTL_MS) {
+      const cached = readLocalList<Assignment>(LS_ASSIGNMENTS_KEY);
+      if (cached.length > 0) return activeSorted(cached);
+    }
   }
 
   // 2. Chỉ gửi request lên Cloud Firestore khi hết hạn cache hoặc forceRefresh = true
@@ -239,60 +334,40 @@ export async function getAssignments(forceRefresh: boolean = false): Promise<Ass
           ...(d.data() as Assignment),
           id: d.id,
         }));
+        const { all, missing } = mergeWithSeed(rawList);
 
-        // Tự động bổ sung các bài tập mới từ mã nguồn nếu Cloud Firestore chưa có
-        const existingIds = new Set(rawList.map((a) => a.id));
-        const missingAssignments = INITIAL_ASSIGNMENTS.filter(
-          (a) => !existingIds.has(a.id)
-        );
-
-        let combined = rawList;
-        if (missingAssignments.length > 0) {
-          combined = [...rawList, ...missingAssignments];
-          // Tự động đồng bộ các bài tập mới này lên Cloud Firestore trong nền
+        if (missing.length > 0) {
+          // Đồng bộ các bài mẫu mới (chưa từng có trên Cloud) trong nền
+          const firestore = db;
           (async () => {
             try {
-              const batch = writeBatch(db);
-              for (const asgn of missingAssignments) {
-                batch.set(doc(db, "assignments", asgn.id), asgn, { merge: true });
+              const batch = writeBatch(firestore);
+              for (const asgn of missing) {
+                batch.set(doc(firestore, "assignments", asgn.id), asgn, { merge: true });
               }
               await batch.commit();
-              console.log(
-                `[Firestore] Đã tự động đồng bộ ${missingAssignments.length} bài tập mới lên Cloud Firestore.`
-              );
             } catch (syncErr) {
               console.warn("[Firestore] Lỗi tự động đồng bộ bài tập mới lên Cloud:", syncErr);
             }
           })();
         }
 
-        const sorted = sortAssignmentsByCurriculum(combined);
-        localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
+        writeLocalList(LS_ASSIGNMENTS_KEY, all);
         localStorage.setItem(LS_ASSIGNMENTS_CACHED_AT_KEY, Date.now().toString());
-        return sorted;
-      } else {
-        // Auto-seed the Tin học 10 assignments into empty Cloud Firestore on first connect
-        const seeded = await seedCloudFirestoreData();
-        if (seeded.success) {
-          localStorage.setItem(LS_ASSIGNMENTS_CACHED_AT_KEY, Date.now().toString());
-          return sortAssignmentsByCurriculum(INITIAL_ASSIGNMENTS);
-        }
+        return activeSorted(all);
+      }
+      // Cloud trống: tự seed bài tập Tin học 10 ở lần kết nối đầu tiên
+      const seeded = await seedCloudFirestoreData();
+      if (seeded.success) {
+        localStorage.setItem(LS_ASSIGNMENTS_CACHED_AT_KEY, Date.now().toString());
+        return activeSorted(INITIAL_ASSIGNMENTS);
       }
     } catch (err) {
       console.warn("[Firestore] Fallback to local assignments:", err);
     }
   }
 
-  const list: Assignment[] = JSON.parse(
-    localStorage.getItem(LS_ASSIGNMENTS_KEY) || "[]"
-  );
-  const existingIds = new Set((list || []).map((a) => a.id));
-  const missingAssignments = INITIAL_ASSIGNMENTS.filter(
-    (a) => !existingIds.has(a.id)
-  );
-  const combined =
-    missingAssignments.length > 0 ? [...(list || []), ...missingAssignments] : list;
-  return sortAssignmentsByCurriculum(combined);
+  return activeSorted(mergeWithSeed(readLocalList<Assignment>(LS_ASSIGNMENTS_KEY)).all);
 }
 
 export async function syncAssignmentsFromCloud(): Promise<{
@@ -314,23 +389,12 @@ export async function syncAssignmentsFromCloud(): Promise<{
       ...(d.data() as Assignment),
       id: d.id,
     }));
-    const existingIds = new Set(rawList.map((a) => a.id));
-    const missingAssignments = INITIAL_ASSIGNMENTS.filter(
-      (a) => !existingIds.has(a.id)
-    );
-    const combined =
-      missingAssignments.length > 0
-        ? [...rawList, ...missingAssignments]
-        : rawList;
-    const sorted = sortAssignmentsByCurriculum(combined);
-    localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
-    localStorage.setItem(
-      LS_ASSIGNMENTS_CACHED_AT_KEY,
-      Date.now().toString()
-    );
+    const { all } = mergeWithSeed(rawList);
+    writeLocalList(LS_ASSIGNMENTS_KEY, all);
+    localStorage.setItem(LS_ASSIGNMENTS_CACHED_AT_KEY, Date.now().toString());
     return {
       success: true,
-      count: sorted.length,
+      count: all.filter(isActiveAssignment).length,
     };
   } catch (err: any) {
     return {
@@ -361,20 +425,45 @@ export async function pushAssignmentsToCloud(
     const snap = await getDocs(collection(db, "assignments"));
     const currentIdSet = new Set(currentAssignments.map((a) => a.id));
 
+    const deletedAt = new Date().toISOString();
+    const tombstones: Assignment[] = [];
+    // Ghi theo lô (tối đa 450 thao tác/lô, giới hạn Firestore là 500) thay vì từng request
+    let batch = writeBatch(db);
+    let ops = 0;
+    const flush = async () => {
+      if (ops > 0) {
+        await batch.commit();
+        batch = writeBatch(db!);
+        ops = 0;
+      }
+    };
+
     for (const remoteDoc of snap.docs) {
+      const data = remoteDoc.data() as Assignment;
       if (!currentIdSet.has(remoteDoc.id)) {
-        await deleteDoc(doc(db, "assignments", remoteDoc.id));
+        const tomb = { ...data, id: remoteDoc.id, deleted: true, deletedAt: data.deletedAt || deletedAt };
+        tombstones.push(tomb);
+        if (!data.deleted) {
+          batch.set(doc(db, "assignments", remoteDoc.id), { deleted: true, deletedAt }, { merge: true });
+          if (++ops >= 450) await flush();
+        }
       }
     }
 
     // 2. Set/merge all current assignments to Firestore
     for (const asgn of currentAssignments) {
-      await setDoc(doc(db, "assignments", asgn.id), asgn, { merge: true });
+      batch.set(
+        doc(db, "assignments", asgn.id),
+        stripUndefined({ ...asgn, deleted: false }),
+        { merge: true }
+      );
+      if (++ops >= 450) await flush();
     }
+    await flush();
 
-    // 3. Update local storage with sorted list
+    // 3. Update local storage with sorted list (kèm bia mộ)
     const sorted = sortAssignmentsByCurriculum(currentAssignments);
-    localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(sorted));
+    writeLocalList(LS_ASSIGNMENTS_KEY, [...sorted, ...tombstones]);
 
     return {
       success: true,
@@ -396,12 +485,13 @@ export async function saveAssignment(assignment: Assignment): Promise<Assignment
   const payload: Assignment = {
     ...assignment,
     id,
+    deleted: false,
     createdAt: assignment.createdAt || new Date().toISOString(),
   };
 
   if (isFirebaseConfigured && db) {
     try {
-      await setDoc(doc(db, "assignments", id), payload, { merge: true });
+      await setDoc(doc(db, "assignments", id), stripUndefined(payload), { merge: true });
     } catch (err) {
       console.warn("[Firestore] Fallback to local assignment save:", err);
     }
@@ -422,20 +512,27 @@ export async function saveAssignment(assignment: Assignment): Promise<Assignment
 }
 
 export async function deleteAssignmentById(assignmentId: string): Promise<void> {
+  const deletedAt = new Date().toISOString();
   if (isFirebaseConfigured && db) {
     try {
-      await deleteDoc(doc(db, "assignments", assignmentId));
+      // Xoá mềm: giữ "bia mộ" để bài mẫu không tự hồi sinh ở lần đồng bộ sau
+      await setDoc(
+        doc(db, "assignments", assignmentId),
+        { id: assignmentId, deleted: true, deletedAt },
+        { merge: true }
+      );
     } catch (err) {
       console.warn("[Firestore] Fallback to local assignment delete:", err);
     }
   }
 
   ensureLocalSeed();
-  const list: Assignment[] = JSON.parse(
-    localStorage.getItem(LS_ASSIGNMENTS_KEY) || "[]"
-  );
-  const filtered = list.filter((a) => a.id !== assignmentId);
-  localStorage.setItem(LS_ASSIGNMENTS_KEY, JSON.stringify(filtered));
+  const list = readLocalList<Assignment>(LS_ASSIGNMENTS_KEY);
+  const idx = list.findIndex((a) => a.id === assignmentId);
+  if (idx >= 0) {
+    list[idx] = { ...list[idx], deleted: true, deletedAt };
+  }
+  writeLocalList(LS_ASSIGNMENTS_KEY, list);
 }
 
 // --- SUBMISSIONS COLLECTION (docId = ${uid}_${assignmentId}) ---
@@ -466,15 +563,15 @@ export async function getSubmission(
 
 export async function saveSubmission(submission: Submission): Promise<Submission> {
   const docId = `${submission.userId}_${submission.assignmentId}`;
-  const payload: Submission = {
+  const payload: Submission = stripUndefined({
     ...submission,
     id: docId,
     updatedAt: new Date().toISOString(),
-  };
+  });
 
   if (isFirebaseConfigured && db) {
     try {
-      await setDoc(doc(db, "submissions", docId), payload, { merge: true });
+      await setDoc(doc(db, "submissions", docId), stripUndefined(payload), { merge: true });
     } catch (err) {
       console.warn("[Firestore] Fallback to local submission write:", err);
     }
@@ -485,22 +582,23 @@ export async function saveSubmission(submission: Submission): Promise<Submission
     localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]"
   );
   const idx = list.findIndex((s) => s.id === docId);
+  // Hợp nhất giống `merge: true` của Firestore: giữ lại passedCount/totalCount cũ
+  // khi lần lưu tự động không gửi kèm kết quả chấm.
+  const merged: Submission = idx >= 0 ? { ...list[idx], ...payload } : payload;
   if (idx >= 0) {
-    list[idx] = payload;
+    list[idx] = merged;
   } else {
-    list.unshift(payload);
+    list.unshift(merged);
   }
-  localStorage.setItem(LS_SUBMISSIONS_KEY, JSON.stringify(list));
-  return payload;
+  writeLocalList(LS_SUBMISSIONS_KEY, list);
+  return merged;
 }
 
 export async function getAllSubmissions(): Promise<Submission[]> {
   if (isFirebaseConfigured && db) {
     try {
       const snap = await getDocs(collection(db, "submissions"));
-      if (!snap.empty) {
-        return snap.docs.map((d) => d.data() as Submission);
-      }
+      return snap.docs.map((d) => d.data() as Submission);
     } catch (err) {
       console.warn("[Firestore] Fallback to local submissions list:", err);
     }

@@ -1,5 +1,14 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {
+  BookOpen,
+  Code2,
+  LayoutDashboard,
+  LogOut,
+  Moon,
+  MonitorPlay,
+  Sun,
+} from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useLanguage } from "../../contexts/LanguageContext";
@@ -14,6 +23,14 @@ interface TopNavigationBarProps {
   onOpenCheatSheet?: () => void;
 }
 
+/** Chữ cái đầu của tên để làm avatar */
+function initialsOf(name: string): string {
+  const parts = name.trim().split(/\s+/).filter((w) => /\p{L}/u.test(w));
+  if (parts.length === 0) return "?";
+  const last = parts[parts.length - 1][0] || "";
+  return last.toUpperCase();
+}
+
 export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -21,157 +38,136 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAdmin = user?.role === "instructor" || user?.role === ("admin" as any);
-
-  const isAdminRoute =
-    location.pathname.startsWith("/admin") ||
-    location.pathname.startsWith("/instructor");
-
+  const isAdmin = user?.role === "instructor";
   const isBlueprintRoute =
     location.pathname === "/" || location.pathname.startsWith("/blueprint");
-  const isWorkspaceRoute = location.pathname.startsWith("/workspace");
 
   const handleLogout = async () => {
     await logout();
     navigate("/login");
   };
 
+  const navItem = (active: boolean) =>
+    `h-9 px-3 inline-flex items-center gap-2 text-sm font-semibold transition-colors ${
+      active
+        ? "bg-brand-soft text-brand-text"
+        : "text-secondary hover:text-primary hover:bg-subtle"
+    }`;
+
   return (
-    <header className="min-h-[44px] h-auto py-1 bg-surface border-b border-grid px-3 sm:px-4 flex flex-wrap items-center justify-between gap-y-1 font-mono text-xs select-none shrink-0 z-30">
-      {/* 1. Bên trái: Logo + Chuyển đổi giữa [BÀI HỌC LÝ THUYẾT] và [PHÒNG CODE IDE] */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        {/* Logo / Tên hệ thống */}
+    <header className="h-14 bg-surface/95 backdrop-blur border-b border-grid px-3 sm:px-5 flex items-center justify-between gap-3 select-none shrink-0 z-30">
+      <div className="flex items-center gap-2 sm:gap-5 min-w-0">
         <Link
           to="/"
-          className="flex items-center gap-2 text-primary font-bold tracking-tight shrink-0 hover:text-brand transition-colors text-xs"
+          className="flex items-center gap-2 shrink-0 text-primary"
+          aria-label="CoCode"
         >
-          <span className="text-brand font-bold text-sm">▣</span>
-          <span className="hidden sm:inline">{t("TIN HỌC 10", "CS GRADE 10")}</span>
+          <span className="w-8 h-8 rounded-[9px] bg-brand text-on-brand grid place-items-center font-bold text-sm shadow-card">
+            Py
+          </span>
+          <span className="hidden md:flex flex-col leading-tight">
+            <span className="font-bold text-[15px]">CoCode</span>
+            <span className="text-[11px] text-muted">
+              {t("Python Tin học 10", "Python · Grade 10")}
+            </span>
+          </span>
         </Link>
 
-        <span className="text-grid-strong hidden sm:inline">|</span>
-
-        {/* Chuyển đổi Bài học lý thuyết ↔ Phòng Code IDE */}
-        <div className="flex items-center gap-2 shrink-0">
-          <Link
-            to="/"
-            className={`px-3 py-1 font-medium flex items-center gap-1.5 transition-all ${
-              isBlueprintRoute
-                ? "neo-btn bg-brand text-white border-brand font-semibold"
-                : "neo-btn bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
-            }`}
-          >
-            <span>📚</span>
-            <span>{t("BÀI HỌC LÝ THUYẾT", "LÝ THUYẾT")}</span>
+        <nav className="flex items-center gap-1" aria-label={t("Điều hướng chính", "Main")}>
+          <Link to="/" className={navItem(isBlueprintRoute)}>
+            <BookOpen size={16} />
+            <span className="hidden sm:inline">{t("Bài học", "Lessons")}</span>
           </Link>
-
-          <Link
+          <NavLink
             to="/workspace"
-            className={`px-3 py-1 font-medium flex items-center gap-1.5 transition-all ${
-              isWorkspaceRoute
-                ? "neo-btn bg-brand text-white border-brand font-semibold"
-                : "neo-btn bg-subtle border-grid text-secondary hover:text-primary hover:border-brand"
-            }`}
+            className={({ isActive }) => navItem(isActive)}
           >
-            <span>💻</span>
-            <span>{t("CODE", "CODE")}</span>
-          </Link>
-
-          {/* Dành cho Giảng viên / Quản trị viên */}
+            <Code2 size={16} />
+            <span className="hidden sm:inline">{t("Luyện code", "Practice")}</span>
+          </NavLink>
           {isAdmin && (
             <>
-              <Link
-                to={isAdminRoute ? "/" : "/admin"}
-                className="ml-1 neo-btn px-2.5 py-1 border border-brand/40 text-brand bg-brand/10 hover:bg-brand hover:text-white transition-colors font-semibold"
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  navItem(isActive || location.pathname.startsWith("/instructor"))
+                }
               >
-                {isAdminRoute
-                  ? t("[◀ VỀ GIAO DIỆN HỌC]", "[◀ STUDENT VIEW]")
-                  : t("[⚙ QUẢN TRỊ]", "[⚙ ADMIN]")}
-              </Link>
-              <Link
+                <LayoutDashboard size={16} />
+                <span className="hidden sm:inline">{t("Quản lý lớp", "Teacher")}</span>
+              </NavLink>
+              <NavLink
                 to="/projector"
-                className="neo-btn px-2.5 py-1 border border-grid bg-subtle text-secondary hover:text-brand hover:border-brand transition-colors font-semibold flex items-center gap-1"
-                title={t(
-                  "Mở chế độ trình chiếu máy chiếu lớp học",
-                  "Open Classroom Projector Mode"
-                )}
+                className={({ isActive }) => navItem(isActive)}
+                title={t("Chế độ máy chiếu lớp học", "Classroom projector mode")}
               >
-                <span>📺</span>
-                <span className="hidden md:inline">
-                  {t("MÁY CHIẾU", "PROJECTOR")}
-                </span>
-              </Link>
+                <MonitorPlay size={16} />
+                <span className="hidden lg:inline">{t("Máy chiếu", "Projector")}</span>
+              </NavLink>
             </>
           )}
-        </div>
+        </nav>
       </div>
 
-      {/* 2. Bên phải: Ngôn ngữ, Đổi Theme, Tài khoản */}
-      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
-        {/* Chuyển đổi Ngôn ngữ (VI / EN) */}
+      <div className="flex items-center gap-1.5 shrink-0">
         <button
           type="button"
           onClick={toggleLanguage}
-          title={t("Chuyển đổi ngôn ngữ", "Switch Language")}
-          className="neo-btn px-2 py-1 bg-subtle border border-grid hover:border-brand text-primary font-semibold transition-colors flex items-center gap-1 shrink-0"
+          title={t("Chuyển ngôn ngữ", "Switch language")}
+          className="btn btn-ghost btn-sm px-2.5 text-xs"
         >
-          <span className={lang === "vi" ? "text-brand font-bold" : "text-muted"}>
-            VI
-          </span>
+          <span className={lang === "vi" ? "text-brand-text" : "text-muted"}>VI</span>
           <span className="text-muted">/</span>
-          <span className={lang === "en" ? "text-brand font-bold" : "text-muted"}>
-            EN
-          </span>
+          <span className={lang === "en" ? "text-brand-text" : "text-muted"}>EN</span>
         </button>
 
-        {/* Chuyển đổi Giao diện Theme (Sáng / Tối) */}
         <button
           type="button"
           onClick={toggleTheme}
-          title={t("Chuyển đổi giao diện Sáng / Tối", "Toggle Dark / Light Theme")}
-          className="neo-btn px-2 py-1 bg-surface border border-grid text-secondary hover:text-primary hover:bg-subtle transition-colors shrink-0"
+          title={
+            theme === "dark"
+              ? t("Chuyển sang giao diện sáng", "Switch to light")
+              : t("Chuyển sang giao diện tối", "Switch to dark")
+          }
+          aria-label={t("Đổi giao diện sáng/tối", "Toggle theme")}
+          className="btn btn-ghost btn-sm btn-icon"
         >
-          {theme === "dark"
-            ? t("[◐] TỐI", "[◐] DARK")
-            : t("[○] SÁNG", "[○] LIGHT")}
+          {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
         </button>
 
-        {/* Thông tin Tài khoản & Nút Đăng xuất */}
         {user ? (
-          <div className="flex items-center border border-grid bg-subtle shrink-0">
-            <span className="px-2 py-1 text-primary flex items-center gap-1.5 max-w-[120px] sm:max-w-[200px] md:max-w-[280px] truncate">
-              {isAdmin ? (
-                <span className="px-1.5 py-0.5 bg-brand text-white font-bold text-[10px] shrink-0">
-                  👑 GV
-                </span>
-              ) : (
-                <span className="px-1.5 py-0.5 bg-surface border border-grid text-secondary font-bold text-[10px] shrink-0">
-                  👤
-                </span>
-              )}
-              <span className="truncate font-semibold text-xs">{user.displayName}</span>
-              {user.className && !isAdmin && (
-                <span className="px-1.5 py-0.2 bg-brand/15 border border-brand/40 text-brand text-[10px] font-bold shrink-0 hidden sm:inline">
-                  {user.className}
-                </span>
-              )}
+          <div className="flex items-center gap-2 pl-2 ml-1 border-l border-grid">
+            <span
+              className={`w-8 h-8 rounded-full grid place-items-center text-sm font-bold shrink-0 ${
+                isAdmin ? "bg-warn-soft text-warn" : "bg-brand-soft text-brand-text"
+              }`}
+              aria-hidden
+            >
+              {initialsOf(user.displayName)}
+            </span>
+            <span className="hidden sm:flex flex-col leading-tight max-w-[180px] min-w-0">
+              <span className="text-sm font-semibold text-primary truncate">
+                {user.displayName}
+              </span>
+              <span className="text-[11px] text-muted truncate">
+                {isAdmin
+                  ? t("Giáo viên", "Teacher")
+                  : `${t("Lớp", "Class")} ${user.className || "—"}`}
+              </span>
             </span>
             <button
               type="button"
               onClick={handleLogout}
-              title={t("Đăng xuất tài khoản", "Logout")}
-              className="px-2 py-1 border-l border-grid text-secondary hover:text-brand hover:bg-surface transition-colors font-semibold shrink-0"
+              title={t("Đăng xuất", "Log out")}
+              aria-label={t("Đăng xuất", "Log out")}
+              className="btn btn-ghost btn-sm btn-icon"
             >
-              <span className="hidden sm:inline">{t("ĐĂNG XUẤT", "LOGOUT")}</span>
-              <span className="sm:hidden">✕</span>
+              <LogOut size={16} />
             </button>
           </div>
         ) : (
-          <Link
-            to="/login"
-            className="px-3 py-1 bg-brand text-white font-medium hover:opacity-90 shrink-0"
-          >
-            [▶] {t("ĐĂNG NHẬP", "LOGIN")}
+          <Link to="/login" className="btn btn-primary btn-sm">
+            {t("Đăng nhập", "Log in")}
           </Link>
         )}
       </div>

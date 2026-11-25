@@ -14,7 +14,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   requiredRole,
 }) => {
-  const { user, loading, switchRole } = useAuth();
+  const { user, loading, switchRole, isCloudConnected } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
 
@@ -26,8 +26,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
             <span>◐</span>
             <span>
               {t(
-                "ĐANG XÁC THỰC PHIÊN ĐĂNG NHẬP...",
-                "VERIFYING AUTHENTICATION TOKEN..."
+                "Đang xác thực phiên đăng nhập...",
+                "Verifying authentication token..."
               )}
             </span>
           </div>
@@ -55,8 +55,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
               <SectionBadge
                 glyph="[▲]"
                 label={t(
-                  "PHÂN QUYỀN RBAC // HẠN CHẾ TRUY CẬP",
-                  "RBAC // ACCESS RESTRICTED"
+                  "Phân quyền RBAC // hạn chế truy cập",
+                  "RBAC // access restricted"
                 )}
               />
               <h1 className="text-2xl font-semibold tracking-tight text-primary mb-2">
@@ -77,35 +77,38 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
                   `Tài khoản hiện tại của bạn (${user.email}) đang có vai trò `,
                   `Your current session (${user.email}) is registered as `
                 )}
-                <span className="font-mono uppercase text-brand">
+                <span className="font-mono text-brand">
                   {user.role === "student"
-                    ? t("HỌC VIÊN (STUDENT)", "STUDENT")
+                    ? t("Học viên (student)", "Student")
                     : user.role}
                 </span>
                 .
               </p>
 
               <div className="flex flex-wrap gap-3 font-mono text-xs">
-                <button
-                  onClick={async () => {
-                    await switchRole("instructor");
-                  }}
-                  className="px-4 py-2.5 bg-brand text-white font-medium hover:opacity-90 transition-opacity"
-                >
-                  [◆]{" "}
-                  {t(
-                    "CHUYỂN SANG VAI TRÒ GIẢNG VIÊN (DEMO)",
-                    "SWITCH TO INSTRUCTOR ROLE (DEMO ELEVATION)"
-                  )}
-                </button>
+                {/* Nâng quyền chỉ khả dụng ở chế độ giả lập cục bộ — không bao giờ trên Cloud */}
+                {!isCloudConnected && (
+                  <button
+                    onClick={async () => {
+                      await switchRole("instructor");
+                    }}
+                    className="px-4 py-2.5 bg-brand text-white font-medium hover:opacity-90 transition-opacity"
+                  >
+                    [◆]{" "}
+                    {t(
+                      "Chuyển sang vai trò giảng viên (demo)",
+                      "Switch to instructor role (demo elevation)"
+                    )}
+                  </button>
+                )}
                 <button
                   onClick={() => navigate("/workspace")}
                   className="px-4 py-2.5 bg-surface border border-grid text-primary hover:bg-subtle transition-colors"
                 >
                   [◀]{" "}
                   {t(
-                    "QUAY LẠI KHÔNG GIAN CODE HỌC VIÊN",
-                    "RETURN TO STUDENT WORKSPACE"
+                    "Quay lại không gian code học viên",
+                    "Return to student workspace"
                   )}
                 </button>
               </div>

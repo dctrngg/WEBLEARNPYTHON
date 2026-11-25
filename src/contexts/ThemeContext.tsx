@@ -9,7 +9,7 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: "dark",
+  theme: "light",
   toggleTheme: () => {},
   setTheme: () => {},
 });
@@ -19,11 +19,13 @@ const THEME_STORAGE_KEY = "chroma_py_theme_mode";
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // Default to Dark Mode for the IDE workspace as specified in prompt.md
+  // Mặc định giao diện Sáng (dễ đọc trên máy chiếu lớp học); ghi nhớ lựa chọn của người dùng
   const [theme, setThemeState] = useState<ThemeMode>(() => {
-    const saved = localStorage.getItem(THEME_STORAGE_KEY);
-    if (saved === "light" || saved === "dark") return saved;
-    return "dark";
+    try {
+      const saved = localStorage.getItem(THEME_STORAGE_KEY);
+      if (saved === "light" || saved === "dark") return saved;
+    } catch {}
+    return "light";
   });
 
   useEffect(() => {
@@ -33,7 +35,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {}
   }, [theme]);
 
   const toggleTheme = () => {

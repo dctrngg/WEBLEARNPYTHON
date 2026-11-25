@@ -7,14 +7,45 @@
 
 const PYODIDE_INDEX_URL = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
 let pyodide = null;
-let isInitializing = false;
+let initPromise = null;
 
 // State for Interactive Continuation Replay when SharedArrayBuffer is unavailable
 let activeSession = null;
 
-async function initRuntime() {
-  if (pyodide || isInitializing) return;
-  isInitializing = true;
+// Giới hạn kích thước output để vòng lặp in vô hạn không làm treo/tràn bộ nhớ tab
+const MAX_OUTPUT_CHARS = 200000;
+
+class OutputLimitError extends Error {}
+
+/** Tạo bộ thu stdout/stderr có giới hạn tổng số ký tự. */
+function createCappedCollector(limit) {
+  const chunks = [];
+  let size = 0;
+  let exceeded = false;
+  return {
+    chunks,
+    get exceeded() {
+      return exceeded;
+    },
+    push(text) {
+      size += text.length + 1;
+      if (size > limit) {
+        exceeded = true;
+        // Ném lỗi để dừng chương trình Python ngay tại lệnh print()
+        throw new OutputLimitError("Output limit exceeded");
+      }
+      chunks.push(text);
+    },
+  };
+}
+
+/**
+ * Nạp Pyodide đúng một lần. Mọi lời gọi đồng thời dùng chung một Promise,
+ * tránh lỗi chạy code khi runtime còn đang tải (pyodide === null).
+ */
+function initRuntime() {
+  if (pyodide) return Promise.resolve();
+  if (initPromise) return initPromise;
 
   self.postMessage({
     type: "STATUS",
@@ -22,26 +53,29 @@ async function initRuntime() {
     message: "INITIALIZING PYODIDE WASM (CPYTHON 3.12)...",
   });
 
-  try {
-    importScripts(`${PYODIDE_INDEX_URL}pyodide.js`);
-    pyodide = await self.loadPyodide({
-      indexURL: PYODIDE_INDEX_URL,
-    });
-
-    self.postMessage({
-      type: "STATUS",
-      state: "ready",
-      message: "RUNTIME READY // CPYTHON 3.12 WASM",
-    });
-  } catch (err) {
-    self.postMessage({
-      type: "STATUS",
-      state: "error",
-      message: `WASM INIT ERROR: ${err && err.message ? err.message : String(err)}`,
-    });
-  } finally {
-    isInitializing = false;
-  }
+  initPromise = (async () => {
+    try {
+      importScripts(`${PYODIDE_INDEX_URL}pyodide.js`);
+      pyodide = await self.loadPyodide({
+        indexURL: PYODIDE_INDEX_URL,
+      });
+      self.postMessage({
+        type: "STATUS",
+        state: "ready",
+        message: "RUNTIME READY // CPYTHON 3.12 WASM",
+      });
+    } catch (err) {
+      self.postMessage({
+        type: "STATUS",
+        state: "error",
+        message: `WASM INIT ERROR: ${err && err.message ? err.message : String(err)}`,
+      });
+    } finally {
+      // Cho phép thử lại nếu lần nạp thất bại
+      if (!pyodide) initPromise = null;
+    }
+  })();
+  return initPromise;
 }
 
 // Kick off initialization immediately when worker spawns
@@ -50,21 +84,15 @@ initRuntime();
 async function executeInteractiveStep() {
   if (!activeSession || !pyodide) return;
 
-  const { code, inputs, emittedStdoutLen } = activeSession;
-  const stdoutChunks = [];
-  const stderrChunks = [];
+  const { code, inputs, emittedStdoutLen, seed } = activeSession;
+  const stdoutCollector = createCappedCollector(MAX_OUTPUT_CHARS);
+  const stderrCollector = createCappedCollector(MAX_OUTPUT_CHARS);
+  const stdoutChunks = stdoutCollector.chunks;
+  const stderrChunks = stderrCollector.chunks;
 
-  pyodide.setStdout({
-    batched: (text) => {
-      stdoutChunks.push(text);
-    },
-  });
-
-  pyodide.setStderr({
-    batched: (text) => {
-      stderrChunks.push(text);
-    },
-  });
+  pyodide.setStdout({ batched: (text) => stdoutCollector.push(text) });
+  pyodide.setStderr({ batched: (text) => stderrCollector.push(text) });
+  pyodide.globals.set("__chroma_seed", seed);
 
   // Pass current inputs list into Python globals
   pyodide.globals.set("__chroma_user_code", code);
@@ -74,6 +102,12 @@ async function executeInteractiveStep() {
 import builtins
 import sys
 import traceback
+
+import random as _chroma_random
+
+# Mỗi lần nhập input() chương trình được chạy lại từ đầu (continuation replay).
+# Cố định seed để random cho cùng kết quả ở mọi lần chạy lại trong một phiên.
+_chroma_random.seed(__chroma_seed)
 
 class _ChromaInputRequest(BaseException):
     def __init__(self, prompt=""):
@@ -129,6 +163,12 @@ except BaseException as exc:
     return;
   }
 
+  if (stdoutCollector.exceeded) {
+    stderrChunks.push(
+      `OutputLimitError: Chương trình in ra quá ${MAX_OUTPUT_CHARS.toLocaleString("vi-VN")} ký tự — có thể do vòng lặp vô hạn.`
+    );
+  }
+
   const fullStdout = stdoutChunks.join("\n");
   if (fullStdout.length > emittedStdoutLen) {
     const delta = fullStdout.slice(emittedStdoutLen);
@@ -153,7 +193,7 @@ except BaseException as exc:
   const promptText = pyodide.globals.get("_chroma_prompt");
   const errorText = pyodide.globals.get("_chroma_error");
 
-  if (status === "INPUT_REQUIRED") {
+  if (status === "INPUT_REQUIRED" && !stdoutCollector.exceeded) {
     self.postMessage({
       type: "INPUT_REQUEST",
       prompt: promptText || "",
@@ -172,7 +212,7 @@ except BaseException as exc:
   self.postMessage({
     type: "EXECUTION_COMPLETE",
     durationMs: totalDuration,
-    exitCode: status === "ERROR" ? 1 : 0,
+    exitCode: status === "ERROR" || stdoutCollector.exceeded ? 1 : 0,
   });
 
   activeSession = null;
@@ -266,6 +306,30 @@ function isTokenEqual(eTok, aTok) {
   return false;
 }
 
+/**
+ * Trích dãy số xuất hiện trong một dòng (bỏ dấu tiếng Việt trước).
+ * Dấu "-" chỉ được coi là dấu âm khi không đứng ngay sau chữ/số (VD "3-4" -> [3, 4]).
+ */
+function extractNumbers(line) {
+  const src = removeDiacritics(line);
+  const out = [];
+  const re = /(^|[^\w.])(-?)(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    if (m[3] !== undefined) out.push(Number((m[2] || "") + m[3]));
+    else out.push(Number(m[4]));
+  }
+  return out;
+}
+
+function sameNumbers(a, b) {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (Math.abs(a[i] - b[i]) >= 1e-3) return false;
+  }
+  return true;
+}
+
 function cleanLineTokens(line) {
   let s = removeDiacritics(line).toLowerCase();
   s = s.replace(/^[=\-*#_]{2,}\s*/, "").replace(/\s*[=\-*#_]{2,}$/, "");
@@ -286,6 +350,10 @@ function isLineMatch(expLine, actLine) {
     if (eTokens.every((tok, i) => isTokenEqual(tok, aTokens[i]))) return true;
   }
 
+  // Các phép so khớp "khoan dung" bên dưới bắt buộc dãy số của hai dòng phải trùng nhau,
+  // tránh chấm đúng nhầm khi chỉ số cuối dòng trùng (VD "3 + 4 = 7" vs "1 + 6 = 7").
+  const numbersAgree = sameNumbers(extractNumbers(expLine), extractNumbers(actLine));
+
   // Handle optional unit tokens (e.g. ['5000000', 'vnd'] vs ['5000000'])
   const eCore = eTokens.filter((t) => !COMMON_UNITS.includes(t));
   const aCore = aTokens.filter((t) => !COMMON_UNITS.includes(t));
@@ -293,22 +361,16 @@ function isLineMatch(expLine, actLine) {
     if (eCore.every((tok, i) => isTokenEqual(tok, aCore[i]))) return true;
   }
 
-  // Single-value line match (e.g. expected has label, actual only has value)
+  // Single-value line match (e.g. expected "Tiền lãi: 40000.0", actual chỉ in "40000.0")
   if (aCore.length === 1 && eCore.length > 1) {
     const lastETok = eCore[eCore.length - 1];
     if (isTokenEqual(lastETok, aCore[0])) return true;
   }
 
-  // Both lines end with the same numerical value / calculation result
-  if (eCore.length > 0 && aCore.length > 0) {
-    const lastE = eCore[eCore.length - 1];
-    const lastA = aCore[aCore.length - 1];
-    if (isTokenEqual(lastE, lastA)) {
-      const eNum = Number(lastE.replace(/[^0-9.-]/g, ""));
-      const aNum = Number(lastA.replace(/[^0-9.-]/g, ""));
-      if (!isNaN(eNum) && !isNaN(aNum) && Math.abs(eNum - aNum) < 1e-3) {
-        return true;
-      }
+  // Nhãn diễn đạt khác nhưng cùng kết quả cuối dòng và cùng toàn bộ các số
+  if (numbersAgree && eCore.length > 0 && aCore.length > 0) {
+    if (isTokenEqual(eCore[eCore.length - 1], aCore[aCore.length - 1])) {
+      return true;
     }
   }
 
@@ -387,16 +449,42 @@ function isOutputMatch(expectedRaw, actualRaw) {
   const expValues = extractCoreValues(expLines);
   const actValues = extractCoreValues(actLines);
 
-  if (expValues.length > 0 && expValues.length === actValues.length) {
-    if (expValues.every((ev, i) => isTokenEqual(ev, actValues[i]))) return true;
+  if (
+    expValues.length > 0 &&
+    expValues.length === actValues.length &&
+    expLines.length === actLines.length
+  ) {
+    const allAgree = expValues.every(
+      (ev, i) =>
+        isTokenEqual(ev, actValues[i]) &&
+        (cleanLineTokens(actLines[i]).length === 1 ||
+          sameNumbers(extractNumbers(expLines[i]), extractNumbers(actLines[i])))
+    );
+    if (allAgree) return true;
   }
 
   return false;
 }
 
-async function runAutomatedTests(code, testCases) {
+async function runAutomatedTests(code, testCases, indexOffset = 0) {
   if (!pyodide) {
     await initRuntime();
+  }
+  if (!pyodide) {
+    // Không nạp được runtime: trả về kết quả lỗi thay vì treo
+    const results = testCases.map((tc, i) => ({
+      index: indexOffset + i + 1,
+      input: tc.input,
+      expectedOutput: String(tc.expectedOutput || "").trim(),
+      actualOutput: "",
+      stderr: "RuntimeError: Không nạp được Python runtime (kiểm tra kết nối mạng).",
+      passed: false,
+      isHidden: Boolean(tc.isHidden),
+      durationMs: 0,
+    }));
+    results.forEach((result) => self.postMessage({ type: "TEST_PROGRESS", result }));
+    self.postMessage({ type: "TEST_RESULTS", results });
+    return;
   }
 
   self.postMessage({
@@ -409,24 +497,32 @@ async function runAutomatedTests(code, testCases) {
 
   for (let i = 0; i < testCases.length; i++) {
     const tc = testCases[i];
-    const inputLines = tc.input ? String(tc.input).split(/\r?\n/) : [];
-    const stdoutLines = [];
-    const stderrLines = [];
+    // Bỏ dòng trống cuối do giáo viên nhập thừa xuống dòng
+    const inputLines = tc.input ? String(tc.input).replace(/\r\n?/g, "\n").replace(/\n+$/, "").split("\n") : [];
+    const stdoutCollector = createCappedCollector(MAX_OUTPUT_CHARS);
+    const stderrCollector = createCappedCollector(MAX_OUTPUT_CHARS);
+    const stdoutLines = stdoutCollector.chunks;
+    const stderrLines = stderrCollector.chunks;
 
-    pyodide.setStdout({
-      batched: (text) => stdoutLines.push(text),
-    });
-    pyodide.setStderr({
-      batched: (text) => stderrLines.push(text),
-    });
+    pyodide.setStdout({ batched: (text) => stdoutCollector.push(text) });
+    pyodide.setStderr({ batched: (text) => stderrCollector.push(text) });
 
     pyodide.globals.set("__tc_code", code);
     pyodide.globals.set("__tc_inputs", pyodide.toPy(inputLines));
 
+    // Báo cho luồng chính biết test nào đang chạy để đặt đồng hồ timeout riêng cho từng test
+    self.postMessage({
+      type: "TEST_STARTED",
+      index: indexOffset + i + 1,
+      total: indexOffset + testCases.length,
+    });
+
     const testRunnerScript = `
 import builtins
 import traceback
+import random
 
+random.seed(0)
 _tc_idx = 0
 _tc_input_list = list(__tc_inputs)
 
@@ -436,7 +532,8 @@ def _tc_input(prompt=""):
         val = _tc_input_list[_tc_idx]
         _tc_idx += 1
         return str(val)
-    return ""
+    # Hành vi chuẩn của Python khi hết dữ liệu vào
+    raise EOFError("EOF when reading a line")
 
 builtins.input = _tc_input
 _tc_err = ""
@@ -460,7 +557,12 @@ except BaseException as exc:
     const durationMs = Math.round((performance.now() - startMs) * 10) / 10;
 
     const tbErr = pyodide.globals.get("_tc_err");
-    if (tbErr) {
+    if (stdoutCollector.exceeded) {
+      stderrLines.length = 0;
+      stderrLines.push(
+        `OutputLimitError: Chương trình in ra quá ${MAX_OUTPUT_CHARS.toLocaleString("vi-VN")} ký tự — có thể do vòng lặp vô hạn.`
+      );
+    } else if (tbErr) {
       stderrLines.push(tbErr.trimEnd());
     }
 
@@ -469,8 +571,8 @@ except BaseException as exc:
     const stderr = stderrLines.join("\n").trim();
     const passed = stderr === "" && isOutputMatch(expectedOutput, actualOutput);
 
-    results.push({
-      index: i + 1,
+    const result = {
+      index: indexOffset + i + 1,
       input: tc.input,
       expectedOutput,
       actualOutput,
@@ -478,7 +580,9 @@ except BaseException as exc:
       passed,
       isHidden: Boolean(tc.isHidden),
       durationMs,
-    });
+    };
+    results.push(result);
+    self.postMessage({ type: "TEST_PROGRESS", result });
   }
 
   self.postMessage({
@@ -496,6 +600,9 @@ except BaseException as exc:
 async function traceCodeExecution(code, inputs = []) {
   if (!pyodide) {
     await initRuntime();
+  }
+  if (!pyodide) {
+    return { steps: [], error: "RuntimeError: Python runtime chưa sẵn sàng.", totalStdout: "", limitReached: false };
   }
 
   pyodide.globals.set("__trace_code", code);
@@ -631,7 +738,11 @@ self.onmessage = async (event) => {
     if (!pyodide) {
       await initRuntime();
     }
-    if (!pyodide) return;
+    if (!pyodide) {
+      self.postMessage({ type: "STDERR", text: "RuntimeError: Không nạp được Python runtime (kiểm tra kết nối mạng)." });
+      self.postMessage({ type: "EXECUTION_COMPLETE", durationMs: 0, exitCode: 1 });
+      return;
+    }
 
     self.postMessage({
       type: "STATUS",
@@ -644,6 +755,7 @@ self.onmessage = async (event) => {
       inputs: [],
       emittedStdoutLen: 0,
       startTime: performance.now(),
+      seed: Math.floor(Math.random() * 2 ** 31),
     };
 
     await executeInteractiveStep();
@@ -663,7 +775,7 @@ self.onmessage = async (event) => {
   }
 
   if (msg.type === "RUN_TESTS") {
-    await runAutomatedTests(msg.code || "", msg.testCases || []);
+    await runAutomatedTests(msg.code || "", msg.testCases || [], msg.indexOffset || 0);
     return;
   }
 

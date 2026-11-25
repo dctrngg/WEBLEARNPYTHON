@@ -9,17 +9,23 @@ import {
 import { auth, googleProvider, isFirebaseConfigured } from "../firebase/config";
 import { UserProfile, UserRole } from "../types/ide";
 import {
-  getAllUsers,
+  findUserByUsername,
   getUserProfile,
+  setUserPasswordHash,
   upsertUserProfile,
 } from "../services/firestoreService";
 import { INITIAL_USERS } from "../services/seedData";
+import {
+  hashPassword,
+  toSessionProfile,
+  verifyPassword,
+} from "../services/passwordHash";
 
 interface AuthContextValue {
   user: UserProfile | null;
   loading: boolean;
   isCloudConnected: boolean;
-  loginStudent: (username: string, password: string) => Promise<void>;
+  loginStudent: (username: string, password: string) => Promise<UserProfile>;
   registerStudent: (
     username: string,
     fullName: string,
@@ -71,8 +77,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           const parsed = JSON.parse(savedSession) as UserProfile;
           const latest = await getUserProfile(parsed.uid);
+          const profile = toSessionProfile(latest || parsed);
+          // Dọn phiên cũ có thể còn chứa mật khẩu dạng rõ
+          localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(profile));
           if (mounted) {
-            setUser(latest || parsed);
+            setUser(profile);
           }
         } catch {
           if (mounted) setUser(null);
@@ -91,7 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /**
    * Đăng nhập học sinh chỉ cần: Username + Password
    */
-  const loginStudent = async (username: string, password: string) => {
+  const loginStudent = async (username: string, password: string): Promise<UserProfile> => {
     const cleanUser = normalizeUsername(username);
     const cleanPass = password.trim();
 
@@ -104,15 +113,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     // 1. Direct lookup by UID in Firestore / local storage
     let foundUser = await getUserProfile(expectedUid);
 
-    // 2. Fallback search across all users by username or uid
+    // 2. Fallback: truy vấn theo username (không tải toàn bộ danh sách tài khoản)
     if (!foundUser) {
-      const allUsers = await getAllUsers();
-      foundUser =
-        allUsers.find(
-          (u) =>
-            (u.username && normalizeUsername(u.username) === cleanUser) ||
-            u.uid === expectedUid
-        ) || null;
+      foundUser = await findUserByUsername(cleanUser);
     }
 
     if (!foundUser) {
@@ -121,8 +124,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       );
     }
 
-    if (foundUser.password && foundUser.password !== cleanPass) {
+    if (!(await verifyPassword(foundUser, cleanPass))) {
       throw new Error("Mật khẩu không chính xác. Vui lòng kiểm tra lại!");
+    }
+
+    // Tự động chuyển mật khẩu dạng rõ (dữ liệu cũ) sang dạng băm
+    if (!foundUser.passwordHash) {
+      try {
+        await setUserPasswordHash(
+          foundUser.uid,
+          await hashPassword(foundUser.uid, cleanPass)
+        );
+      } catch {
+        // Không chặn đăng nhập nếu bước nâng cấp thất bại
+      }
     }
 
     if (isFirebaseConfigured && auth && foundUser.email && cleanPass.length >= 6) {
@@ -133,8 +148,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
 
-    setUser(foundUser);
-    localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(foundUser));
+    const session = toSessionProfile(foundUser);
+    setUser(session);
+    localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(session));
+    return session;
   };
 
   /**
@@ -171,12 +188,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     // Check if username already exists
     const existingByUid = await getUserProfile(uid);
-    const allUsers = await getAllUsers();
-    const existingByUsername = allUsers.find(
-      (u) =>
-        (u.username && normalizeUsername(u.username) === cleanUser) ||
-        u.uid === uid
-    );
+    const existingByUsername = existingByUid
+      ? null
+      : await findUserByUsername(cleanUser);
 
     if (existingByUid || existingByUsername) {
       throw new Error(
@@ -205,15 +219,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       email: syntheticEmail,
       displayName: cleanName,
       className: cleanClass,
-      password: cleanPass,
+      passwordHash: await hashPassword(uid, cleanPass),
       role: "student",
       createdAt: new Date().toISOString(),
     };
 
     await upsertUserProfile(newProfile);
 
-    setUser(newProfile);
-    localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(newProfile));
+    const session = toSessionProfile(newProfile);
+    setUser(session);
+    localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(session));
   };
 
   const loginWithEmail = async (email: string, password: string) => {
@@ -230,10 +245,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     className: string = "10A7"
   ) => {
     const usernamePart = email.split("@")[0];
+    // Tài khoản tự đăng ký luôn là học sinh; quyền giáo viên chỉ được cấp bởi quản trị viên.
+    void role;
     await registerStudent(usernamePart, displayName, className, password);
-    if (role === "instructor") {
-      await switchRole("instructor");
-    }
   };
 
   const loginWithGoogle = async () => {
@@ -252,22 +266,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         };
         await upsertUserProfile(profile);
       }
-      setUser(profile);
-      localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(profile));
+      const session = toSessionProfile(profile);
+      setUser(session);
+      localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(session));
       return;
     }
   };
 
   const loginDemoAccount = async (role: UserRole) => {
-    const preset =
-      role === "instructor" ? INITIAL_USERS[1] : INITIAL_USERS[0];
-    await upsertUserProfile(preset);
+    // Tài khoản demo chỉ dùng ở chế độ giả lập cục bộ, không ghi đè dữ liệu thật trên Cloud
+    if (isFirebaseConfigured) {
+      throw new Error("Tài khoản demo chỉ khả dụng ở chế độ giả lập cục bộ.");
+    }
+    const preset = toSessionProfile(
+      role === "instructor" ? INITIAL_USERS[1] : INITIAL_USERS[0]
+    );
     setUser(preset);
     localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(preset));
   };
 
+  /** Chỉ cho phép đổi vai trò ở chế độ giả lập cục bộ (demo) — không bao giờ ghi lên Cloud. */
   const switchRole = async (role: UserRole) => {
-    if (!user) return;
+    if (!user || isFirebaseConfigured) return;
     const updated: UserProfile = {
       ...user,
       role,

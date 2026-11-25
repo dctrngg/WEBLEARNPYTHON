@@ -47,6 +47,7 @@ import {
   pushAssignmentsToCloud,
   saveAssignment,
   seedCloudFirestoreData,
+  setUserPasswordHash,
   syncAssignmentsFromCloud,
   upsertUserProfile,
 } from "../services/firestoreService";
@@ -55,6 +56,7 @@ import {
   exportGradesDetailedCSV,
 } from "../services/gradeExportService";
 import { GRADE_10_CLASSES, localizeAssignment } from "../services/seedData";
+import { hashPassword } from "../services/passwordHash";
 import {
   PYTHON_CURRICULUM_LESSONS,
   LessonTopic,
@@ -223,7 +225,7 @@ export const InstructorDashboardPage: React.FC = () => {
   const [stuUsername, setStuUsername] = useState<string>("");
   const [stuFullName, setStuFullName] = useState<string>("");
   const [stuClassName, setStuClassName] = useState<string>(GRADE_10_CLASSES[0]);
-  const [stuPassword, setStuPassword] = useState<string>("123456");
+  const [stuPassword, setStuPassword] = useState<string>("");
   const [isStudentModalOpen, setIsStudentModalOpen] = useState<boolean>(false);
   const [inspectedStudentProfile, setInspectedStudentProfile] =
     useState<UserProfile | null>(null);
@@ -534,7 +536,8 @@ export const InstructorDashboardPage: React.FC = () => {
     setStuUsername(stu.username || stu.uid);
     setStuFullName(stu.displayName);
     setStuClassName(stu.className || GRADE_10_CLASSES[0]);
-    setStuPassword(stu.password || "123456");
+    // Để trống = giữ nguyên mật khẩu hiện tại (mật khẩu được lưu dạng băm, không đọc lại được)
+    setStuPassword("");
     setIsStudentModalOpen(true);
   };
 
@@ -543,7 +546,7 @@ export const InstructorDashboardPage: React.FC = () => {
     setStuUsername("");
     setStuFullName("");
     setStuClassName(GRADE_10_CLASSES[0]);
-    setStuPassword("123456");
+    setStuPassword("");
     setIsStudentModalOpen(false);
   };
 
@@ -562,18 +565,34 @@ export const InstructorDashboardPage: React.FC = () => {
     }
 
     const uid = editingStudentUid || `usr_${uname}`;
+    const existing = editingStudentUid
+      ? users.find((u) => u.uid === editingStudentUid)
+      : undefined;
+    const newPassword = stuPassword.trim();
+    if (!existing && newPassword.length < 4) {
+      pushToast(
+        t("Mật khẩu phải có ít nhất 4 ký tự", "Password must be at least 4 characters"),
+        "warn"
+      );
+      return;
+    }
     const profile: UserProfile = {
+      ...(existing || {}),
       uid,
       username: uname,
-      email: `${uname}@python.edu.vn`,
+      email: existing?.email || `${uname}@python.edu.vn`,
       displayName: stuFullName.trim(),
       className: stuClassName,
-      password: stuPassword || "123456",
-      role: "student",
-      createdAt: new Date().toISOString(),
+      role: existing?.role || "student",
+      createdAt: existing?.createdAt || new Date().toISOString(),
     };
+    delete profile.password;
+    delete profile.passwordHash;
 
     await upsertUserProfile(profile);
+    if (newPassword) {
+      await setUserPasswordHash(uid, await hashPassword(uid, newPassword));
+    }
     await loadDashboardData();
     handleResetStudentForm();
     pushToast(
@@ -928,7 +947,7 @@ export const InstructorDashboardPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold tracking-tight text-primary">
-                {t("BÀN LÀM VIỆC GIÁO VIÊN", "INSTRUCTOR DASHBOARD")}
+                {t("Bàn làm việc giáo viên", "Instructor dashboard")}
               </h1>
               <span
                 className={
@@ -1039,11 +1058,11 @@ export const InstructorDashboardPage: React.FC = () => {
           {/* Card 1: Assignments */}
           <div className="card p-5 flex flex-col justify-between gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
+              <span className="text-xs font-semibold text-secondary">
                 {t("Kho bài tập Tin học 10", "Assignment Repository")}
               </span>
               <span className="chip chip-brand font-medium tabular-nums">
-                16 {t("bài học", "lessons")}
+                {PYTHON_CURRICULUM_LESSONS.length} {t("chuyên đề", "modules")}
               </span>
             </div>
             <div className="flex items-baseline justify-between">
@@ -1078,7 +1097,7 @@ export const InstructorDashboardPage: React.FC = () => {
           {/* Card 2: Students */}
           <div className="card p-5 flex flex-col justify-between gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
+              <span className="text-xs font-semibold text-secondary">
                 {t("Sĩ số học sinh", "Student Enrollment")}
               </span>
               <span className="chip chip-brand font-medium">
@@ -1108,7 +1127,7 @@ export const InstructorDashboardPage: React.FC = () => {
           {/* Card 3: Submissions */}
           <div className="card p-5 flex flex-col justify-between gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
+              <span className="text-xs font-semibold text-secondary">
                 {t("Lượt nộp bài", "Total Submissions")}
               </span>
               <span
@@ -1143,7 +1162,7 @@ export const InstructorDashboardPage: React.FC = () => {
           {/* Card 4: Evaluation Engine */}
           <div className="card p-5 flex flex-col justify-between gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
+              <span className="text-xs font-semibold text-secondary">
                 {t("Máy chấm Pyodide", "Evaluation Engine")}
               </span>
               <span
@@ -1335,7 +1354,7 @@ export const InstructorDashboardPage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
-                    <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs uppercase tracking-wider">
+                    <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs">
                       <th className="px-4 py-3 font-semibold min-w-[120px]">
                         {t("Mã & Bài học", "Code & Lesson")}
                       </th>
@@ -1727,7 +1746,7 @@ export const InstructorDashboardPage: React.FC = () => {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-sm">
                       <thead>
-                        <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs uppercase tracking-wider">
+                        <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs">
                           <th className="px-4 py-3 font-semibold">
                             <button
                               type="button"
@@ -1880,7 +1899,7 @@ export const InstructorDashboardPage: React.FC = () => {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-sm">
                       <thead>
-                        <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs uppercase tracking-wider">
+                        <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs">
                           <th className="px-4 py-3 font-semibold sticky left-0 z-10 bg-subtle border-r border-grid min-w-[180px]">
                             <button
                               type="button"
@@ -2021,7 +2040,7 @@ export const InstructorDashboardPage: React.FC = () => {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse text-sm">
                     <thead>
-                      <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs uppercase tracking-wider">
+                      <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs">
                         <th className="px-4 py-3 font-semibold">
                           {t("Thời gian", "Timestamp")}
                         </th>
@@ -2307,7 +2326,7 @@ export const InstructorDashboardPage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
-                    <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs uppercase tracking-wider">
+                    <tr className="bg-subtle/80 border-b border-grid text-secondary text-xs">
                       <th className="px-4 py-3 font-semibold">
                         {t("Họ và tên", "Full Name")}
                       </th>
@@ -2366,11 +2385,11 @@ export const InstructorDashboardPage: React.FC = () => {
                             </td>
                             <td className="px-4 py-3 font-mono text-xs">
                               {showPasswordsInTable ? (
-                                <span className="text-primary font-semibold">
-                                  {stu.password || "123456"}
+                                <span className={stu.password ? "text-primary font-semibold" : "text-muted italic"}>
+                                  {stu.password || t("đã mã hoá", "hashed")}
                                 </span>
                               ) : (
-                                <span className="text-muted tracking-widest">
+                                <span className="text-muted">
                                   ••••••
                                 </span>
                               )}
@@ -2821,7 +2840,7 @@ export const InstructorDashboardPage: React.FC = () => {
               <div>
                 <span className="text-muted block">Mật khẩu:</span>
                 <span className="font-mono text-primary font-bold">
-                  {inspectedStudentProfile.password || "123456"}
+                  {inspectedStudentProfile.password || t("đã mã hoá", "hashed")}
                 </span>
               </div>
               <div>
@@ -2833,7 +2852,7 @@ export const InstructorDashboardPage: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-bold text-primary mb-2 text-xs uppercase tracking-wider">
+              <h4 className="font-bold text-primary mb-2 text-xs">
                 Bài tập đã nộp:
               </h4>
               <div className="max-h-[220px] overflow-y-auto space-y-1.5">
@@ -2919,7 +2938,7 @@ export const InstructorDashboardPage: React.FC = () => {
 
             {inspectedSubmission.lastExecutedOutput && (
               <div className="space-y-1.5">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-secondary">
+                <h4 className="font-bold text-xs text-secondary">
                   Kết quả thực thi gần nhất:
                 </h4>
                 <pre className="p-3 rounded border border-grid bg-subtle font-mono text-xs max-h-[160px] overflow-y-auto whitespace-pre-wrap text-primary">
@@ -3001,7 +3020,11 @@ export const InstructorDashboardPage: React.FC = () => {
                 type="text"
                 value={stuPassword}
                 onChange={(e) => setStuPassword(e.target.value)}
-                placeholder="123456"
+                placeholder={
+                  editingStudentUid
+                    ? t("Để trống nếu giữ nguyên", "Leave blank to keep")
+                    : t("Tối thiểu 4 ký tự", "At least 4 characters")
+                }
                 className="input h-9 text-sm w-full font-mono"
               />
             </div>

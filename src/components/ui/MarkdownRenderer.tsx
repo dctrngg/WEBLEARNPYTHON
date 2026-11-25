@@ -76,7 +76,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       elements.push(
         <h4
           key={`h3-${idx}`}
-          className="font-mono text-sm md:text-base uppercase tracking-wider text-primary font-bold mt-5 mb-2.5 flex items-center gap-2"
+          className="font-mono text-sm md:text-base text-primary font-bold mt-5 mb-2.5 flex items-center gap-2"
         >
           <span className="text-brand">◆</span>
           <span>{trimmed.slice(4)}</span>

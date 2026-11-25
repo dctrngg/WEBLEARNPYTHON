@@ -67,7 +67,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         disabled={isDisabled}
         aria-busy={loading || undefined}
-        className={`inline-flex items-center justify-center font-mono uppercase rounded-sm border transition-colors select-none shrink-0 focus-visible:outline-2 focus-visible:outline-brand focus-visible:-outline-offset-2 ${
+        className={`inline-flex items-center justify-center font-mono rounded-sm border transition-colors select-none shrink-0 focus-visible:outline-2 focus-visible:outline-brand focus-visible:-outline-offset-2 ${
           variantClasses[variant]
         } ${sizeClasses[size]} ${
           isDisabled ? "opacity-45 cursor-not-allowed" : "cursor-pointer"
@@ -139,7 +139,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label && (
               <label
                 htmlFor={inputId}
-                className="block font-mono text-mono-xs uppercase text-secondary font-semibold"
+                className="block font-mono text-mono-xs text-secondary font-semibold"
               >
                 {label}
                 {required && <span className="text-brand-text ml-1">*</span>}
@@ -214,7 +214,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {label && (
               <label
                 htmlFor={areaId}
-                className="block font-mono text-mono-xs uppercase text-secondary font-semibold"
+                className="block font-mono text-mono-xs text-secondary font-semibold"
               >
                 {label}
                 {required && <span className="text-brand-text ml-1">*</span>}
@@ -267,7 +267,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block font-mono text-mono-xs uppercase text-secondary font-semibold"
+            className="block font-mono text-mono-xs text-secondary font-semibold"
           >
             {label}
             {required && <span className="text-brand-text ml-1">*</span>}
@@ -324,7 +324,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       aria-checked={checked}
       disabled={disabled}
       onClick={() => !disabled && onChange(!checked)}
-      className={`inline-flex items-center gap-2 font-mono text-mono-xs uppercase text-primary select-none ${
+      className={`inline-flex items-center gap-2 font-mono text-mono-xs text-primary select-none ${
         disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
       } ${className}`}
     >
@@ -365,7 +365,7 @@ export const Toggle: React.FC<ToggleProps> = ({
       aria-checked={checked}
       disabled={disabled}
       onClick={() => !disabled && onChange(!checked)}
-      className={`inline-flex items-center gap-2 font-mono text-mono-xs uppercase text-primary select-none ${
+      className={`inline-flex items-center gap-2 font-mono text-mono-xs text-primary select-none ${
         disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
       } ${className}`}
     >
@@ -466,7 +466,7 @@ export const Tabs: React.FC<TabsProps> = ({
       aria-orientation={orientation}
       className={`flex ${
         orientation === "vertical" ? "flex-col" : "flex-row items-center"
-      } font-mono text-mono-sm uppercase select-none ${className}`}
+      } font-mono text-mono-sm select-none ${className}`}
     >
       {items.map((item, idx) => {
         const isActive = item.id === activeId;
@@ -611,7 +611,7 @@ export const Modal: React.FC<ModalProps> = ({
         <div className="px-5 py-4 border-b border-grid flex items-start justify-between gap-4 shrink-0">
           <div>
             {badgeLabel && (
-              <div className="inline-flex items-center gap-1.5 font-mono text-mono-xs uppercase text-secondary mb-1">
+              <div className="inline-flex items-center gap-1.5 font-mono text-mono-xs text-secondary mb-1">
                 <span className="text-brand" aria-hidden="true">
                   {glyph}
                 </span>
@@ -895,7 +895,7 @@ export const Badge: React.FC<BadgeProps> = ({
 
   return (
     <span
-      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm border font-mono text-mono-xs uppercase shrink-0 ${variants[variant]} ${className}`}
+      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm border font-mono text-mono-xs shrink-0 ${variants[variant]} ${className}`}
     >
       {children}
     </span>
@@ -923,7 +923,7 @@ export const DifficultyBadge: React.FC<DifficultyBadgeProps> = ({
   const meta = DIFFICULTY_DOTS[difficulty] || DIFFICULTY_DOTS.Beginner;
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-sm border border-grid bg-subtle text-secondary font-mono text-mono-xs uppercase shrink-0 ${className}`}
+      className={`inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-sm border border-grid bg-subtle text-secondary font-mono text-mono-xs shrink-0 ${className}`}
       aria-label={`Difficulty: ${meta.label}`}
     >
       <span aria-hidden="true" className="tracking-tight text-primary">
@@ -953,7 +953,7 @@ export const Table: React.FC<TableProps> = ({ children, className = "" }) => (
 export const TableHead: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
-  <thead className="bg-subtle border-b border-grid text-secondary uppercase sticky top-0 z-10">
+  <thead className="bg-subtle border-b border-grid text-secondary sticky top-0 z-10">
     {children}
   </thead>
 );
@@ -990,7 +990,7 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
       <button
         type="button"
         onClick={onSort}
-        className="inline-flex items-center gap-1.5 uppercase text-secondary hover:text-primary w-full"
+        className="inline-flex items-center gap-1.5 text-secondary hover:text-primary w-full"
       >
         <span>{children}</span>
         <span aria-hidden="true" className="text-brand-text">
@@ -1069,7 +1069,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
     >
       {glyph}
     </div>
-    <div className="font-mono text-mono-sm uppercase font-semibold text-primary mb-1">
+    <div className="font-mono text-mono-sm font-semibold text-primary mb-1">
       {title}
     </div>
     {hint && (
@@ -1111,7 +1111,7 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
         <span aria-hidden="true" className="text-warn">
           ◐
         </span>
-        <span className="uppercase">{label}</span>
+        <span className="">{label}</span>
       </div>
       <div className="text-mono-xs text-muted flex items-center gap-2">
         <span aria-hidden="true">{bar}</span>
@@ -1140,7 +1140,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
     role="alert"
     className={`p-6 border border-danger bg-surface font-mono text-mono-xs space-y-3 ${className}`}
   >
-    <div className="text-danger font-bold uppercase flex items-center gap-2">
+    <div className="text-danger font-bold flex items-center gap-2">
       <span aria-hidden="true">✕</span>
       <span>{code}</span>
     </div>

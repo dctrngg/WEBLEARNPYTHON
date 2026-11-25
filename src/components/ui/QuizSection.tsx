@@ -125,7 +125,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
               onClick={handleResetQuiz}
               className="neo-btn px-4 py-1.5 bg-surface text-primary hover:text-brand font-semibold transition-colors"
             >
-              [↻ {t("Làm lại toàn bộ", "Retry All")}]
+              ↻ {t("Làm lại toàn bộ", "Retry all")}
             </button>
           ) : (
             <button
@@ -157,7 +157,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
       {!isSubmitted && !isAllAnswered && unansweredQuestions.length > 0 && (
         <div className="px-4 py-2.5 bg-brand/5 border-b border-brand/20 flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
           <span className="text-secondary flex items-center gap-1.5">
-            <span className="text-brand font-bold">ℹ {t("LƯU Ý:", "NOTE:")}</span>
+            <span className="text-brand font-bold">ℹ {t("Lưu ý:", "NOTE:")}</span>
             <span>
               {t(
                 `Bài kiểm tra yêu cầu hoàn thành đủ 100% câu hỏi. Bạn còn thiếu ${unansweredQuestions.length} câu chưa chọn.`,
@@ -365,7 +365,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({
             onClick={handleResetQuiz}
             className="px-4 py-1.5 bg-surface border border-grid text-primary hover:border-brand hover:text-brand font-semibold transition-colors"
           >
-            [↻ {t("Làm lại toàn bộ", "Retry All")}]
+            ↻ {t("Làm lại toàn bộ", "Retry all")}
           </button>
         )}
       </div>

@@ -125,7 +125,7 @@ export const SectionBadge: React.FC<SectionBadgeProps> = ({
   className = "",
 }) => (
   <div
-    className={`inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-secondary mb-3 ${className}`}
+    className={`inline-flex items-center gap-2 font-mono text-xs text-secondary mb-3 ${className}`}
   >
     <span className="text-brand transition-colors group-hover:text-brand">
       {glyph}
@@ -151,7 +151,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => (
   <div className="bg-surface px-6 py-5 border-b border-grid flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div>
-      <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-secondary mb-1">
+      <div className="inline-flex items-center gap-2 font-mono text-xs text-secondary mb-1">
         <span className="text-brand">{glyph}</span>
         <span>{badge}</span>
       </div>
@@ -176,17 +176,17 @@ export const ValuePropBento: React.FC = () => {
     <div className="w-full">
       <div className="grid grid-cols-1 sm:grid-cols-3 bg-grid gap-[1px] border-t border-grid font-mono text-xs text-secondary">
         <div className="bg-subtle px-6 py-3 flex items-center justify-between">
-          <span>{t("NHÂN THỰC THI", "RUNTIME ENGINE")}</span>
+          <span>{t("Nhân thực thi", "Runtime engine")}</span>
           <strong className="text-primary">PYODIDE WASM (CPYTHON 3.12)</strong>
         </div>
         <div className="bg-subtle px-6 py-3 flex items-center justify-between">
-          <span>{t("LUỒNG XỬ LÝ", "EXECUTION THREAD")}</span>
+          <span>{t("Luồng xử lý", "Execution thread")}</span>
           <strong className="text-success">
-            {t("WEB WORKER ĐỘC LẬP", "ISOLATED WEB WORKER")}
+            {t("Web worker độc lập", "Isolated web worker")}
           </strong>
         </div>
         <div className="bg-subtle px-6 py-3 flex items-center justify-between">
-          <span>{t("ĐỒNG BỘ ĐÁM MÂY", "CLOUD SYNC")}</span>
+          <span>{t("Đồng bộ đám mây", "Cloud sync")}</span>
           <strong className="text-primary">FIRESTORE REALTIME</strong>
         </div>
       </div>
@@ -196,7 +196,7 @@ export const ValuePropBento: React.FC = () => {
           <div>
             <SectionBadge
               glyph="◇"
-              label={t("01 / ĐỘ TRỄ BẰNG KHÔNG", "01 / ZERO-LATENCY WASM")}
+              label={t("01 / Độ trễ bằng không", "01 / Zero-latency WASM")}
             />
             <h3 className="text-lg font-medium text-primary mb-2">
               {t(
@@ -217,7 +217,7 @@ export const ValuePropBento: React.FC = () => {
           <div>
             <SectionBadge
               glyph="◆"
-              label={t("02 / TRẢI NGHIỆM CHUẨN VS CODE", "02 / TECHNICAL ERGONOMICS")}
+              label={t("02 / Trải nghiệm chuẩn vs code", "02 / Technical ergonomics")}
             />
             <h3 className="text-lg font-medium text-primary mb-2">
               {t("Monaco Editor + Nhập liệu input()", "Monaco + Interactive Stdin")}
@@ -237,7 +237,7 @@ export const ValuePropBento: React.FC = () => {
           <div>
             <SectionBadge
               glyph="▣"
-              label={t("03 / CHẤM ĐIỂM TỰ ĐỘNG", "03 / CLOUD AUTO-GRADING")}
+              label={t("03 / Chấm điểm tự động", "03 / Cloud auto-grading")}
             />
             <h3 className="text-lg font-medium text-primary mb-2">
               {t(
@@ -485,8 +485,8 @@ test_cases = [
               className="text-zinc-400 hover:text-white px-2 py-0.5 border border-zinc-800"
             >
               {copied
-                ? t("✓ ĐÃ SAO CHÉP", "✓ COPIED")
-                : t("SAO CHÉP", "COPY")}
+                ? t("✓ Đã sao chép", "✓ Copied")
+                : t("Sao chép", "Copy")}
             </button>
           </div>
 
@@ -495,10 +495,10 @@ test_cases = [
           </pre>
 
           <div className="p-6 bg-black/80 font-mono text-xs space-y-1.5">
-            <div className="text-zinc-500 uppercase tracking-wider mb-2 flex items-center justify-between">
-              <span>{t("KẾT QUẢ TERMINAL", "Terminal Output")}</span>
+            <div className="text-zinc-500 mb-2 flex items-center justify-between">
+              <span>{t("Kết quả terminal", "Terminal Output")}</span>
               <span className="text-emerald-400">
-                ● {t("SẴN SÀNG", "READY")}
+                ● {t("Sẵn sàng", "Ready")}
               </span>
             </div>
             {currentFeature.output.map((line, idx) => (
@@ -536,7 +536,7 @@ export const PerformanceBento: React.FC = () => {
         <div>
           <SectionBadge
             glyph="[▲]"
-            label={t("ĐỘ TRỄ THỰC THI", "EXECUTION LATENCY")}
+            label={t("Độ trễ thực thi", "Execution latency")}
           />
           <h3 className="text-base font-medium text-primary">
             {t("Nhân Pyodide WASM", "Pyodide WASM Runtime")}
@@ -550,9 +550,9 @@ export const PerformanceBento: React.FC = () => {
 
           <div className="border border-grid font-mono text-xs">
             <div className="grid grid-cols-3 bg-subtle border-b border-grid py-2 px-3 text-secondary">
-              <span>{t("CHỈ SỐ", "METRIC")}</span>
-              <span>{t("WASM NÓNG", "WARM WASM")}</span>
-              <span>{t("KHỞI ĐỘNG", "COLDBOOT")}</span>
+              <span>{t("Chỉ số", "Metric")}</span>
+              <span>{t("WASM nóng", "Warm WASM")}</span>
+              <span>{t("Khởi động", "Coldboot")}</span>
             </div>
             <div className="grid grid-cols-3 border-b border-grid py-2.5 px-3">
               <span className="text-muted">p50</span>
@@ -584,7 +584,7 @@ export const PerformanceBento: React.FC = () => {
         <div>
           <SectionBadge
             glyph="[■]"
-            label={t("THÔNG SỐ KỸ THUẬT", "TECHNICAL SPECS")}
+            label={t("Thông số kỹ thuật", "Technical specs")}
           />
           <h3 className="text-base font-medium text-primary mb-6">
             {t("Thông số Runtime & Đám mây", "Runtime & Cloud Telemetry")}
@@ -631,7 +631,7 @@ export const PerformanceBento: React.FC = () => {
         <div>
           <SectionBadge
             glyph="[●]"
-            label={t("KIẾN TRÚC ZERO-OPS", "ZERO-OPS ARCHITECTURE")}
+            label={t("Kiến trúc zero-ops", "Zero-ops architecture")}
           />
           <pre className="font-mono text-[11px] leading-tight text-primary bg-surface p-4 border border-grid overflow-x-auto my-2">
             {`┌───────────────────────────────┐

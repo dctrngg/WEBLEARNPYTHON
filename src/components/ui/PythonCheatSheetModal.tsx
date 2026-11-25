@@ -68,8 +68,8 @@ export const PythonCheatSheetModal: React.FC<PythonCheatSheetModalProps> = ({
             <SectionBadge
               glyph="[📖]"
               label={t(
-                "SỔ TAY TRA CỨU HÀM & CÚ PHÁP PYTHON CHO HỌC SINH",
-                "STUDENT PYTHON FUNCTION & SYNTAX CHEAT SHEET"
+                "Sổ tay tra cứu hàm & cú pháp Python cho học sinh",
+                "Student Python function & syntax cheat sheet"
               )}
               className="mb-1"
             />
@@ -84,7 +84,7 @@ export const PythonCheatSheetModal: React.FC<PythonCheatSheetModalProps> = ({
             onClick={onClose}
             className="font-mono text-xs px-3 py-1.5 border border-grid text-secondary hover:text-primary bg-subtle"
           >
-            [✕] {t("ĐÓNG", "CLOSE")}
+            ✕ {t("Đóng", "Close")}
           </button>
         </div>
 
@@ -134,7 +134,7 @@ export const PythonCheatSheetModal: React.FC<PythonCheatSheetModalProps> = ({
                     onClick={() => handleInsert(item)}
                     className="font-mono text-[11px] px-2.5 py-1 bg-brand text-white font-semibold hover:opacity-90 shrink-0"
                   >
-                    {t("[+ CHÈN CODE]", "[+ INSERT]")}
+                    {t("+ Chèn code", "+ Insert")}
                   </button>
                 </div>
                 <p className="text-xs font-medium text-primary mb-1">

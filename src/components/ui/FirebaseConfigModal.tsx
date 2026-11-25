@@ -144,8 +144,8 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
             <SectionBadge
               glyph="[☁]"
               label={t(
-                "KẾT NỐI CƠ SỞ DỮ LIỆU FIREBASE THỰC TẾ",
-                "LIVE FIREBASE CLOUD CONFIGURATION"
+                "Kết nối cơ sở dữ liệu Firebase thực tế",
+                "Live Firebase cloud configuration"
               )}
             />
             <h3 className="text-lg font-bold text-primary">
@@ -155,7 +155,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
               )}
             </h3>
             <p className="text-xs font-mono text-secondary mt-1">
-              {t("TRẠNG THÁI HIỆN TẠI:", "CURRENT STATUS:")}{" "}
+              {t("Trạng thái hiện tại:", "Current status:")}{" "}
               <span
                 className={
                   isFirebaseConfigured
@@ -169,8 +169,8 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
                       `● CONNECTED TO LIVE FIREBASE (${activeConfig?.projectId})`
                     )
                   : t(
-                      "◆ ĐANG CHẠY MOCK DATA CỤC BỘ (LOCALSTORAGE)",
-                      "◆ RUNNING LOCAL MOCK DATA (LOCALSTORAGE)"
+                      "◆ Đang chạy mock data cục bộ (localstorage)",
+                      "◆ Running local mock data (localstorage)"
                     )}
               </span>
             </p>
@@ -179,14 +179,14 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
             onClick={onClose}
             className="font-mono text-xs text-secondary hover:text-primary px-2.5 py-1 border border-grid"
           >
-            [✕] {t("ĐÓNG", "CLOSE")}
+            [✕] {t("Đóng", "Close")}
           </button>
         </div>
 
         {/* 3-Step Quick Guide */}
         <div className="bg-subtle border border-grid p-4 font-mono text-xs space-y-2">
-          <div className="text-brand font-bold uppercase">
-            📋 {t("3 BƯỚC LẤY MÃ KẾT NỐI TỪ FIREBASE CONSOLE:", "3 STEPS TO CONNECT FIREBASE:")}
+          <div className="text-brand font-bold">
+            📋 {t("3 Bước lấy mã kết nối từ Firebase console:", "3 Steps to connect Firebase:")}
           </div>
           <ol className="list-decimal list-inside space-y-1 text-secondary leading-relaxed">
             <li>
@@ -242,7 +242,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
 
         {/* Quick Paste Box */}
         <div className="space-y-1.5 font-mono text-xs">
-          <label className="block text-primary font-semibold uppercase">
+          <label className="block text-primary font-semibold">
             ⚡{" "}
             {t(
               "CÁCH NHANH NHẤT: Dán nguyên đoạn code firebaseConfig vào đây",
@@ -267,7 +267,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <div className="text-success font-bold">
-                  ✓ {t("ĐÃ KẾT NỐI VỚI PROJECT:", "CONNECTED TO PROJECT:")}{" "}
+                  ✓ {t("Đã kết nối với project:", "Connected to project:")}{" "}
                   {activeConfig?.projectId}
                 </div>
                 <div className="text-secondary text-[11px]">
@@ -284,10 +284,10 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
                 className="px-3.5 py-2 bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors shrink-0 disabled:opacity-50"
               >
                 {seedStatus.loading
-                  ? t("◐ ĐANG ĐỒNG BỘ...", "◐ SYNCING...")
+                  ? t("◐ Đang đồng bộ...", "◐ Syncing...")
                   : t(
-                      "[🚀 ĐẨY 22 BÀI TẬP LÊN FIRESTORE]",
-                      "[🚀 SEED 22 EXERCISES TO FIRESTORE]"
+                      "🚀 Đẩy 22 bài tập lên Firestore",
+                      "🚀 Seed 22 exercises to Firestore"
                     )}
               </button>
             </div>
@@ -309,7 +309,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
         <form onSubmit={handleSave} className="space-y-3 font-mono text-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-secondary uppercase mb-1">
+              <label className="block text-secondary mb-1">
                 apiKey <span className="text-brand">*</span>
               </label>
               <input
@@ -322,7 +322,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-secondary uppercase mb-1">
+              <label className="block text-secondary mb-1">
                 projectId <span className="text-brand">*</span>
               </label>
               <input
@@ -335,7 +335,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-secondary uppercase mb-1">
+              <label className="block text-secondary mb-1">
                 authDomain
               </label>
               <input
@@ -348,7 +348,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-secondary uppercase mb-1">
+              <label className="block text-secondary mb-1">
                 appId
               </label>
               <input
@@ -367,7 +367,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
               onClick={handleResetEmulator}
               className="px-3 py-2 border border-grid text-secondary hover:text-primary hover:bg-subtle transition-colors"
             >
-              {t("QUAY VỀ MOCK DATA CỤC BỘ", "USE LOCAL MOCK DATA")}
+              {t("Quay về mock data cục bộ", "Use local mock data")}
             </button>
 
             <div className="flex gap-2">
@@ -376,7 +376,7 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
                 onClick={onClose}
                 className="px-4 py-2 border border-grid text-secondary hover:text-primary"
               >
-                {t("ĐÓNG", "CLOSE")}
+                {t("Đóng", "Close")}
               </button>
               <button
                 type="submit"
@@ -384,8 +384,8 @@ export const FirebaseConfigModal: React.FC<FirebaseConfigModalProps> = ({
               >
                 [✓]{" "}
                 {t(
-                  "ÁP DỤNG & KẾT NỐI FIREBASE",
-                  "APPLY & CONNECT FIREBASE"
+                  "Áp dụng & kết nối Firebase",
+                  "Apply & connect Firebase"
                 )}
               </button>
             </div>

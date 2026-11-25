@@ -101,8 +101,8 @@ export const BlueprintPage: React.FC = () => {
     <div className="min-h-screen bg-canvas text-primary flex flex-col">
       <TopNavigationBar
         breadcrumb={t(
-          "TIN HỌC 10 // SỔ TAY KIẾN THỨC & BÀI TẬP PYTHON",
-          "CS GRADE 10 // PYTHON CURRICULUM & EXERCISES"
+          "Tin học 10 // sổ tay kiến thức & bài tập Python",
+          "Cs grade 10 // Python curriculum & exercises"
         )}
         engineState="ready"
         engineStatusText="CURRICULUM READY"
@@ -114,7 +114,7 @@ export const BlueprintPage: React.FC = () => {
         {/* MINIMALIST HEADER BAR (CHROMA RETRO-MINIMALIST) */}
         <section className="neo-box bg-surface p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-2.5 py-1 bg-brand text-white font-mono text-xs font-bold uppercase tracking-wider">
+            <span className="px-2.5 py-1 bg-brand text-white font-mono text-xs font-bold">
               TIN HỌC 10
             </span>
             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-primary">
@@ -146,7 +146,7 @@ export const BlueprintPage: React.FC = () => {
                     : "text-secondary hover:text-primary hover:bg-surface"
                 }`}
               >
-                🗂 {t("75 Bài tập", "75 Tasks")}
+                🗂 {t(`${assignments.length} Bài tập`, `${assignments.length} Tasks`)}
               </button>
             </div>
 
@@ -199,10 +199,10 @@ export const BlueprintPage: React.FC = () => {
             {sidebarOpen && (
               <aside className="lg:col-span-4 xl:col-span-3 bg-surface flex flex-col lg:sticky lg:top-14 lg:self-start lg:max-h-[calc(100vh-4rem)] overflow-y-auto">
                 <div className="h-12 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs sm:text-sm">
-                  <span className="uppercase tracking-wider text-secondary font-bold truncate">
+                  <span className=" text-secondary font-bold truncate">
                     {t(
-                      "MỤC LỤC BÀI HỌC (TIN HỌC 10)",
-                      "CURRICULUM LESSONS (16 - 31)"
+                      "Mục lục bài học (Tin học 10)",
+                      "Curriculum lessons (16 - 31)"
                     )}
                   </span>
                   <div className="flex items-center gap-2 shrink-0">
@@ -376,7 +376,7 @@ export const BlueprintPage: React.FC = () => {
                     }
                     className="px-4 py-2 bg-surface border border-grid text-secondary hover:text-primary font-semibold disabled:opacity-40 transition-colors"
                   >
-                    [◀ {t("BÀI TRƯỚC", "PREV")}]
+                    ◀ {t("Bài trước", "Previous")}
                   </button>
                   <button
                     disabled={
@@ -391,16 +391,16 @@ export const BlueprintPage: React.FC = () => {
                     }
                     className="px-4 py-2 bg-surface border border-grid text-secondary hover:text-primary font-semibold disabled:opacity-40 transition-colors"
                   >
-                    [{t("BÀI TIẾP", "NEXT")} ▶]
+                    {t("Bài tiếp", "Next")} ▶
                   </button>
                 </div>
               </div>
 
               {/* Key Takeaways Box */}
               <div className="p-5 sm:p-6 border-b border-grid bg-canvas/30">
-                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-brand font-bold mb-3 flex items-center gap-1.5">
+                <div className="font-mono text-xs sm:text-sm text-brand font-bold mb-3 flex items-center gap-1.5">
                   <span>★</span>
-                  <span>{t("TÓM TẮT TRỌNG TÂM CẦN NHỚ", "KEY TAKEAWAYS")}</span>
+                  <span>{t("Tóm tắt trọng tâm cần nhớ", "Key takeaways")}</span>
                 </div>
                 <div
                   className={`grid grid-cols-1 ${
@@ -425,12 +425,12 @@ export const BlueprintPage: React.FC = () => {
 
               {/* Detailed Markdown Theory Content from know.md */}
               <div className="p-6 sm:p-8 border-b border-grid">
-                <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold mb-3.5 flex items-center gap-2">
+                <div className="font-mono text-xs sm:text-sm text-secondary font-bold mb-3.5 flex items-center gap-2">
                   <span>📖</span>
                   <span>
                     {t(
-                      "NỘI DUNG LÝ THUYẾT CHI TIẾT (THEO SÁCH GIÁO KHOA TIN HỌC 10)",
-                      "DETAILED LESSON THEORY"
+                      "Nội dung lý thuyết chi tiết (theo sách giáo khoa Tin học 10)",
+                      "Detailed lesson theory"
                     )}
                   </span>
                 </div>
@@ -448,12 +448,12 @@ export const BlueprintPage: React.FC = () => {
               {/* Code Example & Output Preview */}
               <div className="p-5 sm:p-6 border-b border-grid bg-subtle/30">
                 <div className="flex items-center justify-between mb-3.5">
-                  <span className="font-mono text-xs sm:text-sm uppercase tracking-wider text-secondary font-bold flex items-center gap-1.5">
+                  <span className="font-mono text-xs sm:text-sm text-secondary font-bold flex items-center gap-1.5">
                     <span>💻</span>
                     <span>
                       {t(
-                        "VÍ DỤ CODE PYTHON MINH HỌA TRONG BÀI",
-                        "INTERACTIVE CODE EXAMPLE"
+                        "Ví dụ code Python minh họa trong bài",
+                        "Interactive code example"
                       )}
                     </span>
                   </span>
@@ -462,8 +462,8 @@ export const BlueprintPage: React.FC = () => {
                     className="neo-btn px-3.5 py-1.5 bg-surface font-mono text-xs sm:text-sm text-secondary hover:text-brand transition-colors font-semibold"
                   >
                     {copiedSample
-                      ? t("[✓ ĐÃ SAO CHÉP CODE]", "[✓ COPIED]")
-                      : t("[📋 SAO CHÉP CODE MẪU]", "[📋 COPY SAMPLE CODE]")}
+                      ? t("✓ Đã sao chép code", "✓ Copied")
+                      : t("📋 Sao chép code mẫu", "📋 Copy sample code")}
                   </button>
                 </div>
 
@@ -479,7 +479,7 @@ export const BlueprintPage: React.FC = () => {
                   </div>
                   <div className="md:col-span-5 bg-surface p-4 sm:p-5 overflow-x-auto">
                     <div className="text-xs text-success mb-2 border-b border-grid pb-1.5 font-semibold">
-                      ► {t("KẾT QUẢ CHẠY (OUTPUT)", "CONSOLE OUTPUT")}
+                      ► {t("Kết quả chạy (output)", "Console output")}
                     </div>
                     <pre className="text-success text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-mono">
                       {activeLesson.sampleOutput.join("\n")}
@@ -498,7 +498,7 @@ export const BlueprintPage: React.FC = () => {
               <div className="p-6 sm:p-8 bg-surface">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                   <div>
-                    <div className="font-mono text-xs sm:text-sm uppercase tracking-wider text-brand font-bold">
+                    <div className="font-mono text-xs sm:text-sm text-brand font-bold">
                       🎯{" "}
                       {t(
                         `BÀI TẬP THỰC HÀNH CỦA ${activeLesson.code.toUpperCase()} (${activeLessonExercises.length} BÀI)`,
@@ -555,10 +555,10 @@ export const BlueprintPage: React.FC = () => {
                               }`}
                             >
                               {isPassed
-                                ? t("✓ ĐÃ ĐẠT 100%", "✓ PASSED")
+                                ? t("✓ Đã đạt 100%", "✓ Passed")
                                 : isAttempted
-                                ? t("◐ ĐANG LÀM", "◐ IN PROGRESS")
-                                : t("○ CHƯA LÀM", "○ TODO")}
+                                ? t("◐ Đang làm", "◐ In progress")
+                                : t("○ Chưa làm", "○ Todo")}
                             </span>
                           </div>
 
@@ -587,8 +587,8 @@ export const BlueprintPage: React.FC = () => {
                             }`}
                           >
                             {isPassed
-                              ? t("[↻ XEM CODE]", "[↻ REVIEW]")
-                              : t("[▶ LÀM BÀI]", "[▶ SOLVE]")}
+                              ? t("↻ Xem code", "↻ Review")
+                              : t("▶ Làm bài", "▶ Solve")}
                           </button>
                         </div>
                       </div>
@@ -643,7 +643,7 @@ export const BlueprintPage: React.FC = () => {
                         }}
                         className="px-3 py-1 bg-canvas border border-grid text-primary hover:border-brand hover:text-brand transition-colors"
                       >
-                        [📖 {t("ĐỌC LÝ THUYẾT BÀI NÀY", "READ LESSON THEORY")}]
+                        📖 {t("Đọc lý thuyết bài này", "Read lesson theory")}
                       </button>
                     </div>
                   </div>
@@ -684,10 +684,10 @@ export const BlueprintPage: React.FC = () => {
                                 }`}
                               >
                                 {isPassed
-                                  ? t("✓ ĐẠT 100%", "✓ PASSED")
+                                  ? t("✓ ĐẠT 100%", "✓ Passed")
                                   : isAttempted
-                                  ? t("◐ ĐANG LÀM", "◐ IN PROGRESS")
-                                  : t("○ CHƯA LÀM", "○ TODO")}
+                                  ? t("◐ Đang làm", "◐ In progress")
+                                  : t("○ Chưa làm", "○ Todo")}
                               </span>
                             </div>
 
@@ -711,7 +711,7 @@ export const BlueprintPage: React.FC = () => {
                               onClick={() => navigate(`/workspace/${asgn.id}`)}
                               className="px-3 py-1.5 bg-brand text-white font-semibold hover:opacity-90 transition-opacity"
                             >
-                              [▶ {t("MỞ IDE LÀM BÀI", "OPEN IN IDE")}]
+                              ▶ {t("Mở IDE làm bài", "Open in IDE")}
                             </button>
                           </div>
                         </div>
@@ -728,13 +728,13 @@ export const BlueprintPage: React.FC = () => {
       <footer className="h-9 bg-surface border-t border-grid px-4 flex items-center justify-between font-mono text-[11px] text-secondary shrink-0">
         <span>
           {t(
-            "CHƯƠNG TRÌNH TIN HỌC 10: BÀI 16 ĐẾN BÀI 31 (KNOW.MD)",
-            "TIN HOC 10 CURRICULUM: LESSONS 16 TO 31"
+            "Chương trình Tin học 10: bài 16 đến bài 31 (know.md)",
+            "Tin hoc 10 curriculum: lessons 16 to 31"
           )}
         </span>
         <span className="hidden sm:inline">
-          {PYTHON_CURRICULUM_LESSONS.length} {t("BÀI HỌC", "LESSONS")} //{" "}
-          {assignments.length} {t("BÀI TẬP THỰC HÀNH", "PRACTICE EXERCISES")}
+          {PYTHON_CURRICULUM_LESSONS.length} {t("Bài học", "Lessons")} //{" "}
+          {assignments.length} {t("Bài tập thực hành", "Practice exercises")}
         </span>
         <span className="text-brand">CHROMA BENTO DESIGN SYSTEM</span>
       </footer>

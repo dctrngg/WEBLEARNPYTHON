@@ -39,6 +39,18 @@ import {
   TranslatedError,
 } from "../services/pythonErrorTranslator";
 import { diagnose } from "../services/answerDiagnostic";
+import {
+  Eraser,
+  ListChecks,
+  Loader2,
+  Play,
+  RotateCcw,
+  Save,
+  ScanSearch,
+  Send,
+  Square,
+  TerminalSquare,
+} from "lucide-react";
 
 const GLYPHS = ["◇", "◆", "●", "◐", "▣", "◊"];
 
@@ -262,7 +274,7 @@ export const StudentWorkspacePage: React.FC = () => {
             setSubmissionStatus(existingSub.status);
             lastSyncedHashRef.current = computeCodeHash(existingSub.code);
             setSyncBadge(
-              t("● ĐÃ KHÔI PHỤC BẢN NHÁP CỤC BỘ", "● LOCAL DRAFT RESTORED")
+              t("● Đã khôi phục bản nháp cục bộ", "● Local draft restored")
             );
           } else {
             setCode(existingSub.code);
@@ -289,7 +301,7 @@ export const StudentWorkspacePage: React.FC = () => {
           selectedAssignment.starterCode
         );
         setSyncBadge(
-          t("● ĐÃ KHÔI PHỤC BẢN NHÁP CỤC BỘ", "● LOCAL DRAFT RESTORED")
+          t("● Đã khôi phục bản nháp cục bộ", "● Local draft restored")
         );
       } else {
         setCode(selectedAssignment.starterCode);
@@ -297,7 +309,7 @@ export const StudentWorkspacePage: React.FC = () => {
         lastSyncedHashRef.current = computeCodeHash(
           selectedAssignment.starterCode
         );
-        setSyncBadge(t("● ĐANG DÙNG CODE MẪU", "● STARTER TEMPLATE"));
+        setSyncBadge(t("● Đang dùng code mẫu", "● Starter template"));
       }
       setTimeout(() => {
         isInitialLoadRef.current = false;
@@ -320,7 +332,7 @@ export const StudentWorkspacePage: React.FC = () => {
     ) => {
       if (!user || !selectedAssignment) return;
       const targetHash = computeCodeHash(codeToSave);
-      setSyncBadge(t("◐ ĐANG LƯU BÀI...", "◐ SAVING..."));
+      setSyncBadge(t("◐ Đang lưu bài...", "◐ Saving..."));
       const nextStatus = overrideStatus || submissionStatus;
       const saved = await saveSubmission({
         id: `${user.uid}_${selectedAssignment.id}`,
@@ -370,8 +382,8 @@ export const StudentWorkspacePage: React.FC = () => {
     // Step C: Mark modified and debounce Cloud Sync for 25 seconds
     setSyncBadge(
       t(
-        "● ĐÃ LƯU BẢN NHÁP (ĐỒNG BỘ ĐÁM MÂY SAU 25s)",
-        "● DRAFT SAVED (SYNC IN 25S)"
+        "● Đã lưu bản nháp (đồng bộ đám mây sau 25s)",
+        "● Draft saved (sync in 25s)"
       )
     );
 
@@ -621,7 +633,7 @@ export const StudentWorkspacePage: React.FC = () => {
     if (!selectedAssignment) return;
     setCode(selectedAssignment.starterCode);
     setTestResults(null);
-    setSyncBadge(t("↺ ĐÃ KHÔI PHỤC CODE MẪU", "↺ RESET TO STARTER"));
+    setSyncBadge(t("↺ Đã khôi phục code mẫu", "↺ Reset to starter"));
   };
 
   const handleManualSave = async () => {
@@ -634,12 +646,28 @@ export const StudentWorkspacePage: React.FC = () => {
   const handleSubmitAndGrade = async () => {
     handleStopTracing();
     setTranslatedError(null);
-    if (!selectedAssignment) return;
+    if (!selectedAssignment || isGrading) return;
+    if (selectedAssignment.testCases.length === 0) {
+      pushToast(
+        t(
+          "Bài này chưa có test case để chấm. Hãy báo giáo viên!",
+          "This assignment has no test cases yet."
+        ),
+        "warn"
+      );
+      return;
+    }
     setIsGrading(true);
     setActiveBottomTab("TEST_CASES");
 
     const results = await runTests(code, selectedAssignment.testCases);
     setIsGrading(false);
+
+    // Bị dừng giữa chừng (nút STOP) → không ghi nhận kết quả 0 điểm
+    if (results.length === 0) {
+      pushToast(t("Đã huỷ lượt chấm bài.", "Grading cancelled."), "info");
+      return;
+    }
 
     const passedCount = results.filter((r) => r.passed).length;
     const totalCount = results.length;
@@ -695,34 +723,35 @@ export const StudentWorkspacePage: React.FC = () => {
       base: "vs-dark",
       inherit: true,
       rules: [
-        { token: "keyword", foreground: "FF6433", fontStyle: "bold" },
-        { token: "string", foreground: "34D399" },
-        { token: "number", foreground: "FBBF24" },
-        { token: "comment", foreground: "71717A", fontStyle: "italic" },
-        { token: "identifier", foreground: "FAFAFA" },
-        { token: "type", foreground: "38BDF8" },
+        { token: "keyword", foreground: "C792EA", fontStyle: "bold" },
+        { token: "string", foreground: "A5E3A0" },
+        { token: "number", foreground: "F5B971" },
+        { token: "comment", foreground: "7C8AA5", fontStyle: "italic" },
+        { token: "identifier", foreground: "E8EDF5" },
+        { token: "type", foreground: "7DCFFF" },
+        { token: "delimiter", foreground: "A9B5C7" },
       ],
       colors: {
-        "editor.background": "#050505",
-        "editor.foreground": "#FAFAFA",
-        "editorLineNumber.foreground": "#52525B",
-        "editorLineNumber.activeForeground": "#FF6433",
-        "editorCursor.foreground": "#FF6433",
-        "editor.selectionBackground": "#FF643333",
-        "editor.lineHighlightBackground": "#111111",
-        "editorIndentGuide.background1": "#18181B",
-        "editorIndentGuide.activeBackground1": "#3F3F46",
-        "editorSuggestWidget.background": "#111111",
-        "editorSuggestWidget.border": "#3F3F46",
-        "editorSuggestWidget.foreground": "#FAFAFA",
+        "editor.background": "#0E1627",
+        "editor.foreground": "#E8EDF5",
+        "editorLineNumber.foreground": "#4A5A78",
+        "editorLineNumber.activeForeground": "#8FB0FF",
+        "editorCursor.foreground": "#8FB0FF",
+        "editor.selectionBackground": "#5B8CFF40",
+        "editor.lineHighlightBackground": "#16203A",
+        "editor.lineHighlightBorder": "#00000000",
+        "editorIndentGuide.background1": "#1C2742",
+        "editorIndentGuide.activeBackground1": "#31415F",
+        "editorWidget.background": "#111A2E",
+        "editorSuggestWidget.background": "#111A2E",
+        "editorSuggestWidget.border": "#31415F",
+        "editorSuggestWidget.foreground": "#E8EDF5",
         "editorSuggestWidget.selectedForeground": "#FFFFFF",
-        "editorSuggestWidget.selectedBackground": "#27272A",
-        "editorSuggestWidget.highlightForeground": "#FF6433",
-        "editorSuggestWidget.focusHighlightForeground": "#FF6433",
-        "list.hoverBackground": "#1E1E22",
-        "list.hoverForeground": "#FAFAFA",
-        "list.focusBackground": "#27272A",
-        "list.focusForeground": "#FFFFFF",
+        "editorSuggestWidget.selectedBackground": "#22304A",
+        "editorSuggestWidget.highlightForeground": "#8FB0FF",
+        "editorSuggestWidget.focusHighlightForeground": "#8FB0FF",
+        "list.hoverBackground": "#18233A",
+        "list.focusBackground": "#22304A",
       },
     });
 
@@ -730,34 +759,35 @@ export const StudentWorkspacePage: React.FC = () => {
       base: "vs",
       inherit: true,
       rules: [
-        { token: "keyword", foreground: "FF5722", fontStyle: "bold" },
-        { token: "string", foreground: "059669" },
-        { token: "number", foreground: "D97706" },
-        { token: "comment", foreground: "71717A", fontStyle: "italic" },
-        { token: "identifier", foreground: "09090B" },
-        { token: "type", foreground: "0284C7" },
+        { token: "keyword", foreground: "7C3AED", fontStyle: "bold" },
+        { token: "string", foreground: "15803D" },
+        { token: "number", foreground: "C2410C" },
+        { token: "comment", foreground: "64748B", fontStyle: "italic" },
+        { token: "identifier", foreground: "0F172A" },
+        { token: "type", foreground: "0369A1" },
+        { token: "delimiter", foreground: "475569" },
       ],
       colors: {
         "editor.background": "#FFFFFF",
-        "editor.foreground": "#09090B",
-        "editorLineNumber.foreground": "#71717A",
-        "editorLineNumber.activeForeground": "#FF5722",
-        "editorCursor.foreground": "#FF5722",
-        "editor.selectionBackground": "#FF572220",
-        "editor.lineHighlightBackground": "#F4F4F5",
-        "editorIndentGuide.background1": "#E4E4E7",
-        "editorIndentGuide.activeBackground1": "#D4D4D8",
+        "editor.foreground": "#0F172A",
+        "editorLineNumber.foreground": "#94A3B8",
+        "editorLineNumber.activeForeground": "#2563EB",
+        "editorCursor.foreground": "#2563EB",
+        "editor.selectionBackground": "#2563EB26",
+        "editor.lineHighlightBackground": "#F1F5FB",
+        "editor.lineHighlightBorder": "#00000000",
+        "editorIndentGuide.background1": "#E3E8EF",
+        "editorIndentGuide.activeBackground1": "#CDD5DF",
+        "editorWidget.background": "#FFFFFF",
         "editorSuggestWidget.background": "#FFFFFF",
-        "editorSuggestWidget.border": "#D4D4D8",
-        "editorSuggestWidget.foreground": "#09090B",
-        "editorSuggestWidget.selectedForeground": "#09090B",
-        "editorSuggestWidget.selectedBackground": "#E4E4E7",
-        "editorSuggestWidget.highlightForeground": "#EA580C",
-        "editorSuggestWidget.focusHighlightForeground": "#EA580C",
-        "list.hoverBackground": "#F4F4F5",
-        "list.hoverForeground": "#09090B",
-        "list.focusBackground": "#E4E4E7",
-        "list.focusForeground": "#09090B",
+        "editorSuggestWidget.border": "#CDD5DF",
+        "editorSuggestWidget.foreground": "#0F172A",
+        "editorSuggestWidget.selectedForeground": "#0F172A",
+        "editorSuggestWidget.selectedBackground": "#E8EFFF",
+        "editorSuggestWidget.highlightForeground": "#1D4ED8",
+        "editorSuggestWidget.focusHighlightForeground": "#1D4ED8",
+        "list.hoverBackground": "#F1F5FB",
+        "list.focusBackground": "#E8EFFF",
       },
     });
 
@@ -861,9 +891,9 @@ export const StudentWorkspacePage: React.FC = () => {
     localizedSelected?.testCases.filter((tc) => tc.isHidden).length || 0;
 
   const formatStatusLabel = (st: SubmissionStatus) => {
-    if (st === "passed") return t("✓ ĐÃ HOÀN THÀNH", "✓ PASSED");
-    if (st === "failed") return t("✕ CHƯA ĐẠT", "✕ FAILED");
-    return t("◐ ĐANG LÀM", "◐ IN_PROGRESS");
+    if (st === "passed") return t("✓ Đã hoàn thành", "✓ Passed");
+    if (st === "failed") return t("✕ Chưa đạt", "✕ Failed");
+    return t("◐ Đang làm", "◐ In progress");
   };
 
   return (
@@ -871,12 +901,12 @@ export const StudentWorkspacePage: React.FC = () => {
       {/* 1. Student-Friendly Top Status Bar */}
       <TopNavigationBar
         breadcrumb={t(
-          "HỌC PYTHON TRỰC TUYẾN // CHROMA IDE",
-          "LEARN PYTHON ONLINE // CHROMA IDE"
+          "Học Python trực tuyến",
+          "Learn Python online"
         )}
         engineState={engineState}
         engineStatusText={statusMessage}
-        syncStatus={syncBadge || t("✓ ĐÃ LƯU TỰ ĐỘNG", "✓ AUTO-SAVED")}
+        syncStatus={syncBadge || t("✓ Đã lưu tự động", "✓ Auto-saved")}
         studentProgressText={t(
           `HOÀN THÀNH: ${completedCount}/${assignments.length} BÀI`,
           `COMPLETED: ${completedCount}/${assignments.length}`
@@ -904,9 +934,9 @@ export const StudentWorkspacePage: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-brand">◆</span>
-                  <span className="uppercase tracking-wider text-primary font-semibold">
+                  <span className=" text-primary font-semibold">
                     {t(
-                      `DANH SÁCH BÀI TẬP (${filteredAssignments.length})`,
+                      `Danh sách bài tập (${filteredAssignments.length})`,
                       `EXERCISES (${filteredAssignments.length})`
                     )}
                   </span>
@@ -920,8 +950,8 @@ export const StudentWorkspacePage: React.FC = () => {
                   className="text-[11px] text-secondary hover:text-primary px-2 py-0.5 border border-grid bg-surface"
                 >
                   {leftSectionMode === "SPLIT"
-                    ? t("[▲] ẨN DANH SÁCH", "[▲] HIDE LIST")
-                    : t("[▼] CHỌN BÀI KHÁC", "[▼] CHANGE EXERCISE")}
+                    ? t("▲ Ẩn danh sách", "▲ Hide list")
+                    : t("▼ Chọn bài khác", "▼ Change exercise")}
                 </button>
               </div>
 
@@ -1019,7 +1049,7 @@ export const StudentWorkspacePage: React.FC = () => {
                               </>
                             )}
                             <span
-                              className={`uppercase ${
+                              className={` ${
                                 item.difficulty === "Beginner"
                                   ? "text-success"
                                   : item.difficulty === "Intermediate"
@@ -1032,7 +1062,7 @@ export const StudentWorkspacePage: React.FC = () => {
                             <span className="text-muted">•</span>
                             <span className="text-muted">
                               {item.testCases.length}{" "}
-                              {t("TEST CHẤM", "TESTS")}
+                              {t("Test chấm", "Tests")}
                             </span>
                           </div>
                         </div>
@@ -1042,15 +1072,15 @@ export const StudentWorkspacePage: React.FC = () => {
                       <div className="font-mono text-[10px] shrink-0 mt-0.5">
                         {sub?.status === "passed" ? (
                           <span className="px-1.5 py-0.5 bg-success/10 text-success border border-success/30 font-semibold">
-                            ✓ {t("ĐẠT", "PASSED")}
+                            ✓ {t("Đạt", "Passed")}
                           </span>
                         ) : sub?.status === "failed" ? (
                           <span className="px-1.5 py-0.5 bg-brand/10 text-brand border border-brand/30">
-                            ✕ {t("CHƯA ĐẠT", "FAILED")}
+                            ✕ {t("Chưa đạt", "Failed")}
                           </span>
                         ) : (
                           <span className="px-1.5 py-0.5 bg-subtle text-muted border border-grid">
-                            ○ {t("MỚI", "TODO")}
+                            ○ {t("Mới", "Todo")}
                           </span>
                         )}
                       </div>
@@ -1091,14 +1121,14 @@ export const StudentWorkspacePage: React.FC = () => {
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <SectionBadge
                         glyph={localizedSelected.glyph || "◆"}
-                        label={`${t("MỨC ĐỘ", "LEVEL")}: ${localizeDifficulty(
+                        label={`${t("Mức độ", "Level")}: ${localizeDifficulty(
                           localizedSelected.difficulty,
                           lang
                         )}`}
                         className="mb-0"
                       />
                       <span
-                        className={`font-mono text-[11px] px-2 py-0.5 border uppercase ${
+                        className={`font-mono text-[11px] px-2 py-0.5 border ${
                           submissionStatus === "passed"
                             ? "border-success/40 bg-success/10 text-success"
                             : "border-grid bg-subtle text-secondary"
@@ -1117,13 +1147,13 @@ export const StudentWorkspacePage: React.FC = () => {
 
                   {/* Public Sample Input / Output Blocks */}
                   <div className="space-y-3 pt-2">
-                    <div className="font-mono text-xs uppercase tracking-wider text-secondary flex items-center justify-between">
+                    <div className="font-mono text-xs text-secondary flex items-center justify-between">
                       <span>
                         [▣]{" "}
-                        {t("VÍ DỤ INPUT / OUTPUT MẪU", "SAMPLE INPUT / OUTPUT")}
+                        {t("Ví dụ input / output mẫu", "Sample input / output")}
                       </span>
                       <span className="text-muted">
-                        +{hiddenTestCount} {t("TEST ẨN", "HIDDEN")}
+                        +{hiddenTestCount} {t("Test ẩn", "Hidden")}
                       </span>
                     </div>
 
@@ -1134,7 +1164,7 @@ export const StudentWorkspacePage: React.FC = () => {
                       >
                         <div className="px-3 py-1.5 border-b border-grid flex items-center justify-between text-[11px] text-secondary bg-surface">
                           <span className="font-semibold text-primary">
-                            {t(`VÍ DỤ MẪU #${i + 1}`, `EXAMPLE #${i + 1}`)}
+                            {t(`Ví dụ mẫu #${i + 1}`, `Example #${i + 1}`)}
                           </span>
                           <button
                             onClick={() => {
@@ -1142,21 +1172,21 @@ export const StudentWorkspacePage: React.FC = () => {
                             }}
                             className="text-brand hover:underline"
                           >
-                            {t("[SAO CHÉP INPUT]", "[COPY INPUT]")}
+                            {t("Sao chép input", "Copy input")}
                           </button>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 bg-grid gap-[1px]">
                           <div className="bg-surface p-3">
-                            <div className="text-[10px] text-muted uppercase mb-1">
-                              {t("DỮ LIỆU NHẬP (INPUT)", "INPUT")}
+                            <div className="text-[10px] text-muted mb-1">
+                              {t("Dữ liệu nhập (input)", "Input")}
                             </div>
                             <pre className="text-primary whitespace-pre-wrap">
                               {tc.input || t("(trống)", "(empty)")}
                             </pre>
                           </div>
                           <div className="bg-surface p-3">
-                            <div className="text-[10px] text-muted uppercase mb-1">
-                              {t("KẾT QUẢ IN RA (OUTPUT)", "EXPECTED OUTPUT")}
+                            <div className="text-[10px] text-muted mb-1">
+                              {t("Kết quả in ra (output)", "Expected output")}
                             </div>
                             <pre className="text-emerald-500 whitespace-pre-wrap">
                               {tc.expectedOutput}
@@ -1170,8 +1200,8 @@ export const StudentWorkspacePage: React.FC = () => {
               ) : (
                 <div className="font-mono text-xs text-muted">
                   {t(
-                    "CHỌN MỘT BÀI TẬP ĐỂ BẮT ĐẦU...",
-                    "SELECT AN ASSIGNMENT TO BEGIN..."
+                    "Chọn một bài tập để bắt đầu...",
+                    "Select an assignment to begin..."
                   )}
                 </div>
               )}
@@ -1208,7 +1238,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     >
                       <span className="text-brand font-bold">{isLeftPaneOpen ? "◀" : "▶"}</span>
                       <span className="font-semibold text-xs">
-                        {isLeftPaneOpen ? t("ẨN ĐỀ", "HIDE PROBLEM") : t("XEM ĐỀ", "SHOW PROBLEM")}
+                        {isLeftPaneOpen ? t("Ẩn đề", "Hide problem") : t("Xem đề", "Show problem")}
                       </span>
                     </button>
 
@@ -1257,102 +1287,81 @@ export const StudentWorkspacePage: React.FC = () => {
                       className="px-2.5 py-1 bg-subtle border border-grid hover:border-brand text-secondary hover:text-primary transition-colors flex items-center gap-1 shrink-0"
                     >
                       <span>📖</span>
-                      <span className="hidden sm:inline">{t("SỔ TAY HÀM", "CHEAT SHEET")}</span>
+                      <span className="hidden sm:inline">{t("Sổ tay hàm", "Cheat sheet")}</span>
                     </button>
                   </div>
 
                   {/* Primary Execution & Cloud Actions */}
                   <div className="flex flex-wrap items-center gap-1.5 shrink-0">
-                    {/* 1. CHẠY THỬ */}
                     <button
                       onClick={handleRunCode}
                       disabled={engineState === "initializing"}
-                      title={t(
-                        "Chạy thử chương trình Python (Phím tắt: Ctrl+Enter)",
-                        "Run Python program (Shortcut: Ctrl+Enter)"
-                      )}
-                      className="neo-btn px-3 py-1 bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-colors flex items-center gap-1 disabled:opacity-40 shrink-0"
+                      title={t("Chạy thử chương trình (Ctrl+Enter)", "Run program (Ctrl+Enter)")}
+                      className="btn btn-sm btn-success"
                     >
-                      <span>▶</span>
-                      <span>{t("CHẠY THỬ", "RUN")}</span>
+                      <Play size={15} fill="currentColor" />
+                      <span>{t("Chạy thử", "Run")}</span>
                     </button>
 
-                    {/* 2. NỘP BÀI & CHẤM ĐIỂM (Đặt ngay cạnh Chạy thử để không bao giờ bị khuất) */}
                     <button
                       onClick={handleSubmitAndGrade}
                       disabled={isGrading || engineState === "initializing"}
-                      title={t(
-                        "Nộp bài và chấm điểm tự động với bộ Test Cases",
-                        "Submit & grade automatically against all test cases"
-                      )}
-                      className="neo-btn px-3.5 py-1 bg-brand text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-1 shrink-0"
+                      title={t("Nộp bài và chấm điểm tự động", "Submit and auto-grade")}
+                      className="btn btn-sm btn-primary"
                     >
-                      <span>{isGrading ? "◐" : "✓"}</span>
-                      <span>
-                        {isGrading
-                          ? t("ĐANG CHẤM...", "GRADING...")
-                          : t("NỘP BÀI", "SUBMIT & GRADE")}
-                      </span>
+                      {isGrading ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
+                      <span>{isGrading ? t("Đang chấm...", "Grading...") : t("Nộp bài", "Submit")}</span>
                     </button>
 
-                    {/* 3. Step-by-Step Tracer Button */}
                     <button
                       onClick={isTracing ? handleStopTracing : handleInitiateTrace}
                       disabled={engineState === "initializing" || isTraceLoading}
-                      title={t(
-                        "Chạy từng bước thuật toán & trực quan hóa giá trị biến qua từng dòng",
-                        "Step-by-step execution & variable state inspector"
-                      )}
-                      className={`neo-btn px-2.5 py-1 font-semibold transition-colors flex items-center gap-1 disabled:opacity-40 text-xs shrink-0 ${
-                        isTracing
-                          ? "bg-amber-500 text-black hover:bg-amber-400 font-bold"
-                          : "bg-surface border-amber-500/50 text-amber-500 hover:bg-amber-500/10"
-                      }`}
+                      title={t("Chạy từng dòng và xem giá trị biến thay đổi", "Step through code and watch variables")}
+                      className={`btn btn-sm ${isTracing ? "bg-warn-soft text-warn" : "btn-secondary"}`}
                     >
-                      <span>{isTraceLoading ? "◐" : "🔍"}</span>
+                      {isTraceLoading ? <Loader2 size={15} className="animate-spin" /> : <ScanSearch size={15} />}
                       <span>
                         {isTraceLoading
-                          ? t("NẠP...", "LOADING...")
+                          ? t("Đang nạp...", "Loading...")
                           : isTracing
-                          ? t("DỪNG SOI [✕]", "STOP [✕]")
-                          : t("SOI BIẾN", "TRACE")}
+                          ? t("Thoát soi biến", "Exit tracer")
+                          : t("Soi biến", "Trace")}
                       </span>
                     </button>
 
-                    {/* 4. Dừng */}
+                    <span className="w-px h-6 bg-grid mx-0.5" aria-hidden />
+
                     <button
                       onClick={() => {
                         stopExecution();
                         handleStopTracing();
                       }}
-                      title={t(
-                        "Dừng chương trình ngay lập tức (khi bị lặp vô hạn)",
-                        "Stop running program immediately"
-                      )}
-                      className="neo-btn px-2.5 py-1 bg-surface text-secondary hover:text-brand transition-colors shrink-0"
+                      title={t("Dừng chương trình ngay (khi bị lặp vô hạn)", "Stop the program now")}
+                      aria-label={t("Dừng", "Stop")}
+                      className="btn btn-sm btn-ghost hover:!text-danger"
                     >
-                      [■] {t("DỪNG", "STOP")}
+                      <Square size={14} fill="currentColor" />
+                      <span className="hidden xl:inline">{t("Dừng", "Stop")}</span>
                     </button>
 
-                    {/* 5. Làm lại */}
                     <button
                       onClick={handleResetCode}
-                      title={t(
-                        "Đặt lại về code gợi ý ban đầu",
-                        "Reset to starter code"
-                      )}
-                      className="neo-btn px-2 py-1 bg-surface text-secondary hover:text-primary transition-colors shrink-0"
+                      title={t("Đặt lại về code ban đầu", "Reset to starter code")}
+                      aria-label={t("Làm lại", "Reset")}
+                      className="btn btn-sm btn-ghost"
                     >
-                      {t("LÀM LẠI", "RESET")}
+                      <RotateCcw size={15} />
+                      <span className="hidden xl:inline">{t("Làm lại", "Reset")}</span>
                     </button>
 
-                    {/* 6. Lưu bài */}
                     <button
                       onClick={handleManualSave}
                       title={t("Lưu bài làm", "Save code")}
-                      className="neo-btn px-2 py-1 bg-surface text-secondary hover:text-primary transition-colors shrink-0"
+                      aria-label={t("Lưu", "Save")}
+                      className="btn btn-sm btn-ghost"
                     >
-                      {t("LƯU", "SAVE")}
+                      <Save size={15} />
+                      <span className="hidden xl:inline">{t("Lưu", "Save")}</span>
                     </button>
                   </div>
                 </div>
@@ -1377,8 +1386,8 @@ export const StudentWorkspacePage: React.FC = () => {
                       // Disable Chrome EditContext bug so Spacebar & Vietnamese Unikey/Telex work 100% smoothly
                       editContext: false,
                       fontSize: editorFontSize,
-                      fontFamily:
-                        "'JetBrains Mono', 'Geist Mono', 'Fira Code', monospace",
+                      fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                      fontLigatures: false,
                       lineHeight: Math.round(editorFontSize * 1.6),
                       mouseWheelZoom: true,
                       minimap: { enabled: false },
@@ -1434,74 +1443,52 @@ export const StudentWorkspacePage: React.FC = () => {
                 className="bg-terminal text-primary flex flex-col"
               >
                 {/* Terminal Header Tabs (Responsive for high browser zoom / scaling) */}
-                <div className="min-h-[36px] h-auto py-1 px-3 bg-subtle border-b border-grid flex flex-wrap items-center justify-between font-mono text-xs shrink-0 gap-1.5">
-                  <div className="flex flex-wrap items-center gap-1 shrink-0">
-                    <button
-                      onClick={() => setActiveBottomTab("CONSOLE")}
-                      className={`px-2.5 py-1 transition-colors flex items-center gap-1.5 shrink-0 ${
-                        activeBottomTab === "CONSOLE"
-                          ? "bg-surface text-primary border-t-2 border-t-brand font-semibold"
-                          : "text-secondary hover:text-primary"
-                      }`}
-                    >
-                      <span className="text-brand">[▣]</span>
-                      <span>
-                        <span className="hidden sm:inline">MÀN HÌNH </span>
-                        {t("KẾT QUẢ", "CONSOLE")}
-                      </span>
-                      {engineState === "awaiting_input" && (
-                        <span className="px-1.5 py-0.2 bg-brand text-white text-[10px] animate-pulse">
-                          {t("NHẬP DỮ LIỆU", "INPUT()")}
-                        </span>
-                      )}
-                    </button>
-
-                    <button
-                      onClick={() => setActiveBottomTab("TEST_CASES")}
-                      className={`px-2.5 py-1 transition-colors flex items-center gap-1.5 shrink-0 ${
-                        activeBottomTab === "TEST_CASES"
-                          ? "bg-surface text-primary border-t-2 border-t-brand font-semibold"
-                          : "text-secondary hover:text-primary"
-                      }`}
-                    >
-                      <span className="text-brand">[◆]</span>
-                      <span>
-                        <span className="hidden sm:inline">BẢNG </span>
-                        {t("CHẤM ĐIỂM", "TESTS")}
-                      </span>
-                      {testResults && (
-                        <span
-                          className={`px-1.5 py-0.2 text-[10px] font-bold ${
-                            testResults.every((r) => r.passed)
-                              ? "bg-emerald-500/20 text-emerald-500"
-                              : "bg-brand/20 text-brand"
+                <div className="min-h-[44px] h-auto py-1.5 px-3 bg-subtle border-b border-grid flex flex-wrap items-center justify-between text-xs shrink-0 gap-1.5">
+                  <div role="tablist" className="flex flex-wrap items-center gap-1 shrink-0">
+                    {(
+                      [
+                        { id: "CONSOLE", icon: TerminalSquare, label: t("Kết quả chạy", "Output") },
+                        { id: "TEST_CASES", icon: ListChecks, label: t("Chấm điểm", "Tests") },
+                        { id: "TRACER", icon: ScanSearch, label: t("Soi biến", "Tracer") },
+                      ] as const
+                    ).map(({ id, icon: Icon, label }) => {
+                      const active = activeBottomTab === id;
+                      return (
+                        <button
+                          key={id}
+                          role="tab"
+                          aria-selected={active}
+                          onClick={() => setActiveBottomTab(id)}
+                          className={`h-8 px-3 text-[13px] font-semibold flex items-center gap-1.5 shrink-0 transition-colors ${
+                            active
+                              ? "bg-surface text-primary shadow-card"
+                              : "text-secondary hover:text-primary"
                           }`}
                         >
-                          {testResults.filter((r) => r.passed).length}/
-                          {testResults.length}
-                        </span>
-                      )}
-                    </button>
-
-                    <button
-                      onClick={() => setActiveBottomTab("TRACER")}
-                      className={`px-2.5 py-1 transition-colors flex items-center gap-1.5 shrink-0 ${
-                        activeBottomTab === "TRACER"
-                          ? "bg-surface text-primary border-t-2 border-t-amber-500 font-semibold"
-                          : "text-secondary hover:text-primary"
-                      }`}
-                    >
-                      <span className="text-amber-500">[🔍]</span>
-                      <span>
-                        <span className="hidden sm:inline">TRỰC QUAN HÓA </span>
-                        {t("SOI BIẾN", "TRACER")}
-                      </span>
-                      {isTracing && (
-                        <span className="px-1.5 py-0.2 bg-amber-500 text-black text-[10px] font-bold">
-                          {currentStepIdx + 1}/{traceSteps.length}
-                        </span>
-                      )}
-                    </button>
+                          <Icon size={15} className={active ? "text-brand" : ""} />
+                          <span>{label}</span>
+                          {id === "CONSOLE" && engineState === "awaiting_input" && (
+                            <span className="chip chip-brand animate-pulse !py-0">
+                              {t("Chờ nhập", "Input")}
+                            </span>
+                          )}
+                          {id === "TEST_CASES" && testResults && testResults.length > 0 && (
+                            <span
+                              className={`chip !py-0 tabular-nums ${
+                                testResults.every((r) => r.passed) ? "chip-success" : "chip-danger"
+                              }`}
+                            >
+                              {testResults.filter((r) => r.passed).length}/{testResults.length}
+                            </span>
+                          )}
+                          {id === "TRACER" && isTracing && (
+                            <span className="chip chip-warn !py-0 tabular-nums">
+                              {currentStepIdx + 1}/{traceSteps.length}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
 
                   <div className="flex items-center gap-2 text-[11px] text-muted shrink-0">
@@ -1511,31 +1498,29 @@ export const StudentWorkspacePage: React.FC = () => {
                         "Function hints enabled • Ctrl+Enter to run"
                       )}
                     </span>
-                    <button
-                      onClick={clearConsole}
-                      className="px-2 py-0.5 border border-grid hover:text-primary hover:border-brand text-secondary transition-colors"
-                    >
-                      {t("XÓA MÀN HÌNH", "CLEAR")}
+                    <button onClick={clearConsole} className="btn btn-ghost btn-sm h-8">
+                      <Eraser size={14} />
+                      {t("Xoá màn hình", "Clear")}
                     </button>
                   </div>
                 </div>
 
                 {/* Tab 1: Interactive Console Output + Stdin Input Prompt */}
                 {activeBottomTab === "CONSOLE" && (
-                  <div className="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-1.5 bg-terminal">
+                  <div className="flex-1 overflow-y-auto p-4 font-code text-[13px] leading-relaxed space-y-1 bg-terminal">
                     {/* Feature 4: Friendly Error Translator Banner */}
                     {translatedError && (
-                      <div className="mb-4 p-3.5 bg-red-950/20 border-2 border-brand/50 font-sans animate-in fade-in duration-200">
-                        <div className="flex items-start justify-between gap-3 pb-2.5 border-b border-brand/20">
+                      <div className="mb-4 p-3.5 bg-danger-soft border border-danger/30 rounded-[12px] font-sans animate-in fade-in duration-200">
+                        <div className="flex items-start justify-between gap-3 pb-2.5 border-b border-danger/20">
                           <div className="flex flex-wrap items-center gap-2 font-mono">
-                            <span className="px-1.5 py-0.5 bg-brand text-white font-bold text-[10px]">
-                              🎯 GIẢI MÃ LỖI TIẾNG VIỆT
+                            <span className="px-1.5 py-0.5 bg-danger text-white rounded font-bold text-[10px]">
+                              🎯 Giải thích lỗi
                             </span>
-                            <span className="text-brand font-bold text-xs">
+                            <span className="text-danger font-bold text-xs">
                               {translatedError.titleVi}
                             </span>
                             {translatedError.lineNumber && (
-                              <span className="px-2 py-0.5 bg-brand/20 border border-brand/40 text-brand text-[10px] font-semibold">
+                              <span className="px-2 py-0.5 bg-brand/20 border border-brand/40 text-danger text-[10px] font-semibold">
                                 DÒNG {translatedError.lineNumber}
                               </span>
                             )}
@@ -1544,7 +1529,7 @@ export const StudentWorkspacePage: React.FC = () => {
                             {translatedError.lineNumber && (
                               <button
                                 onClick={() => handleJumpToLine(translatedError.lineNumber!)}
-                                className="px-2.5 py-1 bg-brand text-white text-[11px] font-mono font-semibold hover:opacity-90 transition-opacity flex items-center gap-1"
+                                className="px-2.5 py-1 bg-danger text-white rounded text-[11px] font-mono font-semibold hover:opacity-90 transition-opacity flex items-center gap-1"
                               >
                                 <span>🔍</span>
                                 <span>Xem dòng {translatedError.lineNumber} trong Code</span>
@@ -1562,12 +1547,12 @@ export const StudentWorkspacePage: React.FC = () => {
 
                         <div className="mt-2.5 space-y-2 text-xs">
                           <p className="text-primary leading-relaxed">
-                            <span className="font-semibold text-brand">📌 Giải thích chi tiết: </span>
+                            <span className="font-semibold text-danger">📌 Giải thích chi tiết: </span>
                             {translatedError.descriptionVi}
                           </p>
 
                           <div className="p-2 bg-emerald-500/10 border-l-2 border-emerald-500 text-emerald-400 font-mono text-[11px] leading-relaxed">
-                            <span className="font-bold text-emerald-300">💡 Gợi ý khắc phục: </span>
+                            <span className="font-bold text-success">💡 Gợi ý khắc phục: </span>
                             {translatedError.suggestionVi}
                           </div>
 
@@ -1575,14 +1560,14 @@ export const StudentWorkspacePage: React.FC = () => {
                             <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2 font-mono text-[11px]">
                               {translatedError.wrongExample && (
                                 <div className="p-2 bg-black/40 border border-brand/30">
-                                  <div className="text-brand font-bold mb-1">✕ Code chưa đúng:</div>
+                                  <div className="text-danger font-bold mb-1">✕ Code chưa đúng:</div>
                                   <pre className="text-muted whitespace-pre-wrap">{translatedError.wrongExample}</pre>
                                 </div>
                               )}
                               {translatedError.correctExample && (
                                 <div className="p-2 bg-black/40 border border-emerald-500/40">
                                   <div className="text-emerald-400 font-bold mb-1">✓ Nên sửa thành:</div>
-                                  <pre className="text-emerald-300 whitespace-pre-wrap">{translatedError.correctExample}</pre>
+                                  <pre className="text-success whitespace-pre-wrap">{translatedError.correctExample}</pre>
                                 </div>
                               )}
                             </div>
@@ -1626,7 +1611,7 @@ export const StudentWorkspacePage: React.FC = () => {
                         className="mt-3 p-3 bg-subtle border-2 border-brand flex items-center gap-2"
                       >
                         <span className="text-brand font-semibold shrink-0">
-                          {t("NHẬP DỮ LIỆU CHO INPUT() >", "STDIN >")}
+                          {t("Nhập dữ liệu cho input() >", "STDIN >")}
                         </span>
                         <input
                           ref={stdinInputRef}
@@ -1648,9 +1633,9 @@ export const StudentWorkspacePage: React.FC = () => {
                         />
                         <button
                           type="submit"
-                          className="px-3.5 py-1 bg-brand text-white text-xs font-semibold uppercase hover:opacity-90 transition-opacity"
+                          className="px-3.5 py-1 bg-brand text-white text-xs font-semibold hover:opacity-90 transition-opacity"
                         >
-                          {t("GỬI DỮ LIỆU [↵]", "SEND [↵]")}
+                          {t("Gửi dữ liệu [↵]", "Send [↵]")}
                         </button>
                       </form>
                     )}
@@ -1667,14 +1652,14 @@ export const StudentWorkspacePage: React.FC = () => {
                         <div className="text-brand text-base mb-2">[◆]</div>
                         <div className="text-primary font-semibold mb-1">
                           {t(
-                            "BẠN CHƯA CHẤM ĐIỂM BÀI TẬP NÀY",
-                            "NO GRADING RESULTS YET"
+                            "Bạn chưa chấm điểm bài tập này",
+                            "No grading results yet"
                           )}
                         </div>
                         <p className="text-secondary max-w-md mb-4">
                           {t("Hãy nhấn nút ", "Click ")}
                           <span className="text-brand font-semibold">
-                            {t("[✓] NỘP BÀI & CHẤM ĐIỂM", "[✓] SUBMIT & GRADE")}
+                            {t("✓ Nộp bài & chấm điểm", "✓ Submit & grade")}
                           </span>{" "}
                           {t(
                             `để hệ thống tự động kiểm tra bài làm của bạn với ${
@@ -1691,8 +1676,8 @@ export const StudentWorkspacePage: React.FC = () => {
                         >
                           [✓]{" "}
                           {t(
-                            "CHẤM ĐIỂM BÀI LÀM NGAY",
-                            "GRADE MY SOLUTION NOW"
+                            "Chấm điểm bài làm ngay",
+                            "Grade my solution now"
                           )}
                         </button>
                       </div>
@@ -1710,17 +1695,17 @@ export const StudentWorkspacePage: React.FC = () => {
                             >
                               {testResults.every((r) => r.passed)
                                 ? t(
-                                    "🎉 CHÚC MỪNG! BẠN ĐÃ LÀM ĐÚNG TẤT CẢ CÁC TEST!",
-                                    "🎉 CONGRATULATIONS! ALL TEST CASES PASSED!"
+                                    "🎉 Chúc mừng! bạn đã làm đúng tất cả các test!",
+                                    "🎉 Congratulations! all test cases passed!"
                                   )
                                 : t(
-                                    "✕ MỘT SỐ TEST CHƯA ĐÚNG, HÃY KIỂM TRA LẠI KẾT QUẢ BÊN DƯỚI",
-                                    "✕ SOME TEST CASES FAILED, CHECK DETAILS BELOW"
+                                    "✕ Một số test chưa đúng, hãy kiểm tra lại kết quả bên dưới",
+                                    "✕ Some test cases failed, check details below"
                                   )}
                             </span>
                             <span className="text-grid-strong">|</span>
                             <span className="text-secondary font-semibold">
-                              {t("ĐIỂM ĐẠT:", "SCORE:")}{" "}
+                              {t("Điểm đạt:", "SCORE:")}{" "}
                               <strong className="text-primary">
                                 {testResults.filter((r) => r.passed).length} /{" "}
                                 {testResults.length}
@@ -1728,7 +1713,7 @@ export const StudentWorkspacePage: React.FC = () => {
                             </span>
                           </div>
                           <span className="text-muted">
-                            {t("THỜI GIAN CHẠY:", "TIME:")}{" "}
+                            {t("Thời gian chạy:", "TIME:")}{" "}
                             {testResults
                               .reduce((acc, r) => acc + r.durationMs, 0)
                               .toFixed(1)}
@@ -1771,24 +1756,24 @@ export const StudentWorkspacePage: React.FC = () => {
 
                         {/* Technical Results Table */}
                         <div className="neo-box-sm overflow-hidden divide-y divide-grid">
-                          <div className="grid grid-cols-12 bg-subtle px-3 py-2 text-[11px] text-muted uppercase">
+                          <div className="grid grid-cols-12 bg-subtle px-3 py-2 text-[11px] text-muted">
                             <div className="col-span-2">
-                              {t("BỘ TEST", "TEST")}
+                              {t("Bộ test", "Test")}
                             </div>
                             <div className="col-span-2">
-                              {t("KẾT QUẢ", "STATUS")}
+                              {t("Kết quả", "Status")}
                             </div>
                             <div className="col-span-3">
-                              {t("DỮ LIỆU VÀO (INPUT)", "INPUT")}
+                              {t("Dữ liệu vào (input)", "Input")}
                             </div>
                             <div className="col-span-2">
-                              {t("ĐÁP ÁN ĐÚNG", "EXPECTED")}
+                              {t("Đáp án đúng", "Expected")}
                             </div>
                             <div className="col-span-2">
-                              {t("CODE CỦA BẠN IN RA", "YOUR OUTPUT")}
+                              {t("Code của bạn in ra", "Your output")}
                             </div>
                             <div className="col-span-1 text-right">
-                              {t("TỐC ĐỘ", "TIME")}
+                              {t("Tốc độ", "Time")}
                             </div>
                           </div>
 
@@ -1801,7 +1786,7 @@ export const StudentWorkspacePage: React.FC = () => {
                                 <span>Test #{res.index}</span>
                                 {res.isHidden && (
                                   <span className="px-1 py-0.2 bg-subtle border border-grid text-muted text-[10px]">
-                                    {t("ẨN", "HIDDEN")}
+                                    {t("Ẩn", "Hidden")}
                                   </span>
                                 )}
                               </div>
@@ -1809,11 +1794,11 @@ export const StudentWorkspacePage: React.FC = () => {
                               <div className="col-span-2">
                                 {res.passed ? (
                                   <span className="text-emerald-500 font-semibold">
-                                    ✓ {t("ĐÚNG", "PASS")}
+                                    ✓ {t("Đúng", "Pass")}
                                   </span>
                                 ) : (
                                   <span className="text-brand font-semibold">
-                                    ✕ {t("CHƯA ĐÚNG", "FAIL")}
+                                    ✕ {t("Chưa đúng", "Fail")}
                                   </span>
                                 )}
                               </div>
@@ -1891,10 +1876,10 @@ export const StudentWorkspacePage: React.FC = () => {
                     {!isTracing || traceSteps.length === 0 ? (
                       <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-grid bg-subtle/40">
                         <div className="text-amber-500 text-3xl mb-3">🔍</div>
-                        <div className="text-primary font-bold text-sm mb-1 uppercase">
+                        <div className="text-primary font-bold text-sm mb-1">
                           {t(
-                            "CHẾ ĐỘ TRỰC QUAN HÓA BIẾN THEO TỪNG DÒNG (VARIABLE TRACER)",
-                            "STEP-BY-STEP VARIABLE TRACER"
+                            "Chế độ trực quan hóa biến theo từng dòng (variable tracer)",
+                            "Step-by-step variable tracer"
                           )}
                         </div>
                         <p className="text-secondary max-w-md text-xs mb-4 leading-relaxed font-sans">
@@ -1906,13 +1891,13 @@ export const StudentWorkspacePage: React.FC = () => {
                         <button
                           onClick={handleInitiateTrace}
                           disabled={engineState === "initializing" || isTraceLoading}
-                          className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase transition-colors flex items-center gap-2"
+                          className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold transition-colors flex items-center gap-2"
                         >
                           <span>{isTraceLoading ? "◐" : "▶"}</span>
                           <span>
                             {isTraceLoading
-                              ? t("ĐANG NẠP BƯỚC...", "TRACING...")
-                              : t("BẮT ĐẦU CHẠY TỪNG BƯỚC", "START TRACING")}
+                              ? t("Đang nạp bước...", "TRACING...")
+                              : t("Bắt đầu chạy từng bước", "Start tracing")}
                           </span>
                         </button>
                       </div>
@@ -1936,10 +1921,10 @@ export const StudentWorkspacePage: React.FC = () => {
                               title={t("Lùi 1 bước", "Previous step")}
                               className="px-2.5 py-1 bg-surface border border-grid hover:border-amber-500 disabled:opacity-30 text-xs font-bold"
                             >
-                              ◀ {t("LÙI", "PREV")}
+                              ◀ {t("Lùi", "Prev")}
                             </button>
                             <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/40 text-amber-500 font-bold text-xs">
-                              {t("BƯỚC", "STEP")} {currentStepIdx + 1} / {traceSteps.length}
+                              {t("Bước", "Step")} {currentStepIdx + 1} / {traceSteps.length}
                             </div>
                             <button
                               onClick={handleNextStep}
@@ -1947,7 +1932,7 @@ export const StudentWorkspacePage: React.FC = () => {
                               title={t("Tiến 1 bước", "Next step")}
                               className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-black font-bold disabled:opacity-30 text-xs"
                             >
-                              {t("TIẾP", "NEXT")} ▶
+                              {t("Tiếp", "Next")} ▶
                             </button>
                             <button
                               onClick={handleLastStep}
@@ -1977,8 +1962,8 @@ export const StudentWorkspacePage: React.FC = () => {
                               <span>{isAutoPlaying ? "⏸" : "⏯"}</span>
                               <span>
                                 {isAutoPlaying
-                                  ? t("TẠM DỪNG", "PAUSE")
-                                  : t("TỰ ĐỘNG CHẠY", "AUTO PLAY")}
+                                  ? t("Tạm dừng", "Pause")
+                                  : t("Tự động chạy", "Auto play")}
                               </span>
                             </button>
 
@@ -1996,7 +1981,7 @@ export const StudentWorkspacePage: React.FC = () => {
                               onClick={handleStopTracing}
                               className="px-2.5 py-1 bg-surface border border-grid hover:border-brand text-muted hover:text-brand transition-colors text-xs"
                             >
-                              ✕ {t("THOÁT", "EXIT")}
+                              ✕ {t("Thoát", "Exit")}
                             </button>
                           </div>
                         </div>
@@ -2031,7 +2016,7 @@ export const StudentWorkspacePage: React.FC = () => {
                           {/* Variables Watcher Table (2 cols) */}
                           <div className="lg:col-span-2 border border-grid bg-surface flex flex-col overflow-hidden">
                             <div className="h-8 px-3 bg-subtle border-b border-grid flex items-center justify-between font-bold text-[11px] text-secondary">
-                              <span>📊 BẢNG THEO DÕI GIÁ TRỊ BIẾN (VARIABLES WATCHER)</span>
+                              <span>📊 Bảng theo dõi giá trị biến</span>
                               <span className="text-muted text-[10px]">
                                 {Object.keys(traceSteps[currentStepIdx]?.variables || {}).length} BIẾN
                               </span>
@@ -2058,7 +2043,7 @@ export const StudentWorkspacePage: React.FC = () => {
                                 return (
                                   <table className="w-full text-left border-collapse">
                                     <thead>
-                                      <tr className="border-b border-grid bg-subtle/50 text-[10px] text-muted uppercase">
+                                      <tr className="border-b border-grid bg-subtle/50 text-[10px] text-muted">
                                         <th className="px-3 py-1.5">Tên biến</th>
                                         <th className="px-3 py-1.5">Kiểu (Type)</th>
                                         <th className="px-3 py-1.5">Giá trị hiện thời (Value)</th>
@@ -2084,7 +2069,7 @@ export const StudentWorkspacePage: React.FC = () => {
                                             </td>
                                             <td className="px-3 py-2">
                                               <span
-                                                className={`px-1.5 py-0.5 border text-[10px] uppercase font-mono ${
+                                                className={`px-1.5 py-0.5 border text-[10px] font-mono ${
                                                   vInfo.type === "int"
                                                     ? "bg-amber-500/20 text-amber-500 border-amber-500/40"
                                                     : vInfo.type === "str"
@@ -2200,7 +2185,7 @@ export const StudentWorkspacePage: React.FC = () => {
                     }
                     className="text-amber-500 hover:underline font-mono"
                   >
-                    [+ Dùng dữ liệu Test 1]
+                    + Dùng dữ liệu Test 1
                   </button>
                 </div>
               )}
@@ -2222,7 +2207,7 @@ export const StudentWorkspacePage: React.FC = () => {
                 }}
                 className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition-colors"
               >
-                [▶] BẮT ĐẦU CHẠY BƯỚC
+                ▶ Bắt đầu chạy từng bước
               </button>
             </div>
           </div>
