@@ -198,7 +198,7 @@ export const BlueprintPage: React.FC = () => {
             {/* LEFT 3-4 COLS: LESSON ROADMAP (BÀI 16 -> BÀI 31) */}
             {sidebarOpen && (
               <aside className="lg:col-span-4 xl:col-span-3 bg-surface flex flex-col lg:sticky lg:top-14 lg:self-start lg:max-h-[calc(100vh-4rem)] overflow-y-auto">
-                <div className="h-12 px-4 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs sm:text-sm">
+                <div className="min-h-[60px] py-4 px-4 gap-3 bg-subtle border-b border-grid flex items-center justify-between font-mono text-xs sm:text-sm">
                   <span className=" text-secondary font-bold truncate">
                     {t(
                       "Mục lục bài học (Tin học 10)",

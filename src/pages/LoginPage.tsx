@@ -155,10 +155,13 @@ export const LoginPage: React.FC = () => {
               "A platform aligned with the Grade 10 textbook: read theory, take quizzes and practice code with automatic grading."
             )}
           </p>
-          <ul className="space-y-3">
+          <ul className="grid auto-rows-fr gap-3 max-w-lg">
             {features.map(({ icon: Icon, title, desc }) => (
-              <li key={title} className="flex items-start gap-3">
-                <span className="w-10 h-10 rounded-[10px] bg-surface border border-grid grid place-items-center text-brand shrink-0 shadow-card">
+              <li
+                key={title}
+                className="flex items-center gap-3 p-3.5 rounded-[12px] bg-surface border border-grid shadow-card"
+              >
+                <span className="w-10 h-10 rounded-[10px] bg-brand-soft grid place-items-center text-brand shrink-0">
                   <Icon size={19} />
                 </span>
                 <div>
